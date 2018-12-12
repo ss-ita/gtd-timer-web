@@ -1,0 +1,9 @@
+.spacer {
+    flex-grow: 1;
+}
+.mat-tab-link-active,
+.mat-tab-label-active {
+    color: black;
+    background-color: lightskyblue;
+    font-weight: bold;
+}
