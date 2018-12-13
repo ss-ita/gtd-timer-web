@@ -1,27 +1,34 @@
-import { SigninComponent } from './auth/signin/signin.component';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule,ReactiveFormsModule } from '@angular/forms';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {AppMaterialModule} from '../app/app-material.module';
 import { AppComponent } from './app.component';
+import { HomeComponent } from './home/home.component';
+import { SignupComponent } from './signup/signup.component';
+import { SigninComponent } from './signin/signin.component';
+import { NavBarComponent } from './nav-bar/nav-bar.component';
 import { AppRoutingModule } from './app-routing.module';
-import { CustomMaterialModule } from '../app/material.module'
-import { BrowserAnimationsModule, NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { SignupComponent } from './auth/signup/signup.component';
- 
+import { TimerComponent } from './timer/timer.component';
+import { AlarmComponent } from './alarm/alarm.component';
+import { TaskManagementComponent } from './task-management/task-management.component';
+
+
 @NgModule({
   declarations: [
     AppComponent,
+    HomeComponent,
+    SignupComponent,
     SigninComponent,
-    SignupComponent
+    NavBarComponent,
+    TimerComponent,
+    AlarmComponent,
+    TaskManagementComponent
   ],
   imports: [
     BrowserModule,
-    FormsModule,
-    AppRoutingModule,
-    CustomMaterialModule,
+    AppMaterialModule,
     BrowserAnimationsModule,
-    NoopAnimationsModule,
-    ReactiveFormsModule
+    AppRoutingModule
   ],
   providers: [
     // no need to place any providers due to the `providedIn` flag...

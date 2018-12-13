@@ -1,17 +1,29 @@
-import { NgModule }             from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
- 
-import {SigninComponent} from './auth/signin/signin.component';
-import {SignupComponent} from './auth/signup/signup.component';
- 
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import {Routes, RouterModule} from '@angular/router';
+import {HomeComponent} from './home/home.component';
+import {SigninComponent} from './signin/signin.component';
+import { TimerComponent } from './timer/timer.component';
+import { AlarmComponent } from './alarm/alarm.component';
+import { TaskManagementComponent } from './task-management/task-management.component';
+
 const routes: Routes = [
-  { path: '', redirectTo: '/signin', pathMatch: 'full' },
-  { path: 'signin', component: SigninComponent },
-  { path: 'signup', component: SignupComponent }
+  { path: '', redirectTo: '/home', pathMatch: 'full' },
+  { path: 'home', component:  HomeComponent},
+  { path: 'timer', component:  TimerComponent},
+  { path: 'alarm', component:  AlarmComponent},
+  { path: 'signin', component:  SigninComponent},
+  { path: 'task-management', component: TaskManagementComponent}
 ];
- 
+
+export const appRouting = RouterModule.forRoot(routes);
+
 @NgModule({
-  imports: [ RouterModule.forRoot(routes) ],
-  exports: [ RouterModule ]
+  declarations: [],
+  imports: [
+    CommonModule,
+    RouterModule.forRoot(routes)
+  ],
+  exports: [RouterModule]
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }
