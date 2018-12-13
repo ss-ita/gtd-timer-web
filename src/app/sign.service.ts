@@ -7,7 +7,7 @@ import {HttpClient} from '@angular/common/http'
 export class SignService {
 
   constructor(private http: HttpClient) { }
-  getUserDetails(email,password)
+ getUserDetails(email,password)
   {
     return this.http.post('url',
     {

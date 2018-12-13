@@ -3,7 +3,6 @@
   <mat-card-header>
     <mat-card-title>Sign in</mat-card-title>
   </mat-card-header>
-  <form (submit)='signin($event)'>
     <mat-card-content>
       <table class="example-full-width" cellspacing="0">    
         <tr>
@@ -21,13 +20,10 @@
         </mat-form-field>
       </td>
       </tr></table>
-    <mat-spinner [style.display]="showSpinner ? 'block' : 'none'"></mat-spinner>
   </mat-card-content>
   <mat-card-actions>
-    <button mat-raised-button (click)="signin()" color="primary">Login</button>
-    <small> Don't have an account than <a routerLink="/signup">sign up</a></small>
- 
+    <button mat-raised-button (click)="signin()" color="primary">Sign in</button>
+    <small> Don't have an account than <a routerLink="/signup">sign up</a></small> 
     <router-outlet></router-outlet>
   </mat-card-actions>
-</form>
 </mat-card>

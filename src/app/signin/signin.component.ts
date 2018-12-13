@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 
 import {Router} from '@angular/router';
 import {FormControl, Validators} from '@angular/forms';
-import {SignService} from '../sign.service'
 
 @Component({
   selector: 'app-signin',
@@ -26,12 +25,12 @@ export class SigninComponent implements OnInit {
             '';
   }
 
-  constructor(private router: Router ,private Sign:SignService) { }
+  constructor(private router: Router ) { }
 
   ngOnInit() {
   }
 
-  signin(event) 
+ /* signin(event) 
   {
     const target=event.target
     const email=target.querySelector('#email').value
@@ -40,5 +39,5 @@ export class SigninComponent implements OnInit {
     this.Sign.getUserDetails(email,password)
     console.log(email,password)
 
-  }
+  }*/
 }
