@@ -1,3 +1,33 @@
-<p>
-  signin works!
-</p>
+
+<mat-card class="example-card">
+  <mat-card-header>
+    <mat-card-title>Sign in</mat-card-title>
+  </mat-card-header>
+  <form (submit)='signin($event)'>
+    <mat-card-content>
+      <table class="example-full-width" cellspacing="0">    
+        <tr>
+          <td>
+            <mat-form-field class="example-full-width"> 
+              <input matInput placeholder="Enter your email" [formControl]="email" required>
+              <mat-error *ngIf="email.invalid">{{getErrorMessageEmail()}}</mat-error>
+            </mat-form-field>
+          </td>
+        </tr>
+        <tr>
+        <td><mat-form-field class="example-full-width">
+          <input matInput placeholder="Enter your password" [formControl]="password" type="password" required>
+          <mat-error *ngIf="password.invalid">{{getErrorMessagePassword()}}</mat-error>
+        </mat-form-field>
+      </td>
+      </tr></table>
+    <mat-spinner [style.display]="showSpinner ? 'block' : 'none'"></mat-spinner>
+  </mat-card-content>
+  <mat-card-actions>
+    <button mat-raised-button (click)="signin()" color="primary">Login</button>
+    <small> Don't have an account than <a routerLink="/signup">sign up</a></small>
+ 
+    <router-outlet></router-outlet>
+  </mat-card-actions>
+</form>
+</mat-card>
