@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-
 import {Router} from '@angular/router';
+
 import {FormBuilder,FormGroup, Validators} from '@angular/forms';
-import {SigninModel} from '../model/signin.model'
-import { AuthService } from '../auth.service';
+import {SigninModel} from '../models/signin.model'
 
 @Component({
   selector: 'app-signin',
@@ -13,7 +12,7 @@ import { AuthService } from '../auth.service';
 
 export class SigninComponent implements OnInit {
 
-    constructor(private formBuilder: FormBuilder,private router: Router,private authService: AuthService, ) { }
+    constructor(private formBuilder: FormBuilder,private router: Router ) { }
 
     user:SigninModel=new SigninModel()
    signinform:FormGroup
@@ -38,18 +37,4 @@ export class SigninComponent implements OnInit {
         this.signinform.controls['password'].hasError('minlength') ? 'You must enter 8 elements min' :
             '';
   }
-
-  login() {
-    const val = this.signinform.value;
-
-    if (val.email && val.password) {
-        this.authService.login(val.email, val.password)
-            .subscribe(
-                () => {
-                    console.log("User is logged in");
-                    this.router.navigateByUrl('/');
-                }
-            );
-              }
-            }
-          }
+}

@@ -1,4 +1,4 @@
-.try {
+.back {
     position: absolute;
     top: auto;
     min-height: calc(100vh - 49px);
@@ -37,6 +37,13 @@
     }
     .mat-flat-button {
         border-radius: 0;
+    }
+
+    .tempButton {
+        background-color: transparent;
+        border: none;
+        text-decoration: underline;
+        color: blue;
     }
     /* active tab */
     /* ::ng-deep .mat-tab-list .mat-tab-labels .mat-tab-label-active {

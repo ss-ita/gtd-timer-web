@@ -12,7 +12,7 @@ import { TimerComponent } from './timer/timer.component';
 import { AlarmComponent } from './alarm/alarm.component';
 import {FormsModule,ReactiveFormsModule} from '@angular/forms';
 import { TaskManagementComponent } from './task-management/task-management.component';
-
+import { CompareValidatorDirective } from './compare-validator.directive';
 
 @NgModule({
   declarations: [
@@ -23,19 +23,19 @@ import { TaskManagementComponent } from './task-management/task-management.compo
     NavBarComponent,
     TimerComponent,
     AlarmComponent,
-    TaskManagementComponent
+    TaskManagementComponent,
+    CompareValidatorDirective
   ],
   imports: [
     BrowserModule,
     AppMaterialModule,
     BrowserAnimationsModule,
     AppRoutingModule,
+    FormsModule,
     ReactiveFormsModule,
-    FormsModule
   ],
-  providers: [
-    // no need to place any providers due to the `providedIn` flag...
-  ],
-  bootstrap: [ AppComponent ]
+  providers: [],
+  bootstrap: [AppComponent],
+  entryComponents: [SignupComponent]
 })
 export class AppModule { }
