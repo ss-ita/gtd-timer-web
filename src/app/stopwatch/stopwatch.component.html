@@ -1,5 +1,15 @@
-<div class="container stopwatch">
-  <form>
+<mat-card class="example-card">
+    <mat-card-content>
+      <div class="container stopwatch">
+       
+      
+        <div class="clock inactive z-depth-1">
+          <span>0:00:00.0</span>
+          <div class="overlay waves-effect"></div>
+        </div>
+      </div>
+  </mat-card-content>
+  <mat-card-actions>
     <button mat-icon-button>
       <mat-icon>arrow_right</mat-icon>
     </button>
@@ -9,10 +19,5 @@
     <button mat-icon-button>
       <mat-icon>refresh</mat-icon>
     </button>
-  </form>
-
-  <div class="clock inactive z-depth-1">
-    <span>0:00:00.0</span>
-    <div class="overlay waves-effect"></div>
-  </div>
-</div>
+  </mat-card-actions>
+</mat-card>
