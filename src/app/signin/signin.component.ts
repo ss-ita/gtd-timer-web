@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 
 import {Router} from '@angular/router';
-import {FormControl, Validators} from '@angular/forms';
+import {FormBuilder,FormGroup, Validators} from '@angular/forms';
+import {SigninModel} from '../model/signin.model'
+import { AuthService } from '../auth.service';
 
 @Component({
   selector: 'app-signin',
@@ -11,33 +13,43 @@ import {FormControl, Validators} from '@angular/forms';
 
 export class SigninComponent implements OnInit {
 
-  email = new FormControl('', [Validators.required, Validators.email]);
-  password = new FormControl('', [Validators.required, Validators.minLength(6)]);
+    constructor(private formBuilder: FormBuilder,private router: Router,private authService: AuthService, ) { }
+
+    user:SigninModel=new SigninModel()
+   signinform:FormGroup
+
+   pwdPattern = /^.*(?=.*[a-z])(?=.*[0-9])(?=.*[A-Z])(?=.*[@#$%^&+=.\-_*]).*$/;
+
+  ngOnInit() {
+    this.signinform = this.formBuilder.group({
+      'email': [this.user.Email, [Validators.required, Validators.email]],
+      'password': [this.user.Password, [Validators.required, Validators.minLength(8),Validators.pattern(this.pwdPattern)]]
+  });
+  }
 
   getErrorMessageEmail() {
-    return this.email.hasError('required') ? 'You must enter a value' :
-        this.email.hasError('email') ? 'Not a valid email' :
+    return this.signinform.controls['email'].hasError('required') ? 'This field is required' :
+        this.signinform.controls['email'].hasError('email') ? 'Provided e-mail is invalid' :
             '';
   }
   getErrorMessagePassword() {
-    return this.password.hasError('required') ? 'You must enter your password' :
-        this.password.hasError('minlength') ? 'You must enter 6 elements min' :
+    return this.signinform.controls['password'].hasError('required') ? 'This field is required' :
+    this.signinform.controls['password'].hasError('pattern') ? 'Combination of 8 or more uppercase, lowercase letters, special symbols and numbers.':
+        this.signinform.controls['password'].hasError('minlength') ? 'You must enter 8 elements min' :
             '';
   }
 
-  constructor(private router: Router ) { }
+  login() {
+    const val = this.signinform.value;
 
-  ngOnInit() {
-  }
-
- /* signin(event) 
-  {
-    const target=event.target
-    const email=target.querySelector('#email').value
-    const password=target.querySelector('#password').value
-    event.preventDefault()
-    this.Sign.getUserDetails(email,password)
-    console.log(email,password)
-
-  }*/
-}
+    if (val.email && val.password) {
+        this.authService.login(val.email, val.password)
+            .subscribe(
+                () => {
+                    console.log("User is logged in");
+                    this.router.navigateByUrl('/');
+                }
+            );
+              }
+            }
+          }
