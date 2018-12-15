@@ -1,0 +1,15 @@
+.signup-form {
+    min-width: 150px;
+    max-width: 500px;
+    width: 100%;
+  }
+
+.signup-full-width {
+  width: 100%;
+}
+.mat-ink-bar{
+    background-color:#00ADEE;
+}
+.mat-tab-label-active{
+    color: #00ADEE !important;
+} 
