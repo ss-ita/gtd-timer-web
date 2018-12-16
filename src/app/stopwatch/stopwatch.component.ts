@@ -17,6 +17,7 @@ export class StopwatchComponent implements OnInit {
   intervalId;
 
   ResetStopwatch() {
+    this.PauseStopwatch();
     this.hour = this.minute = this.second = this.millisecond = 0;
     this.isRun = false;
     this.isPause = false;
