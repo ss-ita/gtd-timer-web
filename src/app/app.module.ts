@@ -9,9 +9,10 @@ import { NavBarComponent } from './nav-bar/nav-bar.component';
 import { AppRoutingModule } from './app-routing.module';
 import { TimerComponent } from './timer/timer.component';
 import { AlarmComponent } from './alarm/alarm.component';
-import {FormsModule,ReactiveFormsModule} from '@angular/forms';
 import { TaskManagementComponent } from './task-management/task-management.component';
 import { StopwatchComponent } from './stopwatch/stopwatch.component';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import { CompareValidatorDirective } from './compare-validator.directive';
 
 @NgModule({
   declarations: [
@@ -22,19 +23,19 @@ import { StopwatchComponent } from './stopwatch/stopwatch.component';
     TimerComponent,
     AlarmComponent,
     TaskManagementComponent,
-    StopwatchComponent
+    StopwatchComponent,
+    CompareValidatorDirective
   ],
   imports: [
     BrowserModule,
     AppMaterialModule,
     BrowserAnimationsModule,
     AppRoutingModule,
-    ReactiveFormsModule,
-    FormsModule
+    FormsModule,
+    ReactiveFormsModule
   ],
-  providers: [
-    // no need to place any providers due to the `providedIn` flag...
-  ],
-  bootstrap: [ AppComponent ]
+  providers: [],
+  bootstrap: [AppComponent],
+  entryComponents: [SignupComponent]
 })
 export class AppModule { }

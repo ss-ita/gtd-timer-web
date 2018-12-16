@@ -1,3 +1,29 @@
-<p>
-  signup works!
-</p>
+<h1 mat-dialog-title>Sign Up</h1>
+<mat-dialog-content>
+      <form [formGroup]="signUpForm" class="signup-form">
+        <mat-form-field class="signup-full-width">
+            <input matInput formControlName="FirstName" placeholder="First name">
+            <mat-error>{{getErrorMessageFirstName()}}</mat-error>
+        </mat-form-field>
+        <mat-form-field class="signup-full-width">
+          <input matInput formControlName="LastName" placeholder="Last name">
+          <mat-error>{{getErrorMessageLastName()}}</mat-error>
+        </mat-form-field>
+        <mat-form-field class="signup-full-width">
+          <input matInput formControlName="Email" placeholder="Email">
+          <mat-error>{{getErrorMessageEmail()}}</mat-error>
+        </mat-form-field>
+        <mat-form-field class="signup-full-width" hintLabel="Combination of 8 or more uppercase, lowercase letters, special symbols and numbers.">
+          <input matInput  placeholder="Password" [type]="hide ? 'password' : 'text'" formControlName="Password">
+          <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+          <mat-error>{{getErrorMessagePassword()}}</mat-error>
+        </mat-form-field>
+        <mat-form-field class="signup-full-width">
+          <input matInput formControlName="ConfirmPassword" [type]="hide ? 'password' : 'text'" placeholder="Confirm password">
+          <mat-error>{{getErrorMessageConfirmPassword()}}</mat-error>
+        </mat-form-field>
+      </form>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-raised-button color="primary">Sign Up</button>
+</mat-dialog-actions>

@@ -1,0 +1,66 @@
+.mat-icon-button {
+    width: 6rem;
+    height: 6rem;
+    background-color: rgb(172, 205, 255);
+    border: none;
+    text-decoration: underline;
+    color: blue;
+    margin-left: 10%;
+ }
+
+.button-area{
+    margin-left: 25%;
+
+}
+
+::ng-deep .mat-icon{
+    font-size:64px !important;
+    height: 32px !important;
+    width: 64px !important;
+}
+
+.mat-card
+{
+    width: 600px;
+    height: 300px;
+    margin: 5% auto;
+}
+
+.large-text{
+    font-size: 100px;
+    margin: 5px;
+}
+
+.medium-text{
+    font-size: 40px;
+}
+
+.small-text{
+    font-size: 60px;
+}
+
+.run-stopwatch{
+    color: green;
+}
+
+.pause-stopwatch{
+    color: red;
+}
+
+.margin-class{
+    margin: 14% auto;
+    display: inline-block;
+}
+
+.container-stopwatch{
+    margin: 15% auto;
+    width: 500px;
+}
+
+.background{
+    position: absolute;
+    top: auto;
+    min-height: calc(100vh - 49px);
+    width: 100%;
+    background-color: #ebebeb
+}
