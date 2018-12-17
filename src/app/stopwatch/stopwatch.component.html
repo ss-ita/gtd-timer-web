@@ -1,0 +1,37 @@
+<div class="background">
+  <div class="button-area">
+    <button mat-icon-button (click)="StartStopwatch()">
+      <mat-icon>arrow_right</mat-icon>
+    </button>
+    <button mat-icon-button (click)="PauseStopwatch()">
+      <mat-icon>pause</mat-icon>
+    </button>
+    <button mat-icon-button (click)="ResetStopwatch()">
+      <mat-icon>refresh</mat-icon>
+    </button>
+  </div>
+  <mat-card>
+    <mat-card-content (click)="ClickOnStopWatch()">
+      <div class="container-stopwatch">
+        <div class="margin-class">
+          <span class="large-text" [ngClass]="{'run-stopwatch': isRun === true, 'pause-stopwatch': isPause === true}">{{hour}}</span>
+          <span class="large-text" [ngClass]="{'run-stopwatch': isRun === true, 'pause-stopwatch': isPause === true}">:</span>
+        </div>
+
+        <div class="margin-class">
+          <span class="large-text" [ngClass]="{'run-stopwatch': isRun === true, 'pause-stopwatch': isPause === true}"> {{minute}}</span>
+          <span class="large-text" [ngClass]="{'run-stopwatch': isRun === true, 'pause-stopwatch': isPause === true}">:</span>
+        </div>
+
+        <div class="margin-class">
+          <span class="large-text" [ngClass]="{'run-stopwatch': isRun === true, 'pause-stopwatch': isPause === true}"> {{second}}</span>
+          <span class="large-text" [ngClass]="{'run-stopwatch': isRun === true, 'pause-stopwatch': isPause === true}">.</span>
+        </div>
+
+        <div class="margin-class">
+          <span class="small-text" [ngClass]="{'run-stopwatch': isRun === true, 'pause-stopwatch': isPause === true}"> {{millisecond}}</span>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>
