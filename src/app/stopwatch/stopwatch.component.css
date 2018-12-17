@@ -4,7 +4,7 @@
     border: none;
     text-decoration: underline;
     color: blue;
- }
+}
 
 .mat-icon-button:hover
 {
@@ -63,5 +63,5 @@
 }
 
 .mat-card-actions{
-    text-align: right;
+    text-align: center;
 }
