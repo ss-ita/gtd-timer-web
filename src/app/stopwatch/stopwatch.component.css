@@ -21,12 +21,12 @@
 
 .mat-card
 {
-    width: 600px;
+    width: 700px;
     height: 300px;
     margin: 5% auto;
 }
 
-.large-text{
+.text{
     font-size: 120px;
     margin: 5px;
 }
@@ -50,7 +50,7 @@
 
 .container-stopwatch{
     margin: 15% auto;
-    width: 500px;
+    width: 600px;
     text-align: center;
 }
 

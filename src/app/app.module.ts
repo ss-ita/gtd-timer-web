@@ -9,7 +9,6 @@ import { NavBarComponent } from './nav-bar/nav-bar.component';
 import { AppRoutingModule } from './app-routing.module';
 import { TimerComponent } from './timer/timer.component';
 import { AlarmComponent } from './alarm/alarm.component';
-import {FormsModule,ReactiveFormsModule} from '@angular/forms';
 import { TaskManagementComponent } from './task-management/task-management.component';
 import { StopwatchComponent } from './stopwatch/stopwatch.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
