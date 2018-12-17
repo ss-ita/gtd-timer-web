@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {Router} from '@angular/router';
-import {FormControl, Validators} from '@angular/forms';
+
+import {FormBuilder,FormGroup, Validators} from '@angular/forms';
+import {SigninModel} from '../models/signin.model'
 
 @Component({
   selector: 'app-signin',
@@ -10,23 +12,29 @@ import {FormControl, Validators} from '@angular/forms';
 
 export class SigninComponent implements OnInit {
 
-  email = new FormControl('', [Validators.required, Validators.email]);
-  password = new FormControl('', [Validators.required, Validators.minLength(6)]);
+    constructor(private formBuilder: FormBuilder,private router: Router ) { }
+
+    user:SigninModel=new SigninModel();
+   signinform:FormGroup;
+
+   pwdPattern = /^.*(?=.*[a-z])(?=.*[0-9])(?=.*[A-Z])(?=.*[@#$%^&+=.\-_*]).*$/;
+
+  ngOnInit() {
+    this.signinform = this.formBuilder.group({
+      'email': [this.user.email, [Validators.required, Validators.email]],
+      'password': [this.user.password, [Validators.required, Validators.minLength(8),Validators.pattern(this.pwdPattern)]]
+  });
+  }
 
   getErrorMessageEmail() {
-    return this.email.hasError('required') ? 'This field is required' :
-        this.email.hasError('email') ? 'Provided e-mail is invalid' :
+    return this.signinform.controls['email'].hasError('required') ? 'This field is required' :
+        this.signinform.controls['email'].hasError('email') ? 'Provided e-mail is invalid' :
             '';
   }
   getErrorMessagePassword() {
-    return this.password.hasError('required') ? 'This field is required' :
-        this.password.hasError('minlength') ? 'You must enter 6 elements min' :
+    return this.signinform.controls['password'].hasError('required') ? 'This field is required' :
+    this.signinform.controls['password'].hasError('pattern') ? 'Combination of 8 or more uppercase, lowercase letters, special symbols and numbers.':
+        this.signinform.controls['password'].hasError('minlength') ? 'You must enter 8 elements min' :
             '';
   }
-
-  constructor(private router: Router ) { }
-
-  ngOnInit() {
-  }
-
 }
