@@ -27,20 +27,16 @@
 }
 
 .large-text{
-    font-size: 100px;
+    font-size: 120px;
     margin: 5px;
 }
 
-.medium-text{
-    font-size: 40px;
-}
-
 .small-text{
-    font-size: 60px;
+    font-size: 80px;
 }
 
 .run-stopwatch{
-    color: green;
+    color: blue;
 }
 
 .pause-stopwatch{
@@ -55,6 +51,7 @@
 .container-stopwatch{
     margin: 15% auto;
     width: 500px;
+    text-align: center;
 }
 
 .background{

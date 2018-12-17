@@ -13,7 +13,7 @@ export class StopwatchComponent implements OnInit {
   millisecond: number = 0;
   isRun: Boolean = false;
   isPause: Boolean = false;
-  lenOfInterval: number = 10;
+  lenOfInterval: number = 1;
   intervalId;
 
   ResetStopwatch() {
@@ -50,7 +50,7 @@ export class StopwatchComponent implements OnInit {
 
     this.millisecond += this.lenOfInterval;
 
-    if (this.millisecond > 90) {
+    if (this.millisecond > 9) {
       this.millisecond = 0;
       this.second++;
     }
