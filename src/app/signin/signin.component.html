@@ -1,28 +1,22 @@
-<mat-card class="example-card">
-  <mat-card-header>
-    <mat-card-title>Sign in</mat-card-title>
+<div class="back">
+<mat-card class="signin-card">
+  <mat-card-header class="signin-header">
+    <mat-card-title>Sign In</mat-card-title>
   </mat-card-header>
-    <mat-card-content>
-      <table class="example-full-width" cellspacing="0">    
-        <tr>
-          <td>
-            <mat-form-field class="example-full-width"> 
-              <input matInput placeholder="Enter your email" [formControl]="email" required>
-              <mat-error *ngIf="email.invalid">{{getErrorMessageEmail()}}</mat-error>
+    <mat-card-content [formGroup]="signinform">
+            <mat-form-field class="signin-form"> 
+              <input matInput placeholder="Enter your email" formControlName="email">
+              <mat-error>{{getErrorMessageEmail()}}</mat-error>
             </mat-form-field>
-          </td>
-        </tr>
-        <tr>
-        <td><mat-form-field class="example-full-width">
-          <input matInput placeholder="Enter your password" [formControl]="password" type="password" required>
-          <mat-error *ngIf="password.invalid">{{getErrorMessagePassword()}}</mat-error>
+            <mat-form-field class="signin-form">
+          <input matInput type="pas" placeholder="Enter your password" formControlName="password" >
+          <mat-error>{{getErrorMessagePassword()}}</mat-error>
         </mat-form-field>
-      </td>
-      </tr></table>
   </mat-card-content>
   <mat-card-actions>
-    <button mat-raised-button (click)="signin()" color="primary">Sign in</button>
-    <small> Don't have an account? <button id="tempButton" (click)="sign.openSignUpForm()">Sign Up</button></small> 
+    <button mat-flat-button (click)="signin()" color="primary">Sign In</button>
+    <small> Don't have an account yet?<button class="tempButton" (click)="sign.openSignUpForm()">Sign Up</button></small> 
     <app-signup #sign hidden></app-signup>
   </mat-card-actions>
 </mat-card>
+</div>
