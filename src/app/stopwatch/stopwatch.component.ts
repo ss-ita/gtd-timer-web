@@ -24,7 +24,7 @@ export class StopwatchComponent implements OnInit {
   }
 
   StartStopwatch() {
-    if (this.isRun == false || this.isPause == true) {
+    if (this.isRun === false || this.isPause === true) {
       this.isPause = false;
       this.isRun = true;
       this.intervalId = setInterval(() => {
@@ -34,14 +34,14 @@ export class StopwatchComponent implements OnInit {
   }
 
   PauseStopwatch() {
-    if (this.isRun == true) {
+    if (this.isRun === true) {
       this.isPause = true;
       clearInterval(this.intervalId);
     }
   }
 
   ClickOnStopWatch() {
-    if (this.isPause == true || this.isRun == false) {
+    if (this.isPause === true || this.isRun === false) {
       this.StartStopwatch();
     } else this.PauseStopwatch();
   }

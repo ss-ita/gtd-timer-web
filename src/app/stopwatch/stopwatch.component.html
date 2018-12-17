@@ -14,23 +14,23 @@
     <mat-card-content (click)="ClickOnStopWatch()">
       <div class="container-stopwatch">
         <div class="margin-class">
-          <span class="large-text" [ngClass]="{'run-stopwatch': isRun == true, 'pause-stopwatch': isPause==true}">{{hour}}</span>
-          <span class="medium-text" [ngClass]="{'run-stopwatch': isRun == true, 'pause-stopwatch': isPause==true}">h</span>
+          <span class="large-text" [ngClass]="{'run-stopwatch': isRun === true, 'pause-stopwatch': isPause === true}">{{hour}}</span>
+          <span class="medium-text" [ngClass]="{'run-stopwatch': isRun === true, 'pause-stopwatch': isPause === true}">h</span>
         </div>
 
         <div class="margin-class">
-          <span class="large-text" [ngClass]="{'run-stopwatch': isRun == true, 'pause-stopwatch': isPause==true}"> {{minute}}</span>
-          <span class="medium-text" [ngClass]="{'run-stopwatch': isRun == true, 'pause-stopwatch': isPause==true}">m</span>
+          <span class="large-text" [ngClass]="{'run-stopwatch': isRun === true, 'pause-stopwatch': isPause === true}"> {{minute}}</span>
+          <span class="medium-text" [ngClass]="{'run-stopwatch': isRun === true, 'pause-stopwatch': isPause === true}">m</span>
         </div>
 
         <div class="margin-class">
-          <span class="large-text" [ngClass]="{'run-stopwatch': isRun == true, 'pause-stopwatch': isPause==true}"> {{second}}</span>
-          <span class="medium-text" [ngClass]="{'run-stopwatch': isRun == true, 'pause-stopwatch': isPause==true}">s</span>
+          <span class="large-text" [ngClass]="{'run-stopwatch': isRun === true, 'pause-stopwatch': isPause === true}"> {{second}}</span>
+          <span class="medium-text" [ngClass]="{'run-stopwatch': isRun === true, 'pause-stopwatch': isPause === true}">s</span>
         </div>
 
         <div class="margin-class">
-          <span class="small-text" [ngClass]="{'run-stopwatch': isRun == true, 'pause-stopwatch': isPause==true}"> {{millisecond}}</span>
-          <span class="medium-text" [ngClass]="{'run-stopwatch': isRun == true, 'pause-stopwatch': isPause==true}">ms</span>
+          <span class="small-text" [ngClass]="{'run-stopwatch': isRun === true, 'pause-stopwatch': isPause === true}"> {{millisecond}}</span>
+          <span class="medium-text" [ngClass]="{'run-stopwatch': isRun === true, 'pause-stopwatch': isPause === true}">ms</span>
         </div>
       </div>
     </mat-card-content>
