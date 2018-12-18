@@ -3,20 +3,23 @@
   <mat-card-header class="signin-header">
     <mat-card-title>Sign In</mat-card-title>
   </mat-card-header>
-    <mat-card-content [formGroup]="signinform">
+  <form [formGroup]="signinform" (ngSubmit)="onSubmit()">
+    <mat-card-content>
             <mat-form-field class="signin-form"> 
-              <input matInput placeholder="Enter your email" formControlName="email">
+              <input matInput placeholder="Enter your email" formControlName="email" [ngClass]="{ 'is-invalid': submitted && f.email.errors }">
               <mat-error>{{getErrorMessageEmail()}}</mat-error>
             </mat-form-field>
             <mat-form-field class="signin-form">
-          <input matInput type="pas" placeholder="Enter your password" formControlName="password" >
+          <input matInput placeholder="Enter your password" formControlName="password" [ngClass]="{ 'is-invalid': submitted && f.password.errors }">
+          <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
           <mat-error>{{getErrorMessagePassword()}}</mat-error>
         </mat-form-field>
   </mat-card-content>
   <mat-card-actions>
-    <button mat-flat-button (click)="signin()" color="primary">Sign In</button>
+    <button mat-flat-button [disabled]="!signinform.valid" color="primary">Sign In</button>
     <small> Don't have an account yet?<button class="tempButton" (click)="sign.openSignUpForm()">Sign Up</button></small> 
     <app-signup #sign hidden></app-signup>
   </mat-card-actions>
+</form>
 </mat-card>
 </div>

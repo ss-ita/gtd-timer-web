@@ -13,6 +13,11 @@ import { AlarmComponent } from './alarm/alarm.component';
 import {FormsModule,ReactiveFormsModule} from '@angular/forms';
 import { TaskManagementComponent } from './task-management/task-management.component';
 import { CompareValidatorDirective } from './compare-validator.directive';
+import { HttpClientModule } from '@angular/common/http';
+import { TasksComponent } from './tasks/tasks.component';
+import { AuthGuardService } from './auth/auth-guard.service';
+import { AuthService } from './auth/auth.service';
+
 
 @NgModule({
   declarations: [
@@ -24,7 +29,8 @@ import { CompareValidatorDirective } from './compare-validator.directive';
     TimerComponent,
     AlarmComponent,
     TaskManagementComponent,
-    CompareValidatorDirective
+    CompareValidatorDirective,
+    TasksComponent
   ],
   imports: [
     BrowserModule,
@@ -33,8 +39,12 @@ import { CompareValidatorDirective } from './compare-validator.directive';
     AppRoutingModule,
     FormsModule,
     ReactiveFormsModule,
+    HttpClientModule
   ],
-  providers: [],
+  providers: [
+    AuthGuardService,
+    AuthService
+  ],
   bootstrap: [AppComponent],
   entryComponents: [SignupComponent]
 })

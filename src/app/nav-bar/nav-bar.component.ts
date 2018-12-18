@@ -24,17 +24,21 @@ export class NavBarComponent implements OnInit {
           link: './alarm',
           index: 1
       }, {
-          label: 'Home',
-          link: './home',
+          label: 'Stopwatch',
+          link: './stopwatch',
           index: 2
       }, {
           label: 'Task Management',
           link: './task-management',
           index: 3
       }, {
+        label: 'Tasks',
+        link: './tasks',
+        index: 4
+      }, {
          label: 'Sign In',
          link: './signin',
-         index: 4
+         index: 5
     }
   ];
 }
