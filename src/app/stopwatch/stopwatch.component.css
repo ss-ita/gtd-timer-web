@@ -1,0 +1,67 @@
+.mat-icon-button {
+    width: 4rem;
+    height: 4rem;
+    border: none;
+    text-decoration: underline;
+    color: blue;
+}
+
+.mat-icon-button:hover
+{
+    background-color: rgb(172, 205, 255);
+}
+
+.mat-icon{
+    font-size:32px !important;
+    height: 32px !important;
+    width: 32px !important;
+}
+
+.mat-card
+{
+    width: 700px;
+    height: 300px;
+    margin: 5% auto;
+}
+
+.text{
+    font-size: 120px;
+    margin: 5px;
+}
+
+.small-text{
+    font-size: 80px;
+}
+
+.run-stopwatch{
+    color: blue;
+}
+
+.pause-stopwatch{
+    color: red;
+}
+
+.margin-class{
+    margin: 14% auto;
+    display: inline-block;
+}
+
+.container-stopwatch{
+    margin: 15% auto;
+    width: 600px;
+    text-align: center;
+    height: 200px;
+    margin-left: 10%;
+}
+
+.background{
+    position: absolute;
+    top: auto;
+    min-height: calc(100vh - 49px);
+    width: 100%;
+    background-color: #609b9b
+}
+
+.mat-card-actions{
+    text-align: center;
+}

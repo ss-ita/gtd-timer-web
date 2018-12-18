@@ -45,15 +45,3 @@
         text-decoration: underline;
         color: blue;
     }
-    /* active tab */
-    /* ::ng-deep .mat-tab-list .mat-tab-labels .mat-tab-label-active {
-    color:black;
-    background-color: lightskyblue;
-    } */
-    
-    
-    
-    /* ink bar */
-    /* ::ng-deep .mat-ink-bar {
-    background-color: var(--primary-color,#1F89CE) !important;
-    } */
