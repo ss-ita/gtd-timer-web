@@ -11,6 +11,7 @@ export class JwtService {
     constructor(private httpClient: HttpClient) { }
 
   signin(email:string, password:string) {
+    localStorage.setItem('email',email);
       return this.httpClient.post<{access_token:  string}>('https://localhost:44398/api/LogIn',{email, password} )
       .pipe(map(value => {
       localStorage.setItem('access_token',JSON.stringify(value.access_token));

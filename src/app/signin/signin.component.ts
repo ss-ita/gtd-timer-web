@@ -60,7 +60,6 @@ export class SigninComponent implements OnInit {
         return;
     }
     this.loading = true;
-    localStorage.setItem('email',this.f.email.value);
     this.jwtservice.signin(this.f.email.value, this.f.password.value)
         .pipe(first())
         .subscribe(
