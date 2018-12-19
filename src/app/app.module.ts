@@ -9,10 +9,19 @@ import { NavBarComponent } from './nav-bar/nav-bar.component';
 import { AppRoutingModule } from './app-routing.module';
 import { TimerComponent } from './timer/timer.component';
 import { AlarmComponent } from './alarm/alarm.component';
+import {FormsModule,ReactiveFormsModule} from '@angular/forms';
 import { TaskManagementComponent } from './task-management/task-management.component';
-import { StopwatchComponent } from './stopwatch/stopwatch.component';
-import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { CompareValidatorDirective } from './compare-validator.directive';
+import { HttpClientModule } from '@angular/common/http';
+import { JwtModule } from '@auth0/angular-jwt';
+import { TasksComponent } from './tasks/tasks.component';
+import { AuthGuardService } from './auth/auth-guard.service';
+import { AuthService } from './auth/auth.service';
+import { StopwatchComponent } from './stopwatch/stopwatch.component';
+import { StatisticsComponent } from './statistics/statistics.component';
+import { ArchiveComponent } from './archive/archive.component';
+import { SettingsComponent } from './settings/settings.component';
+
 
 @NgModule({
   declarations: [
@@ -23,8 +32,12 @@ import { CompareValidatorDirective } from './compare-validator.directive';
     TimerComponent,
     AlarmComponent,
     TaskManagementComponent,
+    CompareValidatorDirective,
+    TasksComponent,
     StopwatchComponent,
-    CompareValidatorDirective
+    StatisticsComponent,
+    ArchiveComponent,
+    SettingsComponent
   ],
   imports: [
     BrowserModule,
@@ -32,9 +45,24 @@ import { CompareValidatorDirective } from './compare-validator.directive';
     BrowserAnimationsModule,
     AppRoutingModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    HttpClientModule,
+    JwtModule.forRoot({
+      config: {
+        tokenGetter: function  tokenGetter() {
+             return     localStorage.getItem('access_token');},
+        whitelistedDomains: [
+          'http://localhost:4200',
+          'https://localhost:44398'
+      ],
+        blacklistedRoutes: []
+      }
+    })
   ],
-  providers: [],
+  providers: [
+    AuthGuardService,
+    AuthService
+  ],
   bootstrap: [AppComponent],
   entryComponents: [SignupComponent]
 })

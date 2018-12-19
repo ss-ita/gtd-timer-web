@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import {Router} from '@angular/router';
+import {Router, ActivatedRoute} from '@angular/router';
 
 import {FormBuilder,FormGroup, Validators} from '@angular/forms';
 import {SigninModel} from '../models/signin.model'
+import { first } from 'rxjs/operators';
+import {JwtService} from '../jwt.service'
 
 @Component({
   selector: 'app-signin',
@@ -12,10 +14,18 @@ import {SigninModel} from '../models/signin.model'
 
 export class SigninComponent implements OnInit {
 
-    constructor(private formBuilder: FormBuilder,private router: Router ) { }
-
     user:SigninModel=new SigninModel();
-   signinform:FormGroup;
+    signinform:FormGroup;
+    returnUrl: string;
+    loading = false;
+    submitted = false;
+    error = '';
+
+    constructor(private formBuilder: FormBuilder,
+      private router: Router,
+       private route: ActivatedRoute,
+       private jwtservice: JwtService
+       ) { }
 
    pwdPattern = /^.*(?=.*[a-z])(?=.*[0-9])(?=.*[A-Z])(?=.*[@#$%^&+=.\-_*]).*$/;
 
@@ -24,6 +34,8 @@ export class SigninComponent implements OnInit {
       'email': [this.user.email, [Validators.required, Validators.email]],
       'password': [this.user.password, [Validators.required, Validators.minLength(8),Validators.pattern(this.pwdPattern)]]
   });
+  this.jwtservice.signout();
+  this.returnUrl = this.route.snapshot.queryParams['stopwatch'] || '/';
   }
 
   getErrorMessageEmail() {
@@ -37,4 +49,27 @@ export class SigninComponent implements OnInit {
         this.signinform.controls['password'].hasError('minlength') ? 'You must enter 8 elements min' :
             '';
   }
+
+  get f() { return this.signinform.controls; }
+
+  onSubmit() {
+    this.submitted = true;
+
+    // stop here if form is invalid
+    if (this.signinform.invalid) {
+        return;
+    }
+    this.loading = true;
+    this.jwtservice.signin(this.f.email.value, this.f.password.value)
+        .pipe(first())
+        .subscribe(
+            data =>{
+                window.location.reload();            
+            },
+            error =>{ 
+                this.error=error;
+                this.loading = false;
+            }); 
+            this.router.navigate([this.returnUrl]);
+}
 }
