@@ -14,18 +14,18 @@ import {JwtService} from '../jwt.service'
 
 export class SigninComponent implements OnInit {
 
+    user:SigninModel=new SigninModel();
+    signinform:FormGroup;
+    returnUrl: string;
+    loading = false;
+    submitted = false;
+    error = '';
+
     constructor(private formBuilder: FormBuilder,
       private router: Router,
        private route: ActivatedRoute,
        private jwtservice: JwtService
        ) { }
-
-    user:SigninModel=new SigninModel();
-   signinform:FormGroup;
-   returnUrl: string;
-   loading = false;
-   submitted = false;
-   error = '';
 
    pwdPattern = /^.*(?=.*[a-z])(?=.*[0-9])(?=.*[A-Z])(?=.*[@#$%^&+=.\-_*]).*$/;
 
@@ -34,6 +34,7 @@ export class SigninComponent implements OnInit {
       'email': [this.user.email, [Validators.required, Validators.email]],
       'password': [this.user.password, [Validators.required, Validators.minLength(8),Validators.pattern(this.pwdPattern)]]
   });
+  this.jwtservice.signout();
   this.returnUrl = this.route.snapshot.queryParams['stopwatch'] || '/';
   }
 
@@ -59,15 +60,17 @@ export class SigninComponent implements OnInit {
         return;
     }
     this.loading = true;
+    localStorage.setItem('email',this.f.email.value);
     this.jwtservice.signin(this.f.email.value, this.f.password.value)
         .pipe(first())
         .subscribe(
-            data => {
-                this.router.navigate([this.returnUrl]);
+            data =>{
+                window.location.reload();            
             },
             error =>{ 
                 this.error=error;
                 this.loading = false;
             }); 
+            this.router.navigate([this.returnUrl]);
 }
 }

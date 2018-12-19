@@ -11,12 +11,10 @@ export class JwtService {
     constructor(private httpClient: HttpClient) { }
 
   signin(email:string, password:string) {
-      return this.httpClient.post<any>('https://localhost:44398/api/LogIn', {email, password}).pipe(map(value => {
-       if(value&&value.token)
-      localStorage.setItem('access_token',JSON.stringify(value));
-
-      return value;
-  }));
+      return this.httpClient.post<{access_token:  string}>('https://localhost:44398/api/LogIn',{email, password} )
+      .pipe(map(value => {
+      localStorage.setItem('access_token',JSON.stringify(value.access_token));
+  }))
   }
   
   signout() {
