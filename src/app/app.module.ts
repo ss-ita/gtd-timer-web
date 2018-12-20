@@ -12,12 +12,12 @@ import { AlarmComponent } from './alarm/alarm.component';
 import { TaskManagementComponent } from './task-management/task-management.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { CompareValidatorDirective } from './compare-validator/compare-validator.directive';
-import {MatDialogModule, MatDialog, MatDialogRef} from "@angular/material";
+import {MatDialogModule, MatDialog, MatDialogRef, MatSnackBarModule} from "@angular/material";
+import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import { UserService } from './services/user.service';
 import { HttpClientModule } from '@angular/common/http'
 import { CapslockDetectorDirective } from './capslock-detector/capslock-detector.directive';
 import { ToasterService } from './services/toaster.service';
-import { MatSnackBarModule } from '@angular/material'
 import { JwtModule } from '@auth0/angular-jwt';
 import { TasksComponent } from './tasks/tasks.component';
 import { AuthGuardService } from './auth/auth-guard.service';
@@ -56,6 +56,7 @@ import {RoundProgressModule} from 'angular-svg-round-progressbar';
     HttpClientModule,
     RoundProgressModule,
     MatSnackBarModule,
+    MatSlideToggleModule,
     MatDialogModule,
     JwtModule.forRoot({
       config: {
