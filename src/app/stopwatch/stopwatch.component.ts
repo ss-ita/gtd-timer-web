@@ -11,41 +11,42 @@ export class StopwatchComponent implements OnInit {
   minute: number = 0;
   second: number = 0;
   millisecond: number = 0;
-  isRun: Boolean = false;
-  isPause: Boolean = false;
   lenOfInterval: number = 1;
   intervalId;
 
-  ResetStopwatch() {
-    this.PauseStopwatch();
+  isStopwatchRun: Boolean = false;
+  isStopwatchPause: Boolean = false;
+
+  resetStopwatch() {
+    this.pauseStopwatch();
     this.hour = this.minute = this.second = this.millisecond = 0;
-    this.isRun = this.isPause = false;
+    this.isStopwatchRun = this.isStopwatchPause = false;
   }
 
-  StartStopwatch() {
-    if (this.isRun === false || this.isPause) {
-      this.isPause = false;
-      this.isRun = true;
+  startStopwatch() {
+    if (this.isStopwatchRun === false || this.isStopwatchPause) {
+      this.isStopwatchPause = false;
+      this.isStopwatchRun = true;
       this.intervalId = setInterval(() => {
-        this.UpdateTime();
+        this.updateTime();
       }, 100);
     }
   }
 
-  PauseStopwatch() {
-    if (this.isRun) {
-      this.isPause = true;
+  pauseStopwatch() {
+    if (this.isStopwatchRun) {
+      this.isStopwatchPause = true;
       clearInterval(this.intervalId);
     }
   }
 
-  ClickOnStopWatch() {
-    if (this.isPause || this.isRun === false) {
-      this.StartStopwatch();
-    } else this.PauseStopwatch();
+  clickOnStopWatch() {
+    if (this.isStopwatchPause || this.isStopwatchRun === false) {
+      this.startStopwatch();
+    } else this.pauseStopwatch();
   }
 
-  UpdateTime() {
+  updateTime() {
 
     this.millisecond += this.lenOfInterval;
 

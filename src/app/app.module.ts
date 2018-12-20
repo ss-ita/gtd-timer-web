@@ -14,7 +14,7 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { CompareValidatorDirective } from './compare-validator/compare-validator.directive';
 import {MatDialogModule, MatDialog, MatDialogRef} from "@angular/material";
 import { UserService } from './services/user.service';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http'
 import { CapslockDetectorDirective } from './capslock-detector/capslock-detector.directive';
 import { ToasterService } from './services/toaster.service';
 import { MatSnackBarModule } from '@angular/material'
@@ -26,7 +26,7 @@ import { StopwatchComponent } from './stopwatch/stopwatch.component';
 import { StatisticsComponent } from './statistics/statistics.component';
 import { ArchiveComponent } from './archive/archive.component';
 import { SettingsComponent } from './settings/settings.component';
-
+import {RoundProgressModule} from 'angular-svg-round-progressbar';
 
 @NgModule({
   declarations: [
@@ -54,6 +54,7 @@ import { SettingsComponent } from './settings/settings.component';
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
+    RoundProgressModule,
     MatSnackBarModule,
     MatDialogModule,
     JwtModule.forRoot({
