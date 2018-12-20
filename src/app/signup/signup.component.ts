@@ -1,8 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener, Directive, Output, EventEmitter } from '@angular/core';
 import { MatDialogRef, MatDialog} from '@angular/material';
 import { SignupModel } from '../models/signup.model';
 import { FormGroup, FormBuilder, Validators} from '@angular/forms';
-import { compareValidator } from '../compare-validator.directive';
+import { compareValidator } from '../compare-validator/compare-validator.directive';
+import { UserService } from '../services/user.service';
+import { ToasterService } from '../services/toaster.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-signup',
@@ -11,64 +14,88 @@ import { compareValidator } from '../compare-validator.directive';
 })
 
 export class SignupComponent implements OnInit {
-  signUpFormDialogRef: MatDialogRef<SignupComponent>;
+  
+  errors: string;  
   user: SignupModel = new SignupModel();
   signUpForm: FormGroup;
   passwordPattern = /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=.,\-_!])([a-zA-Z0-9 @#$%^&+=*.,\-_!]){8,}$/;
-  constructor(private dialog: MatDialog, private formBuilder: FormBuilder) { }
+  constructor (
+    private formBuilder: FormBuilder, 
+    private signUpFormDialogRef: MatDialogRef<SignupComponent>,
+    private userService: UserService,
+    private toasterService: ToasterService,
+    private router: Router
+    ) {  }
 
-  openSignUpForm() {
-    this.signUpFormDialogRef = this.dialog.open(SignupComponent, {
-      hasBackdrop: true,
-      closeOnNavigation: true
-    });
+  closeSignUpForm() {
+    this.signUpFormDialogRef.close({ message: 'The dialog was closed!' });
+  }
+
+
+  onRegisterSubmit() {
+    this.userService.registerUser(this.signUpForm.value)
+      .subscribe(
+        data => {
+            this.closeSignUpForm();
+            this.toasterService.showToaster("Registration successful! ");
+            setTimeout(() => 
+            {
+              this.toasterService.showToaster("You can now Sign In!");
+            },
+            4000);
+        },
+        error => {
+            this.toasterService.showToaster(error.error.error)
+        })
   }
 
   getErrorMessageEmail() {
-    return this.signUpForm.controls["Email"].hasError('required') ? 'This field is required' :
-    this.signUpForm.controls["Email"].hasError('email') ? 'Provided e-mail is invalid' :
+    return this.signUpForm.controls["email"].hasError('required') ? 'This field is required' :
+    this.signUpForm.controls["email"].hasError('email') ? 'Provided e-mail is invalid' :
             '';
   }
   getErrorMessageFirstName() {
-    return this.signUpForm.controls["FirstName"].hasError('required') ? 'This field is required' : '';
+    return this.signUpForm.controls["firstName"].hasError('required') ? 'This field is required' : '';
   }
   getErrorMessageLastName() {
-    return this.signUpForm.controls["LastName"].hasError('required') ? 'This field is required' : '';
+    return this.signUpForm.controls["lastName"].hasError('required') ? 'This field is required' : '';
   }
   getErrorMessagePassword() {
-    return this.signUpForm.controls["Password"].hasError('required') ? 'This field is required' :
-    this.signUpForm.controls["Password"].hasError("pattern") ? 'Combination of 8 or more uppercase, lowercase letters, special symbols and numbers.' : 
+    return this.signUpForm.controls["password"].hasError('required') ? 'This field is required' :
+    this.signUpForm.controls["password"].hasError("pattern") ? 'Combination of 8 or more uppercase, lowercase letters, special symbols and numbers.' : 
           '';
   }
   getErrorMessageConfirmPassword() {
-    return this.signUpForm.controls["ConfirmPassword"].hasError('required') ? 'This field is required' :
-    this.signUpForm.controls["ConfirmPassword"].hasError('compare') ? 'Passwords do not match' :
+    return this.signUpForm.controls["passwordConfirm"].hasError('required') ? 'This field is required' :
+    this.signUpForm.controls["passwordConfirm"].hasError('compare') ? 'Passwords do not match' :
           '';
+  }
+
+  onSubmit({ value, valid }: { value: SignupModel, valid: boolean }) {
+    console.log(value, valid);
+    this.closeSignUpForm();
   }
 
   ngOnInit() {
     this.signUpForm = this.formBuilder.group({
-      'FirstName': [this.user.FirstName, [
+      'firstName': [this.user.firstName, [
         Validators.required
       ]],
-      'LastName': [this.user.LastName, [
+      'lastName': [this.user.lastName, [
         Validators.required
       ]],
-      'Email': [this.user.Email, [
+      'email': [this.user.email, [
         Validators.required,
         Validators.email
       ]],
-      'Password': [this.user.Password, [
+      'password': [this.user.password, [
         Validators.required,
         Validators.pattern(this.passwordPattern)
       ]],
-      'ConfirmPassword': [this.user.ConfirmPassword, [
+      'passwordConfirm': [this.user.passwordConfirm, [
         Validators.required,
-        compareValidator('Password')
+        compareValidator('password')
       ]]
     });
   }
 }
-
-
-

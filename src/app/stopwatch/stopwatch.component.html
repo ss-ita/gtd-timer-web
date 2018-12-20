@@ -1,45 +1,45 @@
 <div class="background">
   <mat-card>
-    <mat-card-content (click)="ClickOnStopWatch()">
+    <mat-card-content (click)="clickOnStopWatch()">
       <div class="container-stopwatch">
         <div class="margin-class">
-          <span class="text" [ngClass] = "{'run-stopwatch': isRun, 'pause-stopwatch': isPause}">{{hour}}</span>
-          <span class="text" [ngClass] = "{'run-stopwatch': isRun, 'pause-stopwatch': isPause}">:</span>
+          <span class="text" [ngClass] = "{'run-stopwatch': isStopwatchRun, 'pause-stopwatch': isStopwatchPause}">{{hour}}</span>
+          <span class="text" [ngClass] = "{'run-stopwatch': isStopwatchRun, 'pause-stopwatch': isStopwatchPause}">:</span>
         </div>
 
         <div class="margin-class">
           <ng-template [ngIf]="minute < 10">
-            <span class="text" [ngClass]="{'run-stopwatch': isRun, 'pause-stopwatch': isPause}"> 0{{minute}}</span>
+            <span class="text" [ngClass]="{'run-stopwatch': isStopwatchRun, 'pause-stopwatch': isStopwatchPause}"> 0{{minute}}</span>
           </ng-template>
           <ng-template [ngIf]="minute>=10">
-            <span class="text" [ngClass]="{'run-stopwatch': isRun, 'pause-stopwatch': isPause}"> {{minute}}</span>
+            <span class="text" [ngClass]="{'run-stopwatch': isStopwatchRun, 'pause-stopwatch': isStopwatchPause}"> {{minute}}</span>
           </ng-template>
-          <span class="text" [ngClass]="{'run-stopwatch': isRun, 'pause-stopwatch': isPause}">:</span>
+          <span class="text" [ngClass]="{'run-stopwatch': isStopwatchRun, 'pause-stopwatch': isStopwatchPause}">:</span>
         </div>
 
         <div class="margin-class">
           <ng-template [ngIf]="second < 10">
-            <span class="text" [ngClass]="{'run-stopwatch': isRun, 'pause-stopwatch': isPause}"> 0{{second}}</span>
+            <span class="text" [ngClass]="{'run-stopwatch': isStopwatchRun, 'pause-stopwatch': isStopwatchPause}"> 0{{second}}</span>
           </ng-template>
           <ng-template [ngIf]="second >= 10">
-            <span class="text" [ngClass]="{'run-stopwatch': isRun, 'pause-stopwatch': isPause}"> {{second}}</span>
+            <span class="text" [ngClass]="{'run-stopwatch': isStopwatchRun, 'pause-stopwatch': isStopwatchPause}"> {{second}}</span>
           </ng-template>
-          <span class="text" [ngClass]="{'run-stopwatch': isRun, 'pause-stopwatch': isPause}">.</span>
+          <span class="text" [ngClass]="{'run-stopwatch': isStopwatchRun, 'pause-stopwatch': isStopwatchPause}">.</span>
         </div>
 
         <div class="margin-class">
-          <span class="small-text" [ngClass]="{'run-stopwatch': isRun, 'pause-stopwatch': isPause}">{{millisecond}}</span>
+          <span class="small-text" [ngClass]="{'run-stopwatch': isStopwatchRun, 'pause-stopwatch': isStopwatchPause}">{{millisecond}}</span>
         </div>
       </div>
     </mat-card-content>
     <mat-card-actions>
-      <button mat-icon-button (click)="StartStopwatch()">
+      <button mat-icon-button (click)="startStopwatch()">
         <mat-icon>arrow_right</mat-icon>
       </button>
-      <button mat-icon-button [disabled]="isRun === false" (click)="PauseStopwatch()">
+      <button mat-icon-button [disabled]="isStopwatchRun === false" (click)="pauseStopwatch()">
         <mat-icon>pause</mat-icon>
       </button>
-      <button mat-icon-button [disabled]="isRun === false" (click)="ResetStopwatch()">
+      <button mat-icon-button [disabled]="isStopwatchRun === false" (click)="resetStopwatch()">
         <mat-icon>refresh</mat-icon>
       </button>
     </mat-card-actions>

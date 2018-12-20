@@ -1,3 +1,23 @@
-<p>
-  alarm works!
-</p>
+<div [ngClass]="{'turnOffAlarmBackground': !isPlay, 'turnOnAlarmBackground': isPlay}">
+  <div class="main">
+    <form novalidate #f="ngForm">
+      <div class="clock" [ngClass]="{'turnOn-alarm': isCorrectTime && isTurnOn, 'turnOff-alarm': !isCorrectTime || !isTurnOn}">
+        <input type="time" id="alarmTime" placeholder="Set timer" name="setedTime" [(ngModel)]="time" (change)="setAttributes()"
+          [disabled]="isTurnOn">
+      </div>
+      <div class="group-button">
+        <div class="element">
+          <mat-label class="label " id="labelOff" [ngClass]="{'turnOff-alarm': isTurnOn}">Off</mat-label>
+          <mat-slide-toggle id="toogleButton" name="toogleButton" [(ngModel)]="isTurnOn" (change)="startAlarm(); setAttributes()"
+            [disabled]="isDisabled" [color]="color">
+          </mat-slide-toggle>
+          <mat-label class="label " id="labelOn" [ngClass]="{'turnOn-alarm': isTurnOn, 'turnOff-alarm': !isTurnOn}">On</mat-label>
+        </div>
+        <div class="element">
+          <mat-checkbox class="example-margin" id="checkOut" name="checkOut" [(ngModel)]="isSounds" [disabled]="isTurnOn"
+            [color]="color">Sounds</mat-checkbox>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

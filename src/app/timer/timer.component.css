@@ -1,0 +1,65 @@
+.background-normal{
+    position: absolute;
+    top: auto;
+    min-height: calc(100vh - 49px);
+    width: 100%;
+    background-color: #609b9b
+}
+.background-red{
+    position: absolute;
+    top: auto;
+    min-height: calc(100vh - 49px);
+    width: 100%;
+    background-color: red;
+}
+
+.mat-icon-button {
+    width: 4rem;
+    height: 4rem;
+    border: none;
+    text-decoration: underline;
+    color: blue;
+}
+
+.mat-icon-button:hover
+{
+    background-color: rgb(172, 205, 255);
+}
+
+.mat-icon{
+    font-size:32px !important;
+    height: 32px !important;
+    width: 32px !important;
+}
+
+.progress-percentage-wrapper {
+    position: relative;
+    font-size: 50px;
+    margin-left: 2%;
+    width: 200px;
+    height: 200px;
+    display: inline-block;
+}
+
+.progress-percentage {
+    position: absolute;
+    color: #bbb;
+    width: 100%;
+    text-align: center !important;
+    top: 35%;
+}
+
+.mat-card
+{
+    width: 700px;
+    height: 350px;
+    margin: 5% auto;
+}
+
+.timer-input{
+    margin-left: 5%; 
+}
+
+.button-area{
+    text-align: center;
+}

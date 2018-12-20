@@ -1,3 +1,47 @@
-<p>
-  timer works!
-</p>
+<div class="background-normal" [ngClass]="{'background-normal': isTimerFinished === false, 'background-red': isTimerFinished}">
+  <mat-card>
+    <mat-card-content>
+      <div class="progress-percentage-wrapper">
+        <div class="progress-percentage ng-cloak">{{hour}}h</div>
+        <round-progress [color]="color" [max]="24" [current]="hour" [radius]="100" [stroke]="25">
+        </round-progress>
+      </div>
+      <div class="progress-percentage-wrapper">
+        <div class="progress-percentage ng-cloak">{{minute}}m</div>
+        <round-progress [color]="color" [max]="60" [current]="minute" [radius]="100" [stroke]="25">
+        </round-progress>
+      </div>
+      <div class="progress-percentage-wrapper">
+        <div class="progress-percentage ng-cloak">{{second}}s</div>
+        <round-progress [color]="color" [max]="60" [current]="second" [radius]="100" [stroke]="25">
+        </round-progress>
+      </div>
+    </mat-card-content>
+    <mat-card-actions [formGroup]="timerForm">
+      <mat-form-field class="timer-input">
+        <input matInput [(ngModel)]="maxValueHour" placeholder="Set hour" formControlName="hour">
+        <mat-error>{{getErrorMessageHour()}}</mat-error>
+      </mat-form-field>
+      <mat-form-field class="timer-input">
+        <input matInput [(ngModel)]="maxValueMinute" placeholder="Set minute" formControlName="minute">
+        <mat-error>{{getErrorMessageMinuteAndSecond()}}</mat-error>
+      </mat-form-field>
+      <mat-form-field class="timer-input">
+        <input matInput [(ngModel)]="maxValueSecond" placeholder="Set second" formControlName="second">
+        <mat-error>{{getErrorMessageMinuteAndSecond()}}</mat-error>
+      </mat-form-field>
+      <div class="button-area">
+        <button mat-icon-button (click)="startTimer()" [disabled]="!timerForm.valid || 
+                (maxValueMinute == 0 && maxValueSecond == 0 && maxValueHour == 0)">
+          <mat-icon>arrow_right</mat-icon>
+        </button>
+        <button mat-icon-button [disabled]="isTimerRun === false" (click)="pauseTimer()">
+          <mat-icon>pause</mat-icon>
+        </button>
+        <button mat-icon-button [disabled]="isTimerRun === false" (click)="resetTimer()">
+          <mat-icon>refresh</mat-icon>
+        </button>
+      </div>
+    </mat-card-actions>
+  </mat-card>
+</div>

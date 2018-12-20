@@ -1,0 +1,99 @@
+.turnOffAlarmBackground{
+	background-color: #609b9b;
+	position: absolute;
+	width: 100%;
+	height: 92%;
+}
+
+.turnOnAlarmBackground{
+	background-color: red;
+	position: absolute;
+	width: 100%;
+	height: 92%;
+}
+
+.main{
+	margin: 100px auto;
+	padding: 25px 50px 50px;;
+	background-color: white;
+	width: 50%;
+}
+
+.group-button{
+	text-align: center;
+	font-size: 30px;
+}
+
+.group-button .element:first-child{
+	display: inline;
+	margin: 20px 40px 20px 0;
+	padding: 20px 0;
+}
+
+.group-button .element:last-child{
+	display: inline;
+	margin: 20px 0px 20px 40px;
+	padding: 20px 0;
+	color: #4c4c4c;
+}
+
+.group-button .element input[type="time" i], .group-button .element input{
+	background-color:transparent;
+	border: none;
+	font-size: 20px;
+}
+
+.group-button .element .label{
+	margin: 0 10px;
+}
+
+.main .clock #alarmTime{
+	border: none;
+}
+
+.main .clock input[type="time" i]{
+	margin: 20px auto;
+	display: block;
+	height: auto;
+	font-weight: 700;
+	background-color: transparent;
+	border: none;
+	font-size: 150px;
+	overflow: hidden;
+	padding-inline-start: 5px;
+}
+
+.clock{
+	margin: 30px;
+}
+
+.turnOn-alarm input[type="time" i]{
+	color: blue;
+}
+
+.turnOff-alarm input[type="time" i]{
+	color: grey;
+}
+
+.turnOn-alarm{
+	color: blue;
+}
+
+.turnOff-alarm{
+	color: grey;
+}
+
+input:focus, textarea:focus, select:focus{
+	border: none;
+	overflow: hidden;
+	padding-inline-start: 5px;
+	outline-offset: -5px;
+	outline:  auto 0px;
+}
+
+input:active{
+	border: none;
+	overflow: hidden;
+	padding-inline-start: 5px;
+	outline-offset: -5px;
+}
