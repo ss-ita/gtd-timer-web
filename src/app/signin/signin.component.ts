@@ -34,8 +34,7 @@ export class SigninComponent implements OnInit {
     this.service.openSignUpForm();
   }
   
-  pwdPattern = /^.*(?=.*[a-z])(?=.*[0-9])(?=.*[A-Z])(?=.*[@#$%^&+=.\-_*]).*$/;
-
+  pwdPattern = /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=.,\-_!])([a-zA-Z0-9 @#$%^&+=*.,\-_!]){8,}$/;
   ngOnInit() {
     this.signinform = this.formBuilder.group({
       'email': [this.user.email, [Validators.required, Validators.email]],

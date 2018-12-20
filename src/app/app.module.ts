@@ -39,7 +39,6 @@ import {RoundProgressModule} from 'angular-svg-round-progressbar';
     TaskManagementComponent,
     CompareValidatorDirective,
     CapslockDetectorDirective,
-    CapslockDetectorDirective,
     TasksComponent,
     StopwatchComponent,
     StatisticsComponent,
