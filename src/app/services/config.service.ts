@@ -5,7 +5,8 @@ import { Injectable } from '@angular/core';
 })
 export class ConfigService {
 
-  url='https://localhost:44398/api/LogIn';
+  readonly urlSignUp = 'https://localhost:44398/api/signup';
+  readonly urlLogIn='https://localhost:44398/api/LogIn';
 
   constructor() { }
 }

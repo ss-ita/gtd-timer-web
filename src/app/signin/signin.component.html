@@ -17,8 +17,7 @@
   </mat-card-content>
   <mat-card-actions>
     <button mat-flat-button [disabled]="!signinform.valid" color="primary">Sign In</button>
-    <small> Don't have an account yet?<button class="tempButton" (click)="sign.openSignUpForm()">Sign Up</button></small> 
-    <app-signup #sign hidden></app-signup>
+    <small> Don't have an account yet?<button class="tempButton" (click)="openSignUpDialog()">Sign Up</button></small> 
   </mat-card-actions>
 </form>
 </mat-card>

@@ -9,10 +9,15 @@ import { NavBarComponent } from './nav-bar/nav-bar.component';
 import { AppRoutingModule } from './app-routing.module';
 import { TimerComponent } from './timer/timer.component';
 import { AlarmComponent } from './alarm/alarm.component';
-import {FormsModule,ReactiveFormsModule} from '@angular/forms';
 import { TaskManagementComponent } from './task-management/task-management.component';
-import { CompareValidatorDirective } from './compare-validator.directive';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import { CompareValidatorDirective } from './compare-validator/compare-validator.directive';
+import {MatDialogModule, MatDialog, MatDialogRef} from "@angular/material";
+import { UserService } from './services/user.service';
 import { HttpClientModule } from '@angular/common/http';
+import { CapslockDetectorDirective } from './capslock-detector/capslock-detector.directive';
+import { ToasterService } from './services/toaster.service';
+import { MatSnackBarModule } from '@angular/material'
 import { JwtModule } from '@auth0/angular-jwt';
 import { TasksComponent } from './tasks/tasks.component';
 import { AuthGuardService } from './auth/auth-guard.service';
@@ -33,6 +38,8 @@ import { SettingsComponent } from './settings/settings.component';
     AlarmComponent,
     TaskManagementComponent,
     CompareValidatorDirective,
+    CapslockDetectorDirective,
+    CapslockDetectorDirective,
     TasksComponent,
     StopwatchComponent,
     StatisticsComponent,
@@ -47,6 +54,8 @@ import { SettingsComponent } from './settings/settings.component';
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
+    MatSnackBarModule,
+    MatDialogModule,
     JwtModule.forRoot({
       config: {
         tokenGetter: function  tokenGetter() {
@@ -61,7 +70,11 @@ import { SettingsComponent } from './settings/settings.component';
   ],
   providers: [
     AuthGuardService,
-    AuthService
+    AuthService,
+    MatDialog,
+    { provide: MatDialogRef, useValue: {} }, 
+    UserService,
+    ToasterService
   ],
   bootstrap: [AppComponent],
   entryComponents: [SignupComponent]

@@ -1,15 +1,17 @@
 import { Component, OnInit } from '@angular/core';
+import { SignupDialogComponent } from '../signup-dialog/signup-dialog.component';
 import {Router, ActivatedRoute} from '@angular/router';
 
 import {FormBuilder,FormGroup, Validators} from '@angular/forms';
 import {SigninModel} from '../models/signin.model'
 import { first } from 'rxjs/operators';
-import {JwtService} from '../jwt.service'
+import {JwtService} from '../services/jwt.service'
 
 @Component({
   selector: 'app-signin',
   templateUrl: './signin.component.html',
-  styleUrls: ['./signin.component.css']
+  styleUrls: ['./signin.component.css'],
+  providers: [ SignupDialogComponent ]
 })
 
 export class SigninComponent implements OnInit {
@@ -24,10 +26,15 @@ export class SigninComponent implements OnInit {
     constructor(private formBuilder: FormBuilder,
       private router: Router,
        private route: ActivatedRoute,
-       private jwtservice: JwtService
+       private jwtservice: JwtService,
+       private service: SignupDialogComponent
        ) { }
 
-   pwdPattern = /^.*(?=.*[a-z])(?=.*[0-9])(?=.*[A-Z])(?=.*[@#$%^&+=.\-_*]).*$/;
+  openSignUpDialog() {
+    this.service.openSignUpForm();
+  }
+  
+  pwdPattern = /^.*(?=.*[a-z])(?=.*[0-9])(?=.*[A-Z])(?=.*[@#$%^&+=.\-_*]).*$/;
 
   ngOnInit() {
     this.signinform = this.formBuilder.group({
