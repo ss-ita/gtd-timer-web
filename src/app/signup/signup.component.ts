@@ -15,7 +15,6 @@ import { Router } from '@angular/router';
 
 export class SignupComponent implements OnInit {
   
-  errors: string;  
   user: SignupModel = new SignupModel();
   signUpForm: FormGroup;
   passwordPattern = /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=.,\-_!])([a-zA-Z0-9 @#$%^&+=*.,\-_!]){8,}$/;

@@ -13,6 +13,7 @@ import { TaskManagementComponent } from './task-management/task-management.compo
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { CompareValidatorDirective } from './compare-validator/compare-validator.directive';
 import {MatDialogModule, MatDialog, MatDialogRef, MatSnackBarModule} from "@angular/material";
+import {MatMenuModule,MatButtonModule,MatIconModule,MatCardModule} from  "@angular/material";
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import { UserService } from './services/user.service';
 import { HttpClientModule } from '@angular/common/http'
@@ -27,6 +28,8 @@ import { StatisticsComponent } from './statistics/statistics.component';
 import { ArchiveComponent } from './archive/archive.component';
 import { SettingsComponent } from './settings/settings.component';
 import {RoundProgressModule} from 'angular-svg-round-progressbar';
+import { AuthGuardFalse } from './auth/auth-guard-false.service';
+import { InfoComponent } from './info/info.component';
 
 @NgModule({
   declarations: [
@@ -43,7 +46,8 @@ import {RoundProgressModule} from 'angular-svg-round-progressbar';
     StopwatchComponent,
     StatisticsComponent,
     ArchiveComponent,
-    SettingsComponent
+    SettingsComponent,
+    InfoComponent
   ],
   imports: [
     BrowserModule,
@@ -57,6 +61,10 @@ import {RoundProgressModule} from 'angular-svg-round-progressbar';
     MatSnackBarModule,
     MatSlideToggleModule,
     MatDialogModule,
+    MatMenuModule,
+    MatButtonModule,
+    MatIconModule,
+    MatCardModule,
     JwtModule.forRoot({
       config: {
         tokenGetter: function  tokenGetter() {
@@ -71,6 +79,7 @@ import {RoundProgressModule} from 'angular-svg-round-progressbar';
   ],
   providers: [
     AuthGuardService,
+    AuthGuardFalse,
     AuthService,
     MatDialog,
     { provide: MatDialogRef, useValue: {} }, 

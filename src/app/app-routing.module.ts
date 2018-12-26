@@ -13,6 +13,8 @@ import {
 import { StatisticsComponent } from './statistics/statistics.component';
 import { ArchiveComponent } from './archive/archive.component';
 import { SettingsComponent } from './settings/settings.component';
+import { AuthGuardFalse } from './auth/auth-guard-false.service';
+import { InfoComponent } from './info/info.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/stopwatch', pathMatch: 'full' },
@@ -23,7 +25,8 @@ const routes: Routes = [
   { path: 'statistics', component:  StatisticsComponent, canActivate:[AuthGuard]},
   { path: 'sett', component:  SettingsComponent, canActivate:[AuthGuard]},
   { path: 'archive', component:  ArchiveComponent, canActivate:[AuthGuard]},
-  { path: 'signin', component:  SigninComponent},
+  { path: 'info', component:  InfoComponent, canActivate:[AuthGuard]},
+  { path: 'signin', component:  SigninComponent,canActivate:[AuthGuardFalse]},
   { path: 'task-management', component: TaskManagementComponent}
 ];
 

@@ -6,5 +6,10 @@
   [active]="rla.isActive">
   {{link.label}}
 </a>
-<button class="tempButton" (click)="signout()">Sign Out</button>
+  <a mat-tab-link *ngIf="show" [matMenuTriggerFor]="menu">Welcome {{email}}</a>
+<mat-menu #menu="matMenu">
+  <button onclick="location.href='./sett'" type="button" mat-menu-item>Settings</button>
+  <button onclick="location.href='./info'" type="button" mat-menu-item>Info</button>
+  <button mat-menu-item (click)="signout()">Sign Out</button>
+</mat-menu>
 </nav>

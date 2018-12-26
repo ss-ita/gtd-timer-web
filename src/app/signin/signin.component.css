@@ -3,10 +3,7 @@
     top: auto;
     min-height: calc(100vh - 49px);
     width: 100%;
-    background-image: url('clock.jpg');
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: cover;
+    background-color:#609b9b;
 }
     
     .signin-header {
@@ -16,7 +13,7 @@
     }
     
     .signin-card {
-    width: 300px;;
+    width: 300px;
     margin: 10% auto;
     box-shadow: none;
     background-color: rgba(255,255,255,0.8);

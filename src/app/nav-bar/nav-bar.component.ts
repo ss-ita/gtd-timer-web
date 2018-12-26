@@ -13,12 +13,15 @@ export class NavBarComponent implements OnInit {
   title = 'myApp';
   navLinks: any[];
   activeLinkIndex = -1;
+  show=false;
+  email=localStorage.getItem('email');
 
   constructor(private router: Router,
     private jwtservice: JwtService) 
     {
      
     if(localStorage.getItem('access_token')){
+      this.show=true;
     this.navLinks = [
       {
           label: 'Timer',
@@ -44,10 +47,6 @@ export class NavBarComponent implements OnInit {
         label: 'Archive',
         link: './archive',
         index: 5
-      }, {
-        label: 'Welcome '+localStorage.getItem('email'),
-        link: './sett',
-        index: 6
       }
   ];
 }
@@ -85,6 +84,5 @@ ngOnInit(): void {
 signout():void{
     this.jwtservice.signout();
     window.location.reload();
-    this.router.navigate(['signin']);
 }
 }
