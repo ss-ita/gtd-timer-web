@@ -1,99 +1,142 @@
-.turnOffAlarmBackground{
+.main-area {
+	position: absolute;
+	top: auto;
+	min-height: calc(100vh - 49px);
+	width: 100%;
+	background-color: #609b9b
+}
+
+.turnOffAlarmBackground {
 	background-color: #609b9b;
-	position: absolute;
-	width: 100%;
-	height: 92%;
 }
 
-.turnOnAlarmBackground{
+.turnOnAlarmBackground {
 	background-color: red;
-	position: absolute;
-	width: 100%;
-	height: 92%;
 }
 
-.main{
-	margin: 100px auto;
-	padding: 25px 50px 50px;;
-	background-color: white;
-	width: 50%;
+.content-area {
+	width: 700px;
+	margin: 5% auto;
 }
 
-.group-button{
+.show-time-area {
 	text-align: center;
-	font-size: 30px;
 }
 
-.group-button .element:first-child{
-	display: inline;
-	margin: 20px 40px 20px 0;
-	padding: 20px 0;
+.line-show-time {
+	padding: 8px;
 }
 
-.group-button .element:last-child{
-	display: inline;
-	margin: 20px 0px 20px 40px;
-	padding: 20px 0;
-	color: #4c4c4c;
+.show-time-area .time-element {
+	margin: 10px;
+	display: inline-block;
+	font-size: 110px;
+	padding: 20px;
+	border-radius: 50%;
 }
 
-.group-button .element input[type="time" i], .group-button .element input{
-	background-color:transparent;
-	border: none;
-	font-size: 20px;
+.show-time-area .time-span {
+	display: inline-block;
+	font-size: 110px;
 }
 
-.group-button .element .label{
-	margin: 0 10px;
-}
-
-.main .clock #alarmTime{
-	border: none;
-}
-
-.main .clock input[type="time" i]{
-	margin: 20px auto;
-	display: block;
-	height: auto;
-	font-weight: 700;
-	background-color: transparent;
-	border: none;
-	font-size: 150px;
-	overflow: hidden;
-	padding-inline-start: 5px;
-}
-
-.clock{
-	margin: 30px;
-}
-
-.turnOn-alarm input[type="time" i]{
+.turnOn-alarm {
 	color: blue;
 }
 
-.turnOff-alarm input[type="time" i]{
-	color: grey;
+.turnOnPlay-alarm {
+	color: red;
 }
 
-.turnOn-alarm{
+.turnOff-alarm {
+	color: #737373b5;
+}
+
+.progress-percentage-wrapper {
+	position: relative;
+	font-size: 50px;
+	margin: 0 2.5%;
+	width: 200px;
+	height: 200px;
+	display: inline-block;
+}
+
+.progress-percentage {
+	position: absolute;
+	color: #bbb;
+	width: 100%;
+	text-align: center !important;
+	top: 35%;
+}
+
+.show-time-area .non-inputed-time {
+	text-align: center;
+	font-size: 90px;
+	color: #609b9b;
+	margin: 42px auto;
+}
+
+.input-time-area {
+	text-align: center;
+}
+
+.input-time-area .mat-form-field {
+	width: 175px;
+	margin: 0px 35px;
+}
+
+.mat-card-content {
+	margin-bottom: 13px;
+}
+
+.button-area {
+	text-align: center;
+}
+
+.button-area .mat-button {
+	margin: 2.5px;
+	border-radius: 50%;
+	width: 4rem;
+	height: 4rem;
+	border: none;
+	text-decoration: underline;
 	color: blue;
 }
 
-.turnOff-alarm{
-	color: grey;
+.button-area .mat-button:hover {
+	background-color: rgb(172, 205, 255);
 }
 
-input:focus, textarea:focus, select:focus{
-	border: none;
-	overflow: hidden;
-	padding-inline-start: 5px;
-	outline-offset: -5px;
-	outline:  auto 0px;
+.button-area .mat-button:disabled, .button-area .mat-button[disabled] {
+	color: #b9b9b9;
 }
 
-input:active{
-	border: none;
-	overflow: hidden;
-	padding-inline-start: 5px;
-	outline-offset: -5px;
+.toogle-view {
+	text-align: left !important;
+}
+
+::ng-deep .mat-slide-toggle.mat-checked:not(.mat-disabled) .mat-slide-toggle-thumb {
+	background-color: blue;
+	/*replace with your color*/
+}
+
+::ng-deep .mat-slide-toggle.mat-checked:not(.mat-disabled) .mat-slide-toggle-bar {
+	background-color: skyblue;
+	/*replace with your color*/
+}
+
+.blink {
+	animation: blink 1s infinite;
+}
+
+@keyframes blink {
+	0% {
+		opacity: 1;
+	}
+	50% {
+		opacity: 0;
+	}
+	100% {
+		opacity: 1;
+	}
 }
