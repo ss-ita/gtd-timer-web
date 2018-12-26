@@ -28,6 +28,8 @@ import { StatisticsComponent } from './statistics/statistics.component';
 import { ArchiveComponent } from './archive/archive.component';
 import { SettingsComponent } from './settings/settings.component';
 import {RoundProgressModule} from 'angular-svg-round-progressbar';
+import { RoundProgressComponent } from './round-progress/round-progress.component';
+import { LineProgressComponent } from './line-progress/line-progress.component';
 import { AuthGuardFalse } from './auth/auth-guard-false.service';
 import { InfoComponent } from './info/info.component';
 
@@ -47,6 +49,8 @@ import { InfoComponent } from './info/info.component';
     StatisticsComponent,
     ArchiveComponent,
     SettingsComponent,
+    RoundProgressComponent,
+    LineProgressComponent,
     InfoComponent
   ],
   imports: [

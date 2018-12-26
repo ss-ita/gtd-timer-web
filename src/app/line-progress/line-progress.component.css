@@ -1,0 +1,18 @@
+.margin-class{
+    margin: 7% auto;
+    display: inline-block;
+}
+
+.text{
+    color: grey;
+    font-size: 120px;
+    margin: 5px;
+}
+
+.run-stopwatch{
+    color: blue;
+}
+
+.pause-stopwatch{
+    color: red;
+}

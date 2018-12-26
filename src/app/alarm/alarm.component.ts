@@ -17,6 +17,7 @@ export class AlarmComponent implements OnInit {
   isCorrectTime = false;
   messageIncorectData: string = "The time has passed, please enter the correct time";
   color = "primary";
+  timeOut;
 
   constructor(private snackBar: MatSnackBar) {
   }
@@ -58,6 +59,7 @@ export class AlarmComponent implements OnInit {
       this.setAlarm();
     } else {
       this.isTurnOn = false;
+      clearTimeout(this.timeOut);
     }
   }
 
@@ -76,7 +78,7 @@ export class AlarmComponent implements OnInit {
       this.setAttributes();
     } else {
       this.isCorrectTime = true;
-      setTimeout(this.initAlarm.bind(this), differenceInMs);
+      this.timeOut = setTimeout(this.initAlarm.bind(this), differenceInMs);
     }
   }
 

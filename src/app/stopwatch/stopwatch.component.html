@@ -1,45 +1,34 @@
 <div class="background">
   <mat-card>
-    <mat-card-content (click)="clickOnStopWatch()">
-      <div class="container-stopwatch">
-        <div class="margin-class">
-          <span class="text" [ngClass] = "{'run-stopwatch': isStopwatchRun, 'pause-stopwatch': isStopwatchPause}">{{hour}}</span>
-          <span class="text" [ngClass] = "{'run-stopwatch': isStopwatchRun, 'pause-stopwatch': isStopwatchPause}">:</span>
+    <div class="toggle">
+      <label for="">Circle</label>
+      <mat-slide-toggle [(ngModel)]="stopwatchService.isLine">Line</mat-slide-toggle>
+    </div>
+    <mat-card-header (click)="stopwatchService.clickOnStopWatch()">
+      <ng-template [ngIf]="!stopwatchService.isLine">
+        <app-round-progress [max]="stopwatchService.maxValueOfHour" [value]="stopwatchService.hour" [color]="stopwatchService.color" [text]="'h'"></app-round-progress>
+        <app-round-progress [max]="stopwatchService.secondPerMinute" [value]="stopwatchService.minute" [color]="stopwatchService.color" [text]="'m'"></app-round-progress>
+        <app-round-progress [max]="stopwatchService.secondPerMinute" [value]="stopwatchService.second" [color]="stopwatchService.color" [text]="'s'"></app-round-progress>
+      </ng-template>
+      <ng-template [ngIf]="stopwatchService.isLine">
+        <div class="container-stopwatch" class="unselectable">
+          <app-line-progress [value]="stopwatchService.hour" [isActive]="stopwatchService.isStopwatchRun" [isPaused]="stopwatchService.isStopwatchPause"
+            [text]="':'"></app-line-progress>
+          <app-line-progress [value]="stopwatchService.minute" [isActive]="stopwatchService.isStopwatchRun" [isPaused]="stopwatchService.isStopwatchPause"
+            [text]="':'"></app-line-progress>
+          <app-line-progress [value]="stopwatchService.second" [isActive]="stopwatchService.isStopwatchRun" [isPaused]="stopwatchService.isStopwatchPause"
+            [text]="''"></app-line-progress>
         </div>
-
-        <div class="margin-class">
-          <ng-template [ngIf]="minute < 10">
-            <span class="text" [ngClass]="{'run-stopwatch': isStopwatchRun, 'pause-stopwatch': isStopwatchPause}"> 0{{minute}}</span>
-          </ng-template>
-          <ng-template [ngIf]="minute>=10">
-            <span class="text" [ngClass]="{'run-stopwatch': isStopwatchRun, 'pause-stopwatch': isStopwatchPause}"> {{minute}}</span>
-          </ng-template>
-          <span class="text" [ngClass]="{'run-stopwatch': isStopwatchRun, 'pause-stopwatch': isStopwatchPause}">:</span>
-        </div>
-
-        <div class="margin-class">
-          <ng-template [ngIf]="second < 10">
-            <span class="text" [ngClass]="{'run-stopwatch': isStopwatchRun, 'pause-stopwatch': isStopwatchPause}"> 0{{second}}</span>
-          </ng-template>
-          <ng-template [ngIf]="second >= 10">
-            <span class="text" [ngClass]="{'run-stopwatch': isStopwatchRun, 'pause-stopwatch': isStopwatchPause}"> {{second}}</span>
-          </ng-template>
-          <span class="text" [ngClass]="{'run-stopwatch': isStopwatchRun, 'pause-stopwatch': isStopwatchPause}">.</span>
-        </div>
-
-        <div class="margin-class">
-          <span class="small-text" [ngClass]="{'run-stopwatch': isStopwatchRun, 'pause-stopwatch': isStopwatchPause}">{{millisecond}}</span>
-        </div>
-      </div>
-    </mat-card-content>
+      </ng-template>
+    </mat-card-header>
     <mat-card-actions>
-      <button mat-icon-button (click)="startStopwatch()">
+      <button mat-icon-button (click)="stopwatchService.start()">
         <mat-icon>arrow_right</mat-icon>
       </button>
-      <button mat-icon-button [disabled]="isStopwatchRun === false" (click)="pauseStopwatch()">
+      <button mat-icon-button [disabled]="stopwatchService.isStopwatchRun === false" (click)="stopwatchService.pause()">
         <mat-icon>pause</mat-icon>
       </button>
-      <button mat-icon-button [disabled]="isStopwatchRun === false" (click)="resetStopwatch()">
+      <button mat-icon-button [disabled]="stopwatchService.isStopwatchRun === false" (click)="stopwatchService.reset()">
         <mat-icon>refresh</mat-icon>
       </button>
     </mat-card-actions>

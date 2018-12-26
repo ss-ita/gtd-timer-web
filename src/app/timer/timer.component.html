@@ -1,44 +1,49 @@
-<div class="background-normal" [ngClass]="{'background-normal': isTimerFinished === false, 'background-red': isTimerFinished}">
+<div class="background-normal" [ngClass]="{'background-normal': timerServise.isTimerFinished === false, 
+'background-red': timerServise.isTimerFinished}">
   <mat-card>
-    <mat-card-content>
-      <div class="progress-percentage-wrapper">
-        <div class="progress-percentage ng-cloak">{{hour}}h</div>
-        <round-progress [color]="color" [max]="24" [current]="hour" [radius]="100" [stroke]="25">
-        </round-progress>
-      </div>
-      <div class="progress-percentage-wrapper">
-        <div class="progress-percentage ng-cloak">{{minute}}m</div>
-        <round-progress [color]="color" [max]="60" [current]="minute" [radius]="100" [stroke]="25">
-        </round-progress>
-      </div>
-      <div class="progress-percentage-wrapper">
-        <div class="progress-percentage ng-cloak">{{second}}s</div>
-        <round-progress [color]="color" [max]="60" [current]="second" [radius]="100" [stroke]="25">
-        </round-progress>
-      </div>
-    </mat-card-content>
+    <div class="toggle">
+      <label for="">Circle</label>
+      <mat-slide-toggle [(ngModel)]="timerServise.isLine">Line</mat-slide-toggle>
+    </div>
+    <mat-card-header>
+      <ng-template [ngIf]="!timerServise.isLine">
+        <app-round-progress [max]="timerServise.maxValueOfHour" [value]="timerServise.hour" [color]="timerServise.color" [text]="'h'"></app-round-progress>
+        <app-round-progress [max]="timerServise.secondPerMinute" [value]="timerServise.minute" [color]="timerServise.color" [text]="'m'"></app-round-progress>
+        <app-round-progress [max]="timerServise.secondPerMinute" [value]="timerServise.second" [color]="timerServise.color" [text]="'s'"></app-round-progress>
+      </ng-template>
+      <ng-template [ngIf]="timerServise.isLine">
+        <div class="container-stopwatch" class="unselectable">
+          <app-line-progress [value]="timerServise.hour" [isActive]="timerServise.isTimerRun" [isPaused]="timerServise.isTimerPause"
+            [text]="':'"></app-line-progress>
+          <app-line-progress [value]="timerServise.minute" [isActive]="timerServise.isTimerRun" [isPaused]="timerServise.isTimerPause"
+            [text]="':'"></app-line-progress>
+          <app-line-progress [value]="timerServise.second" [isActive]="timerServise.isTimerRun" [isPaused]="timerServise.isTimerPause"
+            [text]="''"></app-line-progress>
+        </div>
+      </ng-template>
+    </mat-card-header>
     <mat-card-actions [formGroup]="timerForm">
       <mat-form-field class="timer-input">
-        <input matInput [(ngModel)]="maxValueHour" placeholder="Set hour" formControlName="hour">
+        <input matInput [(ngModel)]="timerServise.maxValueHour" placeholder="Set hour" formControlName="hour">
         <mat-error>{{getErrorMessageHour()}}</mat-error>
       </mat-form-field>
       <mat-form-field class="timer-input">
-        <input matInput [(ngModel)]="maxValueMinute" placeholder="Set minute" formControlName="minute">
+        <input matInput [(ngModel)]="timerServise.maxValueMinute" placeholder="Set minute" formControlName="minute">
         <mat-error>{{getErrorMessageMinuteAndSecond()}}</mat-error>
       </mat-form-field>
       <mat-form-field class="timer-input">
-        <input matInput [(ngModel)]="maxValueSecond" placeholder="Set second" formControlName="second">
+        <input matInput [(ngModel)]="timerServise.maxValueSecond" placeholder="Set second" formControlName="second">
         <mat-error>{{getErrorMessageMinuteAndSecond()}}</mat-error>
       </mat-form-field>
       <div class="button-area">
-        <button mat-icon-button (click)="startTimer()" [disabled]="!timerForm.valid || 
-                (maxValueMinute == 0 && maxValueSecond == 0 && maxValueHour == 0)">
+        <button mat-icon-button (click)="timerServise.startTimer()" [disabled]="!timerForm.valid || 
+                (timerServise.maxValueMinute == 0 && timerServise.maxValueSecond == 0 && timerServise.maxValueHour == 0)">
           <mat-icon>arrow_right</mat-icon>
         </button>
-        <button mat-icon-button [disabled]="isTimerRun === false" (click)="pauseTimer()">
+        <button mat-icon-button [disabled]="timerServise.isTimerRun === false" (click)="timerServise.pauseTimer()">
           <mat-icon>pause</mat-icon>
         </button>
-        <button mat-icon-button [disabled]="isTimerRun === false" (click)="resetTimer()">
+        <button mat-icon-button [disabled]="timerServise.isTimerRun === false" (click)="timerServise.resetTimer()">
           <mat-icon>refresh</mat-icon>
         </button>
       </div>

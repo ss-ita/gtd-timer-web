@@ -11,47 +11,21 @@
     background-color: rgb(172, 205, 255);
 }
 
+.container-stopwatch{
+    width: 700px;
+    height: 200px;
+}
+
 .mat-icon{
     font-size:32px !important;
     height: 32px !important;
     width: 32px !important;
 }
 
-.mat-card
-{
-    width: 700px;
+.mat-card{
+    width: 650px;
     height: 300px;
     margin: 5% auto;
-}
-
-.text{
-    font-size: 120px;
-    margin: 5px;
-}
-
-.small-text{
-    font-size: 80px;
-}
-
-.run-stopwatch{
-    color: blue;
-}
-
-.pause-stopwatch{
-    color: red;
-}
-
-.margin-class{
-    margin: 14% auto;
-    display: inline-block;
-}
-
-.container-stopwatch{
-    margin: 15% auto;
-    width: 600px;
-    text-align: center;
-    height: 200px;
-    margin-left: 10%;
 }
 
 .background{
@@ -60,6 +34,32 @@
     min-height: calc(100vh - 49px);
     width: 100%;
     background-color: #609b9b
+}
+
+.toggle{
+    text-align: left !important; 
+}
+
+::ng-deep .mat-slide-toggle.mat-checked:not(.mat-disabled) .mat-slide-toggle-thumb {
+    background-color: blue;
+}
+
+::ng-deep .mat-slide-toggle.mat-checked:not(.mat-disabled) .mat-slide-toggle-bar {
+    background-color: skyblue;
+}
+
+.unselectable{
+    margin-left: 5%;
+    -webkit-touch-callout: none; /* iOS Safari */
+-webkit-user-select: none; /* Safari */
+ -khtml-user-select: none; /* Konqueror HTML */
+   -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* Internet Explorer/Edge */
+        user-select: none;
+}
+
+.mat-card-header {
+    height: 200px;
 }
 
 .mat-card-actions{
