@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { SignupModel } from '../models/signup.model';
+import { UpdatePasswordModel } from '../models/update-password.model';
 import { ConfigService } from './config.service'
 import { JwtService } from './jwt.service';
 import { ToasterService } from './toaster.service';
@@ -25,7 +26,7 @@ export class UserService {
       passwordConfirm: user.passwordConfirm
     }
 
-    return this.http.post(this.config.urlSignUp, body);
+    return this.http.post(this.config.urlUser, body);
     
   }
   signinuser(email,password){
@@ -39,5 +40,32 @@ export class UserService {
                 error => {
                     this.toasterService.showToaster(error.error.error);
                 });
+  }
+
+  updatePassword(user: UpdatePasswordModel){
+    const body: UpdatePasswordModel={
+      passwordOld: user.passwordOld,
+      passwordNew: user.passwordNew,
+      passwordConfirm: user.passwordConfirm
+    }
+    const headers = this.getHeaders();
+
+    return this.http.put(this.config.urlUser, body, { headers: headers });
+  }
+
+  deleteAccount(){
+    const headers = this.getHeaders();
+    
+    return this.http.delete(this.config.urlUser, { headers: headers });
+  }
+
+  private getHeaders()
+  {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + localStorage.getItem('access_token')
+    });
+
+    return headers;
   }
 }
