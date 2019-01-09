@@ -8,8 +8,8 @@
 </a>
   <a mat-tab-link *ngIf="show" [matMenuTriggerFor]="menu">Welcome {{email}}</a>
 <mat-menu #menu="matMenu">
-  <button onclick="location.href='./settings'" type="button" mat-menu-item>Settings</button>
-  <button onclick="location.href='./info'" type="button" mat-menu-item>Info</button>
+  <button mat-menu-item (click)="btnClickSettings()" >Settings</button>
+  <button mat-menu-item (click)="btnClickInfo()">Info</button>
   <button mat-menu-item (click)="signout()">Sign Out</button>
 </mat-menu>
 </nav>

@@ -81,6 +81,12 @@ ngOnInit(): void {
       this.activeLinkIndex = this.navLinks.indexOf(this.navLinks.find(tab => tab.link === '.' + this.router.url));
   });
 }
+btnClickSettings(): void {
+  this.router.navigateByUrl('/settings');
+};
+btnClickInfo(): void {
+  this.router.navigateByUrl('/info');
+};
 signout():void{
     this.jwtservice.signout();
     window.location.reload();
