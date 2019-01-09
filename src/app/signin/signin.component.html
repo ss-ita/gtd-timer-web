@@ -12,7 +12,6 @@
             <mat-form-field class="signin-form">
           <input matInput [type]="hide ? 'text':'password'" placeholder="Enter your password" formControlName="password" [ngClass]="{ 'is-invalid': submitted && f.password.errors }">
           <mat-icon class="unselectable" matSuffix (click)="hide = !hide" unselectable="on">{{hide ? 'visibility' :'visibility_off'}}</mat-icon>
-          <mat-error>{{getErrorMessagePassword()}}</mat-error>
         </mat-form-field>
   </mat-card-content>
   <mat-card-actions>

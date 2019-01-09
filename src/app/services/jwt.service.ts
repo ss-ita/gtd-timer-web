@@ -21,6 +21,7 @@ export class JwtService {
   
   signout() {
     localStorage.removeItem('access_token');
+    localStorage.removeItem('email');
   }
 
   public get loggedIn(): boolean{

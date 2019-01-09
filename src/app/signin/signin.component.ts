@@ -37,7 +37,7 @@ export class SigninComponent implements OnInit {
     ngOnInit() {
         this.signinform = this.formBuilder.group({
             'email': [this.user.email, [Validators.required, Validators.email]],
-            'password': [this.user.password, [Validators.required, Validators.minLength(8), Validators.pattern(this.pwdPattern)]]
+            'password': [this.user.password]
         });
         this.jwtservice.signout();
         this.returnUrl = this.route.snapshot.queryParams['stopwatch'] || '/';
@@ -48,12 +48,7 @@ export class SigninComponent implements OnInit {
             this.signinform.controls['email'].hasError('email') ? 'Provided e-mail is invalid' :
                 '';
     }
-    getErrorMessagePassword() {
-        return this.signinform.controls['password'].hasError('required') ? 'This field is required' :
-            this.signinform.controls['password'].hasError('pattern') ? 'Combination of 8 or more uppercase, lowercase letters, special symbols and numbers.' :
-                this.signinform.controls['password'].hasError('minlength') ? 'You must enter 8 elements min' :
-                    '';
-    }
+
 
     get f() { return this.signinform.controls; }
 
