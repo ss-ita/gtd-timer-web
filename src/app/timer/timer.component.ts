@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {FormBuilder,FormGroup, Validators} from '@angular/forms';
 
 import { TimerService } from '../services/timer.service';
+import { StyleService } from '../services/style.service';
 
 @Component({
   selector: 'app-timer',
@@ -15,7 +16,7 @@ export class TimerComponent implements OnInit {
   hourPattern = /^(2[0-4]|1[0-9]|[0-9])$/;
   minuteAndSecondPattern = /^([0-5]?[0-9]|60)$/;
 
-  constructor( private formBuilder: FormBuilder, private timerServise: TimerService) { 
+  constructor( private formBuilder: FormBuilder, private timerServise: TimerService, private styleService: StyleService) { 
    }
 
   ngOnInit() {

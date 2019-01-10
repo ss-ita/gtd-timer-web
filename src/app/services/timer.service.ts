@@ -24,7 +24,6 @@ export class TimerService {
     isTimerRun: Boolean = false;
     isTimerPause: Boolean = false;
     isTimerFinished: Boolean = false;
-    isLine: boolean;
 
     timerSound = new Audio();
     color: string = 'blue';

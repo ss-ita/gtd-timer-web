@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AlarmService } from '../services/alarm.service';
+import { StyleService } from '../services/style.service';
 
 @Component({
   selector: 'app-alarm',
@@ -14,7 +15,7 @@ export class AlarmComponent implements OnInit {
   hourPattern = /^(2[0-3]|1[0-9]|[1-9]|0)$/;
   minutePattern = /^([1-5]?[0-9]|0)$/;
 
-  constructor(private formBuilder: FormBuilder, private alarmService: AlarmService) {
+  constructor(private formBuilder: FormBuilder, private alarmService: AlarmService, private styleService: StyleService) {
   }
 
   ngOnInit() {

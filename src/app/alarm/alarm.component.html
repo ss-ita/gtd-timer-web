@@ -1,12 +1,13 @@
 <div class="main-area" [ngClass]="{'turnOffAlarmBackground': !alarmService.isActive, 'turnOnAlarmBackground': alarmService.isActive}">
   <mat-card class="content-area">
-      <div class="toogle-view"><label for="">Circle</label>
-        <mat-slide-toggle class="example-margin" (change)="alarmService.switchTimeShow()" [checked]="alarmService.isChecked"
-          [color]="alarmService.colorToggle"> Line
-        </mat-slide-toggle>
-      </div>
+    <mat-menu #appMenu="matMenu">
+      <button mat-menu-item (click)="styleService.changeStyle()">{{styleService.changeStyleString}}</button>
+    </mat-menu>
+    <button mat-icon-button [matMenuTriggerFor]="appMenu" class="style-menu">
+      <mat-icon>more_vert</mat-icon>
+    </button>
     <mat-card-content class="show-time-area" [ngClass]="{'line-show-time': alarmService.isChecked}">
-      <ng-template [ngIf]="alarmService.isChecked">
+      <ng-template [ngIf]="styleService.isLineStyle">
         <ng-template [ngIf]="alarmService.hour!='' && alarmService.minute!='' && alarmForm.valid">
           <div class="time-element" [ngClass]="{'turnOn-alarm': (alarmService.alarmOn&&(!alarmService.isActive)), 'turnOnPlay-alarm': (alarmService.alarmOn && alarmService.isActive), 'turnOff-alarm': !alarmService.alarmOn}">
             <ng-template [ngIf]="alarmService.hour < 10">
@@ -30,7 +31,7 @@
           </div>
         </ng-template>
       </ng-template>
-      <ng-template [ngIf]="!alarmService.isChecked">
+      <ng-template [ngIf]="!styleService.isLineStyle">
         <div class="progress-percentage-wrapper" [ngClass]="{'turnOn-alarm': alarmService.alarmOn, 'turnOff-alarm': !alarmService.alarmOn}">
           <ng-template [ngIf]="(alarmService.hour!='') && alarmForm.valid ">
             <div class="progress-percentage ">{{alarmService.hour}}h</div>
@@ -57,11 +58,13 @@
     <form [formGroup]="alarmForm">
       <div class="input-time-area">
         <mat-form-field class="example-full-width">
-          <input matInput placeholder="Set hours" [(ngModel)]="alarmService.hour" name="Hour" formControlName="hour" [attr.disabled]="alarmService.alarmOn ?'': null">
+          <input matInput placeholder="Set hours" [(ngModel)]="alarmService.hour" name="Hour" formControlName="hour"
+            [attr.disabled]="alarmService.alarmOn ?'': null">
           <mat-error>Please, input hour between 0 and 23</mat-error>
         </mat-form-field>
         <mat-form-field class="example-full-width">
-          <input matInput placeholder="Set minutes" [(ngModel)]="alarmService.minute" name="Minute" formControlName="minute" [attr.disabled]="alarmService.alarmOn ?'': null">
+          <input matInput placeholder="Set minutes" [(ngModel)]="alarmService.minute" name="Minute" formControlName="minute"
+            [attr.disabled]="alarmService.alarmOn ?'': null">
           <mat-error>Please, input minute between 0 and 59</mat-error>
         </mat-form-field>
       </div>
