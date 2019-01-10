@@ -32,6 +32,11 @@ import { RoundProgressComponent } from './round-progress/round-progress.componen
 import { LineProgressComponent } from './line-progress/line-progress.component';
 import { AuthGuardFalse } from './auth/auth-guard-false.service';
 import { InfoComponent } from './info/info.component';
+import { AngularFireModule } from 'angularfire2';
+import { AngularFirestoreModule } from 'angularfire2/firestore';
+import { AngularFireAuthModule } from 'angularfire2/auth';
+import { environment } from '../environments/environment';
+import { SocialAuthService } from './services/social-auth.service';
 
 @NgModule({
   declarations: [
@@ -69,6 +74,9 @@ import { InfoComponent } from './info/info.component';
     MatButtonModule,
     MatIconModule,
     MatCardModule,
+    AngularFireModule.initializeApp(environment.firebase),
+    AngularFirestoreModule,
+    AngularFireAuthModule,
     JwtModule.forRoot({
       config: {
         tokenGetter: function  tokenGetter() {
@@ -88,7 +96,8 @@ import { InfoComponent } from './info/info.component';
     MatDialog,
     { provide: MatDialogRef, useValue: {} }, 
     UserService,
-    ToasterService
+    ToasterService,
+    SocialAuthService
   ],
   bootstrap: [AppComponent],
   entryComponents: [SignupComponent]

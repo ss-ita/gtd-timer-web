@@ -67,8 +67,8 @@ export class SettingsComponent implements OnInit {
         this.updatePasswordForm.reset();
         this.toasterService.showToaster("Password changed!");
       },
-      httpErrorResponse => {
-          this.toasterService.showToaster(httpErrorResponse.error.error)
+      response => {
+          this.toasterService.showToaster(response.error.Message)
       })
   }
 
@@ -79,8 +79,8 @@ export class SettingsComponent implements OnInit {
         this.jwtservice.signout();
         window.location.reload();
       },
-      httpErrorResponse => {
-          this.toasterService.showToaster(httpErrorResponse.error.error)
+      response => {
+          this.toasterService.showToaster(response.error.error)
       })
   }
 }
