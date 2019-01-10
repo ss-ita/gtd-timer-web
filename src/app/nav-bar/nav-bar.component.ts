@@ -65,13 +65,9 @@ else{
         link: './stopwatch',
         index: 2
     }, {
-        label: 'Task Management',
-        link: './task-management',
-        index: 3
-    }, {
        label: 'Sign In',
        link: './signin',
-       index: 4
+       index: 3
     }
   ];
 }
