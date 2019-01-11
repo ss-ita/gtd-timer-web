@@ -37,6 +37,7 @@ import { AngularFirestoreModule } from 'angularfire2/firestore';
 import { AngularFireAuthModule } from 'angularfire2/auth';
 import { environment } from '../environments/environment';
 import { SocialAuthService } from './services/social-auth.service';
+import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-dialog.component';
 
 @NgModule({
   declarations: [
@@ -56,7 +57,8 @@ import { SocialAuthService } from './services/social-auth.service';
     SettingsComponent,
     RoundProgressComponent,
     LineProgressComponent,
-    InfoComponent
+    InfoComponent,
+    ConfirmationDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -100,6 +102,6 @@ import { SocialAuthService } from './services/social-auth.service';
     SocialAuthService
   ],
   bootstrap: [AppComponent],
-  entryComponents: [SignupComponent]
+  entryComponents: [SignupComponent, ConfirmationDialogComponent]
 })
 export class AppModule { }
