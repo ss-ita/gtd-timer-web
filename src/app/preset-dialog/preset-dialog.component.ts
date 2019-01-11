@@ -1,29 +1,30 @@
-import { Component, OnInit, Injectable } from '@angular/core';
-import { MatDialog } from "@angular/material";
+import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material';
 import { PresetComponent } from '../preset/preset.component';
 
 @Component({
-    selector: 'preset-dialog'
+  selector: 'app-preset-dialog',
+  templateUrl: './preset-dialog.component.html',
+  styleUrls: ['./preset-dialog.component.css']
 })
-
-@Injectable()
 export class PresetDialogComponent implements OnInit {
 
-    constructor(private dialog: MatDialog) {
-    }
+  constructor(private dialog: MatDialog) {
+  }
 
-    ngOnInit() {
-    }
+  ngOnInit() {
+  }
 
-    openPresetForm() {
-        let presetFormDialogRef = this.dialog.open(PresetComponent, {
-            hasBackdrop: true,
-            closeOnNavigation: true,
-            disableClose: true
-        });
+  openPresetForm() {
+      let presetFormDialogRef = this.dialog.open(PresetComponent, {
+          hasBackdrop: true,
+          closeOnNavigation: true,
+          disableClose: true
+      });
 
-        presetFormDialogRef.afterClosed().subscribe(
-            message => console.log("Dialog output:", message)
-        );
-    }
+      presetFormDialogRef.afterClosed().subscribe(
+          message => console.log("Dialog output:", message)
+      );
+  }
+
 }

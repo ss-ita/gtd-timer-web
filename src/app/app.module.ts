@@ -12,7 +12,7 @@ import { AlarmComponent } from './alarm/alarm.component';
 import { TaskManagementComponent } from './task-management/task-management.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CompareValidatorDirective } from './compare-validator/compare-validator.directive';
-import { MatDialogModule, MatDialog, MatDialogRef, MatSnackBarModule, MatSidenavModule, MatExpansionPanel, MatExpansionModule } from "@angular/material";
+import { MatDialogModule, MatDialog, MatDialogRef, MatSnackBarModule, MatSidenavModule, MatExpansionPanel, MatExpansionModule, MatRadioModule } from "@angular/material";
 import { MatMenuModule, MatButtonModule, MatIconModule, MatCardModule } from "@angular/material";
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { UserService } from './services/user.service';
@@ -42,11 +42,15 @@ import { AngularFirestoreModule } from 'angularfire2/firestore';
 import { AngularFireAuthModule } from 'angularfire2/auth';
 import { environment } from '../environments/environment';
 import { SocialAuthService } from './services/social-auth.service';
+import { SignupDialogComponent } from './signup-dialog/signup-dialog.component';
 import { TaskFilter } from './tasks/task.filter';
 import { ProgressComponent } from './progress/progress.component';
 import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-dialog.component';
+import { PresetDialogComponent } from './preset-dialog/preset-dialog.component';
 
-
+export function jwtTokenGetter() {
+  return localStorage.getItem('access_token');
+}
 @NgModule({
   declarations: [
     AppComponent,
@@ -66,16 +70,17 @@ import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-
     RoundProgressComponent,
     LineProgressComponent,
     InfoComponent,
-    TaskInfoComponent,
+    SignupDialogComponent,
     TaskInfoDialogComponent,
     FilterPipe,
     TaskFilter,
-    ProgressComponent
-    PresetComponent
-    TaskInfoComponent,
+    ProgressComponent,
+    PresetComponent,
     TaskInfoDialogComponent,
     FilterPipe,
-    ConfirmationDialogComponent
+    ConfirmationDialogComponent,
+    PresetDialogComponent,
+    TaskInfoComponent
   ],
   imports: [
     BrowserModule,
@@ -99,11 +104,10 @@ import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,
     AngularFireAuthModule,
+    MatRadioModule,
     JwtModule.forRoot({
       config: {
-        tokenGetter: function tokenGetter() {
-          return localStorage.getItem('access_token');
-        },
+        tokenGetter: jwtTokenGetter,
         whitelistedDomains: [
           'http://localhost:4200',
           'https://localhost:44398'
@@ -125,10 +129,10 @@ import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-
   bootstrap: [AppComponent],
   entryComponents: [
     SignupComponent,
-    TaskInfoComponent
     TaskInfoComponent,
     ConfirmationDialogComponent,
     PresetComponent
   ]
 })
 export class AppModule { }
+

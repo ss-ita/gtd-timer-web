@@ -24,8 +24,6 @@ export class ArchiveService implements OnInit{
     const headers = this.getHeaders();
     return this.http.get<TaskJson[]>(this.service.urlTask+'GetAllArchivedTasksByUserId',{headers:headers});
     } 
-    
-<
     getActiveTasksFromServer():Observable<TaskJson[]>{
       const headers = this.getHeaders();
       return this.http.get<TaskJson[]>(this.service.urlTask+'GetAllActiveTasksByUserId',{headers:headers});
