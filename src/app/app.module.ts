@@ -38,6 +38,7 @@ import { AngularFireAuthModule } from 'angularfire2/auth';
 import { environment } from '../environments/environment';
 import { SocialAuthService } from './services/social-auth.service';
 import { SignupDialogComponent } from './signup-dialog/signup-dialog.component';
+import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-dialog.component';
 
 export function jwtTokenGetter() {
   return localStorage.getItem('access_token');
@@ -61,7 +62,8 @@ export function jwtTokenGetter() {
     RoundProgressComponent,
     LineProgressComponent,
     InfoComponent,
-    SignupDialogComponent
+    SignupDialogComponent,
+    ConfirmationDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -104,7 +106,7 @@ export function jwtTokenGetter() {
     SocialAuthService
   ],
   bootstrap: [AppComponent],
-  entryComponents: [SignupComponent]
+  entryComponents: [SignupComponent, ConfirmationDialogComponent]
 })
 export class AppModule { }
 
