@@ -32,12 +32,17 @@ import { RoundProgressComponent } from './round-progress/round-progress.componen
 import { LineProgressComponent } from './line-progress/line-progress.component';
 import { AuthGuardFalse } from './auth/auth-guard-false.service';
 import { InfoComponent } from './info/info.component';
+import { TaskInfoComponent } from './task-info/task-info.component';
+import { TaskInfoDialogComponent } from './task-info-dialog/task-info-dialog.component';
+import { FilterPipe } from './filter.pipe';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { AngularFireModule } from 'angularfire2';
 import { AngularFirestoreModule } from 'angularfire2/firestore';
 import { AngularFireAuthModule } from 'angularfire2/auth';
 import { environment } from '../environments/environment';
 import { SocialAuthService } from './services/social-auth.service';
 import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-dialog.component';
+
 
 @NgModule({
   declarations: [
@@ -58,6 +63,9 @@ import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-
     RoundProgressComponent,
     LineProgressComponent,
     InfoComponent,
+    TaskInfoComponent,
+    TaskInfoDialogComponent,
+    FilterPipe
     ConfirmationDialogComponent
   ],
   imports: [
@@ -76,6 +84,7 @@ import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-
     MatButtonModule,
     MatIconModule,
     MatCardModule,
+    MatTooltipModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,
     AngularFireAuthModule,
@@ -102,6 +111,10 @@ import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-
     SocialAuthService
   ],
   bootstrap: [AppComponent],
-  entryComponents: [SignupComponent, ConfirmationDialogComponent]
+  entryComponents: [
+    SignupComponent,
+    TaskInfoComponent,
+    ConfirmationDialogComponent
+  ]
 })
 export class AppModule { }
