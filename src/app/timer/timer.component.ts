@@ -17,9 +17,9 @@ export class TimerComponent implements OnInit {
   timerForm: FormGroup;
 
   constructor( private formBuilder: FormBuilder,
-     private timerServise: TimerService,
+     public timerServise: TimerService,
      private service: PresetDialogComponent,
-     private styleService: StyleService
+     public styleService: StyleService
      ) {}
   
   openPresetFormDialog(){

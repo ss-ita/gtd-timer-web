@@ -20,7 +20,7 @@ import { HttpClientModule } from '@angular/common/http'
 import { CapslockDetectorDirective } from './capslock-detector/capslock-detector.directive';
 import { ToasterService } from './services/toaster.service';
 import { JwtModule } from '@auth0/angular-jwt';
-import { TasksComponent } from './tasks/tasks.component';
+import { TasksComponent} from './tasks/tasks.component'
 import { AuthGuardService } from './auth/auth-guard.service';
 import { AuthService } from './auth/auth.service';
 import { StopwatchComponent } from './stopwatch/stopwatch.component';
@@ -43,6 +43,8 @@ import { AngularFireAuthModule } from 'angularfire2/auth';
 import { environment } from '../environments/environment';
 import { SocialAuthService } from './services/social-auth.service';
 import { SignupDialogComponent } from './signup-dialog/signup-dialog.component';
+import { TaskFilter } from './tasks/task.filter';
+import { ProgressComponent } from './progress/progress.component';
 import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-dialog.component';
 import { PresetDialogComponent } from './preset-dialog/preset-dialog.component';
 
@@ -69,12 +71,16 @@ export function jwtTokenGetter() {
     LineProgressComponent,
     InfoComponent,
     SignupDialogComponent,
+    TaskInfoDialogComponent,
+    FilterPipe,
+    TaskFilter,
+    ProgressComponent,
     PresetComponent,
-    TaskInfoComponent,
     TaskInfoDialogComponent,
     FilterPipe,
     ConfirmationDialogComponent,
-    PresetDialogComponent
+    PresetDialogComponent,
+    TaskInfoComponent
   ],
   imports: [
     BrowserModule,

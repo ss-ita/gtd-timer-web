@@ -1,5 +1,5 @@
 export const environment = {
-  production: true,
+  production: false,
   firebase: {
     apiKey: "AIzaSyAe8XrKaqFrpgYC80z5-L1FEnGdpCpXSHI",
     authDomain: "gtd-timer.firebaseapp.com",

@@ -12,6 +12,7 @@ import { Task } from '../models/task.model';
 })
 export class ArchiveComponent implements OnInit {
 
+  searchText: string;
   tasksJson: TaskJson[]=[];
   tasks: Task[] = [];
 
@@ -29,7 +30,7 @@ export class ArchiveComponent implements OnInit {
   }
 
   onResumeTask(task:Task):void{
-    this.archiveService.updateTask(task).subscribe();
+    this.archiveService.switchtaskStatus(task).subscribe();
     let indexTaskToDelete = this.tasks.indexOf(task,0);
     this.tasks.splice(indexTaskToDelete,1);
   }
@@ -40,7 +41,7 @@ export class ArchiveComponent implements OnInit {
   }
 
   getTasks(){
-    this.archiveService.getTasksFromServer().subscribe(data=>{
+    this.archiveService.getArchivedTasksFromServer().subscribe(data=>{
       for(let i = 0;i<data.length;++i)
       {
        this.tasks.push(new Task());
