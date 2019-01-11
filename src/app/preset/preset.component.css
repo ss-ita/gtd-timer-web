@@ -1,0 +1,34 @@
+.presets-form {
+    width: 500px;
+}
+.presets-header {
+    margin-bottom: 30px;
+}
+.presets-full-width {
+    width: 100%;
+}
+.add-timer-button {
+    text-align: center;
+}
+.add-timer-icon {
+    font-size: 36px;
+}
+.add-new-preset-button {
+    background-color: transparent;
+    border: none;
+    color: blue;
+}
+.auto-start-timers {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+.timer-element-width {
+    margin-left: 10px;
+    width: 83px;
+}
+.mat-icon-button .mat-icon, .mat-icon-button i {
+    line-height: 23px;
+}
+.margin-top {
+    margin-top: 30px;
+}

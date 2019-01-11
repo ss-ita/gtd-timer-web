@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {AppMaterialModule} from '../app/app-material.module';
+import { BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import { AppMaterialModule} from '../app/app-material.module';
 import { AppComponent } from './app.component';
 import { SignupComponent } from './signup/signup.component';
 import { SigninComponent } from './signin/signin.component';
@@ -12,7 +12,7 @@ import { AlarmComponent } from './alarm/alarm.component';
 import { TaskManagementComponent } from './task-management/task-management.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { CompareValidatorDirective } from './compare-validator/compare-validator.directive';
-import {MatDialogModule, MatDialog, MatDialogRef, MatSnackBarModule} from "@angular/material";
+import {MatDialogModule, MatDialog, MatDialogRef, MatSnackBarModule, MatSidenavModule, MatExpansionPanel, MatExpansionModule} from "@angular/material";
 import {MatMenuModule,MatButtonModule,MatIconModule,MatCardModule} from  "@angular/material";
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import { UserService } from './services/user.service';
@@ -32,6 +32,7 @@ import { RoundProgressComponent } from './round-progress/round-progress.componen
 import { LineProgressComponent } from './line-progress/line-progress.component';
 import { AuthGuardFalse } from './auth/auth-guard-false.service';
 import { InfoComponent } from './info/info.component';
+import { PresetComponent } from './preset/preset.component';
 
 @NgModule({
   declarations: [
@@ -51,7 +52,8 @@ import { InfoComponent } from './info/info.component';
     SettingsComponent,
     RoundProgressComponent,
     LineProgressComponent,
-    InfoComponent
+    InfoComponent,
+    PresetComponent
   ],
   imports: [
     BrowserModule,
@@ -69,6 +71,8 @@ import { InfoComponent } from './info/info.component';
     MatButtonModule,
     MatIconModule,
     MatCardModule,
+    MatExpansionModule,
+    MatSidenavModule,
     JwtModule.forRoot({
       config: {
         tokenGetter: function  tokenGetter() {
@@ -91,6 +95,6 @@ import { InfoComponent } from './info/info.component';
     ToasterService
   ],
   bootstrap: [AppComponent],
-  entryComponents: [SignupComponent]
+  entryComponents: [SignupComponent , PresetComponent]
 })
 export class AppModule { }

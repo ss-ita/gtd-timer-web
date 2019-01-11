@@ -15,10 +15,13 @@
           <mat-error>{{getErrorMessagePassword()}}</mat-error>
         </mat-form-field>
   </mat-card-content>
+
   <mat-card-actions>
     <button mat-flat-button [disabled]="!signinform.valid" color="primary">Sign In</button>
-    <small> Don't have an account yet?<button class="tempButton" (click)="openSignUpDialog()">Sign Up</button></small> 
-  </mat-card-actions>
-</form>
+      </mat-card-actions>
+    </form>
+      <small> Don't have an account yet?<button class="tempButton" (click)="openSignUpDialog()">Sign Up</button></small> 
+
+
 </mat-card>
 </div>

@@ -40,10 +40,13 @@
 
 .mat-card-header {
     height: 200px;
+    text-align: center;
 }
 
 .toggle{
     text-align: left !important; 
+    margin: 15px 0px 20px 0px;
+    font-size: 20px;
 }
 
 ::ng-deep .mat-slide-toggle.mat-checked:not(.mat-disabled) .mat-slide-toggle-thumb {
@@ -66,14 +69,39 @@
 
 .mat-card{
     width: 700px;
-    height: 350px;
+    height: 380px;
     margin: 5% auto;
+}
+.mat-action{
+    margin-top: 10px;
 }
 
 .timer-input{
-    margin-left: 5%; 
+    margin-left: 6%; 
 }
 
-.button-area{
+.button-area {
+    width: 91%;
     text-align: center;
+    display:inline-block;
+}
+.timer-setting-buttons {
+    margin-left: 9%;
+}
+.label-margin {
+    margin-right: 7px;
+}
+.preset-name{
+    float: right;
+    font-size: 20px;
+}
+.preset-name.p{
+    font-size: 34px;
+}
+.mat-expansion-panel-header-title, 
+.mat-expansion-panel-header-description {
+  flex-basis: 0;
+}
+.fffff{
+    margin-left: 100px;
 }

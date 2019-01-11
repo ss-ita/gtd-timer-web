@@ -44,7 +44,7 @@ export class SignupComponent implements OnInit {
             4000);
         },
         error => {
-            this.toasterService.showToaster(error.error.error)
+            this.toasterService.showToaster(error.error.Message)
         })
   }
 

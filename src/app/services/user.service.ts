@@ -14,7 +14,7 @@ export class UserService {
   constructor( private http: HttpClient, 
     private config: ConfigService,
     private jwtservice: JwtService,
-        private toasterService: ToasterService, ) { }
+    private toasterService: ToasterService) { }
 
   registerUser(user: SignupModel){
     const body: SignupModel = {
@@ -37,7 +37,7 @@ export class UserService {
                     this.toasterService.showToaster("Successfuly signed in! ");
                 },
                 error => {
-                    this.toasterService.showToaster(error.error.error);
+                    this.toasterService.showToaster(error.error.Message);
                 });
   }
 }
