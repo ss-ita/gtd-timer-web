@@ -1,0 +1,39 @@
+.settings{
+    margin: 0 10%;
+}
+
+.settings .settings-header {
+    display: block;
+    width: 100%;
+    padding: 0;
+    margin-bottom: 20px;
+    font-size: 21px;
+    line-height: inherit;
+    color: #333;
+    border: 0;
+    border-bottom: 1px solid #e5e5e5;
+}
+
+::ng-deep .settings .settings-header .mat-card-header-text{
+    margin: 0;
+}
+
+.settings mat-form-field{
+    display: block;
+    width: 50%;
+}
+
+.settings mat-card {
+    box-shadow: none;
+    padding-top: 40px;
+    padding-left: 0px;
+    width: 50%;
+}
+
+.settings mat-card .mat-card-actions {
+    margin-left: 0px;
+}
+
+::ng-deep .settings .mat-form-field-infix {
+    border-top: 1.44375em solid transparent;
+}

@@ -1,16 +1,21 @@
 <div class="background">
   <mat-card>
-    <div class="toggle">
-      <label for="">Circle</label>
-      <mat-slide-toggle [(ngModel)]="stopwatchService.isLine">Line</mat-slide-toggle>
-    </div>
+    <mat-menu #appMenu="matMenu">
+      <button mat-menu-item (click)="styleService.changeStyle()">{{styleService.changeStyleString}}</button>
+    </mat-menu>
+    <button mat-icon-button [matMenuTriggerFor]="appMenu" class="style-menu">
+      <mat-icon>more_vert</mat-icon>
+    </button>
     <mat-card-header (click)="stopwatchService.clickOnStopWatch()">
-      <ng-template [ngIf]="!stopwatchService.isLine">
-        <app-round-progress [max]="stopwatchService.maxValueOfHour" [value]="stopwatchService.hour" [color]="stopwatchService.color" [text]="'h'"></app-round-progress>
-        <app-round-progress [max]="stopwatchService.secondPerMinute" [value]="stopwatchService.minute" [color]="stopwatchService.color" [text]="'m'"></app-round-progress>
-        <app-round-progress [max]="stopwatchService.secondPerMinute" [value]="stopwatchService.second" [color]="stopwatchService.color" [text]="'s'"></app-round-progress>
+      <ng-template [ngIf]="!styleService.isLineStyle">
+        <app-round-progress class="round-progress" [max]="stopwatchService.maxValueOfHour" [value]="stopwatchService.hour" [color]="stopwatchService.color"
+          [text]="'h'"></app-round-progress>
+        <app-round-progress class="round-progress" [max]="stopwatchService.secondPerMinute" [value]="stopwatchService.minute" [color]="stopwatchService.color"
+          [text]="'m'"></app-round-progress>
+        <app-round-progress class="round-progress" [max]="stopwatchService.secondPerMinute" [value]="stopwatchService.second" [color]="stopwatchService.color"
+          [text]="'s'"></app-round-progress>
       </ng-template>
-      <ng-template [ngIf]="stopwatchService.isLine">
+      <ng-template [ngIf]="styleService.isLineStyle">
         <div class="container-stopwatch" class="unselectable">
           <app-line-progress [value]="stopwatchService.hour" [isActive]="stopwatchService.isStopwatchRun" [isPaused]="stopwatchService.isStopwatchPause"
             [text]="':'"></app-line-progress>

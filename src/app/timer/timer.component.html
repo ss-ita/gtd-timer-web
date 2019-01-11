@@ -1,18 +1,23 @@
 <div class="background-normal" [ngClass]="{'background-normal': timerServise.isTimerFinished === false, 
 'background-red': timerServise.isTimerFinished}">
   <mat-card>
-    <div class="toggle">
-      <label for="" class="label-margin">Circle</label>
-      <mat-slide-toggle [(ngModel)]="timerServise.isLine">Line</mat-slide-toggle>
-      <span class="preset-name">{{timerServise.currentPreset}}</span>
-    </div>
+    <mat-menu #appMenu="matMenu">
+      <button mat-menu-item (click)="styleService.changeStyle()">{{styleService.changeStyleString}}</button>
+    </mat-menu>
+    <span class="preset-name">{{timerServise.currentPreset}}</span>
+    <button mat-icon-button [matMenuTriggerFor]="appMenu" class="style-menu">
+      <mat-icon>more_vert</mat-icon>
+    </button>
     <mat-card-header>
-      <ng-template [ngIf]="!timerServise.isLine">
-        <app-round-progress [max]="timerServise.maxValueOfHour"  [value]="timerServise.hour" [color]="timerServise.color" [text]="'h'"></app-round-progress>
-        <app-round-progress [max]="timerServise.secondPerMinute" [value]="timerServise.minute" [color]="timerServise.color" [text]="'m'"></app-round-progress>
-        <app-round-progress [max]="timerServise.secondPerMinute" [value]="timerServise.second" [color]="timerServise.color" [text]="'s'"></app-round-progress>
+      <ng-template [ngIf]="!styleService.isLineStyle">
+        <app-round-progress class="round-progress" [max]="timerServise.maxValueOfHour" [value]="timerServise.hour" [color]="timerServise.color"
+          [text]="'h'"></app-round-progress>
+        <app-round-progress class="round-progress" [max]="timerServise.secondPerMinute" [value]="timerServise.minute" [color]="timerServise.color"
+          [text]="'m'"></app-round-progress>
+        <app-round-progress class="round-progress" [max]="timerServise.secondPerMinute" [value]="timerServise.second" [color]="timerServise.color"
+          [text]="'s'"></app-round-progress>
       </ng-template>
-      <ng-template [ngIf]="timerServise.isLine">
+      <ng-template [ngIf]="styleService.isLineStyle">
         <div class="container-stopwatch" class="unselectable">
           <app-line-progress [value]="timerServise.hour" [isActive]="timerServise.isTimerRun" [isPaused]="timerServise.isTimerPause"
             [text]="':'"></app-line-progress>
@@ -25,15 +30,15 @@
     </mat-card-header>
     <mat-card-actions [formGroup]="timerForm" class="mat-action">
       <mat-form-field class="timer-input">
-        <input matInput type="number" min="0" max="24" [(ngModel)]="timerServise.maxValueHour" placeholder="Set hour" formControlName="hour">
+        <input matInput type="number" min="0" max="23" [(ngModel)]="timerServise.maxValueHour" placeholder="Set hour" formControlName="hour">
         <mat-error>{{getErrorMessageHour()}}</mat-error>
       </mat-form-field>
       <mat-form-field class="timer-input">
-        <input matInput type="number" [(ngModel)]="timerServise.maxValueMinute" placeholder="Set minute" formControlName="minute">
+        <input matInput type="number" min="0" max="59" [(ngModel)]="timerServise.maxValueMinute" placeholder="Set minute" formControlName="minute">
         <mat-error>{{getErrorMessageMinuteAndSecond()}}</mat-error>
       </mat-form-field>
       <mat-form-field class="timer-input">
-        <input matInput type="number" [(ngModel)]="timerServise.maxValueSecond" placeholder="Set second" formControlName="second">
+        <input matInput type="number" min="0" max="59" [(ngModel)]="timerServise.maxValueSecond" placeholder="Set second" formControlName="second">
         <mat-error>{{getErrorMessageMinuteAndSecond()}}</mat-error>
       </mat-form-field>
       <div class="button-area">

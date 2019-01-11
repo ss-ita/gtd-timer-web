@@ -1,9 +1,29 @@
 .main-area {
+	text-align: right;
 	position: absolute;
 	top: auto;
 	min-height: calc(100vh - 49px);
 	width: 100%;
 	background-color: #609b9b
+}
+
+.mat-icon-button {
+    width: 4rem;
+    height: 4rem;
+    border: none;
+    text-decoration: underline;
+    color: blue;
+}
+
+.mat-icon-button:hover
+{
+    background-color: rgb(172, 205, 255);
+}
+
+.mat-icon{
+    font-size:32px !important;
+    height: 32px !important;
+    width: 32px !important;
 }
 
 .turnOffAlarmBackground {
@@ -16,6 +36,7 @@
 
 .content-area {
 	width: 700px;
+    height: 380px;
 	margin: 5% auto;
 }
 
@@ -73,7 +94,7 @@
 	text-align: center;
 	font-size: 90px;
 	color: #609b9b;
-	margin: 42px auto;
+	margin: 57px auto;
 }
 
 .input-time-area {
@@ -111,20 +132,6 @@
 	color: #b9b9b9;
 }
 
-.toogle-view {
-	text-align: left !important;
-}
-
-::ng-deep .mat-slide-toggle.mat-checked:not(.mat-disabled) .mat-slide-toggle-thumb {
-	background-color: blue;
-	/*replace with your color*/
-}
-
-::ng-deep .mat-slide-toggle.mat-checked:not(.mat-disabled) .mat-slide-toggle-bar {
-	background-color: skyblue;
-	/*replace with your color*/
-}
-
 .blink {
 	animation: blink 1s infinite;
 }
@@ -139,4 +146,9 @@
 	100% {
 		opacity: 1;
 	}
+}
+
+.style-menu{
+    width: 40px;
+    height: 40px;
 }

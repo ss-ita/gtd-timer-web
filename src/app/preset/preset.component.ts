@@ -2,9 +2,10 @@ import { SignupDialogComponent } from '../signup-dialog/signup-dialog.component'
 import { FormGroup, FormBuilder, Validators , FormArray } from '@angular/forms';
 import { PresetService } from '../services/preset.service';
 import { TimerService } from '../services/timer.service';
+import { PresetModel } from '../models/preset.model';
 import { Component, OnInit } from '@angular/core';
 import { MatDialogRef } from '@angular/material';
-import { PresetModel } from '../models/preset.model';
+
 
 
 @Component({
@@ -52,7 +53,7 @@ export class PresetComponent implements OnInit {
     this.isViewable = !this.isViewable;
   }
 
-  openSinUpDialogComponent(){
+  openSinUpDialogComponent() {
     this.signupDialogComponent.openSignUpForm();
     this.onClose();
   }
@@ -65,7 +66,7 @@ export class PresetComponent implements OnInit {
     return this.presetService.presetsArray;
   }
 
-  getAllStandartAndCustomPresets(){
+  getAllStandartAndCustomPresets() {
     this.presetService.presetsArray = [];
     if(this.isLoggedIn) this.getAllCustomPresets();
     this.presetService.getGetAllStandardPresetsFromServer().subscribe(data=> {
@@ -76,7 +77,7 @@ export class PresetComponent implements OnInit {
       }
     });
   }
-  getAllCustomPresets(){
+  getAllCustomPresets() {
     this.presetService.getGetAllCustomPresetsFromServer().subscribe(data=> {
       for (let index = 0; index < data.length; index++) {
             this.presetModel = new PresetModel();
@@ -122,12 +123,12 @@ export class PresetComponent implements OnInit {
     this.selectedPreset = 'standard';
   }
 
-  addTimerFormGroup() : FormGroup{
+  addTimerFormGroup() : FormGroup {
     return this.formBuilder.group({
       timerName: ['',[Validators.required]],
-      hours:     ['',[Validators.required, Validators.min(0), Validators.max(24)]],
-      minutes:   ['',[Validators.required, Validators.min(0), Validators.max(60)]],
-      seconds:   ['',[Validators.required, Validators.min(0), Validators.max(60)]]
+      hours:     ['',[Validators.required, Validators.min(0), Validators.max(23)]],
+      minutes:   ['',[Validators.required, Validators.min(0), Validators.max(59)]],
+      seconds:   ['',[Validators.required, Validators.min(0), Validators.max(59)]]
     });
   }
 }

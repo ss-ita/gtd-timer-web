@@ -3,6 +3,7 @@ import {FormBuilder,FormGroup, Validators} from '@angular/forms';
 
 import { TimerService } from '../services/timer.service';
 import { PresetDialogComponent } from '../preset-dialog/preset-dialog.component';
+import { StyleService } from '../services/style.service';
 
 @Component({
   selector: 'app-timer',
@@ -12,14 +13,13 @@ import { PresetDialogComponent } from '../preset-dialog/preset-dialog.component'
 })
 
 export class TimerComponent implements OnInit {
-  timerForm: FormGroup  ;
-
-  hourPattern = /^(2[0-4]|1[0-9]|[0-9])$/;
-  minuteAndSecondPattern = /^([0-5]?[0-9]|60)$/;
+  
+  timerForm: FormGroup;
 
   constructor( private formBuilder: FormBuilder,
      private timerServise: TimerService,
-     private service: PresetDialogComponent
+     private service: PresetDialogComponent,
+     private styleService: StyleService
      ) {}
   
   openPresetFormDialog(){
@@ -28,9 +28,9 @@ export class TimerComponent implements OnInit {
 
   ngOnInit() {
       this.timerForm = this.formBuilder.group({
-      'hour': [this.timerServise.maxValueHour, [Validators.required]],
-      'minute': [this.timerServise.maxValueMinute, [Validators.required, Validators.min(0), Validators.max(60)]],
-      'second': [this.timerServise.maxValueSecond, [Validators.required, Validators.min(0), Validators.max(60)]]
+      'hour': [this.timerServise.maxValueHour,[Validators.required, Validators.min(0), Validators.max(23)]],
+      'minute': [this.timerServise.maxValueMinute, [Validators.required, Validators.min(0), Validators.max(59)]],
+      'second': [this.timerServise.maxValueSecond, [Validators.required, Validators.min(0), Validators.max(59)]]
   });
   }
   

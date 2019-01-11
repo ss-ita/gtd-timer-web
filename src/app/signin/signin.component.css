@@ -3,49 +3,101 @@
     top: auto;
     min-height: calc(100vh - 49px);
     width: 100%;
-    background-color:#609b9b;
+    background-color: #609b9b;
 }
-    
-    .signin-header {
+
+.signin-header {
     display: flex;
     text-align: center;
     justify-content: space-between;
-    }
-    
-    .signin-card {
+}
+
+.signin-card {
     width: 300px;
     margin: 10% auto;
     box-shadow: none;
-    background-color: rgba(255,255,255,0.8);
-    }
-    
-    .signin-form {
+    background-color: rgba(255, 255, 255, 0.8);
+}
+
+.signin-form {
     min-width: 150px;
     max-width: 500px;
     width: 100%;
-    }
-    .unselectable{
-        -webkit-touch-callout: none; /* iOS Safari */
-    -webkit-user-select: none; /* Safari */
-     -khtml-user-select: none; /* Konqueror HTML */
-       -moz-user-select: none; /* Firefox */
-        -ms-user-select: none; /* Internet Explorer/Edge */
-            user-select: none;
-    }
-    
-    .mat-ink-bar{
-    background-color:#00ADEE;
-    }
-    .mat-tab-label-active{
-    color: #00ADEE !important;
-    }
-    .mat-flat-button {
-        border-radius: 0;
-    }
+}
 
-    .tempButton {
-        background-color: transparent;
-        border: none;
-        text-decoration: underline;
-        color: blue;
-    }
+.unselectable {
+    -webkit-touch-callout: none;
+    /* iOS Safari */
+    -webkit-user-select: none;
+    /* Safari */
+    -khtml-user-select: none;
+    /* Konqueror HTML */
+    -moz-user-select: none;
+    /* Firefox */
+    -ms-user-select: none;
+    /* Internet Explorer/Edge */
+    user-select: none;
+}
+
+.mat-ink-bar {
+    background-color: #00ADEE;
+}
+
+.mat-tab-label-active {
+    color: #00ADEE !important;
+}
+
+.mat-flat-button {
+    border-radius: 0;
+}
+
+.tempButton {
+    background-color: transparent;
+    border: none;
+    text-decoration: underline;
+    color: blue;
+}
+
+.emailAuth {
+    display: block;
+    margin: 5px auto;
+    padding: 0 103px;
+}
+
+.socialAuth {
+    margin-top: 20px;
+}
+
+.socialAuth .title {
+    text-align: center;
+    margin: 15px;
+}
+
+.socialAuth button {
+    display: block;
+    margin: 10px auto;
+    color: white;
+    font-size: 15px;
+    width: 250px;
+    padding: 0;
+    line-height: 38px;
+}
+
+.socialAuth button img {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 38px;
+}
+
+.socialAuth .googleAuth {
+    background-color: #f4511e;
+}
+
+.socialAuth .facebookAuth {
+    background-color: #3f51b5;
+}
+
+.signup {
+    text-align: center;
+}

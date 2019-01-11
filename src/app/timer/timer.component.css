@@ -43,22 +43,13 @@
     text-align: center;
 }
 
-.toggle{
-    text-align: left !important; 
-    margin: 15px 0px 20px 0px;
-    font-size: 20px;
-}
-
-::ng-deep .mat-slide-toggle.mat-checked:not(.mat-disabled) .mat-slide-toggle-thumb {
-    background-color: blue;
-}
-
-::ng-deep .mat-slide-toggle.mat-checked:not(.mat-disabled) .mat-slide-toggle-bar {
-    background-color: skyblue;
+.mat-card-actions {
+    margin-top: 2%;
+    text-align: center !important;
 }
 
 .unselectable{
-    margin-left: 6%;
+    margin-left: 9%;
     -webkit-touch-callout: none; /* iOS Safari */
 -webkit-user-select: none; /* Safari */
  -khtml-user-select: none; /* Konqueror HTML */
@@ -71,6 +62,7 @@
     width: 700px;
     height: 380px;
     margin: 5% auto;
+    text-align: right;
 }
 .mat-action{
     margin-top: 10px;
@@ -92,7 +84,7 @@
     margin-right: 7px;
 }
 .preset-name{
-    float: right;
+    float: left;
     font-size: 20px;
 }
 .preset-name.p{
@@ -102,6 +94,11 @@
 .mat-expansion-panel-header-description {
   flex-basis: 0;
 }
-.fffff{
-    margin-left: 100px;
+.style-menu{
+    width: 40px;
+    height: 40px;
+}
+
+.round-progress{
+    margin-left: 1% !important;
 }

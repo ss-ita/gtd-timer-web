@@ -13,7 +13,7 @@
 
 .container-stopwatch{
     width: 700px;
-    height: 200px;
+    height: 300px;
 }
 
 .mat-icon{
@@ -23,9 +23,10 @@
 }
 
 .mat-card{
-    width: 650px;
-    height: 300px;
+    width: 700px;
+    height: 380px;
     margin: 5% auto;
+    text-align: right;
 }
 
 .background{
@@ -36,20 +37,9 @@
     background-color: #609b9b
 }
 
-.toggle{
-    text-align: left !important; 
-}
-
-::ng-deep .mat-slide-toggle.mat-checked:not(.mat-disabled) .mat-slide-toggle-thumb {
-    background-color: blue;
-}
-
-::ng-deep .mat-slide-toggle.mat-checked:not(.mat-disabled) .mat-slide-toggle-bar {
-    background-color: skyblue;
-}
-
 .unselectable{
-    margin-left: 5%;
+    margin-top: 5% !important;
+    margin-left: 7%;
     -webkit-touch-callout: none; /* iOS Safari */
 -webkit-user-select: none; /* Safari */
  -khtml-user-select: none; /* Konqueror HTML */
@@ -59,9 +49,19 @@
 }
 
 .mat-card-header {
-    height: 200px;
+    height: 280px;
 }
 
 .mat-card-actions{
     text-align: center;
+}
+
+.style-menu{
+    width: 40px;
+    height: 40px; 
+}
+
+.round-progress{
+    margin-left: 1% !important;
+    margin-top: 5% !important;
 }

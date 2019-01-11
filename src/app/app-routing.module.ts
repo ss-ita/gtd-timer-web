@@ -23,7 +23,7 @@ const routes: Routes = [
   { path: 'alarm', component:  AlarmComponent},
   { path: 'tasks', component:  TasksComponent, canActivate:[AuthGuard]},
   { path: 'statistics', component:  StatisticsComponent, canActivate:[AuthGuard]},
-  { path: 'sett', component:  SettingsComponent, canActivate:[AuthGuard]},
+  { path: 'settings', component:  SettingsComponent, canActivate:[AuthGuard]},
   { path: 'archive', component:  ArchiveComponent, canActivate:[AuthGuard]},
   { path: 'info', component:  InfoComponent, canActivate:[AuthGuard]},
   { path: 'signin', component:  SigninComponent,canActivate:[AuthGuardFalse]},

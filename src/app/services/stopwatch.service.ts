@@ -19,7 +19,6 @@ export class StopwatchService {
 
   isStopwatchRun: boolean = false;
   isStopwatchPause: boolean = false;
-  isLine: boolean;
 
   color: string = 'blue';
   subscribe: Subscription;

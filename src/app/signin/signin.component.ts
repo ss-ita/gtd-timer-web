@@ -1,11 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { SignupDialogComponent } from '../signup-dialog/signup-dialog.component';
-import { ActivatedRoute} from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { SigninModel } from '../models/signin.model'
 import { JwtService } from '../services/jwt.service';
 import { UserService } from '../services/user.service';
+import { SocialAuthService } from '../services/social-auth.service';
+import { ConfigService } from '../services/config.service';
+
 
 @Component({
     selector: 'app-signin',
@@ -19,14 +22,18 @@ export class SigninComponent implements OnInit {
     user: SigninModel = new SigninModel();
     signinform: FormGroup;
     returnUrl: string;
-    submitted = false;
-    error = '';
+    submitted: boolean = false;
+    error: string = '';
+    urlFacebookPath: string = '';
+    urlGooglePath: string = '';
 
     constructor(private formBuilder: FormBuilder,
         private route: ActivatedRoute,
         private jwtservice: JwtService,
         private service: SignupDialogComponent,
-        private userService: UserService
+        private userService: UserService,
+        private socialAuth: SocialAuthService,
+        private config: ConfigService,
     ) { }
 
     openSignUpDialog() {
@@ -37,10 +44,12 @@ export class SigninComponent implements OnInit {
     ngOnInit() {
         this.signinform = this.formBuilder.group({
             'email': [this.user.email, [Validators.required, Validators.email]],
-            'password': [this.user.password, [Validators.required, Validators.minLength(8), Validators.pattern(this.pwdPattern)]]
+            'password': [this.user.password]
         });
         this.jwtservice.signout();
         this.returnUrl = this.route.snapshot.queryParams['stopwatch'] || '/';
+        this.urlFacebookPath = this.config.urlFacebookIcon;
+        this.urlGooglePath = this.config.urlGoogleIcon;
     }
 
     getErrorMessageEmail() {
@@ -48,12 +57,7 @@ export class SigninComponent implements OnInit {
             this.signinform.controls['email'].hasError('email') ? 'Provided e-mail is invalid' :
                 '';
     }
-    getErrorMessagePassword() {
-        return this.signinform.controls['password'].hasError('required') ? 'This field is required' :
-            this.signinform.controls['password'].hasError('pattern') ? 'Combination of 8 or more uppercase, lowercase letters, special symbols and numbers.' :
-                this.signinform.controls['password'].hasError('minlength') ? 'You must enter 8 elements min' :
-                    '';
-    }
+
 
     get f() { return this.signinform.controls; }
 
@@ -65,6 +69,14 @@ export class SigninComponent implements OnInit {
             return;
         }
         this.userService.signinuser(this.f.email.value, this.f.password.value);
+    }
+
+    LoginWithGoogle() {
+        this.socialAuth.loginWithGoogle();
+    }
+
+    doFacebookLogin() {
+        this.socialAuth.loginWithFacebook();
     }
 
 }

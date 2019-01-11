@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { StopwatchService } from '../services/stopwatch.service';
+import { StyleService } from '../services/style.service';
 
 @Component({
   selector: 'app-stopwatch',
@@ -9,7 +10,7 @@ import { StopwatchService } from '../services/stopwatch.service';
 
 export class StopwatchComponent implements OnInit { 
 
-  constructor( private stopwatchService: StopwatchService) { }
+  constructor( private stopwatchService: StopwatchService, private styleService: StyleService) { }
   
   ngOnInit() {
 
