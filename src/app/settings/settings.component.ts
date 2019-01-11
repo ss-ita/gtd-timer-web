@@ -13,6 +13,7 @@ import { JwtService } from '../jwt.service';
 })
 export class SettingsComponent implements OnInit {
 
+  hide:boolean;
   updatePasswordModel:UpdatePasswordModel=new UpdatePasswordModel();
   updatePasswordForm:FormGroup;
   deleteAccountForm:FormGroup;

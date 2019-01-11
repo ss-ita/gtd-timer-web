@@ -16,7 +16,7 @@ export class TimerComponent implements OnInit {
   hourPattern = /^(2[0-4]|1[0-9]|[0-9])$/;
   minuteAndSecondPattern = /^([0-5]?[0-9]|60)$/;
 
-  constructor( private formBuilder: FormBuilder, private timerServise: TimerService, private styleService: StyleService) { 
+  constructor( private formBuilder: FormBuilder, public timerServise: TimerService, public styleService: StyleService) { 
    }
 
   ngOnInit() {

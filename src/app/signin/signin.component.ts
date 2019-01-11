@@ -19,6 +19,7 @@ import { ConfigService } from '../services/config.service';
 
 export class SigninComponent implements OnInit {
 
+    hide:boolean;
     user: SigninModel = new SigninModel();
     signinform: FormGroup;
     returnUrl: string;

@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {AppMaterialModule} from '../app/app-material.module';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { AppMaterialModule } from '../app/app-material.module';
 import { AppComponent } from './app.component';
 import { SignupComponent } from './signup/signup.component';
 import { SigninComponent } from './signin/signin.component';
@@ -10,11 +10,11 @@ import { AppRoutingModule } from './app-routing.module';
 import { TimerComponent } from './timer/timer.component';
 import { AlarmComponent } from './alarm/alarm.component';
 import { TaskManagementComponent } from './task-management/task-management.component';
-import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CompareValidatorDirective } from './compare-validator/compare-validator.directive';
-import {MatDialogModule, MatDialog, MatDialogRef, MatSnackBarModule} from "@angular/material";
-import {MatMenuModule,MatButtonModule,MatIconModule,MatCardModule} from  "@angular/material";
-import {MatSlideToggleModule} from '@angular/material/slide-toggle';
+import { MatDialogModule, MatDialog, MatDialogRef, MatSnackBarModule } from "@angular/material";
+import { MatMenuModule, MatButtonModule, MatIconModule, MatCardModule } from "@angular/material";
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { UserService } from './services/user.service';
 import { HttpClientModule } from '@angular/common/http'
 import { CapslockDetectorDirective } from './capslock-detector/capslock-detector.directive';
@@ -27,7 +27,7 @@ import { StopwatchComponent } from './stopwatch/stopwatch.component';
 import { StatisticsComponent } from './statistics/statistics.component';
 import { ArchiveComponent } from './archive/archive.component';
 import { SettingsComponent } from './settings/settings.component';
-import {RoundProgressModule} from 'angular-svg-round-progressbar';
+import { RoundProgressModule } from 'angular-svg-round-progressbar';
 import { RoundProgressComponent } from './round-progress/round-progress.component';
 import { LineProgressComponent } from './line-progress/line-progress.component';
 import { AuthGuardFalse } from './auth/auth-guard-false.service';
@@ -37,7 +37,11 @@ import { AngularFirestoreModule } from 'angularfire2/firestore';
 import { AngularFireAuthModule } from 'angularfire2/auth';
 import { environment } from '../environments/environment';
 import { SocialAuthService } from './services/social-auth.service';
+import { SignupDialogComponent } from './signup-dialog/signup-dialog.component';
 
+export function jwtTokenGetter() {
+  return localStorage.getItem('access_token');
+}
 @NgModule({
   declarations: [
     AppComponent,
@@ -56,7 +60,8 @@ import { SocialAuthService } from './services/social-auth.service';
     SettingsComponent,
     RoundProgressComponent,
     LineProgressComponent,
-    InfoComponent
+    InfoComponent,
+    SignupDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -79,12 +84,11 @@ import { SocialAuthService } from './services/social-auth.service';
     AngularFireAuthModule,
     JwtModule.forRoot({
       config: {
-        tokenGetter: function  tokenGetter() {
-             return     localStorage.getItem('access_token');},
+        tokenGetter: jwtTokenGetter,
         whitelistedDomains: [
           'http://localhost:4200',
           'https://localhost:44398'
-      ],
+        ],
         blacklistedRoutes: []
       }
     })
@@ -94,7 +98,7 @@ import { SocialAuthService } from './services/social-auth.service';
     AuthGuardFalse,
     AuthService,
     MatDialog,
-    { provide: MatDialogRef, useValue: {} }, 
+    { provide: MatDialogRef, useValue: {} },
     UserService,
     ToasterService,
     SocialAuthService
@@ -103,3 +107,4 @@ import { SocialAuthService } from './services/social-auth.service';
   entryComponents: [SignupComponent]
 })
 export class AppModule { }
+

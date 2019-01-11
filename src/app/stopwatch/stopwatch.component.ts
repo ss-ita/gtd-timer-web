@@ -10,7 +10,7 @@ import { StyleService } from '../services/style.service';
 
 export class StopwatchComponent implements OnInit { 
 
-  constructor( private stopwatchService: StopwatchService, private styleService: StyleService) { }
+  constructor( public stopwatchService: StopwatchService, public styleService: StyleService) { }
   
   ngOnInit() {
 
