@@ -38,8 +38,9 @@ export class ConfirmationDialogComponent implements OnInit {
 
   accept() {
     if (this.acceptAction !== undefined) {
-      this.dialogRef.close();
       this.acceptAction();
     }
+    
+    this.dialogRef.close();
   }
 }
