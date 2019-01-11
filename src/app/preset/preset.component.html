@@ -1,4 +1,4 @@
-<mat-card-title class="presets-header">Presets Setting</mat-card-title>
+<p class="presets-header">Presets Setting</p>
 <mat-dialog-content>
   <form [formGroup]="presetForm" (ngSubmit)="onCreate()" class="presets-form">
     <mat-form-field class="presets-full-width" *ngIf="!isViewable">
@@ -7,10 +7,10 @@
       </mat-select>
     </mat-form-field>
     <div *ngIf="isLoggedIn; else loggedOut">
-      <p *ngIf="!isViewable">Choose the default schema or create your own. Just click<button class="add-new-preset-button" (click)="toggle()">Here.</button></p>
+      <p *ngIf="!isViewable" class="alternative-menu">Choose the schema from default list or create your own. Just click<button class="add-new-preset-button" (click)="toggle()">Here.</button></p>
     </div>
     <ng-template #loggedOut>
-      <p *ngIf="!isViewable">Choose the default schema ,<button class="add-new-preset-button" (click)="openSinUpDialogComponent()"> Register </button>or<button class="add-new-preset-button">Sign In </button>to create your own.</p>
+      <p *ngIf="!isViewable" class="alternative-menu">Choose the default schema ,<button class="add-new-preset-button" (click)="openSinUpDialogComponent()"> Register </button>or<button class="add-new-preset-button">Sign In </button>to create your own.</p>
     </ng-template>
     <div *ngIf="isViewable">
       <mat-form-field class="presets-full-width">
