@@ -1,7 +1,4 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { UserService } from '../services/user.service';
-import { ToasterService } from '../services/toaster.service';
-import { JwtService } from '../jwt.service';
 import { MatDialogRef } from "@angular/material";
 
 @Component({
@@ -18,12 +15,7 @@ export class ConfirmationDialogComponent implements OnInit {
   @Input() declineAction: Function;
   @Input() acceptAction: Function;
 
-  constructor(
-    private toasterService: ToasterService,
-    private userService: UserService,
-    private jwtservice: JwtService,
-    public dialogRef: MatDialogRef<ConfirmationDialogComponent>
-  ) { }
+  constructor(public dialogRef: MatDialogRef<ConfirmationDialogComponent>) { }
 
   ngOnInit() {
   }
@@ -40,7 +32,7 @@ export class ConfirmationDialogComponent implements OnInit {
     if (this.acceptAction !== undefined) {
       this.acceptAction();
     }
-    
+
     this.dialogRef.close();
   }
 }
