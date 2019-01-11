@@ -1,0 +1,17 @@
+.dialog-content{
+width: 500px;
+}
+
+.dialog-content-div div{
+    display: inline-block;
+}
+
+.title{
+    width: 25%;;
+}
+
+.cotennt{
+    width: 75%;
+}
+
+

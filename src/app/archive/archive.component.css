@@ -1,0 +1,91 @@
+.back{
+    position: absolute;
+    top: auto;
+    min-height: calc(100vh - 49px);
+    width: 100%;
+    background-color:#609b9b;
+}
+
+mat-list-item{
+box-shadow:  0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
+margin-top: 6px;
+margin-bottom: 6px;
+background-color: #f9f9f9;
+border-radius: 5px;
+}
+
+.search{
+  height: 75px;
+}
+
+.search mat-form-field{
+  position: absolute;
+  left:75%;
+  top: 22px;
+}
+
+.top-tittles{
+    margin-top: 20px;
+    margin-bottom: 2px;
+    
+}
+
+.top-tittles p{
+    font-size:17px;
+    font-weight: bold;
+}
+
+.my-container{
+    position: relative;
+    margin-left: 10%;
+    margin-right: 10%;
+}
+
+span{
+display: inline-block;
+}
+
+.name{
+    width: 25%;
+}
+
+.name p{
+    padding-left: 10px;
+}
+
+.time{
+    width: 25%;
+}
+
+.goal{
+    width: 25%;
+}
+
+#elseBlock{
+    width:25%;
+}
+
+.actions{
+    width: 25%;
+}
+
+.actions p{
+    padding-left: 20%;
+}
+
+.actions button{
+    margin-left: 4px;
+    background-color: #dededa;
+    width: 25%;
+}
+ .actions button:hover{
+    background-color:  #f9f9f9;
+ }
+
+ .mat-raised-button{
+     min-width: 1px;
+ }
+
+ 
+
+ 
