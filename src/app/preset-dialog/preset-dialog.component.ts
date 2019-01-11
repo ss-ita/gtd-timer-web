@@ -9,7 +9,6 @@ import { PresetComponent } from '../preset/preset.component';
 @Injectable()
 export class PresetDialogComponent implements OnInit {
 
-
     constructor(private dialog: MatDialog) {
     }
 
@@ -27,5 +26,4 @@ export class PresetDialogComponent implements OnInit {
             message => console.log("Dialog output:", message)
         );
     }
-
 }
