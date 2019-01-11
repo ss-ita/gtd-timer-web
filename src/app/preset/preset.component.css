@@ -3,6 +3,7 @@
 }
 .presets-header {
     margin-bottom: 30px;
+    font-size: 25px;
 }
 .presets-full-width {
     width: 100%;
@@ -17,6 +18,7 @@
     background-color: transparent;
     border: none;
     color: blue;
+    font-size: 15px;
 }
 .auto-start-timers {
     margin-top: 20px;
@@ -31,4 +33,7 @@
 }
 .margin-top {
     margin-top: 30px;
+}
+.alternative-menu {
+    font-size: 17px;
 }
