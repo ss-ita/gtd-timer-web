@@ -8,7 +8,7 @@
     </button>
     <mat-card-content class="show-time-area" [ngClass]="{'line-show-time': alarmService.isChecked}">
       <ng-template [ngIf]="styleService.isLineStyle">
-        <ng-template [ngIf]="alarmService.hour!='' && alarmService.minute!='' && alarmForm.valid">
+        <ng-template [ngIf]="(alarmService.hour!='' || alarmService.hour==0)  && (alarmService.minute!='' || alarmService.minute==0) && alarmForm.valid">
           <div class="time-element" [ngClass]="{'turnOn-alarm': (alarmService.alarmOn&&(!alarmService.isActive)), 'turnOnPlay-alarm': (alarmService.alarmOn && alarmService.isActive), 'turnOff-alarm': !alarmService.alarmOn}">
             <ng-template [ngIf]="alarmService.hour < 10">
               <span class="text">0</span>
@@ -16,7 +16,7 @@
             <span class="text">{{alarmService.hour}}</span>
           </div>
           <div class="time-span" [ngClass]="{'turnOn-alarm': (alarmService.alarmOn&&(!alarmService.isActive)), 'turnOnPlay-alarm': (alarmService.alarmOn && alarmService.isActive), 'turnOff-alarm': !alarmService.alarmOn}">
-            <span class="text" [ngClass]="{'blink': alarmService.alarmOn && !alarmService.isActive}">:</span>
+            <span class="text">:</span>
           </div>
           <div class="time-element" [ngClass]="{'turnOn-alarm': (alarmService.alarmOn&&(!alarmService.isActive)), 'turnOnPlay-alarm': (alarmService.alarmOn && alarmService.isActive), 'turnOff-alarm': !alarmService.alarmOn}">
             <ng-template [ngIf]="alarmService.minute < 10">
@@ -25,7 +25,7 @@
             <span class="text">{{alarmService.minute}}</span>
           </div>
         </ng-template>
-        <ng-template [ngIf]="(alarmService.hour=='' || alarmService.minute=='' || !alarmForm.valid)">
+        <ng-template [ngIf]="((alarmService.hour=='')&&alarmService.hour!=0 || (alarmService.minute=='')&&alarmService.minute!=0 || !alarmForm.valid)">
           <div class="non-inputed-time">
             <span>Not Set</span>
           </div>
@@ -39,7 +39,7 @@
           <ng-template [ngIf]="(alarmService.hour=='') || !alarmForm.valid ">
             <div class="progress-percentage ">{{0}}h</div>
           </ng-template>
-          <round-progress [color]="alarmService.color" [max]="24" [current]="alarmService.hour" [radius]="100" [stroke]="25">
+          <round-progress [color]="alarmService.color" [max]="23" [current]="alarmForm.valid ? alarmService.hour : 0" [radius]="100" [stroke]="25">
           </round-progress>
         </div>
         <div class="progress-percentage-wrapper">
@@ -49,7 +49,7 @@
           <ng-template [ngIf]="(alarmService.minute=='') || !alarmForm.valid ">
             <div class="progress-percentage ">{{0}}m</div>
           </ng-template>
-          <round-progress [color]="alarmService.color" [max]="60" [current]="alarmService.minute" [radius]="100"
+          <round-progress [color]="alarmService.color" [max]="59" [current]="alarmForm.valid ? alarmService.minute : 0" [radius]="100"
             [stroke]="25">
           </round-progress>
         </div>
@@ -69,13 +69,13 @@
         </mat-form-field>
       </div>
       <div class="button-area">
-        <button mat-button (click)="alarmService.startArarm()" [disabled]="!alarmForm.valid || alarmService.hour=='' || alarmService.minute=='' || alarmService.alarmOn">
+        <button mat-button (click)="alarmService.startArarm()" [disabled]="!alarmForm.valid || (alarmService.hour=='')&&alarmService.hour!=0 || (alarmService.minute=='')&&alarmService.minute!=0 || alarmService.alarmOn">
           <mat-icon>arrow_right</mat-icon>
         </button>
-        <button mat-button (click)="alarmService.dismissAlarm()" [disabled]="!alarmForm.valid || alarmService.hour=='' || alarmService.minute=='' || !(alarmService.alarmOn)">
+        <button mat-button (click)="alarmService.dismissAlarm()" [disabled]="!alarmForm.valid || (alarmService.hour=='')&&alarmService.hour!=0 || (alarmService.minute=='')&&alarmService.minute!=0 || !(alarmService.alarmOn)">
           <mat-icon>pause</mat-icon>
         </button>
-        <button mat-button (click)="alarmService.refresh()" [disabled]="!alarmForm.valid || alarmService.hour=='' || alarmService.minute=='' || alarmService.alarmOn">
+        <button mat-button (click)="alarmService.refresh()" [disabled]="!alarmForm.valid || (alarmService.hour=='')&&alarmService.hour!=0 || (alarmService.minute=='')&&alarmService.minute!=0 || alarmService.alarmOn">
           <mat-icon>refresh</mat-icon>
         </button>
       </div>
