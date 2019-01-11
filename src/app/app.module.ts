@@ -20,7 +20,7 @@ import { HttpClientModule } from '@angular/common/http'
 import { CapslockDetectorDirective } from './capslock-detector/capslock-detector.directive';
 import { ToasterService } from './services/toaster.service';
 import { JwtModule } from '@auth0/angular-jwt';
-import { TasksComponent } from './tasks/tasks.component';
+import { TasksComponent} from './tasks/tasks.component'
 import { AuthGuardService } from './auth/auth-guard.service';
 import { AuthService } from './auth/auth.service';
 import { StopwatchComponent } from './stopwatch/stopwatch.component';
@@ -42,6 +42,8 @@ import { AngularFirestoreModule } from 'angularfire2/firestore';
 import { AngularFireAuthModule } from 'angularfire2/auth';
 import { environment } from '../environments/environment';
 import { SocialAuthService } from './services/social-auth.service';
+import { TaskFilter } from './tasks/task.filter';
+import { ProgressComponent } from './progress/progress.component';
 import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-dialog.component';
 
 
@@ -64,6 +66,11 @@ import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-
     RoundProgressComponent,
     LineProgressComponent,
     InfoComponent,
+    TaskInfoComponent,
+    TaskInfoDialogComponent,
+    FilterPipe,
+    TaskFilter,
+    ProgressComponent
     PresetComponent
     TaskInfoComponent,
     TaskInfoDialogComponent,
@@ -118,6 +125,7 @@ import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-
   bootstrap: [AppComponent],
   entryComponents: [
     SignupComponent,
+    TaskInfoComponent
     TaskInfoComponent,
     ConfirmationDialogComponent,
     PresetComponent
