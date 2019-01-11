@@ -1,0 +1,20 @@
+.confirmation-dialog-header {
+    display: block;
+    width: 100%;
+    padding: 0;
+    margin-bottom: 20px;
+    font-size: 21px;
+    line-height: inherit;
+    color: #333;
+    border: 0;
+    border-bottom: 1px solid #e5e5e5;
+}
+
+::ng-deep .confirmation-dialog .confirmation-dialog-header .confirmation-dialog-title {
+    margin-left: -14px;
+    font-size: 25px;
+}
+
+.mat-dialog-actions {
+    float: right;
+}

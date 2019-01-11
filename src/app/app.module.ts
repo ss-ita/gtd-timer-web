@@ -33,11 +33,17 @@ import { LineProgressComponent } from './line-progress/line-progress.component';
 import { AuthGuardFalse } from './auth/auth-guard-false.service';
 import { InfoComponent } from './info/info.component';
 import { PresetComponent } from './preset/preset.component';
+import { TaskInfoComponent } from './task-info/task-info.component';
+import { TaskInfoDialogComponent } from './task-info-dialog/task-info-dialog.component';
+import { FilterPipe } from './filter.pipe';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { AngularFireModule } from 'angularfire2';
 import { AngularFirestoreModule } from 'angularfire2/firestore';
 import { AngularFireAuthModule } from 'angularfire2/auth';
 import { environment } from '../environments/environment';
 import { SocialAuthService } from './services/social-auth.service';
+import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-dialog.component';
+
 
 @NgModule({
   declarations: [
@@ -59,6 +65,10 @@ import { SocialAuthService } from './services/social-auth.service';
     LineProgressComponent,
     InfoComponent,
     PresetComponent
+    TaskInfoComponent,
+    TaskInfoDialogComponent,
+    FilterPipe,
+    ConfirmationDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -78,6 +88,7 @@ import { SocialAuthService } from './services/social-auth.service';
     MatCardModule,
     MatExpansionModule,
     MatSidenavModule,
+    MatTooltipModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,
     AngularFireAuthModule,
@@ -105,6 +116,11 @@ import { SocialAuthService } from './services/social-auth.service';
     SocialAuthService
   ],
   bootstrap: [AppComponent],
-  entryComponents: [SignupComponent, PresetComponent]
+  entryComponents: [
+    SignupComponent,
+    TaskInfoComponent,
+    ConfirmationDialogComponent,
+    PresetComponent
+  ]
 })
 export class AppModule { }
