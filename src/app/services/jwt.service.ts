@@ -15,8 +15,8 @@ export class JwtService {
 
     return this.httpClient.post<{ access_token: string }>(this.config.urlLogIn, { email, password })
       .pipe(map(value => {
-        localStorage.setItem('access_token', value.access_token);
-      }))
+      localStorage.setItem('access_token',value.access_token);
+  }))
   }
 
   signout() {

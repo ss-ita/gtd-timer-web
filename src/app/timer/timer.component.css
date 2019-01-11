@@ -40,6 +40,7 @@
 
 .mat-card-header {
     height: 200px;
+    text-align: center;
 }
 
 .mat-card-actions {
@@ -63,15 +64,36 @@
     margin: 5% auto;
     text-align: right;
 }
+.mat-action{
+    margin-top: 10px;
+}
 
 .timer-input{
-    margin-left: 5%; 
+    margin-left: 6%; 
 }
 
-.button-area{
+.button-area {
+    width: 91%;
     text-align: center;
+    display:inline-block;
 }
-
+.timer-setting-buttons {
+    margin-left: 9%;
+}
+.label-margin {
+    margin-right: 7px;
+}
+.preset-name{
+    float: left;
+    font-size: 20px;
+}
+.preset-name.p{
+    font-size: 34px;
+}
+.mat-expansion-panel-header-title, 
+.mat-expansion-panel-header-description {
+  flex-basis: 0;
+}
 .style-menu{
     width: 40px;
     height: 40px;

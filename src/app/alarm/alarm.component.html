@@ -58,12 +58,12 @@
     <form [formGroup]="alarmForm">
       <div class="input-time-area">
         <mat-form-field class="example-full-width">
-          <input matInput placeholder="Set hours" [(ngModel)]="alarmService.hour" name="Hour" formControlName="hour"
+          <input matInput type="number" min="0" max="23" placeholder="Set hours" [(ngModel)]="alarmService.hour" name="Hour" formControlName="hour"
             [attr.disabled]="alarmService.alarmOn ?'': null">
           <mat-error>Please, input hour between 0 and 23</mat-error>
         </mat-form-field>
         <mat-form-field class="example-full-width">
-          <input matInput placeholder="Set minutes" [(ngModel)]="alarmService.minute" name="Minute" formControlName="minute"
+          <input matInput type="number" min="0" max="59" placeholder="Set minutes" [(ngModel)]="alarmService.minute" name="Minute" formControlName="minute"
             [attr.disabled]="alarmService.alarmOn ?'': null">
           <mat-error>Please, input minute between 0 and 59</mat-error>
         </mat-form-field>
