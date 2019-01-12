@@ -1,11 +1,13 @@
 <div class="main-area" [ngClass]="{'turnOffAlarmBackground': !alarmService.isActive, 'turnOnAlarmBackground': alarmService.isActive}">
   <mat-card class="content-area">
-    <mat-menu #appMenu="matMenu">
-      <button mat-menu-item (click)="styleService.changeStyle()">{{styleService.changeStyleString}}</button>
-    </mat-menu>
-    <button mat-icon-button [matMenuTriggerFor]="appMenu" class="style-menu">
-      <mat-icon>more_vert</mat-icon>
-    </button>
+      <div class="negative-margin">
+        <mat-menu #appMenu="matMenu">
+          <button mat-menu-item (click)="styleService.changeStyle()">{{styleService.changeStyleString}}</button>
+        </mat-menu>
+        <button mat-icon-button [matMenuTriggerFor]="appMenu" class="style-menu">
+          <mat-icon>more_vert</mat-icon>
+        </button>
+      </div>
     <mat-card-content class="show-time-area" [ngClass]="{'line-show-time': alarmService.isChecked}">
       <ng-template [ngIf]="styleService.isLineStyle">
         <ng-template [ngIf]="(alarmService.hour!='' || alarmService.hour==0)  && (alarmService.minute!='' || alarmService.minute==0) && alarmForm.valid">

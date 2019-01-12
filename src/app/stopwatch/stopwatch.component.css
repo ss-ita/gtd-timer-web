@@ -60,7 +60,9 @@
     width: 40px;
     height: 40px; 
 }
-
+.mat-card>:first-child.negative-margin{
+    margin-top:-7px;
+}
 .round-progress{
     margin-left: 1% !important;
     margin-top: 5% !important;

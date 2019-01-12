@@ -12,7 +12,6 @@
     width: 100%;
     background-color: red;
 }
-
 .mat-icon-button {
     width: 4rem;
     height: 4rem;
@@ -20,34 +19,28 @@
     text-decoration: underline;
     color: blue;
 }
-
 .mat-icon-button:hover
 {
     background-color: rgb(172, 205, 255);
 }
-
 .mat-icon{
     font-size:32px !important;
     height: 32px !important;
     width: 32px !important;
 }
-
 .container-stopwatch{
     width: 600px;
     text-align: center;
     height: 200px;
 }
-
 .mat-card-header {
     height: 200px;
     text-align: center;
 }
-
 .mat-card-actions {
     margin-top: 2%;
     text-align: center !important;
 }
-
 .unselectable{
     margin-left: 9%;
     -webkit-touch-callout: none; /* iOS Safari */
@@ -57,7 +50,6 @@
     -ms-user-select: none; /* Internet Explorer/Edge */
         user-select: none;
 }
-
 .mat-card{
     width: 700px;
     height: 380px;
@@ -67,11 +59,9 @@
 .mat-action{
     margin-top: 10px;
 }
-
 .timer-input{
     margin-left: 6%; 
 }
-
 .button-area {
     width: 91%;
     text-align: center;
@@ -84,7 +74,7 @@
     margin-right: 7px;
 }
 .preset-name{
-    float: left;
+    float: right;
     font-size: 20px;
 }
 .preset-name.p{
@@ -94,11 +84,52 @@
 .mat-expansion-panel-header-description {
   flex-basis: 0;
 }
-.style-menu{
+.view-preset-menu{
     width: 40px;
     height: 40px;
 }
-
+.view-change-menu{
+    width: 40px;
+    height: 40px;
+    float: left;
+}
 .round-progress{
     margin-left: 1% !important;
+}
+.right {
+    float: left;
+}
+.margin-right{
+    padding-left: 18px; 
+    padding-right: 15px; 
+}
+.margin-small-right{
+    padding-left: 10px; 
+    padding-right: 15px; 
+}
+.margin-bottom{
+    margin-bottom: 20px;
+}
+::ng-deep .mat-menu-panel.preset-menu-position{
+    background:white;
+    margin-left: 56px;
+    margin-top: -55px;
+    margin-top: -55px;
+}
+.font-size-p{
+    font-size: 18px;
+}
+.current-timer{
+    color: green;
+}
+.current-preset{
+    display: inline-block;
+}
+.mat-card>:first-child.negative-margin{
+    margin-top:-7px;
+}
+.mat-icon.toggle{
+    font-size: 22px !important;
+    color: black;
+    padding-bottom: 11px;
 }

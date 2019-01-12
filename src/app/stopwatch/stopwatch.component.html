@@ -1,11 +1,13 @@
 <div class="background">
   <mat-card>
+    <div class="negative-margin">
     <mat-menu #appMenu="matMenu">
       <button mat-menu-item (click)="styleService.changeStyle()">{{styleService.changeStyleString}}</button>
     </mat-menu>
     <button mat-icon-button [matMenuTriggerFor]="appMenu" class="style-menu">
       <mat-icon>more_vert</mat-icon>
     </button>
+    </div>
     <mat-card-header (click)="stopwatchService.clickOnStopWatch()">
       <ng-template [ngIf]="!styleService.isLineStyle">
         <app-round-progress class="round-progress" [max]="stopwatchService.maxValueOfHour" [value]="stopwatchService.hour" [color]="stopwatchService.color"

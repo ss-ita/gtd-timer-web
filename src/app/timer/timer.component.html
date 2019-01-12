@@ -1,13 +1,28 @@
 <div class="background-normal" [ngClass]="{'background-normal': timerServise.isTimerFinished === false, 
 'background-red': timerServise.isTimerFinished}">
   <mat-card>
-    <mat-menu #appMenu="matMenu">
-      <button mat-menu-item (click)="styleService.changeStyle()">{{styleService.changeStyleString}}</button>
-    </mat-menu>
-    <span class="preset-name">{{timerServise.currentPreset}}</span>
-    <button mat-icon-button [matMenuTriggerFor]="appMenu" class="style-menu">
-      <mat-icon>more_vert</mat-icon>
-    </button>
+    <div class="negative-margin">
+      <mat-menu #appMenuForChangeView="matMenu">
+        <button mat-menu-item (click)="styleService.changeStyle()">{{styleService.changeStyleString}}</button>
+      </mat-menu>
+      <button mat-icon-button [matMenuTriggerFor]="appMenuForChangeView" class="view-change-menu">
+        <mat-icon>more_vert</mat-icon>
+      </button>
+      <span class="current-preset"><p>{{timerServise.currentPreset}}</p></span>
+
+      <mat-menu #appMenuPresetInfo="matMenu" [backdropClass]="'position-menu'" class="preset-menu-position" >
+        <p class="margin-small-right , font-size-p">
+          Preset name: {{timerServise.currentPreset}}
+        </p>
+        <div *ngFor="let timer of getTimerArray; let currentTimerIndex = index">
+            <div class="margin-right , font-size" [ngClass]="{'current-timer': currentTimerIndex === getTimerArrayIndex}">{{currentTimerIndex + 1}}) {{timer.timerName}} - "{{timer.hours}}:{{timer.minutes}}:{{timer.seconds}}"</div>
+        </div>
+        <div class="margin-bottom" ></div>
+      </mat-menu>
+      <button mat-icon-button [matMenuTriggerFor]="appMenuPresetInfo" class="view-preset-menu">
+        <mat-icon class="toggle" [inline]="true" >arrow_forward_ios</mat-icon>
+      </button>
+    </div>
     <mat-card-header>
       <ng-template [ngIf]="!styleService.isLineStyle">
         <app-round-progress class="round-progress" [max]="timerServise.maxValueOfHour" [value]="timerServise.hour" [color]="timerServise.color"
@@ -66,3 +81,4 @@
   </mat-card>
 </div>
 
+<!-- /*{{timerServise.currentPreset}}*/ -->

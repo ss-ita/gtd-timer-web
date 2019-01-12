@@ -7,10 +7,10 @@
       </mat-select>
     </mat-form-field>
     <div *ngIf="isLoggedIn; else loggedOut">
-      <p *ngIf="!isViewable" class="alternative-menu">Choose the schema from default list or create your own. Just click<button class="add-new-preset-button" (click)="toggle()">Here.</button></p>
+      <p *ngIf="!isViewable" class="isAuthenticate">Choose the schema from default list or create your own. Just click<button class="add-new-preset-button" (click)="toggle()">Here.</button></p>
     </div>
     <ng-template #loggedOut>
-      <p *ngIf="!isViewable" class="alternative-menu">Choose the default schema ,<button class="add-new-preset-button" (click)="openSinUpDialogComponent()"> Register </button>or<button class="add-new-preset-button">Sign In </button>to create your own.</p>
+      <p *ngIf="!isViewable" class="isAuthenticate">Choose the schema from default list.<button class="add-new-preset-button" (click)="openSinUpDialogComponent()"> Register </button>to create your own.</p>
     </ng-template>
     <div *ngIf="isViewable">
       <mat-form-field class="presets-full-width">
@@ -36,12 +36,12 @@
               <input matInput type="number" min="0" max="59" formControlName="seconds" placeholder="Seconds">
               <mat-error>{{getErrorMessageMinutesAndSeconds()}}</mat-error>
             </mat-form-field>
-            <button mat-icon-button>
-              <mat-icon (click)="deleteTimerGroupRow(timerIndex)">delete</mat-icon>
+            <button mat-icon-button [disabled]="isValidate">
+              <mat-icon class="delete-timer-icon" (click)="deleteTimerGroupRow(timerIndex)">delete</mat-icon>
             </button>
           </div>  
             <div class="add-timer-button">
-              <button mat-icon-button [disabled]="!presetForm.valid">
+              <button mat-icon-button [disabled]="isValidate">
                 <mat-icon class="add-timer-icon" [inline]="true" (click)="addTimerGroupRow()">control_point</mat-icon>
               </button>
             </div>

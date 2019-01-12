@@ -13,6 +13,10 @@
 }
 .add-timer-icon {
     font-size: 36px;
+    color: black;
+}
+.delete-timer-icon {
+    color: black;
 }
 .add-new-preset-button {
     background-color: transparent;
@@ -34,6 +38,6 @@
 .margin-top {
     margin-top: 30px;
 }
-.alternative-menu {
+.isAuthenticate {
     font-size: 17px;
 }
