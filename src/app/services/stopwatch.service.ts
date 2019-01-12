@@ -31,7 +31,7 @@ export class StopwatchService {
 
   start() {
 
-    this.color = 'blue';
+    this.color = '#609b9b';
 
     if (this.isStopwatchRun === false) {
       this.isStopwatchPause = false;

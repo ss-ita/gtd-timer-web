@@ -3,7 +3,6 @@
     height: 4rem;
     border: none;
     text-decoration: underline;
-    color: blue;
 }
 
 .mat-icon-button:hover
@@ -34,7 +33,8 @@
     top: auto;
     min-height: calc(100vh - 49px);
     width: 100%;
-    background-color: #609b9b
+    background-image: linear-gradient(to top, #d9afd9 0%, #97d9e1 100%);
+    min-width: 820px;
 }
 
 .unselectable{

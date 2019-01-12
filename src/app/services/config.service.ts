@@ -20,7 +20,4 @@ export class ConfigService {
 
   constructor() { }
 }
-export function jwtTokenGetter() {
-  return () => localStorage.getItem('access_token');
-}
 

@@ -33,7 +33,7 @@ export class TimerService {
     isFromPreset = false;
 
     timerSound = new Audio();
-    color = 'blue';
+    color = '#609b9b';
     subscribe: Subscription;
     public currentPreset = '#No chosen preset';
 
@@ -110,6 +110,7 @@ export class TimerService {
             this.refreshTimer();
             this.timerSound.src = this.configService.urlSoundTimer;
             this.timerSound.play();
+            this.isTimerFinished = true;
         }
 
         if (this.ticks > this.maxValueOfHour * this.secondPerHour) {

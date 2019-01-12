@@ -6,15 +6,13 @@ import { Injectable } from '@angular/core';
 
 export class StyleService {
     isLineStyle = false;
-    changeStyleString = 'Change style to line';
+    changeStyleString = 'Change style';
 
     changeStyle() {
         if (this.isLineStyle === false) {
             this.isLineStyle = true;
-            this.changeStyleString = 'Change style to circle';
         } else {
             this.isLineStyle = false;
-            this.changeStyleString = 'Change style to line';
         }
     }
 
