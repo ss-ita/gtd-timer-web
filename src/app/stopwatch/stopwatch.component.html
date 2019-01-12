@@ -19,11 +19,11 @@
       </ng-template>
       <ng-template [ngIf]="styleService.isLineStyle">
         <div class="container-stopwatch" class="unselectable">
-          <app-line-progress [value]="stopwatchService.hour" [isActive]="stopwatchService.isStopwatchRun" [isPaused]="stopwatchService.isStopwatchPause"
+          <app-line-progress class="textsize" [value]="stopwatchService.hour" [isActive]="stopwatchService.isStopwatchRun" [isPaused]="stopwatchService.isStopwatchPause"
             [text]="':'"></app-line-progress>
-          <app-line-progress [value]="stopwatchService.minute" [isActive]="stopwatchService.isStopwatchRun" [isPaused]="stopwatchService.isStopwatchPause"
+          <app-line-progress class="textsize" [value]="stopwatchService.minute" [isActive]="stopwatchService.isStopwatchRun" [isPaused]="stopwatchService.isStopwatchPause"
             [text]="':'"></app-line-progress>
-          <app-line-progress [value]="stopwatchService.second" [isActive]="stopwatchService.isStopwatchRun" [isPaused]="stopwatchService.isStopwatchPause"
+          <app-line-progress class="textsize" [value]="stopwatchService.second" [isActive]="stopwatchService.isStopwatchRun" [isPaused]="stopwatchService.isStopwatchPause"
             [text]="''"></app-line-progress>
         </div>
       </ng-template>

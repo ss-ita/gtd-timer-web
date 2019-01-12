@@ -119,15 +119,4 @@ export class Task {
         return valStr;
     }
 
-
-    getWithoutComa(n: String) {
-        const doesExist = n.indexOf(',');
-        let valStr = String(0);
-        if (doesExist !== -1) {
-            valStr = n.slice(n.indexOf(','));
-            valStr = n[0] + valStr;
-        }
-        return valStr;
-    }
-
 }

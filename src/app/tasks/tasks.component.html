@@ -1,54 +1,68 @@
+
 <div class="background">
-  <div class="fields">
-    <fieldset class="add_new">
-      <form (submit)="addTask()">
-        <input class="input" placeholder="New Task Name" type="text" [(ngModel)]="taskName" name="Name">
+  <div class="my-container">
+    <div class="fields">
+      <fieldset class="add_new">
+        <form (submit)="addTask()">
+          <input class="input" placeholder="New Task Name" type="text" [(ngModel)]="taskName" name="Name">
+          <button class="but" type="submit">Add</button>
+        </form>
+      </fieldset>
+      <fieldset class="other">
+        <select>
+          <option value="" disabled selected>Groups</option>
+        </select>
+        <button class="but">Reset</button>
+        <input [(ngModel)]="searchText" class="search" placeholder="Search">
         <button class="but">Start</button>
-        <button class="but" type="submit">Add</button>
-      </form>
-    </fieldset>
-    <fieldset class="other">
-      <select>
-        <option value="" disabled selected>Groups</option>
-      </select>
-      <button class="but">Reset</button>
-      <input [(ngModel)]="searchText" class="search" placeholder="Search">
-      <button class="but">Start</button>
-    </fieldset>
-  </div>
-  <mat-card-content>
-    <div class="row">
-      <div class="col">
+      </fieldset>
+    </div>
+    <div class="top-tittles">
+      <div class="name-title" (click)="filterByProperty('name')">
         Name
       </div>
-      <div class="col">
+      <div class="time-title">
         Time
       </div>
-      <div class="col">
+      <div class="goal-title">
         Goal
       </div>
-      <div class="col">
+      <div class="progres-title">
         Progress
       </div>
-      <div class="col">
+      <div class="actions-title">
         Actions
       </div>
     </div>
-    <div *ngFor="let task of tasks | filter:searchText" class="grid-container">
-      <div class="grid-item">
-        <p>{{task.name}}</p>
-      </div>
-      <div class="grid-item">00:00:00</div>
-      <div class="grid-item">00:00:00</div>
-      <div class="grid-item" class="right">
-        <app-progress [value]="progress | async"></app-progress>
-      </div>
-      <div class="grid-item">
-        <button class="but"><i class="fa fa-play"></i></button>
-        <button class="but"><i class="fa fa-refresh"></i></button>
-        <button class="but"><i class="fa fa-bars"></i></button>
-        <button class="but" (click)="deleteTask(task)"><i class="fa fa-times"></i></button>
-      </div>
-    </div>
-  </mat-card-content>
-</div>
+    <mat-list>
+      <mat-list-item *ngFor='let task of tasks | filter: searchText' class="grid-container">
+        <div class="name">
+          <p>{{task.name}}</p>
+        </div>
+        <div class="time">
+          <app-line-progress class="textSize" [value]="stopwatchService.hour" [isActive]="stopwatchService.isStopwatchRun"
+            [isPaused]="stopwatchService.isStopwatchPause" [text]="':'"></app-line-progress>
+          <app-line-progress class="textSize" [value]="stopwatchService.minute" [isActive]="stopwatchService.isStopwatchRun"
+            [isPaused]="stopwatchService.isStopwatchPause" [text]="':'"></app-line-progress>
+          <app-line-progress class="textSize" [value]="stopwatchService.second" [isActive]="stopwatchService.isStopwatchRun"
+            [isPaused]="stopwatchService.isStopwatchPause" [text]="''"></app-line-progress>
+        </div>
+        <div class="goal">
+          <input matInput type="number"></div>
+        <div class="right">
+          <app-progress [value]="progress | async"></app-progress>
+        </div>
+        <div class="actions">
+          <button class="but" (click)="startTask(task)"><i class="fa fa-play"></i></button>
+          <button class="but" (click)="pauseTask(task)"><i class="fa fa-pause"></i></button>
+          <button class="but" (click)="resetTask(task)"><i class="fa fa-refresh"></i></button>
+          <button class="but"><i class="fa fa-bars"></i></button>
+          <button class="but" (click)="deleteTask(task)"><i class="fa fa-times"></i></button>
+        </div>
+      </mat-list-item>
+    </mat-list>
+  </div>
+
+
+
+

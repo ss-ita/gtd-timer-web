@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
-import { Task } from '../models/task.model';
+import { Observable, from } from 'rxjs';
 import { ArchiveService } from '../services/archive.service';
 import { TaskCreateJson } from '../models/taskCreateJson.model';
+import { StopwatchService } from '../services/stopwatch.service';
+import { TimerService } from '../services/timer.service';
 
 @Component({
   selector: 'app-tasks',
@@ -14,13 +15,13 @@ export class TasksComponent implements OnInit {
 
   readonly progress: Observable<number>;
 
+  constructor(private archiveService: ArchiveService, public stopwatchService: StopwatchService, public timerService: TimerService) { this.progress = this.emulateProgress(); }
 
-  constructor(private archiveService: ArchiveService) { this.progress = this.emulateProgress(); }
 
-
-  public tasks: Task[] = [];
-  taskName;
+  public tasks: TaskCreateJson[] = [];
+  taskName: String;
   public searchText: string;
+
 
   emulateProgress() {
     return new Observable<number>(observer => {
@@ -46,38 +47,66 @@ export class TasksComponent implements OnInit {
   }
 
   addTask() {
-    const taskToPass: TaskCreateJson = {
+    let taskToPass: TaskCreateJson = {
+      id: 0,
       name: this.taskName,
-      description: '',
+      description: "",
       elapsedTime: 0,
-      goal: '',
-      lastStartTime: '0001-01-01T00:00:00Z',
+      goal: "",
+      lastStartTime: "0001-01-01T00:00:00Z",
       isActive: true,
       isRunning: false
-    };
+    }
     const myObserver = {
       next: x => { },
       error: err => { },
-      complete: () => {
-        this.archiveService.getActiveTasksFromServer().subscribe();
+      complete: () => { 
+        this.archiveService.getActiveTasksFromServer().subscribe() 
       },
+
     };
+
     this.archiveService.createTask(taskToPass).subscribe(myObserver);
+    this.tasks.push(taskToPass);
   }
 
+  filterByProperty(propertyName: string) {
+    this.tasks = this.tasks.sort((a, b) => {
+      switch (propertyName) {
+        case 'name': return this.compare(a.name, b.name);
+      }
+    });
+  }
 
-  deleteTask(task: Task) {
-    this.archiveService.switchtaskStatus(task).subscribe();
-    this.getActiveTasks();
+  compare(a: String, b: String) {
+    return (a.toLowerCase() < b.toLowerCase() ? -1 : 1);
+  }
+
+  resetTask(task: TaskCreateJson) {
+    this.archiveService.resetTask(task.id).subscribe();
+  }
+
+  deleteTask(task: TaskCreateJson) {
+    this.archiveService.switchTaskStatus(task).subscribe();
+    let indexTaskToDelete = this.tasks.indexOf(task, 0);
+    this.tasks.splice(indexTaskToDelete, 1);
+  }
+  startTask(task: TaskCreateJson) {
+    this.archiveService.startTask(task).subscribe();
+    this.stopwatchService.start();
+  }
+  pauseTask(task: TaskCreateJson) {
+    this.archiveService.pauseTask(task).subscribe();
+    this.stopwatchService.clickOnStopWatch();
   }
 
   getActiveTasks() {
     this.archiveService.getActiveTasksFromServer().subscribe(data => {
       this.tasks = [];
       for (let i = 0; i < data.length; ++i) {
-        this.tasks.push(new Task());
-        this.tasks[i].convertFromTaskJson(data[i]);
+        this.tasks.push(data[i]);
       }
-    });
+    })
   }
 }
+
