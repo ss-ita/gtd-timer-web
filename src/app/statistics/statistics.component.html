@@ -1,3 +1,16 @@
 <div class="background">
-  
+  <div class="container">
+    <div>
+      <div class="buttons">
+        <button mat-raised-button [ngClass]="{'active': isActiveChart}" (click)="drawActiveTasks()">Active</button>
+        <button mat-raised-button [ngClass]="{'active': !isActiveChart}" (click)="drawArchiveTasks()">Archive</button>
+      </div>
+    </div>
+    <div id="chart" [ngClass]="{'hidden': !hasData}">
+      <canvas id="doughnutChart"></canvas>
+    </div>
+    <div id="noData" [ngClass]="{'hidden': hasData}">
+      <p> No data available. Please, add tasks!</p>
+    </div>
+  </div>
 </div>
