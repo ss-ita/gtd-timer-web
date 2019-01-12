@@ -1,3 +1,12 @@
-<p>
-  statistics works!
-</p>
+<div class="fields">
+  <div class="buttons">
+    <button class="btn btn-default active" color="primary" (click)="drawActiveTasks()">Active</button>
+    <button class="btn btn-default" color="primary" (click)="drawArchiveTasks()">Archive</button>
+  </div>
+</div>
+<div id="chart" [ngClass]="{'hidden': !hasData}">
+  <canvas id="pieChart"></canvas>
+</div>
+<div id="noData" [ngClass]="{'hidden': hasData}">
+  <p> No data available. Please, add tasks!</p>
+</div>

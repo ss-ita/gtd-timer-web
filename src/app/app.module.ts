@@ -64,7 +64,7 @@ import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-
     RoundProgressComponent,
     LineProgressComponent,
     InfoComponent,
-    PresetComponent
+    PresetComponent,
     TaskInfoComponent,
     TaskInfoDialogComponent,
     FilterPipe,

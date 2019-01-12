@@ -92,4 +92,10 @@ export class UserService {
           this.toasterService.showToaster(response.error.Message);
         });
   }
+
+  getAllTasks(){
+    const headers = this.getHeaders();
+
+    return this.http.get(this.config.urlUserAllTasks, { headers: headers });
+  }
 }
