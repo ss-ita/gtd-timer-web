@@ -24,7 +24,7 @@ export class StatisticsComponent implements OnInit {
   ngOnInit() {
     this.tasksService.getAllTasks().subscribe(
       (data: any[]) => {
-        this.map(data);
+        this.tasks = this.map(data);
         this.createInitialChart();
       },
       httpErrorResponse => {
@@ -33,10 +33,13 @@ export class StatisticsComponent implements OnInit {
   }
 
   map(data: any[]) {
+    var items = [];
     for (var i = 0; i < data.length; i++) {
       var task = { name: data[i].name, time: parseInt(data[i].elapsedTime), isActive: data[i].isActive };
-      this.tasks.push(task);
+      items.push(task);
     }
+
+    return items;
   }
 
   filterTasks(tasks: any[], isActive: boolean) {
