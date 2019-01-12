@@ -1,8 +1,13 @@
-.fields {
+.container {
+    position: relative;
+    margin: 0 10%;
+}
+
+.container>div:first-child {
     background-color: rgb(235, 233, 233);
     width: 100%;
     height: 50px;
-    padding-top: 3px;
+    padding-top: 10px;
 }
 
 div#chart {
@@ -11,27 +16,38 @@ div#chart {
 }
 
 .buttons {
+    margin-top: 5px;
     margin: 0 10%;
 }
 
-.btn {
-    border-radius: 0;
-    background: darkgrey;
-    color:black;
+div.buttons .mat-raised-button{
+    background-color: #dededa;
+}
+ 
+div.buttons .active {
+    background-color: white;
 }
 
-div#noData {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    margin-top: -50px;
-    margin-left: -100px;
+div.buttons .mat-raised-button:first-child {
+    border-bottom-right-radius: 0px; 
+    border-top-right-radius: 0px;
+}
+
+div.buttons .mat-raised-button:nth-child(2){
+    border-bottom-left-radius: 0px; 
+    border-top-left-radius: 0px;
+}
+
+#noData {
+    padding-top: 50px;
 }
 
 .hidden {
     display: none;
 }
 
-p {
+#noData p {
     font-size: x-large;
+    width: 350px;
+    margin: 0 auto;
 }
