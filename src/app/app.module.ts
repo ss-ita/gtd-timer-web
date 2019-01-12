@@ -12,7 +12,7 @@ import { AlarmComponent } from './alarm/alarm.component';
 import { TaskManagementComponent } from './task-management/task-management.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CompareValidatorDirective } from './compare-validator/compare-validator.directive';
-import { MatDialogModule, MatDialog, MatDialogRef, MatSnackBarModule, MatSidenavModule, MatExpansionPanel, MatExpansionModule } from "@angular/material";
+import { MatDialogModule, MatDialog, MatDialogRef, MatSnackBarModule, MatSidenavModule, MatExpansionPanel, MatExpansionModule, MatRadioModule } from "@angular/material";
 import { MatMenuModule, MatButtonModule, MatIconModule, MatCardModule } from "@angular/material";
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { UserService } from './services/user.service';
@@ -20,7 +20,7 @@ import { HttpClientModule } from '@angular/common/http'
 import { CapslockDetectorDirective } from './capslock-detector/capslock-detector.directive';
 import { ToasterService } from './services/toaster.service';
 import { JwtModule } from '@auth0/angular-jwt';
-import { TasksComponent } from './tasks/tasks.component';
+import { TasksComponent} from './tasks/tasks.component'
 import { AuthGuardService } from './auth/auth-guard.service';
 import { AuthService } from './auth/auth.service';
 import { StopwatchComponent } from './stopwatch/stopwatch.component';
@@ -42,9 +42,15 @@ import { AngularFirestoreModule } from 'angularfire2/firestore';
 import { AngularFireAuthModule } from 'angularfire2/auth';
 import { environment } from '../environments/environment';
 import { SocialAuthService } from './services/social-auth.service';
+import { SignupDialogComponent } from './signup-dialog/signup-dialog.component';
+import { TaskFilter } from './tasks/task.filter';
+import { ProgressComponent } from './progress/progress.component';
 import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-dialog.component';
+import { PresetDialogComponent } from './preset-dialog/preset-dialog.component';
 
-
+export function jwtTokenGetter() {
+  return localStorage.getItem('access_token');
+}
 @NgModule({
   declarations: [
     AppComponent,
@@ -66,9 +72,17 @@ import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-
     InfoComponent,
     PresetComponent,
     TaskInfoComponent,
+    SignupDialogComponent,
     TaskInfoDialogComponent,
     FilterPipe,
-    ConfirmationDialogComponent
+    TaskFilter,
+    ProgressComponent,
+    PresetComponent,
+    TaskInfoDialogComponent,
+    FilterPipe,
+    ConfirmationDialogComponent,
+    PresetDialogComponent,
+    TaskInfoComponent
   ],
   imports: [
     BrowserModule,
@@ -92,11 +106,10 @@ import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,
     AngularFireAuthModule,
+    MatRadioModule,
     JwtModule.forRoot({
       config: {
-        tokenGetter: function tokenGetter() {
-          return localStorage.getItem('access_token');
-        },
+        tokenGetter: jwtTokenGetter,
         whitelistedDomains: [
           'http://localhost:4200',
           'https://localhost:44398'
@@ -124,3 +137,4 @@ import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-
   ]
 })
 export class AppModule { }
+

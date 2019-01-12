@@ -24,7 +24,7 @@ export class Task {
         this.description = task.description;
 
         this.elapsedTime = null;
-        if (task.elapsedTime) {
+        if (task.elapsedTime != null) {
             let hours = Math.floor(Number(task.elapsedTime) / 3600000);
             let minutes = Math.floor((Number(task.elapsedTime) - hours * 3600000) / 60000);
             let seconds = Math.floor((Number(task.elapsedTime) - hours * 3600000 - minutes * 60000) / 1000)
@@ -39,7 +39,7 @@ export class Task {
         let times: any;
         let date: any;
         this.lastStartTime = null;
-        if (task.lastStartTime) {
+        if (task.lastStartTime!=null) {
             date = task.lastStartTime.split('T')[0];
             times = task.lastStartTime.split('T')[1];
             let dateArray = date.split('-');
@@ -56,7 +56,7 @@ export class Task {
         }
         
         this.goal = null;
-        if (task.goal) {
+        if (task.goal!=null) {
             times = task.goal.split(':');
             this.goal = {
                 hours: Number(times[0]),
@@ -78,9 +78,13 @@ export class Task {
            elTime=  this.elapsedTime.hours * 3600000 + this.elapsedTime.minutes * 60000 + this.elapsedTime.seconds * 1000 + this.elapsedTime.miliseconds;
         }
         
-        let date = null
+
+        let date = null;
+      let year = dec.transform(this.lastStartTime.year,'4.0-0').toString();
+      let yearToPass = year[0]+year[2]+year[3]+year[4];
         if(this.lastStartTime){
-            date = this.lastStartTime.year.toString() + '-' + this.lastStartTime.month.toString() + '-' + this.lastStartTime.day.toString()
+            date = yearToPass.toString()+ '-' + dec.transform(this.lastStartTime.month,'2.0-0').toString()
+             + '-' + dec.transform(this.lastStartTime.day,'2.0-0').toString()
             + 'T' + dec.transform(this.lastStartTime.hours,'2.0-0').toString()
              + ':' + dec.transform(this.lastStartTime.minutes,'2.0-0').toString()
               + ':' + dec.transform((this.lastStartTime.seconds + this.lastStartTime.miliseconds / 1000),'2.0-3').toString() + 'Z';
@@ -109,6 +113,17 @@ export class Task {
         let valStr = String(0);
         if (doesExist != -1) {
             valStr = n.slice(n.indexOf('.'));
+        }
+        return valStr;
+    }
+
+
+    getWithoutComa(n:String){
+        let doesExist = n.indexOf(',');
+        let valStr = String(0);
+        if (doesExist != -1) {
+            valStr = n.slice(n.indexOf(','));
+            valStr = n[0]+valStr;
         }
         return valStr;
     }

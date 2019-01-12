@@ -6,6 +6,7 @@ import { compareValidator } from '../compare-validator/compare-validator.directi
 import { UserService } from '../services/user.service';
 import { ToasterService } from '../services/toaster.service';
 import { Router } from '@angular/router';
+import { ConfigService } from '../services/config.service';
 
 @Component({
   selector: 'app-signup',
@@ -14,7 +15,8 @@ import { Router } from '@angular/router';
 })
 
 export class SignupComponent implements OnInit {
-  
+  hide:boolean;
+  capsOn:boolean;
   user: SignupModel = new SignupModel();
   signUpForm: FormGroup;
   passwordPattern = /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=.,\-_!])([a-zA-Z0-9 @#$%^&+=*.,\-_!]){8,}$/;
@@ -23,7 +25,8 @@ export class SignupComponent implements OnInit {
     private signUpFormDialogRef: MatDialogRef<SignupComponent>,
     private userService: UserService,
     private toasterService: ToasterService,
-    private router: Router
+    private router: Router,
+    private config: ConfigService,
     ) {  }
 
   closeSignUpForm() {
@@ -41,7 +44,7 @@ export class SignupComponent implements OnInit {
             {
               this.toasterService.showToaster("You can now Sign In!");
             },
-            4000);
+            this.config.delay);
         },
         response => {
             this.toasterService.showToaster(response.error.Message)

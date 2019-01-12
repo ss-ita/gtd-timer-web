@@ -4,9 +4,9 @@ import { UpdatePasswordModel } from '../models/update-password.model';
 import { compareValidator } from '../compare-validator/compare-validator.directive';
 import { UserService } from '../services/user.service';
 import { ToasterService } from '../services/toaster.service';
-import { JwtService } from '../jwt.service';
 import { MatDialog } from "@angular/material";
 import { ConfirmationDialogComponent } from "../confirmation-dialog/confirmation-dialog.component";
+import { JwtService } from '../services/jwt.service';
 
 
 @Component({
@@ -16,9 +16,10 @@ import { ConfirmationDialogComponent } from "../confirmation-dialog/confirmation
 })
 export class SettingsComponent implements OnInit {
 
-  updatePasswordModel: UpdatePasswordModel = new UpdatePasswordModel();
-  updatePasswordForm: FormGroup;
-  deleteAccountForm: FormGroup;
+  hide:boolean;
+  updatePasswordModel:UpdatePasswordModel=new UpdatePasswordModel();
+  updatePasswordForm:FormGroup;
+  deleteAccountForm:FormGroup;
 
   constructor(
     private formBuilder: FormBuilder,

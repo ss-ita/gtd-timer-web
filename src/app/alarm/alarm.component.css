@@ -49,7 +49,7 @@
 }
 
 .show-time-area .time-element {
-	margin: 10px;
+	margin: 18px 10px 19px;
 	display: inline-block;
 	font-size: 110px;
 	padding: 20px;
@@ -94,7 +94,7 @@
 	text-align: center;
 	font-size: 90px;
 	color: #609b9b;
-	margin: 57px auto;
+	margin: 56.5px auto;
 }
 
 .input-time-area {
@@ -106,16 +106,19 @@
 	margin: 0px 35px;
 }
 
+
 .mat-card-content {
 	margin-bottom: 13px;
 }
-
+.mat-card-content.line-show-time {
+	margin-bottom: 29px;
+}
 .button-area {
 	text-align: center;
 }
 
 .button-area .mat-button {
-	margin: 2.5px;
+	margin: 2px 0;
 	border-radius: 50%;
 	width: 4rem;
 	height: 4rem;
@@ -130,22 +133,6 @@
 
 .button-area .mat-button:disabled, .button-area .mat-button[disabled] {
 	color: #b9b9b9;
-}
-
-.blink {
-	animation: blink 1s infinite;
-}
-
-@keyframes blink {
-	0% {
-		opacity: 1;
-	}
-	50% {
-		opacity: 0;
-	}
-	100% {
-		opacity: 1;
-	}
 }
 
 .style-menu{

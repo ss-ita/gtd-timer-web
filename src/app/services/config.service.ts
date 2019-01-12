@@ -3,12 +3,7 @@ import { Injectable } from '@angular/core';
 @Injectable({
   providedIn: 'root'
 })
-export class ConfigService {
-
- 
-
-
- 
+export class ConfigService { 
   public readonly urlTask = 'https://localhost:44398/api/Tasks/';
   public readonly baseUrl: string = 'https://localhost:44398';
   public readonly urlPreset =  'https://localhost:44398/api/Preset/';
@@ -21,5 +16,12 @@ export class ConfigService {
   public readonly urlGoogleIcon: string = 'https://img.icons8.com/color/48/000000/google-plus.png';
   public readonly urlUser: string = this.baseUrl + '/api/user';
   public readonly urlUserAllTasks: string = this.baseUrl + '/api/tasks/GetAllTasksByUserId';
+  public readonly delay: number = 3000;
+
+
   constructor() { }
 }
+export function jwtTokenGetter() {
+  return ()=>localStorage.getItem('access_token');
+}
+

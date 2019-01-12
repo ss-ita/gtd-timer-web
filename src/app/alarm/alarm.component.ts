@@ -12,10 +12,10 @@ export class AlarmComponent implements OnInit {
 
 
   alarmForm: FormGroup;
-  hourPattern = /^(2[0-3]|1[0-9]|[1-9]|0)$/;
+  hourPattern = /^(2[0-3]|1[0-9]|[0-9]|0)$/;
   minutePattern = /^([1-5]?[0-9]|0)$/;
 
-  constructor(private formBuilder: FormBuilder, private alarmService: AlarmService, private styleService: StyleService) {
+  constructor(private formBuilder: FormBuilder, public alarmService: AlarmService, public styleService: StyleService) {
   }
 
   ngOnInit() {
