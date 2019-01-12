@@ -1,52 +1,54 @@
-<div class="fields">
-  <fieldset class="add_new">
-    <form (submit)="addTask()">
-      <input class="input" placeholder="New Task Name" type="text" [(ngModel)]="taskName" name="Name">
+<div class="background">
+  <div class="fields">
+    <fieldset class="add_new">
+      <form (submit)="addTask()">
+        <input class="input" placeholder="New Task Name" type="text" [(ngModel)]="taskName" name="Name">
+        <button class="but">Start</button>
+        <button class="but" type="submit">Add</button>
+      </form>
+    </fieldset>
+    <fieldset class="other">
+      <select>
+        <option value="" disabled selected>Groups</option>
+      </select>
+      <button class="but">Reset</button>
+      <input [(ngModel)]="searchText" class="search" placeholder="Search">
       <button class="but">Start</button>
-      <button class="but" type="submit">Add</button>
-    </form>
-  </fieldset>
-  <fieldset class="other">
-    <select>
-      <option value="" disabled selected>Groups</option>
-    </select>
-    <button class="but">Reset</button>
-    <input [(ngModel)]="searchText" class="search" placeholder="Search">
-    <button class="but">Start</button>
-  </fieldset>
+    </fieldset>
+  </div>
+  <mat-card-content>
+    <div class="row">
+      <div class="col">
+        Name
+      </div>
+      <div class="col">
+        Time
+      </div>
+      <div class="col">
+        Goal
+      </div>
+      <div class="col">
+        Progress
+      </div>
+      <div class="col">
+        Actions
+      </div>
+    </div>
+    <div *ngFor="let task of tasks | filter:searchText" class="grid-container">
+      <div class="grid-item">
+        <p>{{task.name}}</p>
+      </div>
+      <div class="grid-item">00:00:00</div>
+      <div class="grid-item">00:00:00</div>
+      <div class="grid-item" class="right">
+        <app-progress [value]="progress | async"></app-progress>
+      </div>
+      <div class="grid-item">
+        <button class="but"><i class="fa fa-play"></i></button>
+        <button class="but"><i class="fa fa-refresh"></i></button>
+        <button class="but"><i class="fa fa-bars"></i></button>
+        <button class="but" (click)="deleteTask(task)"><i class="fa fa-times"></i></button>
+      </div>
+    </div>
+  </mat-card-content>
 </div>
-<mat-card-content>
-  <div class="row">
-    <div class="col">
-      Name
-    </div>
-    <div class="col">
-      Time
-    </div>
-    <div class="col">
-      Goal
-    </div>
-    <div class="col">
-      Progress
-    </div>
-    <div class="col">
-      Actions
-    </div>
-  </div>
-  <div *ngFor="let task of tasks | filter:searchText" class="grid-container">
-    <div class="grid-item">
-      <p>{{task.name}}</p>
-    </div>
-    <div class="grid-item">00:00:00</div>
-    <div class="grid-item">00:00:00</div>
-    <div class="grid-item" class="right">
-      <app-progress [value]="progress | async"></app-progress>
-    </div>
-    <div class="grid-item">
-      <button class="but"><i class="fa fa-play"></i></button>
-      <button class="but"><i class="fa fa-refresh"></i></button>
-      <button class="but"><i class="fa fa-bars"></i></button>
-      <button class="but" (click)="deleteTask(task)"><i class="fa fa-times"></i></button>
-    </div>
-  </div>
-</mat-card-content>

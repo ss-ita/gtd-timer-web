@@ -79,7 +79,7 @@ export class PresetComponent implements OnInit {
       }
     });
   }
-  
+
   getAllCustomPresets() {
     this.presetService.getGetAllCustomPresetsFromServer().subscribe(data => {
       for (let index = 0; index < data.length; index++) {

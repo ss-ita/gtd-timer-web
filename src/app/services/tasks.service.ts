@@ -17,4 +17,11 @@ export class TasksService implements OnInit {
         });
         return headers;
     }
+
+    public getAllTasks() {
+        const headers = this.getHeaders();
+
+        return this.http.get(this.service.urlGetAllTasks, { headers: headers });
+    }
+
 }
