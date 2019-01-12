@@ -5,7 +5,6 @@ import { TimerService } from './timer.service';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
-
 @Injectable({ providedIn: 'root' })
 
 export class PresetService {
@@ -30,18 +29,15 @@ export class PresetService {
   }
 
   createPreset(presetModelJson: PresetModelJson) {
-    const headers = this.getHeaders();
-    return this.http.post(this.config.urlPreset + 'CreatePreset', presetModelJson, { headers: headers });
+    return this.http.post(this.config.urlPreset + 'CreatePreset', presetModelJson, { headers: this.getHeaders() });
   }
 
   getGetAllStandardPresetsFromServer(): Observable<PresetModelJson[]> {
-    const headers = this.getHeaders();
-    return this.http.get<PresetModelJson[]>(this.config.urlPreset + 'GetAllStandardPresets', { headers: headers });
+    return this.http.get<PresetModelJson[]>(this.config.urlPreset + 'GetAllStandardPresets', { headers: this.getHeaders() });
   }
 
   getGetAllCustomPresetsFromServer(): Observable<PresetModelJson[]> {
-    const headers = this.getHeaders();
-    return this.http.get<PresetModelJson[]>(this.config.urlPreset + 'GetAllCustomPresets', { headers: headers });
+    return this.http.get<PresetModelJson[]>(this.config.urlPreset + 'GetAllCustomPresets', { headers: this.getHeaders() });
   }
 
   pushPreset(preset: PresetModel) {

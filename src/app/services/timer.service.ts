@@ -3,9 +3,7 @@ import { Timer } from '../models/preset.model';
 import { Injectable } from '@angular/core';
 import { timer, Subscription } from 'rxjs';
 
-
 @Injectable({ providedIn: 'root' })
-
 
 export class TimerService {
 
@@ -30,27 +28,36 @@ export class TimerService {
     isTimerRun: Boolean = false;
     isTimerPause: Boolean = false;
     isTimerFinished: Boolean = false;
-
-    isFromPreset: boolean = false;
-
+    isArrayEmpty: Boolean = true;
 
     timerSound = new Audio();
     color: string = '#609b9b';
     subscribe: Subscription;
-    public currentPreset = "#No choosen preset";
+    public currentPreset = "#No chosen preset";
 
     initializeTimerArray(timerArray: Timer[]) {
         this.clearTimerArrayAndIndex();
-        this.timerArray = timerArray;
-        this.timerArrayLenght = timerArray.length;
+        this.resetTimer();
         this.timerIndex++;
+        this.timerArray = timerArray;
+        this.refreshTimer();
+        this.timerArrayLenght = timerArray.length;
         this.startTimerFromPreset();
+        this.getIsArrayEmpty();
     }
+    
+    getIsArrayEmpty() {
+        if(this.timerIndex === -1) this.isArrayEmpty = true;
+        else this.isArrayEmpty = false;
+    }
+
     startTimerFromPreset() {
         if (this.timerIndex === this.timerArrayLenght) this.timerIndex = 0;
-        if (this.timerIndex <= this.timerArrayLenght - 1)
+        if (this.timerIndex <= this.timerArrayLenght - 1) {
             this.startPresetTimer(this.timerArray[this.timerIndex].hours, this.timerArray[this.timerIndex].minutes, this.timerArray[this.timerIndex].seconds);
+        }
     }
+
     startPresetTimer(hours: number, minutes: number, seconds: number) {
         this.hour = hours;
         this.minute = minutes;
@@ -125,10 +132,10 @@ export class TimerService {
         this.timerArray = [];
         this.timerIndex = -1;
     }
+    
     resetTimer() {
         this.hour = 0;
         this.minute = 0;
         this.second = 0;
     }
 }
-
