@@ -20,7 +20,7 @@ export class PresetComponent implements OnInit {
   presetForm: FormGroup;
   isViewable: boolean;
   isLoggedIn: boolean;
-  isValidate: boolean;
+  isValidate = true;
 
   constructor(
     private presetsFormDialogRef: MatDialogRef<PresetComponent>,
@@ -66,7 +66,11 @@ export class PresetComponent implements OnInit {
 
   getAllStandartAndCustomPresets() {
     this.presetService.presetsArray = [];
-    if (this.isLoggedIn) this.getAllCustomPresets();
+
+    if (this.isLoggedIn) {
+      this.getAllCustomPresets();
+    }
+
     this.presetService.getGetAllStandardPresetsFromServer().subscribe(data => {
       for (let index = 0; index < data.length; index++) {
         this.presetModel = new PresetModel();
@@ -75,7 +79,7 @@ export class PresetComponent implements OnInit {
       }
     });
   }
-  
+
   getAllCustomPresets() {
     this.presetService.getGetAllCustomPresetsFromServer().subscribe(data => {
       for (let index = 0; index < data.length; index++) {
@@ -95,15 +99,18 @@ export class PresetComponent implements OnInit {
   }
 
   returnIsLoggedIn() {
-    if (localStorage.getItem('access_token') === null) return false;
-    else return true;
+    if (localStorage.getItem('access_token') === null) {
+      return false;
+    } else {
+      return true;
+    }
   }
 
   getErrorMessagePresetName() {
-    return this.presetForm.controls["presetName"].hasError('required') ? 'This field is required' : '';
+    return this.presetForm.controls['presetName'].hasError('required') ? 'This field is required' : '';
   }
   getErrorMessageTimerName(item: FormGroup) {
-    return item.controls["timerName"].hasError('required') ? 'This field is required' : '';
+    return item.controls['timerName'].hasError('required') ? 'This field is required' : '';
   }
   getErrorMessageHours() {
     return 'From 0 to 24';

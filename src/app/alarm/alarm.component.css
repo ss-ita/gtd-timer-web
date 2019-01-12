@@ -49,7 +49,7 @@
 }
 
 .show-time-area .time-element {
-	margin: 18px 10px 19px;
+	margin: 18px 10px 13px;
 	display: inline-block;
 	font-size: 110px;
 	padding: 20px;
@@ -89,7 +89,7 @@
 	text-align: center;
 	font-size: 90px;
 	color: #609b9b;
-	margin: 56.5px auto;
+	margin: 54px auto;
 }
 
 .input-time-area {

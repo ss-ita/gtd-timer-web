@@ -3,7 +3,7 @@ import { SignupDialogComponent } from '../signup-dialog/signup-dialog.component'
 import { ActivatedRoute } from '@angular/router';
 
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { SigninModel } from '../models/signin.model'
+import { SigninModel } from '../models/signin.model';
 import { JwtService } from '../services/jwt.service';
 import { UserService } from '../services/user.service';
 import { SocialAuthService } from '../services/social-auth.service';
@@ -19,14 +19,15 @@ import { ConfigService } from '../services/config.service';
 
 export class SigninComponent implements OnInit {
 
-    hide:boolean;
+    hide: boolean;
     user: SigninModel = new SigninModel();
     signinform: FormGroup;
     returnUrl: string;
-    submitted: boolean = false;
-    error: string = '';
-    urlFacebookPath: string = '';
-    urlGooglePath: string = '';
+    submitted = false;
+    error = '';
+    urlFacebookPath = '';
+    urlGooglePath = '';
+    pwdPattern = /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=.,\-_!])([a-zA-Z0-9 @#$%^&+=*.,\-_!]){8,}$/;
 
     constructor(private formBuilder: FormBuilder,
         private route: ActivatedRoute,
@@ -41,7 +42,6 @@ export class SigninComponent implements OnInit {
         this.service.openSignUpForm();
     }
 
-    pwdPattern = /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=.,\-_!])([a-zA-Z0-9 @#$%^&+=*.,\-_!]){8,}$/;
     ngOnInit() {
         this.signinform = this.formBuilder.group({
             'email': [this.user.email, [Validators.required, Validators.email]],
@@ -59,13 +59,11 @@ export class SigninComponent implements OnInit {
                 '';
     }
 
-
     get f() { return this.signinform.controls; }
 
     onSubmit() {
         this.submitted = true;
 
-        // stop here if form is invalid
         if (this.signinform.invalid) {
             return;
         }
@@ -79,6 +77,4 @@ export class SigninComponent implements OnInit {
     doFacebookLogin() {
         this.socialAuth.loginWithFacebook();
     }
-
 }
-

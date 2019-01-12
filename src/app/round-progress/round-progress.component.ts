@@ -7,10 +7,10 @@ import { TimerService } from '../services/timer.service';
   styleUrls: ['./round-progress.component.css']
 })
 export class RoundProgressComponent implements OnInit {
-  @Input() value: number = 0;
-  @Input() color: string = 'blue';
+  @Input() value = 0;
+  @Input() color = 'blue';
   @Input() text: string;
-  @Input() max: number = 0;
+  @Input() max = 0;
 
   constructor(private timerService: TimerService) { }
 

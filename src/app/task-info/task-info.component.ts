@@ -8,7 +8,7 @@ import { Task } from '../models/task.model';
 })
 export class TaskInfoComponent implements OnInit {
 
-  task:Task;
+  task: Task;
 
   constructor() { }
 

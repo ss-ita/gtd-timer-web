@@ -10,7 +10,7 @@ import { SignupDialogComponent } from '../signup-dialog/signup-dialog.component'
   selector: 'app-timer',
   templateUrl: './timer.component.html',
   styleUrls: ['./timer.component.css'],
-  providers: [PresetDialogComponent , PresetComponent , SignupDialogComponent]
+  providers: [PresetDialogComponent, PresetComponent, SignupDialogComponent]
 })
 
 export class TimerComponent implements OnInit {
@@ -19,7 +19,7 @@ export class TimerComponent implements OnInit {
 
   constructor(private formBuilder: FormBuilder,
     private presetComponent: PresetComponent,
-    private timerServise: TimerService,
+    public timerServise: TimerService,
     private service: PresetDialogComponent,
     public styleService: StyleService
   ) { }
@@ -32,7 +32,7 @@ export class TimerComponent implements OnInit {
     return this.timerServise.timerArray;
   }
 
-  get getTimerArrayIndex(){
+  get getTimerArrayIndex() {
     return this.timerServise.timerIndex;
   }
 

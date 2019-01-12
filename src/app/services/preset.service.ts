@@ -72,7 +72,8 @@ export class PresetService {
     for (let index = 0; index < presetModel.timers.length; index++) {
       this.presetModelJson.timers[index] = new TimerJson();
       this.presetModelJson.timers[index].name = presetModel.timers[index].timerName;
-      this.presetModelJson.timers[index].interval = presetModel.timers[index].hours + ":" + presetModel.timers[index].minutes + ":" + presetModel.timers[index].seconds;
+      this.presetModelJson.timers[index].interval = presetModel.timers[index].hours + ':' + presetModel.timers[index].minutes
+        + ':' + presetModel.timers[index].seconds;
     }
     return this.presetModelJson;
   }
@@ -84,8 +85,8 @@ export class PresetService {
     for (let index = 0; index < presetModelJson.timers.length; index++) {
       this.presetModel.timers[index] = new Timer();
       this.presetModel.timers[index].timerName = presetModelJson.timers[index].name;
-      var interval = presetModelJson.timers[index].interval;
-      var splitInterval = interval.split(':');
+      const interval = presetModelJson.timers[index].interval;
+      const splitInterval = interval.split(':');
       this.presetModel.timers[index].hours = Number(splitInterval[0]);
       this.presetModel.timers[index].minutes = Number(splitInterval[1]);
       this.presetModel.timers[index].seconds = Number(splitInterval[2]);

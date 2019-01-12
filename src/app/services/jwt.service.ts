@@ -15,8 +15,8 @@ export class JwtService {
 
     return this.httpClient.post<{ access_token: string }>(this.config.urlLogIn, { email, password })
       .pipe(map(value => {
-      localStorage.setItem('access_token',value.access_token);
-  }))
+        localStorage.setItem('access_token', value.access_token);
+      }));
   }
 
   signout() {
@@ -32,13 +32,13 @@ export class JwtService {
     return this.httpClient.post<{ access_token: string }>(this.config.urlGoogleLogIn, { AccessToken })
       .pipe(map(value => {
         localStorage.setItem('access_token', value.access_token);
-      }))
+      }));
   }
 
   signinFacebook(AccessToken) {
     return this.httpClient.post<{ access_token: string }>(this.config.urlFacebookLogIn, { AccessToken })
       .pipe(map(value => {
         localStorage.setItem('access_token', value.access_token);
-      }))
+      }));
   }
 }

@@ -3,10 +3,10 @@ import { Injectable } from '@angular/core';
 @Injectable({
   providedIn: 'root'
 })
-export class ConfigService { 
+export class ConfigService {
   public readonly urlTask = 'https://localhost:44398/api/Tasks/';
   public readonly baseUrl: string = 'https://localhost:44398';
-  public readonly urlPreset =  'https://localhost:44398/api/Preset/';
+  public readonly urlPreset = 'https://localhost:44398/api/Preset/';
   public readonly urlLogIn: string = this.baseUrl + '/api/LogIn';
   public readonly urlGoogleLogIn: string = this.baseUrl + '/api/LogIn/GoogleLogin';
   public readonly urlFacebookLogIn: string = this.baseUrl + '/api/LogIn/FacebookLogin';
@@ -20,8 +20,5 @@ export class ConfigService {
 
 
   constructor() { }
-}
-export function jwtTokenGetter() {
-  return ()=>localStorage.getItem('access_token');
 }
 

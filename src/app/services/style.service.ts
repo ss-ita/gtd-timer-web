@@ -5,16 +5,13 @@ import { Injectable } from '@angular/core';
 })
 
 export class StyleService {
-    isLineStyle: boolean = false;
-    changeStyleString: string = "Change style"
+    isLineStyle = false;
+    changeStyleString = 'Change style';
 
     changeStyle() {
-
-        if(this.isLineStyle === false){
+        if (this.isLineStyle === false) {
             this.isLineStyle = true;
-        }
-
-        else{
+        } else {
             this.isLineStyle = false;
         }
     }

@@ -12,9 +12,10 @@ import { TasksService } from '../services/tasks.service';
 export class StatisticsComponent implements OnInit {
   doughnutChart: Chart;
   tasks = [];
-  colors = ['#DEB887', '#A9A9A9', '#DC143C', '#F4A460', '#2E8B57', '#F08080', '#008000', '#FFFF00', '#EE82EE', '#4169E1', '#FFE4B5', '#00FA9A', '#BA55D3', '#FF4500'];
-  public hasData: boolean = true;
-  public isActiveChart: boolean = true;
+  colors = ['#DEB887', '#A9A9A9', '#DC143C', '#F4A460', '#2E8B57', '#F08080', '#008000',
+    '#FFFF00', '#EE82EE', '#4169E1', '#FFE4B5', '#00FA9A', '#BA55D3', '#FF4500'];
+  public hasData = true;
+  public isActiveChart = true;
 
   constructor(
     private tasksService: TasksService,
@@ -28,14 +29,14 @@ export class StatisticsComponent implements OnInit {
         this.createInitialChart();
       },
       httpErrorResponse => {
-        this.toasterService.showToaster(httpErrorResponse.error.Message)
+        this.toasterService.showToaster(httpErrorResponse.error.Message);
       });
   }
 
   map(data: any[]) {
-    var items = [];
-    for (var i = 0; i < data.length; i++) {
-      var task = { name: data[i].name, time: parseInt(data[i].elapsedTime), isActive: data[i].isActive };
+    const items = [];
+    for (let i = 0; i < data.length; i++) {
+      const task = { name: data[i].name, time: parseInt(data[i].elapsedTime, 16), isActive: data[i].isActive };
       items.push(task);
     }
 
@@ -43,8 +44,8 @@ export class StatisticsComponent implements OnInit {
   }
 
   filterTasks(tasks: any[], isActive: boolean) {
-    var items = [];
-    for (var i = 0; i < tasks.length; i++) {
+    const items = [];
+    for (let i = 0; i < tasks.length; i++) {
       if (tasks[i].isActive === isActive) {
         items.push(tasks[i]);
       }
@@ -54,19 +55,19 @@ export class StatisticsComponent implements OnInit {
   }
 
   prepareDataForDoughnutChart(tasks: any[]) {
-    var namesOfTasks = [];
-    var durationsOfTasks = [];
-    for (var i = 0; i < tasks.length; i++) {
+    const namesOfTasks = [];
+    const durationsOfTasks = [];
+    for (let i = 0; i < tasks.length; i++) {
       namesOfTasks.push(tasks[i].name);
       durationsOfTasks.push(tasks[i].time);
     }
-    var data = { tasksName: namesOfTasks, tasksDurations: durationsOfTasks };
+    const data = { tasksName: namesOfTasks, tasksDurations: durationsOfTasks };
 
     return data;
   }
 
   drawDoughnutChart(namesOfTasks: any[], durationsOfTasks: any[]) {
-    var self = this;
+    const self = this;
     this.doughnutChart = new Chart('doughnutChart', {
       type: 'doughnut',
       data: {
@@ -83,8 +84,8 @@ export class StatisticsComponent implements OnInit {
         tooltips: {
           callbacks: {
             label: function (tooltipItem, data) {
-              var time = self.millisecondsToElapsedTime(data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index]);
-              var label = data.labels[tooltipItem.index] + ': ' + self.elepsedTimeToString(time);
+              const time = self.millisecondsToElapsedTime(data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index]);
+              const label = data.labels[tooltipItem.index] + ': ' + self.elepsedTimeToString(time);
 
               return label;
             }
@@ -95,8 +96,8 @@ export class StatisticsComponent implements OnInit {
   }
 
   createInitialChart() {
-    var activeTasks = this.filterTasks(this.tasks, true);
-    var data = this.prepareDataForDoughnutChart(activeTasks);
+    const activeTasks = this.filterTasks(this.tasks, true);
+    const data = this.prepareDataForDoughnutChart(activeTasks);
     this.hasData = (data.tasksName.length != 0);
     this.drawDoughnutChart(data.tasksName, data.tasksDurations);
   }
@@ -110,8 +111,8 @@ export class StatisticsComponent implements OnInit {
   }
 
   updateChart(isActive: boolean) {
-    var archiveTasks = this.filterTasks(this.tasks, isActive);
-    var data = this.prepareDataForDoughnutChart(archiveTasks);
+    const archiveTasks = this.filterTasks(this.tasks, isActive);
+    const data = this.prepareDataForDoughnutChart(archiveTasks);
     this.hasData = (data.tasksName.length != 0);
     this.isActiveChart = isActive;
     this.updateChartData(data);
@@ -124,23 +125,24 @@ export class StatisticsComponent implements OnInit {
   }
 
   millisecondsToElapsedTime(timeInMillisecond: number) {
-    var millisecondInHours = 3600000;
-    var millisecondInMinutes = 60000;
-    var millisecondInSeconds = 1000;
-    let hours = Math.floor(Number(timeInMillisecond) / millisecondInHours);
-    let minutes = Math.floor((Number(timeInMillisecond) - hours * millisecondInHours) / millisecondInMinutes);
-    let seconds = Math.floor((Number(timeInMillisecond) - hours * millisecondInHours - minutes * millisecondInMinutes) / millisecondInSeconds)
-    var elapsedTime = {
+    const millisecondInHours = 3600000;
+    const millisecondInMinutes = 60000;
+    const millisecondInSeconds = 1000;
+    const hours = Math.floor(Number(timeInMillisecond) / millisecondInHours);
+    const minutes = Math.floor((Number(timeInMillisecond) - hours * millisecondInHours) / millisecondInMinutes);
+    const seconds = Math.floor((Number(timeInMillisecond) - hours * millisecondInHours - minutes * millisecondInMinutes)
+      / millisecondInSeconds);
+    const elapsedTime = {
       hours: hours,
       minutes: minutes,
       seconds: seconds
-    }
+    };
 
     return elapsedTime;
   }
 
   elepsedTimeToString(time: any) {
-    var timeStr = this.numberToTimeString(time.hours) + ':'
+    const timeStr = this.numberToTimeString(time.hours) + ':'
       + this.numberToTimeString(time.minutes) + ':' + this.numberToTimeString(time.seconds);
 
     return timeStr;
@@ -150,7 +152,6 @@ export class StatisticsComponent implements OnInit {
     if (digit < 9) {
       return '0' + digit;
     }
-
     return digit;
   }
 }

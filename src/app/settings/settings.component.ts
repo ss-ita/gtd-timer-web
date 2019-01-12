@@ -4,10 +4,9 @@ import { UpdatePasswordModel } from '../models/update-password.model';
 import { compareValidator } from '../compare-validator/compare-validator.directive';
 import { UserService } from '../services/user.service';
 import { ToasterService } from '../services/toaster.service';
-import { MatDialog } from "@angular/material";
-import { ConfirmationDialogComponent } from "../confirmation-dialog/confirmation-dialog.component";
+import { MatDialog } from '@angular/material';
+import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
 import { JwtService } from '../services/jwt.service';
-
 
 @Component({
   selector: 'app-settings',
@@ -16,10 +15,10 @@ import { JwtService } from '../services/jwt.service';
 })
 export class SettingsComponent implements OnInit {
 
-  hide:boolean;
-  updatePasswordModel:UpdatePasswordModel=new UpdatePasswordModel();
-  updatePasswordForm:FormGroup;
-  deleteAccountForm:FormGroup;
+  hide: boolean;
+  updatePasswordModel: UpdatePasswordModel = new UpdatePasswordModel();
+  updatePasswordForm: FormGroup;
+  deleteAccountForm: FormGroup;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -55,14 +54,15 @@ export class SettingsComponent implements OnInit {
 
   getErrorMessagePasswordNew() {
     return this.updatePasswordForm.controls['passwordNew'].hasError('required') ? 'This field is required' :
-      this.updatePasswordForm.controls['passwordNew'].hasError('pattern') ? 'Combination of 8 or more uppercase, lowercase letters, special symbols and numbers.' :
+      this.updatePasswordForm.controls['passwordNew'].hasError('pattern')
+        ? 'Combination of 8 or more uppercase, lowercase letters, special symbols and numbers.' :
         this.updatePasswordForm.controls['passwordNew'].hasError('minlength') ? 'You must enter 8 elements min' :
           '';
   }
 
   getErrorMessageConfirmPassword() {
-    return this.updatePasswordForm.controls["passwordConfirm"].hasError('required') ? 'This field is required' :
-      this.updatePasswordForm.controls["passwordConfirm"].hasError('compare') ? 'Passwords do not match' :
+    return this.updatePasswordForm.controls['passwordConfirm'].hasError('required') ? 'This field is required' :
+      this.updatePasswordForm.controls['passwordConfirm'].hasError('compare') ? 'Passwords do not match' :
         '';
   }
 
@@ -70,39 +70,41 @@ export class SettingsComponent implements OnInit {
     this.userService.updatePassword(this.updatePasswordForm.value).subscribe(
       data => {
         this.updatePasswordForm.reset();
-        this.toasterService.showToaster("Password changed!");
+        this.toasterService.showToaster('Password changed!');
       },
       response => {
-        this.toasterService.showToaster(response.error.Message)
-      })
+        this.toasterService.showToaster(response.error.Message);
+      });
   }
 
   delete() {
     this.userService.deleteAccount().subscribe(
       data => {
-        this.toasterService.showToaster("Account deleted! Redirecting to Sign In page...");
+        this.toasterService.showToaster('Account deleted! Redirecting to Sign In page...');
         setTimeout(() => {
           this.jwtservice.signout();
-          window.location.reload();
+          window.location.href="/signin";
         },
           2000);
 
       },
       httpErrorResponse => {
-        this.toasterService.showToaster(httpErrorResponse.error.Message)
-      })
+        this.toasterService.showToaster(httpErrorResponse.error.Message);
+      });
   }
 
   openConfirmationDialog() {
-    let confirmationDialogRef = this.dialog.open(ConfirmationDialogComponent, {
+    const confirmationDialogRef = this.dialog.open(ConfirmationDialogComponent, {
       hasBackdrop: true,
       closeOnNavigation: true,
       disableClose: false
     });
-    confirmationDialogRef.componentInstance.title = "Warning";
-    confirmationDialogRef.componentInstance.message = "Are you sure to permanently delete your Account?";
-    confirmationDialogRef.componentInstance.btnCancelText = "Cancel";
-    confirmationDialogRef.componentInstance.btnOkText = "Confirm";
-    confirmationDialogRef.componentInstance.acceptAction = () => { this.delete() };
+    confirmationDialogRef.componentInstance.title = 'Warning';
+    confirmationDialogRef.componentInstance.message = 'Are you sure to permanently delete your Account?';
+    confirmationDialogRef.componentInstance.btnCancelText = 'Cancel';
+    confirmationDialogRef.componentInstance.btnOkText = 'Confirm';
+    confirmationDialogRef.componentInstance.acceptAction = () => {
+      this.delete();
+    };
   }
 }

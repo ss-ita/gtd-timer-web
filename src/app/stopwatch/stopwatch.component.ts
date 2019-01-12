@@ -8,10 +8,10 @@ import { StyleService } from '../services/style.service';
   styleUrls: ['./stopwatch.component.css']
 })
 
-export class StopwatchComponent implements OnInit { 
+export class StopwatchComponent implements OnInit {
 
-  constructor( public stopwatchService: StopwatchService, public styleService: StyleService) { }
-  
+  constructor(public stopwatchService: StopwatchService, public styleService: StyleService) { }
+
   ngOnInit() {
 
   }

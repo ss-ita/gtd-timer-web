@@ -1,6 +1,6 @@
-export class Time{
-    hours:number;
-    minutes:number;
-    seconds:number;
-    miliseconds:number;
+export class Time {
+    hours: number;
+    minutes: number;
+    seconds: number;
+    miliseconds: number;
 }

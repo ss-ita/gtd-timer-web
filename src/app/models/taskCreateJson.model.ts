@@ -1,9 +1,9 @@
-export class TaskCreateJson{
+export class TaskCreateJson {
     name: String;
     description: String;
     elapsedTime: number;
     lastStartTime: String;
-    goal:String;
-    isActive:boolean;
-    isRunning:boolean;
- }
+    goal: String;
+    isActive: boolean;
+    isRunning: boolean;
+}

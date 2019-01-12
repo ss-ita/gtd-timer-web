@@ -10,12 +10,12 @@
     </div>
     <mat-card-header (click)="stopwatchService.clickOnStopWatch()">
       <ng-template [ngIf]="!styleService.isLineStyle">
-        <app-round-progress class="round-progress" [max]="stopwatchService.maxValueOfHour" [value]="stopwatchService.hour" [color]="stopwatchService.color"
-          [text]="'h'"></app-round-progress>
-        <app-round-progress class="round-progress" [max]="stopwatchService.secondPerMinute" [value]="stopwatchService.minute" [color]="stopwatchService.color"
-          [text]="'m'"></app-round-progress>
-        <app-round-progress class="round-progress" [max]="stopwatchService.secondPerMinute" [value]="stopwatchService.second" [color]="stopwatchService.color"
-          [text]="'s'"></app-round-progress>
+        <app-round-progress class="round-progress" [max]="stopwatchService.maxValueOfHour" [value]="stopwatchService.hour"
+          [color]="stopwatchService.color" [text]="'h'"></app-round-progress>
+        <app-round-progress class="round-progress" [max]="stopwatchService.secondPerMinute" [value]="stopwatchService.minute"
+          [color]="stopwatchService.color" [text]="'m'"></app-round-progress>
+        <app-round-progress class="round-progress" [max]="stopwatchService.secondPerMinute" [value]="stopwatchService.second"
+          [color]="stopwatchService.color" [text]="'s'"></app-round-progress>
       </ng-template>
       <ng-template [ngIf]="styleService.isLineStyle">
         <div class="container-stopwatch" class="unselectable">

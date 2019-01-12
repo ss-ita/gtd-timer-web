@@ -21,7 +21,7 @@ export class AlarmComponent implements OnInit {
   ngOnInit() {
     this.alarmForm = this.formBuilder.group({
       'hour': [this.alarmService.hour, [Validators.required, Validators.min(0), Validators.max(23)]],
-      'minute': [this.alarmService.minute,[Validators.required, Validators.min(0), Validators.max(59)]]
+      'minute': [this.alarmService.minute, [Validators.required, Validators.min(0), Validators.max(59)]]
     });
   }
 

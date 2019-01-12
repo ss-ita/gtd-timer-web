@@ -44,7 +44,7 @@
           <round-progress [color]="alarmService.color" [max]="23" [current]="alarmForm.valid ? alarmService.hour : 0" [radius]="100" [stroke]="25">
           </round-progress>
         </div>
-        <div class="progress-percentage-wrapper">
+        <div class="progress-percentage-wrapper" [ngClass]="{'turnOn-alarm': alarmService.alarmOn, 'turnOff-alarm': !alarmService.alarmOn}">
           <ng-template [ngIf]="(alarmService.minute!='') && alarmForm.valid ">
             <div class="progress-percentage ">{{alarmService.minute}}m</div>
           </ng-template>
@@ -60,28 +60,27 @@
     <form [formGroup]="alarmForm">
       <div class="input-time-area">
         <mat-form-field class="example-full-width">
-          <input matInput type="number" min="0" max="23" placeholder="Set hours" [(ngModel)]="alarmService.hour" name="Hour" formControlName="hour"
-            [attr.disabled]="alarmService.alarmOn ?'': null">
+          <input matInput type="number" min="0" max="23" placeholder="Set hours" [(ngModel)]="alarmService.hour" name="Hour"
+            formControlName="hour" [attr.disabled]="alarmService.alarmOn ?'': null">
           <mat-error>Please, input hour between 0 and 23</mat-error>
         </mat-form-field>
         <mat-form-field class="example-full-width">
-          <input matInput type="number" min="0" max="59" placeholder="Set minutes" [(ngModel)]="alarmService.minute" name="Minute" formControlName="minute"
-            [attr.disabled]="alarmService.alarmOn ?'': null">
+          <input matInput type="number" min="0" max="59" placeholder="Set minutes" [(ngModel)]="alarmService.minute"
+            name="Minute" formControlName="minute" [attr.disabled]="alarmService.alarmOn ?'': null">
           <mat-error>Please, input minute between 0 and 59</mat-error>
         </mat-form-field>
       </div>
       <div class="button-area">
-        <button mat-button (click)="alarmService.startArarm()" [disabled]="!alarmForm.valid || (alarmService.hour=='')&&alarmService.hour!=0 || (alarmService.minute=='')&&alarmService.minute!=0 || alarmService.alarmOn">
+        <button mat-button (click)="alarmService.startArarm()" [disabled]="!alarmForm.valid || alarmService.hour==='' || alarmService.minute==='' || alarmService.alarmOn">
           <mat-icon>arrow_right</mat-icon>
         </button>
-        <button mat-button (click)="alarmService.dismissAlarm()" [disabled]="!alarmForm.valid || (alarmService.hour=='')&&alarmService.hour!=0 || (alarmService.minute=='')&&alarmService.minute!=0 || !(alarmService.alarmOn)">
+        <button mat-button (click)="alarmService.dismissAlarm()" [disabled]="!alarmForm.valid || alarmService.hour==='' || alarmService.minute==='' || !(alarmService.alarmOn)">
           <mat-icon>pause</mat-icon>
         </button>
-        <button mat-button (click)="alarmService.refresh()" [disabled]="!alarmForm.valid || (alarmService.hour=='')&&alarmService.hour!=0 || (alarmService.minute=='')&&alarmService.minute!=0 || alarmService.alarmOn">
+        <button mat-button (click)="alarmService.refresh()" [disabled]="!alarmForm.valid || alarmService.hour==='' || alarmService.minute==='' || alarmService.alarmOn">
           <mat-icon>refresh</mat-icon>
         </button>
       </div>
-
     </form>
   </mat-card>
 </div>

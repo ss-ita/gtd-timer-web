@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { SignupModel } from '../models/signup.model';
 import { UpdatePasswordModel } from '../models/update-password.model';
-import { ConfigService } from './config.service'
+import { ConfigService } from './config.service';
 import { JwtService } from './jwt.service';
 import { ToasterService } from './toaster.service';
 import { first } from 'rxjs/operators';
@@ -24,7 +24,7 @@ export class UserService {
       email: user.email,
       password: user.password,
       passwordConfirm: user.passwordConfirm
-    }
+    };
 
     return this.http.post(this.config.urlUser, body);
 
@@ -36,7 +36,7 @@ export class UserService {
       .subscribe(
         data => {
           window.location.reload();
-          this.toasterService.showToaster("Successfuly signed in! ");
+          this.toasterService.showToaster('Successfuly signed in! ');
         },
         response => {
           this.toasterService.showToaster(response.error.Message);
@@ -48,7 +48,7 @@ export class UserService {
       passwordOld: user.passwordOld,
       passwordNew: user.passwordNew,
       passwordConfirm: user.passwordConfirm
-    }
+    };
     const headers = this.getHeaders();
 
     return this.http.put(this.config.urlUser, body, { headers: headers });

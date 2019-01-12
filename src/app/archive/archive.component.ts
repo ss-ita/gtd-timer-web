@@ -25,13 +25,13 @@ export class ArchiveComponent implements OnInit {
 
   onDeleteTask(task: Task): void {
     this.archiveService.deleteTask(task.id).subscribe();
-    let indexTaskToDelete = this.tasks.indexOf(task, 0);
+    const indexTaskToDelete = this.tasks.indexOf(task, 0);
     this.tasks.splice(indexTaskToDelete, 1);
   }
 
   onResumeTask(task: Task): void {
     this.archiveService.switchtaskStatus(task).subscribe();
-    let indexTaskToDelete = this.tasks.indexOf(task, 0);
+    const indexTaskToDelete = this.tasks.indexOf(task, 0);
     this.tasks.splice(indexTaskToDelete, 1);
   }
 

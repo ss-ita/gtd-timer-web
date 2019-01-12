@@ -1,6 +1,6 @@
-export class SocialAuthCredentialModel { 
+export class SocialAuthCredentialModel {
     idToken: string;
-    accessToken: string;  
+    accessToken: string;
     providerId: string;
-    signInMethod: string; 
+    signInMethod: string;
 }
