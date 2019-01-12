@@ -6,8 +6,6 @@ import { PresetModel } from '../models/preset.model';
 import { Component, OnInit } from '@angular/core';
 import { MatDialogRef } from '@angular/material';
 
-
-
 @Component({
   selector: 'app-preset',
   templateUrl: './preset.component.html',
@@ -22,6 +20,7 @@ export class PresetComponent implements OnInit {
   presetForm: FormGroup;
   isViewable: boolean;
   isLoggedIn: boolean;
+  isValidate = true;
 
   constructor(
     private presetsFormDialogRef: MatDialogRef<PresetComponent>,
@@ -29,7 +28,6 @@ export class PresetComponent implements OnInit {
     private presetService: PresetService,
     private timerService: TimerService,
     private formBuilder: FormBuilder) { }
-
 
   onCreate() {
     this.presetService.pushPreset(this.presetForm.value).subscribe(
@@ -81,6 +79,7 @@ export class PresetComponent implements OnInit {
       }
     });
   }
+  
   getAllCustomPresets() {
     this.presetService.getGetAllCustomPresetsFromServer().subscribe(data => {
       for (let index = 0; index < data.length; index++) {
@@ -126,9 +125,9 @@ export class PresetComponent implements OnInit {
       timers: this.formBuilder.array([this.addTimerFormGroup()])
     });
     this.isViewable = false;
-    this.isLoggedIn = this.returnIsLoggedIn();
-    this.getAllStandartAndCustomPresets();
+    this.isValidate = true;
     this.selectedPreset = 'standard';
+    this.isLoggedIn = this.returnIsLoggedIn();
   }
 
   addTimerFormGroup(): FormGroup {

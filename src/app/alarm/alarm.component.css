@@ -36,7 +36,7 @@
 
 .content-area {
 	width: 700px;
-    height: 380px;
+  height: 380px;
 	margin: 5% auto;
 }
 
@@ -100,8 +100,6 @@
 	width: 175px;
 	margin: 0px 35px;
 }
-
-
 .mat-card-content {
 	margin-bottom: 13px;
 }
@@ -130,6 +128,9 @@
 }
 
 .style-menu{
-    width: 40px;
-    height: 40px;
+   width: 40px;
+	 height: 40px;
+}
+.mat-card>:first-child.negative-margin{
+   margin-top:-7px;
 }
