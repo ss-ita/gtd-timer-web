@@ -8,8 +8,21 @@
     font-weight: bold;
 }
 .mat-tab-nav-bar{
+    white-space: nowrap;
+    overflow: auto;
+    min-width: 820px;
     height:48px;
 }
 .tempButton{
     background: transparent;
+}
+
+::ng-deep .cdk-overlay-container .position + * > .cdk-overlay-pane{
+    position: relative;
+}
+
+::ng-deep .cdk-overlay-container .position + * > .cdk-overlay-pane[style]{
+    pointer-events: auto;
+    top: 48px;
+    left: 86.3%;
 }

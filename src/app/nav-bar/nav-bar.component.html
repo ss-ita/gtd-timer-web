@@ -4,7 +4,7 @@
     {{link.label}}
   </a>
   <a mat-tab-link *ngIf="show" [matMenuTriggerFor]="menu">Welcome {{email}}</a>
-  <mat-menu #menu="matMenu">
+  <mat-menu #menu="matMenu" [backdropClass]="'position'">
     <button mat-menu-item (click)="btnClickSettings()">Settings...</button>
     <button mat-menu-item (click)="btnClickInfo()">Info...</button>
     <button mat-menu-item (click)="signout()">Sign Out</button>

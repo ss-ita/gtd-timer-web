@@ -4,13 +4,12 @@
 }
 
 .text{
-    color: grey;
     font-size: 120px;
     margin: 5px;
 }
 
 .run-stopwatch{
-    color: blue;
+    color: #609b9b;
 }
 
 .pause-stopwatch{
