@@ -70,8 +70,6 @@ export function jwtTokenGetter() {
     RoundProgressComponent,
     LineProgressComponent,
     InfoComponent,
-    PresetComponent,
-    TaskInfoComponent,
     SignupDialogComponent,
     TaskInfoDialogComponent,
     FilterPipe,

@@ -18,7 +18,7 @@
     padding-top: 10px;
 }
 
-div#chart {
+#chart {
     margin: 0 25%;
     padding-top: 40px;
 }
@@ -28,20 +28,20 @@ div#chart {
     margin: 0 10%;
 }
 
-div.buttons .mat-raised-button{
+.buttons .mat-raised-button{
     background-color: #dededa;
 }
  
-div.buttons .active {
+.buttons .active {
     background-color: white;
 }
 
-div.buttons .mat-raised-button:first-child {
+.buttons .mat-raised-button:first-child {
     border-bottom-right-radius: 0px; 
     border-top-right-radius: 0px;
 }
 
-div.buttons .mat-raised-button:nth-child(2){
+.buttons .mat-raised-button:nth-child(2){
     border-bottom-left-radius: 0px; 
     border-top-left-radius: 0px;
 }
