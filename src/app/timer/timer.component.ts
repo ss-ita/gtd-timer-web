@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {FormBuilder,FormGroup, Validators} from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { TimerService } from '../services/timer.service';
 import { PresetDialogComponent } from '../preset-dialog/preset-dialog.component';
@@ -13,33 +13,33 @@ import { StyleService } from '../services/style.service';
 })
 
 export class TimerComponent implements OnInit {
-  
+
   timerForm: FormGroup;
 
-  constructor( private formBuilder: FormBuilder,
-     public timerServise: TimerService,
-     private service: PresetDialogComponent,
-     public styleService: StyleService
-     ) {}
-  
-  openPresetFormDialog(){
+  constructor(private formBuilder: FormBuilder,
+    public timerServise: TimerService,
+    private service: PresetDialogComponent,
+    public styleService: StyleService
+  ) { }
+
+  openPresetFormDialog() {
     this.service.openPresetForm();
   }
 
   ngOnInit() {
-      this.timerForm = this.formBuilder.group({
-      'hour': [this.timerServise.maxValueHour,[Validators.required, Validators.min(0), Validators.max(23)]],
+    this.timerForm = this.formBuilder.group({
+      'hour': [this.timerServise.maxValueHour, [Validators.required, Validators.min(0), Validators.max(23)]],
       'minute': [this.timerServise.maxValueMinute, [Validators.required, Validators.min(0), Validators.max(59)]],
       'second': [this.timerServise.maxValueSecond, [Validators.required, Validators.min(0), Validators.max(59)]]
-  });
+    });
   }
-  
+
   getErrorMessageHour() {
-    return  'please enter a number from 0 to 24';
+    return 'please enter a number from 0 to 24';
   }
 
   getErrorMessageMinuteAndSecond() {
-    return  'please enter a number from 0 to 60';
+    return 'please enter a number from 0 to 60';
   }
 
 }

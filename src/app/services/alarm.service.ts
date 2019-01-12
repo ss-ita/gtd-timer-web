@@ -6,32 +6,32 @@ import { ConfigService } from './config.service';
 })
 
 export class AlarmService {
-  hour: string = "";
-  minute: string = "";
+  hour = '';
+  minute = '';
   timeOut: any;
-  alarmOn: boolean = false;
-  isActive: boolean = false;
-  isChecked: boolean = false;
-  color: string = "grey";
-  colorToggle: string = "primary";
+  alarmOn = false;
+  isActive = false;
+  isChecked = false;
+  color = 'grey';
+  colorToggle = 'primary';
   alarmSound = new Audio(this.configService.urlSoundAlarm);
 
   constructor(private configService: ConfigService) { }
 
   startArarm() {
     this.alarmOn = true;
-    this.color = "blue";
-    let ms: number = this.calculateSecond();
-    let alarm = new Date(ms);
-    let differenceInMs = alarm.getTime() - (new Date().getTime());
+    this.color = '#609b9b';
+    const ms: number = this.calculateSecond();
+    const alarm = new Date(ms);
+    const differenceInMs = alarm.getTime() - (new Date().getTime());
     this.timeOut = setTimeout(this.playAlarm.bind(this), differenceInMs);
   }
 
   calculateSecond() {
-    let hours = Number(this.hour);
-    let minutes = Number(this.minute);
-    let currentTime = new Date();
-    let date = new Date();
+    const hours = Number(this.hour);
+    const minutes = Number(this.minute);
+    const currentTime = new Date();
+    const date = new Date();
     date.setHours(hours);
     date.setMinutes(minutes);
     date.setSeconds(0);
@@ -45,7 +45,7 @@ export class AlarmService {
     this.alarmSound.loop = true;
     this.alarmSound.play();
     this.isActive = true;
-    this.color = "red";
+    this.color = 'red';
   }
 
   dismissAlarm() {
@@ -57,13 +57,13 @@ export class AlarmService {
       clearTimeout(this.timeOut);
       this.timeOut = 0;
     }
-    this.color = "grey";
+    this.color = 'grey';
     this.alarmOn = false;
   }
 
   refresh() {
-    this.hour = "";
-    this.minute = "";
+    this.hour = '';
+    this.minute = '';
   }
 
   switchTimeShow() {

@@ -16,14 +16,14 @@ export class PresetDialogComponent implements OnInit {
   }
 
   openPresetForm() {
-      let presetFormDialogRef = this.dialog.open(PresetComponent, {
+      const presetFormDialogRef = this.dialog.open(PresetComponent, {
           hasBackdrop: true,
           closeOnNavigation: true,
           disableClose: true
       });
 
       presetFormDialogRef.afterClosed().subscribe(
-          message => console.log("Dialog output:", message)
+          message => console.log('Dialog output:', message)
       );
   }
 

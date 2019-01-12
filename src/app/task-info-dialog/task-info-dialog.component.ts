@@ -16,13 +16,12 @@ export class TaskInfoDialogComponent implements OnInit {
   ngOnInit() {
   }
 
-  openSheet(task:Task)
-  {
-      let dialogRef = this.dialog.open(TaskInfoComponent, {
-        hasBackdrop: true,
-        closeOnNavigation: true
+  openSheet(task: Task) {
+    const dialogRef = this.dialog.open(TaskInfoComponent, {
+      hasBackdrop: true,
+      closeOnNavigation: true
     });
     dialogRef.componentInstance.task = task;
 
-    }
   }
+}

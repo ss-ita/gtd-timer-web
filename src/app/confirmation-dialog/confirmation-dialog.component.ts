@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { MatDialogRef } from "@angular/material";
+import { MatDialogRef } from '@angular/material';
 
 @Component({
   selector: 'app-confirmation-dialog',
@@ -8,10 +8,10 @@ import { MatDialogRef } from "@angular/material";
 })
 export class ConfirmationDialogComponent implements OnInit {
 
-  @Input() title: string = 'Please confirm...';
-  @Input() message: string = 'Do you really want to ... ?';
-  @Input() btnOkText: string = 'OK';
-  @Input() btnCancelText: string = 'Cancel';
+  @Input() title = 'Please confirm...';
+  @Input() message = 'Do you really want to ... ?';
+  @Input() btnOkText = 'OK';
+  @Input() btnCancelText = 'Cancel';
   @Input() declineAction: Function;
   @Input() acceptAction: Function;
 

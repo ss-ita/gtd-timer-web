@@ -10,12 +10,12 @@
     </button>
     <mat-card-header>
       <ng-template [ngIf]="!styleService.isLineStyle">
-        <app-round-progress class="round-progress" [max]="timerServise.maxValueOfHour" [value]="timerServise.hour" [color]="timerServise.color"
-          [text]="'h'"></app-round-progress>
-        <app-round-progress class="round-progress" [max]="timerServise.secondPerMinute" [value]="timerServise.minute" [color]="timerServise.color"
-          [text]="'m'"></app-round-progress>
-        <app-round-progress class="round-progress" [max]="timerServise.secondPerMinute" [value]="timerServise.second" [color]="timerServise.color"
-          [text]="'s'"></app-round-progress>
+        <app-round-progress class="round-progress" [max]="timerServise.maxValueOfHour" [value]="timerServise.hour"
+          [color]="timerServise.color" [text]="'h'"></app-round-progress>
+        <app-round-progress class="round-progress" [max]="timerServise.secondPerMinute" [value]="timerServise.minute"
+          [color]="timerServise.color" [text]="'m'"></app-round-progress>
+        <app-round-progress class="round-progress" [max]="timerServise.secondPerMinute" [value]="timerServise.second"
+          [color]="timerServise.color" [text]="'s'"></app-round-progress>
       </ng-template>
       <ng-template [ngIf]="styleService.isLineStyle">
         <div class="container-stopwatch" class="unselectable">
@@ -30,15 +30,18 @@
     </mat-card-header>
     <mat-card-actions [formGroup]="timerForm" class="mat-action">
       <mat-form-field class="timer-input">
-        <input matInput type="number" min="0" max="23" [(ngModel)]="timerServise.maxValueHour" placeholder="Set hour" formControlName="hour">
+        <input matInput type="number" min="0" max="23" [(ngModel)]="timerServise.maxValueHour" placeholder="Set hour"
+          formControlName="hour">
         <mat-error>{{getErrorMessageHour()}}</mat-error>
       </mat-form-field>
       <mat-form-field class="timer-input">
-        <input matInput type="number" min="0" max="59" [(ngModel)]="timerServise.maxValueMinute" placeholder="Set minute" formControlName="minute">
+        <input matInput type="number" min="0" max="59" [(ngModel)]="timerServise.maxValueMinute" placeholder="Set minute"
+          formControlName="minute">
         <mat-error>{{getErrorMessageMinuteAndSecond()}}</mat-error>
       </mat-form-field>
       <mat-form-field class="timer-input">
-        <input matInput type="number" min="0" max="59" [(ngModel)]="timerServise.maxValueSecond" placeholder="Set second" formControlName="second">
+        <input matInput type="number" min="0" max="59" [(ngModel)]="timerServise.maxValueSecond" placeholder="Set second"
+          formControlName="second">
         <mat-error>{{getErrorMessageMinuteAndSecond()}}</mat-error>
       </mat-form-field>
       <div class="button-area">
@@ -59,10 +62,9 @@
       </div>
       <span class="setting-button">
         <button mat-icon-button (click)="openPresetFormDialog()">
-            <mat-icon>settings</mat-icon>
+          <mat-icon>settings</mat-icon>
         </button>
       </span>
     </mat-card-actions>
   </mat-card>
 </div>
-

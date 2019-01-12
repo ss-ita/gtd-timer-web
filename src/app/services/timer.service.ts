@@ -12,32 +12,30 @@ export class TimerService {
     constructor(private configService: ConfigService) { }
 
     timerArrayLenght: number;
-    timerIndex: number = -1;
+    timerIndex = -1;
     timerArray: Timer[];
     maxValueHour: number;
     maxValueMinute: number;
     maxValueSecond: number;
-    secondPerHour: number = 3600;
-    secondPerMinute: number = 60;
-    secondPerSecond: number = 1;
-    milisecondPerSecond: number = 1000;
-    maxValueOfHour: number = 24;
-    hour: number = 0;
-    minute: number = 0;
-    second: number = 0;
-    ticks: number = 0;
+    secondPerHour = 3600;
+    secondPerMinute = 60;
+    secondPerSecond = 1;
+    milisecondPerSecond = 1000;
+    maxValueOfHour = 24;
+    hour = 0;
+    minute = 0;
+    second = 0;
+    ticks = 0;
 
-    isTimerRun: Boolean = false;
-    isTimerPause: Boolean = false;
-    isTimerFinished: Boolean = false;
-
-    isFromPreset: boolean = false;
-
+    isTimerRun = false;
+    isTimerPause = false;
+    isTimerFinished = false;
+    isFromPreset = false;
 
     timerSound = new Audio();
-    color: string = 'blue';
+    color = 'blue';
     subscribe: Subscription;
-    public currentPreset = "#No choosen preset";
+    public currentPreset = '#No chosen preset';
 
     initializeTimerArray(timerArray: Timer[]) {
         this.clearTimerArrayAndIndex();
@@ -47,9 +45,13 @@ export class TimerService {
         this.startTimerFromPreset();
     }
     startTimerFromPreset() {
-        if (this.timerIndex === this.timerArrayLenght) this.timerIndex = 0;
-        if (this.timerIndex <= this.timerArrayLenght - 1)
-            this.startPresetTimer(this.timerArray[this.timerIndex].hours, this.timerArray[this.timerIndex].minutes, this.timerArray[this.timerIndex].seconds);
+        if (this.timerIndex === this.timerArrayLenght) {
+            this.timerIndex = 0;
+        }
+        if (this.timerIndex <= this.timerArrayLenght - 1) {
+            this.startPresetTimer(
+                this.timerArray[this.timerIndex].hours, this.timerArray[this.timerIndex].minutes, this.timerArray[this.timerIndex].seconds);
+        }
     }
     startPresetTimer(hours: number, minutes: number, seconds: number) {
         this.hour = hours;
@@ -62,7 +64,7 @@ export class TimerService {
 
     startTimer() {
         if (this.isTimerRun === false) {
-            this.color = 'blue';
+            this.color = '#609b9b';
             this.isTimerPause = false;
             this.isTimerRun = true;
             this.isTimerFinished = false;
@@ -112,8 +114,7 @@ export class TimerService {
 
         if (this.ticks > this.maxValueOfHour * this.secondPerHour) {
             this.pauseTimer();
-        }
-        else {
+        } else {
             this.hour = Math.floor(this.ticks / this.secondPerHour);
             this.minute = Math.floor((this.ticks % this.secondPerHour) / this.secondPerMinute);
             this.second = Math.floor((this.ticks % this.secondPerHour) % this.secondPerMinute);

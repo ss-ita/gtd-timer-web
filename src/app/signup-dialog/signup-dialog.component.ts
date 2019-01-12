@@ -17,15 +17,14 @@ export class SignupDialogComponent implements OnInit {
   }
 
   openSignUpForm() {
-    let signUpFormDialogRef = this.dialog.open(SignupComponent, {
+    const signUpFormDialogRef = this.dialog.open(SignupComponent, {
       hasBackdrop: true,
       closeOnNavigation: true,
       disableClose: true
     });
 
     signUpFormDialogRef.afterClosed().subscribe(
-      message => console.log("Dialog output:", message)
+      message => console.log('Dialog output:', message)
     );
   }
-
 }

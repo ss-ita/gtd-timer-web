@@ -6,11 +6,11 @@ import { Component, OnInit, Input } from '@angular/core';
   styleUrls: ['./line-progress.component.css']
 })
 export class LineProgressComponent implements OnInit {
-  @Input() value: number = 0;
+  @Input() value = 0;
   @Input() isActive: boolean;
   @Input() isPaused: boolean;
   @Input() text: string;
-  
+
   constructor() { }
 
   ngOnInit() {

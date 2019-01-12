@@ -7,20 +7,20 @@ import { timer, Subscription } from 'rxjs';
 })
 
 export class StopwatchService {
-  hour: number = 0;
-  minute: number = 0;
-  second: number = 0;
-  ticks: number = 0;
-  secondPerHour: number = 3600;
-  secondPerMinute: number = 60;
-  secondPerSecond: number = 1;
-  milisecondPerSecond: number = 1000;
-  maxValueOfHour: number = 24;
+  hour = 0;
+  minute = 0;
+  second = 0;
+  ticks = 0;
+  secondPerHour = 3600;
+  secondPerMinute = 60;
+  secondPerSecond = 1;
+  milisecondPerSecond = 1000;
+  maxValueOfHour = 24;
 
-  isStopwatchRun: boolean = false;
-  isStopwatchPause: boolean = false;
+  isStopwatchRun = false;
+  isStopwatchPause = false;
 
-  color: string = 'blue';
+  color = 'blue';
   subscribe: Subscription;
 
   reset() {
@@ -58,8 +58,7 @@ export class StopwatchService {
 
     if (this.ticks > this.maxValueOfHour * this.secondPerHour) {
       this.pause();
-    }
-    else {
+    } else {
       this.hour = Math.floor(this.ticks / this.secondPerHour);
       this.minute = Math.floor((this.ticks % this.secondPerHour) / this.secondPerMinute);
       this.second = Math.floor((this.ticks % this.secondPerHour) % this.secondPerMinute);
@@ -70,7 +69,9 @@ export class StopwatchService {
   clickOnStopWatch() {
     if (this.isStopwatchPause || this.isStopwatchRun === false) {
       this.start();
-    } else this.pause();
+    } else {
+      this.pause();
+    }
   }
 
   constructor() { }

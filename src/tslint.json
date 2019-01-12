@@ -1,8 +1,10 @@
 {
     "extends": "../tslint.json",
     "rules": {
+        "triple-equals": false,
+        "no-output-rename": false,
         "directive-selector": [
-            true,
+            false,
             "attribute",
             "app",
             "camelCase"
