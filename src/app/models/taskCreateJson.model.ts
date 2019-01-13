@@ -1,4 +1,4 @@
-export class TaskCreateJson{
+export class TaskCreateJson {
     id: number;
     name: String;
     description: String;

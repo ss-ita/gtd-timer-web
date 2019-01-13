@@ -46,6 +46,7 @@ import { SignupDialogComponent } from './signup-dialog/signup-dialog.component';
 import { ProgressComponent } from './progress/progress.component';
 import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-dialog.component';
 import { PresetDialogComponent } from './preset-dialog/preset-dialog.component';
+import { TaskFilter } from './tasks/task.filter';
 
 export function jwtTokenGetter() {
   return localStorage.getItem('access_token');
@@ -71,14 +72,14 @@ export function jwtTokenGetter() {
     InfoComponent,
     SignupDialogComponent,
     TaskInfoDialogComponent,
-    FilterPipe,
     ProgressComponent,
     PresetComponent,
     TaskInfoDialogComponent,
     FilterPipe,
     ConfirmationDialogComponent,
     PresetDialogComponent,
-    TaskInfoComponent
+    TaskInfoComponent,
+    TaskFilter
   ],
   imports: [
     BrowserModule,

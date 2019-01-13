@@ -97,9 +97,45 @@
 .round-progress{
     margin-left: 1% !important;
 }
-.textsize{
+.right {
+    float: left;
+}
+.margin-right{
+    padding-left: 18px; 
+    padding-right: 15px; 
+}
+.margin-small-right{
+    padding-left: 10px; 
+    padding-right: 15px; 
+}
+.margin-bottom{
+    margin-bottom: 20px;
+}
+::ng-deep .mat-menu-panel.preset-menu-position{
+    background:white;
+    margin-left: 56px;
+    margin-top: -55px;
+}
+.font-size-p{
+    font-size: 18px;
+}
+.current-timer{
+    color: green;
+}
+.current-preset{
+    display: inline-block;
+}
+.mat-card>:first-child.negative-margin{
+    margin-top:-7px;
+}
+.mat-icon.toggle{
+    font-size: 22px !important;
+    color: black;
+    padding-bottom: 11px;
+}
+
+.text{
     color: grey;
     font-size: 120px;
     margin: 5px;
 }
-

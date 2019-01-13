@@ -9,10 +9,6 @@
         </form>
       </fieldset>
       <fieldset class="other">
-        <select>
-          <option value="" disabled selected>Groups</option>
-        </select>
-        <button class="but">Reset</button>
         <input [(ngModel)]="searchText" class="search" placeholder="Search">
         <button class="but">Start</button>
       </fieldset>
@@ -47,8 +43,8 @@
           <app-line-progress class="textSize" [value]="stopwatchService.second" [isActive]="stopwatchService.isStopwatchRun"
             [isPaused]="stopwatchService.isStopwatchPause" [text]="''"></app-line-progress>
         </div>
-        <div class="goal">
-          <input matInput type="number"></div>
+        <div class="time">
+          00:00:00</div>
         <div class="right">
           <app-progress [value]="progress | async"></app-progress>
         </div>
