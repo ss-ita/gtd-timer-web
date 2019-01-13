@@ -33,7 +33,6 @@ export class ArchiveService implements OnInit {
     return this.http.delete(this.service.urlTask + 'DeleteTask/' + id.toString(), { headers: headers });
   }
 
-
   switchtaskStatus(task: Task) {
     const headers = this.getHeaders();
     return this.http.put<TaskJson>(this.service.urlTask + 'SwitchArchivedStatus', task.convertToTaskJson(), { headers: headers });

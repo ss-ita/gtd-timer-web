@@ -23,11 +23,9 @@ export class TasksComponent implements OnInit {
     this.progress = this.emulateProgress();
   }
 
-
   public tasks: TaskCreateJson[] = [];
   taskName: String;
   public searchText: string;
-
 
   emulateProgress() {
     return new Observable<number>(observer => {
@@ -69,7 +67,6 @@ export class TasksComponent implements OnInit {
       complete: () => {
         this.archiveService.getActiveTasksFromServer().subscribe();
       },
-
     };
 
     this.archiveService.createTask(taskToPass).subscribe(myObserver);
@@ -115,4 +112,3 @@ export class TasksComponent implements OnInit {
     });
   }
 }
-
