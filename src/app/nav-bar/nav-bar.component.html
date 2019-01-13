@@ -1,0 +1,12 @@
+<nav mat-tab-nav-bar>
+  <a mat-tab-link *ngFor="let link of navLinks" [routerLink]="link.link" routerLinkActive #rla="routerLinkActive"
+    [active]="rla.isActive">
+    {{link.label}}
+  </a>
+  <a mat-tab-link *ngIf="show" [matMenuTriggerFor]="menu">Welcome {{email}}</a>
+  <mat-menu #menu="matMenu" [backdropClass]="'position'">
+    <button mat-menu-item (click)="btnClickSettings()">Settings...</button>
+    <button mat-menu-item (click)="btnClickInfo()">Info...</button>
+    <button mat-menu-item (click)="signout()">Sign Out</button>
+  </mat-menu>
+</nav>

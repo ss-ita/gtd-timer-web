@@ -1,0 +1,15 @@
+.progress-percentage-wrapper {
+    position: relative;
+    font-size: 50px;
+    margin-left: 2%;
+    width: 200px;
+    height: 200px;
+    display: inline-block;
+}
+
+.progress-percentage {
+    position: absolute;
+    width: 100%;
+    text-align: center !important;
+    top: 35%;
+}

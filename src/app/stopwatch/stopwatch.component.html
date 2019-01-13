@@ -1,0 +1,43 @@
+<div class="background">
+  <mat-card>
+    <div class="negative-margin">
+    <mat-menu #appMenu="matMenu">
+      <button mat-menu-item (click)="styleService.changeStyle()">{{styleService.changeStyleString}}</button>
+    </mat-menu>
+    <button mat-icon-button [matMenuTriggerFor]="appMenu" class="style-menu">
+      <mat-icon>more_vert</mat-icon>
+    </button>
+    </div>
+    <mat-card-header (click)="stopwatchService.clickOnStopWatch()">
+      <ng-template [ngIf]="!styleService.isLineStyle">
+        <app-round-progress class="round-progress" [max]="stopwatchService.maxValueOfHour" [value]="stopwatchService.hour"
+          [color]="stopwatchService.color" [text]="'h'"></app-round-progress>
+        <app-round-progress class="round-progress" [max]="stopwatchService.secondPerMinute" [value]="stopwatchService.minute"
+          [color]="stopwatchService.color" [text]="'m'"></app-round-progress>
+        <app-round-progress class="round-progress" [max]="stopwatchService.secondPerMinute" [value]="stopwatchService.second"
+          [color]="stopwatchService.color" [text]="'s'"></app-round-progress>
+      </ng-template>
+      <ng-template [ngIf]="styleService.isLineStyle">
+        <div class="container-stopwatch" class="unselectable">
+          <app-line-progress class="textsize" [value]="stopwatchService.hour" [isActive]="stopwatchService.isStopwatchRun" [isPaused]="stopwatchService.isStopwatchPause"
+            [text]="':'"></app-line-progress>
+          <app-line-progress class="textsize" [value]="stopwatchService.minute" [isActive]="stopwatchService.isStopwatchRun" [isPaused]="stopwatchService.isStopwatchPause"
+            [text]="':'"></app-line-progress>
+          <app-line-progress class="textsize" [value]="stopwatchService.second" [isActive]="stopwatchService.isStopwatchRun" [isPaused]="stopwatchService.isStopwatchPause"
+            [text]="''"></app-line-progress>
+        </div>
+      </ng-template>
+    </mat-card-header>
+    <mat-card-actions>
+      <button mat-icon-button (click)="stopwatchService.start()">
+        <mat-icon>arrow_right</mat-icon>
+      </button>
+      <button mat-icon-button [disabled]="stopwatchService.isStopwatchRun === false" (click)="stopwatchService.pause()">
+        <mat-icon>pause</mat-icon>
+      </button>
+      <button mat-icon-button [disabled]="stopwatchService.isStopwatchRun === false" (click)="stopwatchService.reset()">
+        <mat-icon>refresh</mat-icon>
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</div>

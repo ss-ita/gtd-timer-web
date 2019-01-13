@@ -1,0 +1,55 @@
+<div class="back">
+  <div class="my-container">
+    <div class="search">
+      <mat-form-field>
+        <input matInput [(ngModel)]="searchText" placeholder="Filter" class="input">
+      </mat-form-field>
+    </div>
+    <div class="top-tittles">
+      <span class="name">
+        <p>Name</p>
+      </span>
+      <span class="time">
+        <p>Time</p>
+      </span>
+      <span class="goal">
+        <p>Goal</p>
+      </span>
+      <span class="actions">
+        <p>Actions</p>
+      </span>
+    </div>
+    <mat-divider></mat-divider>
+    <mat-list>
+      <mat-list-item *ngFor='let task of tasks | filter: searchText'>
+        <div class="name">
+          <p>{{task.name}}</p>
+        </div>
+        <div class="time">
+          <p>{{task.elapsedTime.hours |number: '2.0-0'}}:{{task.elapsedTime.minutes | number:
+            '2.0-0'}}:{{task.elapsedTime.seconds | number: '2.0-0'}}:{{task.elapsedTime.miliseconds}}</p>
+        </div>
+        <div *ngIf=(task.goal) class="goal">
+          <p>{{task.goal.hours| number: '2.0-0'}}:{{task.goal.minutes|number: '2.0-0'}}:{{task.goal.seconds | number:
+            '2.0-0'}}:{{task.goal.miliseconds}}</p>
+        </div>
+        <div *ngIf=(!task.goal) class="goal">
+
+        </div>
+        <div class="actions">
+          <button mat-raised-button matTooltip="Resume task" [matTooltipShowDelay]="1000" (click)="onResumeTask(task)"
+            id="resumeButton">
+            <i class="fas fa-reply"></i>
+          </button>
+          <button mat-raised-button [matTooltipShowDelay]="1000" (click)="onInfo(task)" matTooltip="Info" id="infoButton">
+            <i class="fas fa-bars"></i>
+          </button>
+          <button mat-raised-button [matTooltipShowDelay]="1000" (click)="onDeleteTask(task)" matTooltip="Permanently delete task"
+            id="deleteButton">
+            <i class="fas fa-trash-alt"></i>
+          </button>
+        </div>
+      </mat-list-item>
+    </mat-list>
+  </div>
+</div>

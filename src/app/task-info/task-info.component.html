@@ -1,0 +1,45 @@
+<h1 mat-dialog-title>{{task.name}}</h1>
+<div mat-dialog-content class="dialog-content">
+  <div class="dialog-content-div">
+    <div class="title">
+      <p>Description</p>
+    </div>
+    <div class="content">
+      <p>{{task.description}}</p>
+    </div>
+  </div>
+  <div class="dialog-content-div">
+    <div class="title">
+      <p>Last start time</p>
+    </div>
+    <div *ngIf=(task.lastStartTime) class="content">
+      <p>{{task.lastStartTime.year}}-{{task.lastStartTime.month |number: '2.0-0'}}-{{task.lastStartTime.day |number:
+        '2.0-0'}} {{task.lastStartTime.hours |number: '2.0-0' }}:{{task.lastStartTime.minutes | number:
+        '2.0-0'}}:{{task.lastStartTime.seconds |number: '2.0-0'}}:{{task.lastStartTime.miliseconds}}</p>
+    </div>
+    <div *ngIf=(!task.lastStartTime) class="content">
+    </div>
+  </div>
+  <div class="dialog-content-div">
+    <div class="title">
+      <p>Elapsed time</p>
+    </div>
+    <div *ngIf=(task.elapsedTime) class="content">
+      <p>{{task.elapsedTime.hours |number: '2.0-0'}}:{{task.elapsedTime.minutes |number:
+        '2.0-0'}}:{{task.elapsedTime.seconds |number: '2.0-0'}}:{{task.elapsedTime.miliseconds |number: '2.0-0'}}</p>
+    </div>
+    <div *ngIf=(!task.elapsedTime) class="content">
+    </div>
+  </div>
+  <div class="dialog-content-div">
+    <div class="title">
+      <p>Goal</p>
+    </div>
+    <div *ngIf=(task.goal) class="content">
+      <p>{{task.goal.hours |number: '2.0-0'}}:{{task.goal.minutes |number: '2.0-0'}}:{{task.goal.seconds |number:
+        '2.0-0'}}:{{task.goal.miliseconds |number: '2.0-0'}}</p>
+    </div>
+    <div *ngIf=(!task.goal) class="content">
+    </div>
+  </div>
+</div>

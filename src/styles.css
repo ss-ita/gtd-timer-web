@@ -1,1 +1,17 @@
-/* You can add global styles to this file, and also import other style files */
+@import '~@angular/material/prebuilt-themes/indigo-pink.css';
+
+body {
+    margin: 0;
+}
+
+.mat-tab-link {
+    flex: 1 1 auto;
+}
+
+.custom-snackbar span{
+    color: white;
+    margin:auto;
+    text-align: justify;
+    font-size: 20px;
+    width: auto;
+}

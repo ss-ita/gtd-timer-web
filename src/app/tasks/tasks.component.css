@@ -1,0 +1,116 @@
+.background{
+    position: absolute;
+    top: auto;
+    min-height: calc(100vh - 49px);
+    width: 100%;
+    background-image: linear-gradient(to top, #d9afd9 0%, #97d9e1 100%);
+    min-width: 820px;
+}
+
+.fields{
+    width: 100%;
+    height: 50px;
+    padding-top: 3px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+fieldset{
+    border:none;
+}
+.but{
+    width: 50px;
+    height: 36px;
+    border: none;
+    border-radius: 5%;
+    background-color: lightgrey;
+}
+.but:hover{
+   background-color: darkgrey;
+}
+.add_new{
+    margin-right: 30%;
+    margin-left: 2%;
+}
+.input{
+    width: 320px;
+    height: 30px;
+    border: 0,1px solid grey;
+}
+.other{
+    width: 30%;
+}
+.search{
+    margin-left: 4%;
+    height: 30px;
+}
+select{
+    height: 36px;
+}
+.taskName{
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-size: 14px;
+    color:#333;
+    padding: 20px;
+}
+.right{
+    position: relative;
+    right: 60px;
+}
+.textSize{
+    font-size: 14px;
+}
+
+.name{
+    width: 25%;
+}
+.time{
+    width: 25%;
+}
+.goal{
+    width: 25%;
+}
+.actions{
+    width: 25%;
+}
+mat-list-item{
+    box-shadow:  0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
+    margin-top: 6px;
+    margin-bottom: 6px;
+    background-color:  #f9f9f9;
+    border-radius: 5px;
+
+    }
+.my-container{
+    position: relative;
+    margin-left: 10%;
+    margin-right: 10%;
+}
+.top-tittles {
+    display: flex;
+    flex-direction: row;
+    margin-top:50px;
+    width: 100%;
+}
+.sth{
+    justify-content: space-between;
+}
+.name-title{
+    margin-left:20px;
+    cursor: pointer;
+}
+.time-title{
+    margin-left:19%;
+}
+.goal-title{
+    margin-left:22%;
+}
+.progres-title{
+    margin-left: 14%;
+}
+.actions-title{
+    margin-left: 14%;
+}
+.time{
+    font-size: 14px;
+}

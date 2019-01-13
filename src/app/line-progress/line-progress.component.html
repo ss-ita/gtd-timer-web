@@ -1,0 +1,9 @@
+<div class="margin-class">
+  <ng-template [ngIf]="value < 10">
+    <span class="text" [ngClass]="{'run-stopwatch': isActive, 'pause-stopwatch': isPaused}"> 0{{value}}</span>
+  </ng-template>
+  <ng-template [ngIf]="value >= 10">
+    <span class="text" [ngClass]="{'run-stopwatch': isActive, 'pause-stopwatch': isPaused}"> {{value}}</span>
+  </ng-template>
+  <span class="text" [ngClass]="{'run-stopwatch': isActive, 'pause-stopwatch': isPaused}">{{text}}</span>
+</div>

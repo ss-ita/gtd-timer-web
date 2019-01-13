@@ -1,0 +1,38 @@
+<h1 mat-dialog-title>Sign Up</h1>
+<mat-dialog-content>
+  <form [formGroup]="signUpForm" (ngSubmit)="onSubmit(signUpForm)" class="signup-form" (capsLock)="capsOn=$event"
+    novalidate>
+    <mat-form-field class="signup-full-width">
+      <input matInput formControlName="firstName" placeholder="First name">
+      <mat-error>{{getErrorMessageFirstName()}}</mat-error>
+    </mat-form-field>
+    <mat-form-field class="signup-full-width">
+      <input matInput formControlName="lastName" placeholder="Last name">
+      <mat-error>{{getErrorMessageLastName()}}</mat-error>
+    </mat-form-field>
+    <mat-form-field class="signup-full-width">
+      <input matInput formControlName="email" placeholder="Email">
+      <mat-error>{{getErrorMessageEmail()}}</mat-error>
+    </mat-form-field>
+    <mat-form-field class="signup-full-width" hintLabel="Combination of 8 or more uppercase, lowercase letters, special symbols and numbers.">
+      <input type="password" matInput placeholder="Password" [type]="hide ? 'text' : 'password'" formControlName="password">
+      <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility' : 'visibility_off'}}</mat-icon>
+      <mat-error>{{getErrorMessagePassword()}}</mat-error>
+    </mat-form-field>
+    <mat-form-field class="signup-full-width">
+      <input type="password" matInput formControlName="passwordConfirm" [type]="hide ? 'text' : 'password'" placeholder="Confirm password">
+      <mat-error>{{getErrorMessageConfirmPassword()}}</mat-error>
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <div class="flex-spacer"></div>
+  <label *ngIf="capsOn"> CapsLock is on!</label>
+  <div class="flex-spacer"></div>
+</mat-dialog-actions>
+<mat-dialog-actions align="end">
+  <button mat-raised-button color="primary" (click)="onRegisterSubmit()" [disabled]="!signUpForm.valid">Sign Up</button>
+  <div class="flex-spacer"></div>
+  <div class="flex-spacer"></div>
+  <button mat-raised-button color="warn" (click)="closeSignUpForm()">Close</button>
+</mat-dialog-actions>

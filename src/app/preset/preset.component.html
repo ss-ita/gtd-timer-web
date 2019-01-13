@@ -1,0 +1,63 @@
+<p class="presets-header">Presets Setting</p>
+<mat-dialog-content>
+  <form [formGroup]="presetForm" (ngSubmit)="onCreate()" class="presets-form">
+    <mat-form-field class="presets-full-width" *ngIf="!isViewable">
+      <mat-select placeholder="Scheme" [(ngModel)]="selectedPreset" [ngModelOptions]="{standalone: true}">
+        <mat-option *ngFor="let preset of returnPresetArray" [value]="preset.presetName">{{preset.presetName}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <div *ngIf="isLoggedIn; else loggedOut">
+      <p *ngIf="!isViewable" class="isAuthenticate">Choose the schema from default list or create your own. Just click<button
+          class="add-new-preset-button" (click)="toggle()">Here.</button></p>
+    </div>
+    <ng-template #loggedOut>
+      <p *ngIf="!isViewable" class="isAuthenticate">Choose the schema from default list.<button class="add-new-preset-button"
+          (click)="openSinUpDialogComponent()"> Register </button>to create your own.</p>
+    </ng-template>
+    <div *ngIf="isViewable">
+      <mat-form-field class="presets-full-width">
+        <input matInput formControlName="presetName" placeholder="Preset name">
+        <mat-error>{{getErrorMessagePresetName()}}</mat-error>
+      </mat-form-field>
+      <mat-card-title class="presets-header , margin-top">Preset timers</mat-card-title>
+      <div formArrayName="timers">
+        <div *ngFor="let item of returnTimerFormGroupArray.controls; let timerIndex = index" [formGroupName]="timerIndex">
+          <mat-form-field>
+            <input matInput formControlName="timerName" placeholder="Timer name">
+            <mat-error>{{getErrorMessageTimerName(item)}}</mat-error>
+          </mat-form-field>
+          <mat-form-field class="timer-element-width">
+            <input matInput type="number" min="0" max="23" formControlName="hours" placeholder="Hours">
+            <mat-error>{{getErrorMessageHours()}}</mat-error>
+          </mat-form-field>
+          <mat-form-field class="timer-element-width">
+            <input matInput type="number" min="0" max="59" formControlName="minutes" placeholder="Minutes">
+            <mat-error>{{getErrorMessageMinutesAndSeconds()}}</mat-error>
+          </mat-form-field>
+          <mat-form-field class="timer-element-width">
+            <input matInput type="number" min="0" max="59" formControlName="seconds" placeholder="Seconds">
+            <mat-error>{{getErrorMessageMinutesAndSeconds()}}</mat-error>
+          </mat-form-field>          
+          <button mat-icon-button [disabled]="!isValidate" type="button" (click)="deleteTimerGroupRow(timerIndex)">
+            <mat-icon class="delete-timer-icon" >delete</mat-icon>
+          </button>
+        </div>
+        <div class="add-timer-button">
+          <button mat-icon-button [disabled]="!isValidate" type="button" (click)="addTimerGroupRow()">
+            <mat-icon class="add-timer-icon" [inline]="true" >control_point</mat-icon>
+          </button>
+        </div>
+      </div>
+      <section class="auto-start-timers" *ngIf="!isViewable">
+        <mat-checkbox>Auto start timers</mat-checkbox>
+      </section>
+      <mat-dialog-actions>
+        <button mat-raised-button color="primary" (click)="onCreate" [disabled]="!presetForm.valid">Create</button>
+      </mat-dialog-actions>
+    </div>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-raised-button color="primary" (click)="onSave()">Save</button>
+  <button mat-raised-button color="warn" (click)="onClose()">Close</button>
+</mat-dialog-actions>

@@ -1,0 +1,77 @@
+.mat-icon-button {
+    width: 4rem;
+    height: 4rem;
+    border: none;
+    text-decoration: underline;
+}
+
+.mat-icon-button:hover
+{
+    background-color: rgb(172, 205, 255);
+}
+
+.container-stopwatch{
+    width: 700px;
+    height: 300px;
+}
+
+.mat-icon{
+    font-size:32px !important;
+    height: 32px !important;
+    width: 32px !important;
+}
+
+.mat-card{
+    width: 700px;
+    height: 380px;
+    margin: 5% auto;
+    text-align: right;
+}
+
+.background{
+    position: absolute;
+    top: auto;
+    min-height: calc(100vh - 49px);
+    width: 100%;
+    background-image: linear-gradient(to top, #d9afd9 0%, #97d9e1 100%);
+    min-width: 820px;
+}
+
+.unselectable{
+    margin-top: 5% !important;
+    margin-left: 7%;
+    -webkit-touch-callout: none; /* iOS Safari */
+-webkit-user-select: none; /* Safari */
+ -khtml-user-select: none; /* Konqueror HTML */
+   -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* Internet Explorer/Edge */
+        user-select: none;
+}
+
+.mat-card-header {
+    height: 280px;
+}
+
+.mat-card-actions{
+    text-align: center;
+}
+
+.style-menu{
+    width: 40px;
+    height: 40px; 
+}
+.mat-card>:first-child.negative-margin{
+    margin-top:-7px;
+}
+.round-progress{
+    margin-left: 1% !important;
+    margin-top: 5% !important;
+}
+.textsize{
+    
+    color: grey;
+    font-size: 120px;
+    margin: 5px;
+}
+
+
