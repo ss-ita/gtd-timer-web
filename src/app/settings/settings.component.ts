@@ -83,7 +83,7 @@ export class SettingsComponent implements OnInit {
         this.toasterService.showToaster('Account deleted! Redirecting to Sign In page...');
         setTimeout(() => {
           this.jwtservice.signout();
-          window.location.href="/signin";
+          window.location.href = '/signin';
         },
           2000);
 

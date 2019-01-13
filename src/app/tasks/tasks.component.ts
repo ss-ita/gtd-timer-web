@@ -15,7 +15,13 @@ export class TasksComponent implements OnInit {
 
   readonly progress: Observable<number>;
 
-  constructor(private archiveService: ArchiveService, public stopwatchService: StopwatchService, public timerService: TimerService) { this.progress = this.emulateProgress(); }
+  constructor(
+    private archiveService: ArchiveService,
+    public stopwatchService: StopwatchService,
+    public timerService: TimerService
+  ) {
+    this.progress = this.emulateProgress();
+  }
 
 
   public tasks: TaskCreateJson[] = [];
@@ -47,21 +53,21 @@ export class TasksComponent implements OnInit {
   }
 
   addTask() {
-    let taskToPass: TaskCreateJson = {
+    const taskToPass: TaskCreateJson = {
       id: 0,
       name: this.taskName,
-      description: "",
+      description: '',
       elapsedTime: 0,
-      goal: "",
-      lastStartTime: "0001-01-01T00:00:00Z",
+      goal: '',
+      lastStartTime: '0001-01-01T00:00:00Z',
       isActive: true,
       isRunning: false
-    }
+    };
     const myObserver = {
       next: x => { },
       error: err => { },
-      complete: () => { 
-        this.archiveService.getActiveTasksFromServer().subscribe() 
+      complete: () => {
+        this.archiveService.getActiveTasksFromServer().subscribe();
       },
 
     };
@@ -88,7 +94,7 @@ export class TasksComponent implements OnInit {
 
   deleteTask(task: TaskCreateJson) {
     this.archiveService.switchTaskStatus(task).subscribe();
-    let indexTaskToDelete = this.tasks.indexOf(task, 0);
+    const indexTaskToDelete = this.tasks.indexOf(task, 0);
     this.tasks.splice(indexTaskToDelete, 1);
   }
   startTask(task: TaskCreateJson) {
@@ -106,7 +112,7 @@ export class TasksComponent implements OnInit {
       for (let i = 0; i < data.length; ++i) {
         this.tasks.push(data[i]);
       }
-    })
+    });
   }
 }
 
