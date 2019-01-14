@@ -14,7 +14,7 @@
         <p class="margin-small-right , font-size-p">
           Preset name: {{timerServise.currentPreset}}
         </p>
-        <div *ngFor="let timer of getTimerArray; let currentTimerIndex = index">
+        <div *ngFor="let timer of getTimersArray; let currentTimerIndex = index">
             <div class="margin-right , font-size" [ngClass]="{'current-timer': currentTimerIndex === getTimerArrayIndex}">{{currentTimerIndex + 1}}) {{timer.timerName}} - "{{timer.hours}}:{{timer.minutes}}:{{timer.seconds}}"</div>
         </div>
         <div class="margin-bottom" ></div>

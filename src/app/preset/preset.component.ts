@@ -20,7 +20,7 @@ export class PresetComponent implements OnInit {
   presetForm: FormGroup;
   isViewable: boolean;
   isLoggedIn: boolean;
-  isValidate = true;
+  isValid: boolean;
 
   constructor(
     private presetsFormDialogRef: MatDialogRef<PresetComponent>,
@@ -30,10 +30,8 @@ export class PresetComponent implements OnInit {
     private formBuilder: FormBuilder) { }
 
   onCreate() {
-    this.presetService.pushPreset(this.presetForm.value).subscribe(
-      response => console.log('Success!', response),
-      error => console.error('Error!', error));
-    this.selectedPreset = this.presetService.getCreatedSchema();
+    this.presetService.createPreset(this.presetForm.value);
+    this.selectedPreset = this.presetService.getCreatedPreset();
     this.toggle();
   }
 
@@ -51,54 +49,20 @@ export class PresetComponent implements OnInit {
     this.isViewable = !this.isViewable;
   }
 
-  openSinUpDialogComponent() {
+  openSignUpDialogComponent() {
     this.signupDialogComponent.openSignUpForm();
     this.onClose();
   }
 
-  get returnTimerFormGroupArray() {
+  get returnTimersFormGroupArray() {
     return this.presetForm.get('timers') as FormArray;
   }
 
-  get returnPresetArray() {
+  get returnPresetsArray() {
     return this.presetService.presetsArray;
   }
 
-  getAllStandartAndCustomPresets() {
-    this.presetService.presetsArray = [];
-
-    if (this.isLoggedIn) {
-      this.getAllCustomPresets();
-    }
-
-    this.presetService.getGetAllStandardPresetsFromServer().subscribe(data => {
-      for (let index = 0; index < data.length; index++) {
-        this.presetModel = new PresetModel();
-        this.presetModel = this.presetService.convertToPresetModel(data[index]);
-        this.presetService.pushPresetToArrayFromServer(this.presetModel);
-      }
-    });
-  }
-
-  getAllCustomPresets() {
-    this.presetService.getGetAllCustomPresetsFromServer().subscribe(data => {
-      for (let index = 0; index < data.length; index++) {
-        this.presetModel = new PresetModel();
-        this.presetModel = this.presetService.convertToPresetModel(data[index]);
-        this.presetService.pushPresetToArrayFromServer(this.presetModel);
-      }
-    });
-  }
-
-  addTimerGroupRow() {
-    (<FormArray>this.presetForm.get('timers')).push(this.addTimerFormGroup());
-  }
-
-  deleteTimerGroupRow(index) {
-    this.returnTimerFormGroupArray.removeAt(index);
-  }
-
-  returnIsLoggedIn() {
+  getIsLoggedIn() {
     if (localStorage.getItem('access_token') === null) {
       return false;
     } else {
@@ -109,14 +73,60 @@ export class PresetComponent implements OnInit {
   getErrorMessagePresetName() {
     return this.presetForm.controls['presetName'].hasError('required') ? 'This field is required' : '';
   }
+
   getErrorMessageTimerName(item: FormGroup) {
     return item.controls['timerName'].hasError('required') ? 'This field is required' : '';
   }
+
   getErrorMessageHours() {
-    return 'From 0 to 24';
+    return 'From 0 to 23';
   }
+
   getErrorMessageMinutesAndSeconds() {
-    return 'From 0 to 60';
+    return 'From 0 to 59';
+  }
+
+  getAllStandardAndCustomPresets() {
+    this.presetService.presetsArray = [];
+
+    if (this.isLoggedIn) {
+      this.getAllCustomPresetsFromServer();
+    }
+
+    this.presetService.getAllStandardPresetsFromServer().subscribe(data => {
+      for (let index = 0; index < data.length; index++) {
+        this.presetModel = new PresetModel();
+        this.presetModel = this.presetService.convertToPresetModel(data[index]);
+        this.presetService.pushPresetToLocalArray(this.presetModel);
+      }
+    });
+  }
+
+  getAllCustomPresetsFromServer() {
+    this.presetService.getAllCustomPresetsFromServer().subscribe(data => {
+      for (let index = 0; index < data.length; index++) {
+        this.presetModel = new PresetModel();
+        this.presetModel = this.presetService.convertToPresetModel(data[index]);
+        this.presetService.pushPresetToLocalArray(this.presetModel);
+      }
+    });
+  }
+
+  deleteTimerGroupRow(index) {
+    this.returnTimersFormGroupArray.removeAt(index);
+  }
+
+  addTimerGroupRow() {
+    (<FormArray>this.presetForm.get('timers')).push(this.addTimerFormGroup());
+  }
+
+  addTimerFormGroup(): FormGroup {
+    return this.formBuilder.group({
+      timerName: ['', [Validators.required]],
+      hours:   ['', [Validators.required, Validators.min(0), Validators.max(23)]],
+      minutes: ['', [Validators.required, Validators.min(0), Validators.max(59)]],
+      seconds: ['', [Validators.required, Validators.min(0), Validators.max(59)]]
+    });
   }
 
   ngOnInit() {
@@ -124,18 +134,9 @@ export class PresetComponent implements OnInit {
       presetName: ['', [Validators.required]],
       timers: this.formBuilder.array([this.addTimerFormGroup()])
     });
+    this.isValid = true;
     this.isViewable = false;
-    this.isValidate = true;
     this.selectedPreset = 'standard';
-    this.isLoggedIn = this.returnIsLoggedIn();
-  }
-
-  addTimerFormGroup(): FormGroup {
-    return this.formBuilder.group({
-      timerName: ['', [Validators.required]],
-      hours: ['', [Validators.required, Validators.min(0), Validators.max(23)]],
-      minutes: ['', [Validators.required, Validators.min(0), Validators.max(59)]],
-      seconds: ['', [Validators.required, Validators.min(0), Validators.max(59)]]
-    });
+    this.isLoggedIn = this.getIsLoggedIn();
   }
 }

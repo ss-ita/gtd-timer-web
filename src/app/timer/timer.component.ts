@@ -28,7 +28,7 @@ export class TimerComponent implements OnInit {
     this.service.openPresetForm();
   }
 
-  get getTimerArray() {
+  get getTimersArray() {
     return this.timerServise.timerArray;
   }
 
@@ -37,21 +37,21 @@ export class TimerComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.presetComponent.isLoggedIn = this.presetComponent.returnIsLoggedIn();
+    this.presetComponent.isLoggedIn = this.presetComponent.getIsLoggedIn();
     this.timerForm = this.formBuilder.group({
       'hour': [this.timerServise.maxValueHour, [Validators.required, Validators.min(0), Validators.max(23)]],
       'minute': [this.timerServise.maxValueMinute, [Validators.required, Validators.min(0), Validators.max(59)]],
       'second': [this.timerServise.maxValueSecond, [Validators.required, Validators.min(0), Validators.max(59)]]
     });
-    this.presetComponent.getAllStandartAndCustomPresets();
-    this.timerServise.getIsArrayEmpty();
+    this.presetComponent.getAllStandardAndCustomPresets();
+    this.timerServise.getIsTimerArrayEmpty();
   }
 
   getErrorMessageHour() {
-    return 'please enter a number from 0 to 24';
+    return 'please enter a number from 0 to 23';
   }
 
   getErrorMessageMinuteAndSecond() {
-    return 'please enter a number from 0 to 60';
+    return 'please enter a number from 0 to 59';
   }
 }

@@ -36,18 +36,18 @@ export class TimerService {
     subscribe: Subscription;
     public currentPreset = '#No chosen preset';
 
-    initializeTimerArray(timerArray: Timer[]) {
-        this.clearTimerArrayAndIndex();
+    initializeTimersArray(timerArray: Timer[]) {
+        this.clearTimersArrayAndIndex();
         this.resetTimer();
         this.timerIndex++;
         this.timerArray = timerArray;
         this.refreshTimer();
         this.timerArrayLenght = timerArray.length;
-        this.startTimerFromPreset();
-        this.getIsArrayEmpty();
+        this.startTimersFromPreset();
+        this.getIsTimerArrayEmpty();
     }
 
-    getIsArrayEmpty() {
+    getIsTimerArrayEmpty() {
         if (this.timerIndex === -1) {
             this.isArrayEmpty = true;
         } else {
@@ -55,17 +55,17 @@ export class TimerService {
         }
     }
 
-    startTimerFromPreset() {
+    startTimersFromPreset() {
         if (this.timerIndex === this.timerArrayLenght) {
             this.timerIndex = 0;
         }
         if (this.timerIndex <= this.timerArrayLenght - 1) {
-            this.startPresetTimer(
+            this.setPresetTimer(
                 this.timerArray[this.timerIndex].hours, this.timerArray[this.timerIndex].minutes, this.timerArray[this.timerIndex].seconds);
         }
     }
 
-    startPresetTimer(hours: number, minutes: number, seconds: number) {
+    setPresetTimer(hours: number, minutes: number, seconds: number) {
         this.hour = hours;
         this.minute = minutes;
         this.second = seconds;
@@ -95,7 +95,7 @@ export class TimerService {
     }
 
     refreshTimer() {
-        this.startTimerFromPreset();
+        this.startTimersFromPreset();
         this.pauseTimer();
         this.isTimerRun = this.isTimerPause = false;
         this.hour = this.maxValueHour;
@@ -134,7 +134,7 @@ export class TimerService {
         }
     }
 
-    clearTimerArrayAndIndex() {
+    clearTimersArrayAndIndex() {
         this.timerArray = [];
         this.timerIndex = -1;
     }

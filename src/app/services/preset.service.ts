@@ -16,9 +16,9 @@ export class PresetService {
   presetIndex: number;
 
   constructor(
+    private configService: ConfigService,
     private timerService: TimerService,
-    private config: ConfigService,
-    private http: HttpClient) { }
+    private httpClient: HttpClient) { }
 
   private getHeaders() {
     const headers = new HttpHeaders({
@@ -28,36 +28,34 @@ export class PresetService {
     return headers;
   }
 
-  createPreset(presetModelJson: PresetModelJson) {
-    return this.http.post(this.config.urlPreset + 'CreatePreset', presetModelJson, { headers: this.getHeaders() });
+  createPreset(presetModel: PresetModel) {
+    this.pushPresetToLocalArray(presetModel);
+    this.presetModelJson = this.convertToPresetModelJson(presetModel);
+    return this.httpClient.post(this.configService.urlPreset + 'CreatePreset', this.presetModelJson, { headers: this.getHeaders() });
   }
 
-  getGetAllStandardPresetsFromServer(): Observable<PresetModelJson[]> {
-    return this.http.get<PresetModelJson[]>(this.config.urlPreset + 'GetAllStandardPresets', { headers: this.getHeaders() });
+  getAllStandardPresetsFromServer(): Observable<PresetModelJson[]> {
+    return this.httpClient.get<PresetModelJson[]>(this.configService.urlPreset + 'GetAllStandardPresets', { headers: this.getHeaders() });
   }
 
-  getGetAllCustomPresetsFromServer(): Observable<PresetModelJson[]> {
-    return this.http.get<PresetModelJson[]>(this.config.urlPreset + 'GetAllCustomPresets', { headers: this.getHeaders() });
+  getAllCustomPresetsFromServer(): Observable<PresetModelJson[]> {
+    return this.httpClient.get<PresetModelJson[]>(this.configService.urlPreset + 'GetAllCustomPresets', { headers: this.getHeaders() });
   }
 
-  pushPreset(preset: PresetModel) {
-    this.pushPresetToArrayFromServer(preset);
-    return this.createPreset(this.convertToPresetModelJson(preset));
-  }
-
-  pushPresetToArrayFromServer(preset: PresetModel) {
+  pushPresetToLocalArray(preset: PresetModel) {
     this.presetsArray.push(preset);
   }
-  getCreatedSchema() {
+
+  getCreatedPreset() {
     return this.presetsArray[this.presetsArray.length - 1].presetName;
   }
 
   startPresetTimers() {
-    this.getChoosenPresetIndex();
-    this.timerService.initializeTimerArray(this.presetsArray[this.presetIndex].timers);
+    this.getChosenPresetIndex();
+    this.timerService.initializeTimersArray(this.presetsArray[this.presetIndex].timers);
   }
 
-  getChoosenPresetIndex() {
+  getChosenPresetIndex() {
     for (let index = 0; index < this.presetsArray.length; index++) {
       if (this.presetsArray[index].presetName === (this.timerService.currentPreset).substring(1)) {
         this.presetIndex = index;
