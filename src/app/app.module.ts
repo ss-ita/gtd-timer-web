@@ -77,7 +77,7 @@ export function jwtTokenGetter() {
     FilterPipe,
     ConfirmationDialogComponent,
     PresetDialogComponent,
-    TaskInfoComponent,
+    TaskInfoComponent
   ],
   imports: [
     BrowserModule,
