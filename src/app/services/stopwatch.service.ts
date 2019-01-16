@@ -49,7 +49,7 @@ export class StopwatchService {
   pause() {
     if (this.isStopwatchRun) {
       this.isStopwatchPause = true;
-      this.color = 'red';
+      this.color = '#ad2265';
       this.subscribe.unsubscribe();
     }
   }

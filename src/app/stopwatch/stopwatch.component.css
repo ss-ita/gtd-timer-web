@@ -60,18 +60,19 @@
     width: 40px;
     height: 40px; 
 }
+
 .mat-card>:first-child.negative-margin{
     margin-top:-7px;
+    display: flex;
 }
+
 .round-progress{
     margin-left: 1% !important;
     margin-top: 5% !important;
 }
+
 .textsize{
-    
     color: grey;
     font-size: 120px;
     margin: 5px;
 }
-
-

@@ -10,6 +10,7 @@
 }
 .add-timer-button {
     text-align: center;
+    margin-top: 10px;
 }
 .add-timer-icon {
     font-size: 36px;
@@ -36,7 +37,11 @@
     line-height: 23px;
 }
 .margin-top {
-    margin-top: 30px;
+    margin-top: 10px;
+}
+.preset-selector {
+    margin-top: 10px;
+    margin-bottom: -20px;
 }
 .additional-message {
     font-size: 17px;

@@ -16,6 +16,7 @@ import { SignupDialogComponent } from '../signup-dialog/signup-dialog.component'
 export class TimerComponent implements OnInit {
 
   timerForm: FormGroup;
+  isViewable: boolean;
 
   constructor(private formBuilder: FormBuilder,
     private presetComponent: PresetComponent,
@@ -26,6 +27,9 @@ export class TimerComponent implements OnInit {
 
   openPresetFormDialog() {
     this.service.openPresetForm();
+  }
+  toggle() {
+    this.isViewable = !this.isViewable;
   }
 
   get getTimersArray() {
@@ -45,6 +49,7 @@ export class TimerComponent implements OnInit {
     });
     this.presetComponent.getAllStandardAndCustomPresets();
     this.timerServise.getIsTimerArrayEmpty();
+    this.isViewable = false;
   }
 
   getErrorMessageHour() {

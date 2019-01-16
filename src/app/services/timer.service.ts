@@ -113,7 +113,7 @@ export class TimerService {
 
     updateTime() {
         if (this.minute == 0 && this.second < 11 && this.hour == 0) {
-            this.color = 'red';
+            this.color = '#ad2265';
         }
 
         if (this.minute == 0 && this.second == 0 && this.hour == 0) {
@@ -143,5 +143,7 @@ export class TimerService {
         this.hour = 0;
         this.minute = 0;
         this.second = 0;
+        this.isTimerFinished = false;
+        this.color = '#609b9b';
     }
 }
