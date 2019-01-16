@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { JwtService } from '../services/jwt.service';
+import { NavbarService } from '../services/navbar.service';
 
 
 @Component({
@@ -17,8 +18,11 @@ export class NavBarComponent implements OnInit {
   email = localStorage.getItem('email');
 
   constructor(private router: Router,
-    private jwtservice: JwtService) {
+    private jwtservice: JwtService,
+    private navservice: NavbarService) {
 
+    this.navservice.navLinks.subscribe(value => { this.navLinks = value; });
+    this.navservice.show.subscribe(value => { this.show = value; });
     if (localStorage.getItem('access_token')) {
       this.show = true;
       this.navLinks = [
@@ -87,6 +91,30 @@ export class NavBarComponent implements OnInit {
 
   signout(): void {
     this.jwtservice.signout();
-    window.location.reload();
+    this.navLinks = this.navLinks.slice(0, 3);
+    this.navLinks.push({
+      label: 'Sign In',
+      link: './signin',
+      index: 3
+    });
+    this.show = false;
+    this.router.navigateByUrl('/signin');
+  }
+
+  signin(): void {
+    this.navLinks.push(
+      {
+        label: 'Tasks',
+        link: './tasks',
+        index: 3
+      }, {
+        label: 'Statistics',
+        link: './statistics',
+        index: 4
+      }, {
+        label: 'Archive',
+        link: './archive',
+        index: 5
+      });
   }
 }

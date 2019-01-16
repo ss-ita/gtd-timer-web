@@ -20,11 +20,4 @@ export class AuthGuardService implements CanActivate {
     return true;
   }
 
-  cantActivate(): boolean {
-    if (!this.auth.isAuthenticated()) {
-      this.router.navigate(['stopwatch']);
-      return true;
-    }
-    return false;
-  }
 }

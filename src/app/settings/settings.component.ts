@@ -68,7 +68,7 @@ export class SettingsComponent implements OnInit {
 
   save() {
     this.userService.updatePassword(this.updatePasswordForm.value).subscribe(
-      data => {
+      _ => {
         this.updatePasswordForm.reset();
         this.toasterService.showToaster('Password changed!');
       },
@@ -79,7 +79,7 @@ export class SettingsComponent implements OnInit {
 
   delete() {
     this.userService.deleteAccount().subscribe(
-      data => {
+      _ => {
         this.toasterService.showToaster('Account deleted! Redirecting to Sign In page...');
         setTimeout(() => {
           this.jwtservice.signout();
