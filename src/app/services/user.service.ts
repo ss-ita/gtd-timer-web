@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, NgZone } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { SignupModel } from '../models/signup.model';
 import { UpdatePasswordModel } from '../models/update-password.model';
@@ -19,7 +19,8 @@ export class UserService {
     private jwtservice: JwtService,
     private toasterService: ToasterService,
     private router: Router,
-    private navbar: NavbarService) { }
+    private navbar: NavbarService,
+    private zone: NgZone) { }
 
   registerUser(user: SignupModel) {
     const body: SignupModel = {
@@ -61,6 +62,7 @@ export class UserService {
         index: 5
       }]);
     this.navbar.show.next(true);
+    this.navbar.email.next(localStorage.getItem('email'));
   }
 
   signinuser(email, password) {
@@ -108,7 +110,10 @@ export class UserService {
       .pipe(first())
       .subscribe(
         _ => {
-          window.location.reload();
+          this.zone.run(() => {
+            this.navbarsubscribe();
+            this.router.navigateByUrl('/stopwatch');
+          });
         },
         response => {
           this.toasterService.showToaster(response.error.Message);
@@ -120,7 +125,10 @@ export class UserService {
       .pipe(first())
       .subscribe(
         _ => {
-          window.location.reload();
+          this.zone.run(() => {
+            this.navbarsubscribe();
+            this.router.navigateByUrl('/stopwatch');
+          });
         },
         response => {
           this.toasterService.showToaster(response.error.Message);

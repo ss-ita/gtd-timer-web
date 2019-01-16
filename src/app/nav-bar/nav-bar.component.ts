@@ -23,6 +23,8 @@ export class NavBarComponent implements OnInit {
 
     this.navservice.navLinks.subscribe(value => { this.navLinks = value; });
     this.navservice.show.subscribe(value => { this.show = value; });
+    this.navservice.email.subscribe(value => { this.email = value; });
+
     if (localStorage.getItem('access_token')) {
       this.show = true;
       this.navLinks = [

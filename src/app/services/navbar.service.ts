@@ -27,4 +27,5 @@ export class NavbarService {
       }
     ]);
   show: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  email: BehaviorSubject<string> = new BehaviorSubject<string>(localStorage.getItem('email'));
 }
