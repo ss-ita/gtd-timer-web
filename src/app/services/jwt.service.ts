@@ -8,7 +8,8 @@ import { ConfigService } from './config.service';
 })
 
 export class JwtService {
-  constructor(private httpClient: HttpClient, private config: ConfigService) { }
+  constructor(private httpClient: HttpClient,
+    private config: ConfigService) { }
 
   signin(email: string, password: string) {
     localStorage.setItem('email', email);
