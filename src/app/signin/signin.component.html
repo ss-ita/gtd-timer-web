@@ -6,12 +6,12 @@
     <form [formGroup]="signinform" (ngSubmit)="onSubmit()">
       <mat-card-content>
         <mat-form-field class="signin-form">
-          <input matInput placeholder="Enter your email" formControlName="email" [ngClass]="{ 'is-invalid': submitted && f.email.errors }">
+          <input matInput placeholder="Enter your email" formControlName="email" [ngClass]="{ 'is-invalid': submitted && controlElements.email.errors }">
           <mat-error>{{getErrorMessageEmail()}}</mat-error>
         </mat-form-field>
         <mat-form-field class="signin-form">
           <input matInput [type]="hide ? 'text':'password'" placeholder="Enter your password" formControlName="password"
-            [ngClass]="{ 'is-invalid': submitted && f.password.errors }">
+            [ngClass]="{ 'is-invalid': submitted && controlElements.password.errors }">
           <mat-icon class="unselectable" matSuffix (click)="hide = !hide" unselectable="on">{{hide ? 'visibility'
             :'visibility_off'}}</mat-icon>
         </mat-form-field>

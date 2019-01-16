@@ -37,7 +37,7 @@ export class SignupComponent implements OnInit {
   onRegisterSubmit() {
     this.userService.registerUser(this.signUpForm.value)
       .subscribe(
-        data => {
+        _ => {
           this.closeSignUpForm();
           this.toasterService.showToaster('Registration successful! ');
           setTimeout(() => {

@@ -6,6 +6,8 @@ import { ConfigService } from './config.service';
 import { JwtService } from './jwt.service';
 import { ToasterService } from './toaster.service';
 import { first } from 'rxjs/operators';
+import { Router } from '@angular/router';
+import { NavbarService } from './navbar.service';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +17,9 @@ export class UserService {
   constructor(private http: HttpClient,
     private config: ConfigService,
     private jwtservice: JwtService,
-    private toasterService: ToasterService) { }
+    private toasterService: ToasterService,
+    private router: Router,
+    private navbar: NavbarService) { }
 
   registerUser(user: SignupModel) {
     const body: SignupModel = {
@@ -27,15 +31,45 @@ export class UserService {
     };
 
     return this.http.post(this.config.urlUser, body);
+  }
 
+  navbarsubscribe() {
+    this.navbar.navLinks.next([
+      {
+        label: 'Timer',
+        link: './timer',
+        index: 0
+      }, {
+        label: 'Alarm',
+        link: './alarm',
+        index: 1
+      }, {
+        label: 'Stopwatch',
+        link: './stopwatch',
+        index: 2
+      }, {
+        label: 'Tasks',
+        link: './tasks',
+        index: 3
+      }, {
+        label: 'Statistics',
+        link: './statistics',
+        index: 4
+      }, {
+        label: 'Archive',
+        link: './archive',
+        index: 5
+      }]);
+    this.navbar.show.next(true);
   }
 
   signinuser(email, password) {
     this.jwtservice.signin(email, password)
       .pipe(first())
       .subscribe(
-        data => {
-          window.location.reload();
+        _ => {
+          this.navbarsubscribe();
+          this.router.navigateByUrl('/stopwatch');
           this.toasterService.showToaster('Successfuly signed in! ');
         },
         response => {
@@ -73,7 +107,7 @@ export class UserService {
     this.jwtservice.signinGoogle(accessTokenSocial)
       .pipe(first())
       .subscribe(
-        data => {
+        _ => {
           window.location.reload();
         },
         response => {
@@ -85,7 +119,7 @@ export class UserService {
     this.jwtservice.signinFacebook(accessTokenSocial)
       .pipe(first())
       .subscribe(
-        data => {
+        _ => {
           window.location.reload();
         },
         response => {
