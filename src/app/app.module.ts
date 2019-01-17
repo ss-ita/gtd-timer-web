@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, ErrorHandler } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppMaterialModule } from '../app/app-material.module';
 import { AppComponent } from './app.component';
@@ -45,7 +45,11 @@ import { SignupDialogComponent } from './signup-dialog/signup-dialog.component';
 import { ProgressComponent } from './progress/progress.component';
 import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-dialog.component';
 import { PresetDialogComponent } from './preset-dialog/preset-dialog.component';
+import { RavenErrorHandlerService } from './services/raven-error-handler.service';
+import * as Raven from 'raven-js';
 
+
+Raven.config('https://865c7736cad949ca829898981a743cac@sentry.io/1373804').install();
 export function jwtTokenGetter() {
   return localStorage.getItem('access_token');
 }
@@ -118,7 +122,8 @@ export function jwtTokenGetter() {
     { provide: MatDialogRef, useValue: {} },
     UserService,
     ToasterService,
-    SocialAuthService
+    SocialAuthService,
+    { provide: ErrorHandler, useClass: RavenErrorHandlerService }
   ],
   bootstrap: [AppComponent],
   entryComponents: [
