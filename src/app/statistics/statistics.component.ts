@@ -10,12 +10,12 @@ import { TasksService } from '../services/tasks.service';
   styleUrls: ['./statistics.component.css'],
 })
 export class StatisticsComponent implements OnInit {
-  doughnutChart: Chart;
+  chart: Chart;
   tasks = [];
-  colors = ['#DEB887', '#A9A9A9', '#DC143C', '#F4A460', '#2E8B57', '#F08080', '#008000',
-    '#FFFF00', '#EE82EE', '#4169E1', '#FFE4B5', '#00FA9A', '#BA55D3', '#FF4500'];
+  colors = ['#FF80AB', '#2196F3', '#D81B60', '#00C853', '#FFEB3B', '#7986CB', '#F8BBD0', '#FFD600', '#FF5722', '#81D4FA'];
   public hasData = true;
   public isActiveChart = true;
+  public typeOfChart = 0;
 
   constructor(
     private tasksService: TasksService,
@@ -46,7 +46,7 @@ export class StatisticsComponent implements OnInit {
   filterTasks(tasks: any[], isActive: boolean) {
     const items = [];
     for (let i = 0; i < tasks.length; i++) {
-      if (tasks[i].isActive === isActive) {
+      if (tasks[i].isActive === isActive && tasks[i].time > 0) {
         items.push(tasks[i]);
       }
     }
@@ -54,7 +54,7 @@ export class StatisticsComponent implements OnInit {
     return items;
   }
 
-  prepareDataForDoughnutChart(tasks: any[]) {
+  prepareDataForChart(tasks: any[]) {
     const namesOfTasks = [];
     const durationsOfTasks = [];
     for (let i = 0; i < tasks.length; i++) {
@@ -66,10 +66,24 @@ export class StatisticsComponent implements OnInit {
     return data;
   }
 
-  drawDoughnutChart(namesOfTasks: any[], durationsOfTasks: any[]) {
+  drawChart(namesOfTasks: any[], durationsOfTasks: any[]) {
+    var type;
+    switch (this.typeOfChart) {
+      case 0: {
+        type = 'doughnut';
+        break;
+      }
+      case 1: {
+        type = 'bar';
+        break;
+      }
+      default: {
+        break;
+      }
+    }
     const self = this;
-    this.doughnutChart = new Chart('doughnutChart', {
-      type: 'doughnut',
+    this.chart = new Chart('tasksChart', {
+      type: type,
       data: {
         labels: namesOfTasks,
         datasets: [{
@@ -96,10 +110,10 @@ export class StatisticsComponent implements OnInit {
   }
 
   createInitialChart() {
-    const activeTasks = this.filterTasks(this.tasks, true);
-    const data = this.prepareDataForDoughnutChart(activeTasks);
+    const tasks = this.filterTasks(this.tasks, this.isActiveChart);
+    const data = this.prepareDataForChart(tasks);
     this.hasData = (data.tasksName.length != 0);
-    this.drawDoughnutChart(data.tasksName, data.tasksDurations);
+    this.drawChart(data.tasksName, data.tasksDurations);
   }
 
   drawActiveTasks() {
@@ -112,16 +126,16 @@ export class StatisticsComponent implements OnInit {
 
   updateChart(isActive: boolean) {
     const archiveTasks = this.filterTasks(this.tasks, isActive);
-    const data = this.prepareDataForDoughnutChart(archiveTasks);
+    const data = this.prepareDataForChart(archiveTasks);
     this.hasData = (data.tasksName.length != 0);
     this.isActiveChart = isActive;
     this.updateChartData(data);
   }
 
   updateChartData(data: any) {
-    this.doughnutChart.config.data.labels = data.tasksName;
-    this.doughnutChart.config.data.datasets[0].data = data.tasksDurations;
-    this.doughnutChart.update();
+    this.chart.config.data.labels = data.tasksName;
+    this.chart.config.data.datasets[0].data = data.tasksDurations;
+    this.chart.update();
   }
 
   millisecondsToElapsedTime(timeInMillisecond: number) {
@@ -149,9 +163,37 @@ export class StatisticsComponent implements OnInit {
   }
 
   numberToTimeString(digit: number) {
-    if (digit < 9) {
-      return '0' + digit;
+    const value = 10;
+    const targetLength = 2;
+    if (digit < value) {
+      var str = digit.toString();
+      return str.padStart(targetLength, '0');
     }
     return digit;
+  }
+
+  changeTypeOfChart(digit: number) {
+    this.typeOfChart = digit;
+    var type;
+    switch (this.typeOfChart) {
+      case 0: {
+        type = 'doughnut';
+        break;
+      }
+      case 1: {
+        type = 'bar';
+        break;
+      }
+      default: {
+        break;
+      }
+    }
+    this.chart.config.type = type;
+    if (this.chart.config.options.scales) {
+      this.chart.config.options.scales.xAxes[0].display = type == 'bar';
+      this.chart.config.options.scales.yAxes[0].display = type == 'bar';
+    }
+    this.chart.config.options.legend.display = type != 'bar';
+    this.chart.update();
   }
 }

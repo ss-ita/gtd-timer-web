@@ -7,6 +7,7 @@ import { ToasterService } from '../services/toaster.service';
 import { MatDialog } from '@angular/material';
 import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
 import { JwtService } from '../services/jwt.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-settings',
@@ -25,7 +26,8 @@ export class SettingsComponent implements OnInit {
     private toasterService: ToasterService,
     private userService: UserService,
     private jwtservice: JwtService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private router: Router
   ) { }
 
   passwordPattern = /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=.,\-_!])([a-zA-Z0-9 @#$%^&+=*.,\-_!]){8,}$/;
@@ -83,7 +85,7 @@ export class SettingsComponent implements OnInit {
         this.toasterService.showToaster('Account deleted! Redirecting to Sign In page...');
         setTimeout(() => {
           this.jwtservice.signout();
-          window.location.href = '/signin';
+          this.router.navigateByUrl('/signin');
         },
           2000);
 
