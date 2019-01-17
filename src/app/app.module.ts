@@ -34,7 +34,6 @@ import { AuthGuardFalse } from './auth/auth-guard-false.service';
 import { InfoComponent } from './info/info.component';
 import { PresetComponent } from './preset/preset.component';
 import { TaskInfoComponent } from './task-info/task-info.component';
-import { TaskInfoDialogComponent } from './task-info-dialog/task-info-dialog.component';
 import { FilterPipe } from './filter.pipe';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { AngularFireModule } from 'angularfire2';
@@ -70,10 +69,8 @@ export function jwtTokenGetter() {
     LineProgressComponent,
     InfoComponent,
     SignupDialogComponent,
-    TaskInfoDialogComponent,
     ProgressComponent,
     PresetComponent,
-    TaskInfoDialogComponent,
     FilterPipe,
     ConfirmationDialogComponent,
     PresetDialogComponent,

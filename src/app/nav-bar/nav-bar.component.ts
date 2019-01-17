@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { JwtService } from '../services/jwt.service';
+import { NavbarService } from '../services/navbar.service';
+import { UserService } from '../services/user.service';
 
 
 @Component({
@@ -15,9 +17,16 @@ export class NavBarComponent implements OnInit {
   activeLinkIndex = -1;
   show = false;
   email = localStorage.getItem('email');
+  signinLink = '/signin';
 
   constructor(private router: Router,
-    private jwtservice: JwtService) {
+    private jwtservice: JwtService,
+    private navservice: NavbarService,
+    private userService: UserService) {
+
+    this.navservice.navLinks.subscribe(value => { this.navLinks = value; });
+    this.navservice.show.subscribe(value => { this.show = value; });
+    this.navservice.email.subscribe(value => { this.email = value; });
 
     if (localStorage.getItem('access_token')) {
       this.show = true;
@@ -74,6 +83,9 @@ export class NavBarComponent implements OnInit {
   ngOnInit(): void {
     this.router.events.subscribe((res) => {
       this.activeLinkIndex = this.navLinks.indexOf(this.navLinks.find(tab => tab.link === '.' + this.router.url));
+      if (this.router.url != this.signinLink) {
+        this.userService.redirectUrl = this.router.url;
+      }
     });
   }
 
@@ -87,6 +99,31 @@ export class NavBarComponent implements OnInit {
 
   signout(): void {
     this.jwtservice.signout();
-    window.location.reload();
+    this.navLinks = this.navLinks.slice(0, 3);
+    this.navLinks.push({
+      label: 'Sign In',
+      link: './signin',
+      index: 3
+    });
+    this.show = false;
+    const link = this.navLinks.find(tab => tab.link === '.' + this.userService.redirectUrl);
+    this.router.navigateByUrl(link ? this.userService.redirectUrl : this.signinLink);
+  }
+
+  signin(): void {
+    this.navLinks.push(
+      {
+        label: 'Tasks',
+        link: './tasks',
+        index: 3
+      }, {
+        label: 'Statistics',
+        link: './statistics',
+        index: 4
+      }, {
+        label: 'Archive',
+        link: './archive',
+        index: 5
+      });
   }
 }

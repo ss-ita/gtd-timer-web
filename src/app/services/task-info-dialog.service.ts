@@ -1,15 +1,12 @@
-import { Component, OnInit, Injectable } from '@angular/core';
-import { MatBottomSheet, MatDialog } from '@angular/material';
+import { Injectable } from '@angular/core';
+import { MatDialog } from '@angular/material';
 import { TaskInfoComponent } from '../task-info/task-info.component';
 import { Task } from '../models/task.model';
 
-@Component({
-  selector: 'app-task-info-dialog',
-  templateUrl: './task-info-dialog.component.html',
-  styleUrls: ['./task-info-dialog.component.css']
+@Injectable({
+  providedIn: 'root'
 })
-@Injectable()
-export class TaskInfoDialogComponent implements OnInit {
+export class TaskInfoDialogService {
 
   constructor(private dialog: MatDialog) { }
 

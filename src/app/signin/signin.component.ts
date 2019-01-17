@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, NgZone } from '@angular/core';
 import { SignupDialogComponent } from '../signup-dialog/signup-dialog.component';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { SigninModel } from '../models/signin.model';
@@ -8,6 +8,7 @@ import { JwtService } from '../services/jwt.service';
 import { UserService } from '../services/user.service';
 import { SocialAuthService } from '../services/social-auth.service';
 import { ConfigService } from '../services/config.service';
+import { NavbarService } from '../services/navbar.service';
 
 
 @Component({
@@ -27,6 +28,7 @@ export class SigninComponent implements OnInit {
     error = '';
     urlFacebookPath = '';
     urlGooglePath = '';
+    isActive = false;
     pwdPattern = /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=.,\-_!])([a-zA-Z0-9 @#$%^&+=*.,\-_!]){8,}$/;
 
     constructor(private formBuilder: FormBuilder,
@@ -35,7 +37,7 @@ export class SigninComponent implements OnInit {
         private service: SignupDialogComponent,
         private userService: UserService,
         private socialAuth: SocialAuthService,
-        private config: ConfigService,
+        private config: ConfigService
     ) { }
 
     openSignUpDialog() {
@@ -59,7 +61,7 @@ export class SigninComponent implements OnInit {
                 '';
     }
 
-    get f() { return this.signinform.controls; }
+    get controlElements() { return this.signinform.controls; }
 
     onSubmit() {
         this.submitted = true;
@@ -67,14 +69,16 @@ export class SigninComponent implements OnInit {
         if (this.signinform.invalid) {
             return;
         }
-        this.userService.signinuser(this.f.email.value, this.f.password.value);
+        this.userService.signinuser(this.controlElements.email.value, this.controlElements.password.value);
     }
 
     LoginWithGoogle() {
         this.socialAuth.loginWithGoogle();
+        this.isActive = true;
     }
 
     doFacebookLogin() {
         this.socialAuth.loginWithFacebook();
+        this.isActive = true;
     }
 }

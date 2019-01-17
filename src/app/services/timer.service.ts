@@ -24,9 +24,10 @@ export class TimerService {
     minute = 0;
     second = 0;
     ticks = 0;
+    maxTicks = 0;
 
     isTimerRun = false;
-    isTimerPause = false;
+    isTimerPause = true;
     isTimerFinished = false;
     isFromPreset = false;
     isArrayEmpty = true;
@@ -36,18 +37,18 @@ export class TimerService {
     subscribe: Subscription;
     public currentPreset = '#No chosen preset';
 
-    initializeTimerArray(timerArray: Timer[]) {
-        this.clearTimerArrayAndIndex();
+    initializeTimersArray(timerArray: Timer[]) {
+        this.clearTimersArrayAndIndex();
         this.resetTimer();
         this.timerIndex++;
         this.timerArray = timerArray;
         this.refreshTimer();
         this.timerArrayLenght = timerArray.length;
-        this.startTimerFromPreset();
-        this.getIsArrayEmpty();
+        this.startTimersFromPreset();
+        this.getIsTimerArrayEmpty();
     }
 
-    getIsArrayEmpty() {
+    getIsTimerArrayEmpty() {
         if (this.timerIndex === -1) {
             this.isArrayEmpty = true;
         } else {
@@ -55,17 +56,17 @@ export class TimerService {
         }
     }
 
-    startTimerFromPreset() {
+    startTimersFromPreset() {
         if (this.timerIndex === this.timerArrayLenght) {
             this.timerIndex = 0;
         }
         if (this.timerIndex <= this.timerArrayLenght - 1) {
-            this.startPresetTimer(
+            this.setPresetTimer(
                 this.timerArray[this.timerIndex].hours, this.timerArray[this.timerIndex].minutes, this.timerArray[this.timerIndex].seconds);
         }
     }
 
-    startPresetTimer(hours: number, minutes: number, seconds: number) {
+    setPresetTimer(hours: number, minutes: number, seconds: number) {
         this.hour = hours;
         this.minute = minutes;
         this.second = seconds;
@@ -80,24 +81,61 @@ export class TimerService {
             this.isTimerPause = false;
             this.isTimerRun = true;
             this.isTimerFinished = false;
+
+            if (this.maxValueHour == null) {
+                this.maxValueHour = 0;
+            }
+
+            if (this.maxValueMinute == null) {
+                this.maxValueMinute = 0;
+            }
+
+            if (this.maxValueSecond == null) {
+                this.maxValueSecond = 0;
+            }
+
             this.hour = this.maxValueHour;
             this.minute = this.maxValueMinute;
             this.second = this.maxValueSecond;
             this.ticks = (this.hour * this.secondPerHour) + (this.minute * this.secondPerMinute) + (this.second * this.secondPerSecond);
+            this.maxTicks = ((this.maxValueHour * this.secondPerHour) + (this.maxValueMinute * this.secondPerMinute)
+                + (this.maxValueSecond * this.secondPerSecond));
             this.subscribe = timer(0, this.milisecondPerSecond).subscribe(x => { this.ticks--; this.updateTime(); });
         }
 
         if (this.isTimerPause) {
-            this.isTimerPause = false;
-            this.isTimerRun = true;
-            this.subscribe = timer(0, this.milisecondPerSecond).subscribe(x => { this.ticks--; this.updateTime(); });
+            if (this.maxTicks != ((this.maxValueHour * this.secondPerHour) + (this.maxValueMinute * this.secondPerMinute)
+                + (this.maxValueSecond * this.secondPerSecond))) {
+                this.refreshTimer();
+                this.startTimer();
+            } else {
+                this.isTimerPause = false;
+                this.isTimerRun = true;
+                this.color = '#609b9b';
+                this.subscribe = timer(0, this.milisecondPerSecond).subscribe(x => { this.ticks--; this.updateTime(); });
+            }
         }
     }
 
     refreshTimer() {
-        this.startTimerFromPreset();
+        this.startTimersFromPreset();
         this.pauseTimer();
-        this.isTimerRun = this.isTimerPause = false;
+        this.color = 'grey';
+        this.isTimerRun = false;
+        this.isTimerPause = true;
+
+        if (this.maxValueHour == null) {
+            this.maxValueHour = 0;
+        }
+
+        if (this.maxValueMinute == null) {
+            this.maxValueMinute = 0;
+        }
+
+        if (this.maxValueSecond == null) {
+            this.maxValueSecond = 0;
+        }
+
         this.hour = this.maxValueHour;
         this.minute = this.maxValueMinute;
         this.second = this.maxValueSecond;
@@ -107,13 +145,14 @@ export class TimerService {
     pauseTimer() {
         if (this.isTimerRun) {
             this.isTimerPause = true;
+            this.color = 'red';
             this.subscribe.unsubscribe();
         }
     }
 
     updateTime() {
         if (this.minute == 0 && this.second < 11 && this.hour == 0) {
-            this.color = 'red';
+            this.color = '#ad2265';
         }
 
         if (this.minute == 0 && this.second == 0 && this.hour == 0) {
@@ -134,7 +173,7 @@ export class TimerService {
         }
     }
 
-    clearTimerArrayAndIndex() {
+    clearTimersArrayAndIndex() {
         this.timerArray = [];
         this.timerIndex = -1;
     }
@@ -143,5 +182,7 @@ export class TimerService {
         this.hour = 0;
         this.minute = 0;
         this.second = 0;
+        this.isTimerFinished = false;
+        this.color = '#609b9b';
     }
 }

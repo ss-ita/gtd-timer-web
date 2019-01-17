@@ -133,4 +133,5 @@
 }
 .mat-card>:first-child.negative-margin{
    margin-top:-7px;
+   display: flex;
 }

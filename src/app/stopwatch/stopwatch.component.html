@@ -29,10 +29,10 @@
       </ng-template>
     </mat-card-header>
     <mat-card-actions>
-      <button mat-icon-button (click)="stopwatchService.start()">
+      <button mat-icon-button [disabled]="stopwatchService.isStopwatchPause === false" (click)="stopwatchService.start()">
         <mat-icon>arrow_right</mat-icon>
       </button>
-      <button mat-icon-button [disabled]="stopwatchService.isStopwatchRun === false" (click)="stopwatchService.pause()">
+      <button mat-icon-button [disabled]="stopwatchService.isStopwatchRun === false || stopwatchService.isStopwatchPause" (click)="stopwatchService.pause()">
         <mat-icon>pause</mat-icon>
       </button>
       <button mat-icon-button [disabled]="stopwatchService.isStopwatchRun === false" (click)="stopwatchService.reset()">

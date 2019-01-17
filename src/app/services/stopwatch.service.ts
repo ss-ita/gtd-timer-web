@@ -18,15 +18,16 @@ export class StopwatchService {
   maxValueOfHour = 24;
 
   isStopwatchRun = false;
-  isStopwatchPause = false;
+  isStopwatchPause = true;
 
-  color = 'blue';
+  color = '#609b9b';
   subscribe: Subscription;
 
   reset() {
     this.pause();
     this.hour = this.minute = this.second = 0;
-    this.isStopwatchRun = this.isStopwatchPause = false;
+    this.isStopwatchRun = false;
+    this.isStopwatchPause = true;
   }
 
   start() {
@@ -49,7 +50,7 @@ export class StopwatchService {
   pause() {
     if (this.isStopwatchRun) {
       this.isStopwatchPause = true;
-      this.color = 'red';
+      this.color = '#ad2265';
       this.subscribe.unsubscribe();
     }
   }

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
 import { TimerService } from '../services/timer.service';
 import { PresetDialogComponent } from '../preset-dialog/preset-dialog.component';
 import { StyleService } from '../services/style.service';
@@ -16,6 +16,7 @@ import { SignupDialogComponent } from '../signup-dialog/signup-dialog.component'
 export class TimerComponent implements OnInit {
 
   timerForm: FormGroup;
+  isViewable: boolean;
 
   constructor(private formBuilder: FormBuilder,
     private presetComponent: PresetComponent,
@@ -27,8 +28,11 @@ export class TimerComponent implements OnInit {
   openPresetFormDialog() {
     this.service.openPresetForm();
   }
+  toggle() {
+    this.isViewable = !this.isViewable;
+  }
 
-  get getTimerArray() {
+  get getTimersArray() {
     return this.timerServise.timerArray;
   }
 
@@ -36,22 +40,37 @@ export class TimerComponent implements OnInit {
     return this.timerServise.timerIndex;
   }
 
+  hourRangeValidator(control: AbstractControl): { [key: string]: boolean } | null {
+    if (control.value !== undefined && (isNaN(control.value) || control.value < 0 || control.value >= 24)) {
+      return { 'hourRange': true };
+    }
+    return null;
+  }
+
+  minuteAndSecondRangeValidator(control: AbstractControl): { [key: string]: boolean } | null {
+    if (control.value !== undefined && (isNaN(control.value) || control.value < 0 || control.value >= 60)) {
+      return { 'minuteAndSecond': true };
+    }
+    return null;
+  }
+
   ngOnInit() {
-    this.presetComponent.isLoggedIn = this.presetComponent.returnIsLoggedIn();
+    this.presetComponent.isLoggedIn = this.presetComponent.getIsLoggedIn();
     this.timerForm = this.formBuilder.group({
-      'hour': [this.timerServise.maxValueHour, [Validators.required, Validators.min(0), Validators.max(23)]],
-      'minute': [this.timerServise.maxValueMinute, [Validators.required, Validators.min(0), Validators.max(59)]],
-      'second': [this.timerServise.maxValueSecond, [Validators.required, Validators.min(0), Validators.max(59)]]
+      'hour': [this.timerServise.maxValueHour, [this.hourRangeValidator]],
+      'minute': [this.timerServise.maxValueMinute, [this.minuteAndSecondRangeValidator]],
+      'second': [this.timerServise.maxValueSecond, [this.minuteAndSecondRangeValidator]]
     });
-    this.presetComponent.getAllStandartAndCustomPresets();
-    this.timerServise.getIsArrayEmpty();
+    this.presetComponent.getAllStandardAndCustomPresets();
+    this.timerServise.getIsTimerArrayEmpty();
+    this.isViewable = false;
   }
 
   getErrorMessageHour() {
-    return 'please enter a number from 0 to 24';
+    return 'please enter a number from 0 to 23';
   }
 
   getErrorMessageMinuteAndSecond() {
-    return 'please enter a number from 0 to 60';
+    return 'please enter a number from 0 to 59';
   }
 }
