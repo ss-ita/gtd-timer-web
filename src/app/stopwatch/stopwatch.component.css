@@ -39,7 +39,7 @@
 
 .unselectable{
     margin-top: 5% !important;
-    margin-left: 7%;
+    margin-left: 10%;
     -webkit-touch-callout: none; /* iOS Safari */
 -webkit-user-select: none; /* Safari */
  -khtml-user-select: none; /* Konqueror HTML */
@@ -72,7 +72,7 @@
 }
 
 .textsize{
-    color: grey;
+    color: black;
     font-size: 120px;
     margin: 5px;
 }
