@@ -1,7 +1,6 @@
-<p class="presets-header">Presets Settings</p>
 <mat-dialog-content>
   <form [formGroup]="presetForm" (ngSubmit)="onCreate()" class="presets-form">
-    <mat-form-field class="presets-full-width" *ngIf="!isViewable">
+    <mat-form-field class="presets-full-width , preset-selector" *ngIf="!isViewable">
       <mat-select placeholder="Preset" [(ngModel)]="selectedPreset" [ngModelOptions]="{standalone: true}">
         <mat-option *ngFor="let preset of returnPresetsArray" [value]="preset.presetName">{{preset.presetName}}</mat-option>
       </mat-select>
@@ -15,11 +14,10 @@
           (click)="openSignUpDialogComponent()"> Register </button>to create your own.</p>
     </ng-template>
     <div *ngIf="isViewable">
-      <mat-form-field class="presets-full-width">
+      <mat-form-field class="presets-full-width , margin-top">
         <input matInput formControlName="presetName" placeholder="Preset name">
         <mat-error>{{getErrorMessagePresetName()}}</mat-error>
       </mat-form-field>
-      <mat-card-title class="presets-header , margin-top">Preset timers</mat-card-title>
       <div formArrayName="timers">
         <div *ngFor="let item of returnTimersFormGroupArray.controls; let timerIndex = index" [formGroupName]="timerIndex">
           <mat-form-field>
@@ -51,13 +49,11 @@
       <section class="auto-start-timers" *ngIf="!isViewable">
         <mat-checkbox>Auto start timers</mat-checkbox>
       </section>
-      <mat-dialog-actions>
-        <button mat-raised-button color="primary" (click)="onCreate" [disabled]="!presetForm.valid">Create</button>
-      </mat-dialog-actions>
     </div>
   </form>
 </mat-dialog-content>
 <mat-dialog-actions align="end">
-  <button mat-raised-button color="primary" (click)="onSave()">Save</button>
+  <button mat-raised-button color="primary" (click)="onCreate()" [disabled]="!presetForm.valid" *ngIf="isViewable">Create</button>
+  <button mat-raised-button color="primary" (click)="onSave()" *ngIf="!isViewable">Save</button>
   <button mat-raised-button color="warn" (click)="onClose()">Close</button>
 </mat-dialog-actions>

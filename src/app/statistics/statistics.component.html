@@ -4,10 +4,16 @@
       <div class="buttons">
         <button mat-raised-button [ngClass]="{'active': isActiveChart}" (click)="drawActiveTasks()">Active</button>
         <button mat-raised-button [ngClass]="{'active': !isActiveChart}" (click)="drawArchiveTasks()">Archive</button>
+        <button mat-raised-button [ngClass]="{'active': typeOfChart === 0}" (click)="changeTypeOfChart(0)">
+          <img src="assets/img/donut-chart.png">
+        </button>
+        <button mat-raised-button [ngClass]="{'active': typeOfChart === 1}" (click)="changeTypeOfChart(1)">
+          <i class="fa fa-bar-chart" aria-hidden="true"></i>
+        </button>
       </div>
     </div>
     <div id="chart" [ngClass]="{'hidden': !hasData}">
-      <canvas id="doughnutChart"></canvas>
+      <canvas id="tasksChart"></canvas>
     </div>
     <div id="noData" [ngClass]="{'hidden': hasData}">
       <p> No data available. Please, add tasks!</p>

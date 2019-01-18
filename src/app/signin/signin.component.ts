@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, NgZone } from '@angular/core';
 import { SignupDialogComponent } from '../signup-dialog/signup-dialog.component';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { SigninModel } from '../models/signin.model';
@@ -8,6 +8,7 @@ import { JwtService } from '../services/jwt.service';
 import { UserService } from '../services/user.service';
 import { SocialAuthService } from '../services/social-auth.service';
 import { ConfigService } from '../services/config.service';
+import { NavbarService } from '../services/navbar.service';
 
 @Component({
     selector: 'app-signin',
@@ -26,6 +27,7 @@ export class SigninComponent implements OnInit {
     error = '';
     urlFacebookPath = '';
     urlGooglePath = '';
+    isActive = false;
     pwdPattern = /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=.,\-_!])([a-zA-Z0-9 @#$%^&+=*.,\-_!]){8,}$/;
 
     constructor(private formBuilder: FormBuilder,
@@ -71,9 +73,11 @@ export class SigninComponent implements OnInit {
 
     LoginWithGoogle() {
         this.socialAuth.loginWithGoogle();
+        this.isActive = true;
     }
 
     doFacebookLogin() {
         this.socialAuth.loginWithFacebook();
+        this.isActive = true;
     }
 }

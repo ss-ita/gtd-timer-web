@@ -8,20 +8,19 @@
       <button mat-icon-button [matMenuTriggerFor]="appMenuForChangeView" class="view-change-menu">
         <mat-icon>more_vert</mat-icon>
       </button>
-      <span class="current-preset"><p>{{timerServise.currentPreset}}</p></span>
-
-      <mat-menu #appMenuPresetInfo="matMenu" [backdropClass]="'position-menu'" class="preset-menu-position" >
-        <p class="margin-small-right , font-size-p">
-          Preset name: {{timerServise.currentPreset}}
-        </p>
-        <div *ngFor="let timer of getTimersArray; let currentTimerIndex = index">
-            <div class="margin-right , font-size" [ngClass]="{'current-timer': currentTimerIndex === getTimerArrayIndex}">{{currentTimerIndex + 1}}) {{timer.timerName}} - "{{timer.hours}}:{{timer.minutes}}:{{timer.seconds}}"</div>
-        </div>
-        <div class="margin-bottom" ></div>
-      </mat-menu>
-      <button mat-icon-button [matMenuTriggerFor]="appMenuPresetInfo" class="view-preset-menu">
+      <span class="current-preset"><button class="temp-button" (click)="openPresetFormDialog()">{{timerServise.currentPreset}}</button></span>
+      <button mat-icon-button class="view-preset-menu" (click)="toggle()">
         <mat-icon class="toggle" [inline]="true" >arrow_forward_ios</mat-icon>
       </button>
+    </div>
+    <div *ngIf="isViewable" class="preset-info">
+        <p class="preset-info-preset-name , font-preset-name">Preset: {{timerServise.currentPreset}}</p>
+        <div *ngFor="let timer of getTimersArray; let currentTimerIndex = index">
+            <div class="preset-info-timers , font-timer-name" [ngClass]="{'current-timer': currentTimerIndex === getTimerArrayIndex}">
+              {{currentTimerIndex + 1}}) {{timer.timerName}} - {{timer.hours}}:{{timer.minutes}}:{{timer.seconds}}
+            </div>
+        </div>
+        <div class="margin-bottom"></div>
     </div>
     <mat-card-header>
       <ng-template [ngIf]="!styleService.isLineStyle">
@@ -60,11 +59,11 @@
         <mat-error>{{getErrorMessageMinuteAndSecond()}}</mat-error>
       </mat-form-field>
       <div class="button-area">
-        <span class="timer-setting-buttons">
-          <button mat-icon-button (click)="timerServise.startTimer()" [disabled]="!timerForm.valid">
+          <button mat-icon-button (click)="timerServise.startTimer()" [disabled]="(timerServise.maxValueHour == null 
+            && timerServise.maxValueMinute == null && timerServise.maxValueSecond == null) || !timerForm.valid || timerServise.isTimerPause === false">
             <mat-icon>arrow_right</mat-icon>
           </button>
-          <button mat-icon-button [disabled]="timerServise.isTimerRun === false" (click)="timerServise.pauseTimer()">
+          <button mat-icon-button [disabled]="timerServise.isTimerRun === false || timerServise.isTimerPause" (click)="timerServise.pauseTimer()">
             <mat-icon>pause</mat-icon>
           </button>
           <button mat-icon-button [disabled]="timerServise.isTimerRun === false" (click)="timerServise.refreshTimer()">
@@ -73,13 +72,7 @@
           <button mat-icon-button [disabled]="timerServise.isTimerRun === false" (click)="timerServise.resetTimer()">
             <mat-icon>stop</mat-icon>
           </button>
-        </span>
       </div>
-      <span class="setting-button">
-        <button mat-icon-button (click)="openPresetFormDialog()">
-          <mat-icon>settings</mat-icon>
-        </button>
-      </span>
     </mat-card-actions>
   </mat-card>
 </div>

@@ -30,7 +30,7 @@ export class PresetComponent implements OnInit {
     private formBuilder: FormBuilder) { }
 
   onCreate() {
-    this.presetService.createPreset(this.presetForm.value);
+    this.presetService.createPreset(this.presetForm.value).subscribe();
     this.selectedPreset = this.presetService.getCreatedPreset();
     this.toggle();
   }
@@ -71,11 +71,13 @@ export class PresetComponent implements OnInit {
   }
 
   getErrorMessagePresetName() {
-    return this.presetForm.controls['presetName'].hasError('required') ? 'This field is required' : '';
+    return this.presetForm.controls['presetName'].hasError('required') ? 'This field is required' :
+      this.presetForm.controls['presetName'].hasError('maxlength') ? 'Max length - 35 symbols' : '';
   }
 
   getErrorMessageTimerName(item: FormGroup) {
-    return item.controls['timerName'].hasError('required') ? 'This field is required' : '';
+    return item.controls['timerName'].hasError('required') ? 'This field is required' :
+      item.controls['timerName'].hasError('maxlength') ? 'Max length - 35 symbols' : '';
   }
 
   getErrorMessageHours() {
@@ -113,7 +115,9 @@ export class PresetComponent implements OnInit {
   }
 
   deleteTimerGroupRow(index) {
-    this.returnTimersFormGroupArray.removeAt(index);
+    if (this.returnTimersFormGroupArray.length !== 1) {
+      this.returnTimersFormGroupArray.removeAt(index);
+    }
   }
 
   addTimerGroupRow() {
@@ -122,8 +126,8 @@ export class PresetComponent implements OnInit {
 
   addTimerFormGroup(): FormGroup {
     return this.formBuilder.group({
-      timerName: ['', [Validators.required]],
-      hours:   ['', [Validators.required, Validators.min(0), Validators.max(23)]],
+      timerName: ['', [Validators.required, Validators.maxLength(35)]],
+      hours: ['', [Validators.required, Validators.min(0), Validators.max(23)]],
       minutes: ['', [Validators.required, Validators.min(0), Validators.max(59)]],
       seconds: ['', [Validators.required, Validators.min(0), Validators.max(59)]]
     });
@@ -131,12 +135,12 @@ export class PresetComponent implements OnInit {
 
   ngOnInit() {
     this.presetForm = this.formBuilder.group({
-      presetName: ['', [Validators.required]],
+      presetName: ['', [Validators.required, Validators.maxLength(35)]],
       timers: this.formBuilder.array([this.addTimerFormGroup()])
     });
     this.isValid = true;
     this.isViewable = false;
-    this.selectedPreset = 'standard';
+    this.selectedPreset = 'Standard №1';
     this.isLoggedIn = this.getIsLoggedIn();
   }
 }

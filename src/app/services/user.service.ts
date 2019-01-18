@@ -14,6 +14,8 @@ import { NavbarService } from './navbar.service';
 })
 export class UserService {
 
+  redirectUrl = '/';
+
   constructor(private http: HttpClient,
     private config: ConfigService,
     private jwtservice: JwtService,
@@ -71,7 +73,7 @@ export class UserService {
       .subscribe(
         _ => {
           this.navbarsubscribe();
-          this.router.navigateByUrl('/stopwatch');
+          this.router.navigateByUrl(this.redirectUrl);
           this.toasterService.showToaster('Successfuly signed in! ');
         },
         response => {
@@ -98,10 +100,11 @@ export class UserService {
     this.jwtservice.signinGoogle(accessTokenSocial)
       .pipe(first())
       .subscribe(
-        () => {
+        _ => {
           this.zone.run(() => {
             this.navbarsubscribe();
-            this.router.navigateByUrl('/stopwatch');
+            this.router.navigateByUrl(this.redirectUrl);
+            this.toasterService.showToaster('Successfuly signed in with Google! ');
           });
         },
         response => {
@@ -116,7 +119,8 @@ export class UserService {
         _ => {
           this.zone.run(() => {
             this.navbarsubscribe();
-            this.router.navigateByUrl('/stopwatch');
+            this.router.navigateByUrl(this.redirectUrl);
+            this.toasterService.showToaster('Successfuly signed in with Facebook! ');
           });
         },
         response => {

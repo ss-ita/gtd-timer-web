@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { JwtService } from '../services/jwt.service';
 import { NavbarService } from '../services/navbar.service';
 import { JwtHelperService } from '@auth0/angular-jwt';
+import { UserService } from '../services/user.service';
 
 
 @Component({
@@ -19,11 +20,13 @@ export class NavBarComponent implements OnInit {
   email = localStorage.getItem('email');
   hours = 24;
   milisecinhours = 3600000;
+  signinLink = '/signin';
 
   constructor(private router: Router,
     private jwtservice: JwtService,
     private navservice: NavbarService,
-    private jwthelper: JwtHelperService) {
+    private jwthelper: JwtHelperService,
+    private userService: UserService) {
 
     this.navservice.navLinks.subscribe(value => { this.navLinks = value; });
     this.navservice.show.subscribe(value => { this.show = value; });
@@ -83,6 +86,9 @@ export class NavBarComponent implements OnInit {
   ngOnInit(): void {
     this.router.events.subscribe((res) => {
       this.activeLinkIndex = this.navLinks.indexOf(this.navLinks.find(tab => tab.link === '.' + this.router.url));
+      if (this.router.url != this.signinLink) {
+        this.userService.redirectUrl = this.router.url;
+      }
     });
   }
 
@@ -103,7 +109,8 @@ export class NavBarComponent implements OnInit {
       index: 3
     });
     this.show = false;
-    this.router.navigateByUrl('/signin');
+    const link = this.navLinks.find(tab => tab.link === '.' + this.userService.redirectUrl);
+    this.router.navigateByUrl(link ? this.userService.redirectUrl : this.signinLink);
   }
 
   tokenexpire() {
