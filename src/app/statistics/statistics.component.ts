@@ -3,12 +3,12 @@ import { Chart } from 'chart.js';
 import { ToasterService } from '../services/toaster.service';
 import { TasksService } from '../services/tasks.service';
 
-
 @Component({
   selector: 'app-statistics',
   templateUrl: './statistics.component.html',
   styleUrls: ['./statistics.component.css'],
 })
+
 export class StatisticsComponent implements OnInit {
   chart: Chart;
   tasks = [];
@@ -174,15 +174,15 @@ export class StatisticsComponent implements OnInit {
     return type;
   }
 
-  changeTypeOfChart(digit: number) {
-    this.typeOfChart = digit;
+  changeTypeOfChart(newTypeOfChart: number) {
+    this.typeOfChart = newTypeOfChart;
     const type = this.getTypeOfChart();
     this.chart.config.type = type;
     if (this.chart.config.options.scales) {
-      this.chart.config.options.scales.xAxes[0].display = type == 'bar';
-      this.chart.config.options.scales.yAxes[0].display = type == 'bar';
+      this.chart.config.options.scales.xAxes[0].display = type === 'bar';
+      this.chart.config.options.scales.yAxes[0].display = type === 'bar';
     }
-    this.chart.config.options.legend.display = type != 'bar';
+    this.chart.config.options.legend.display = type !== 'bar';
     this.chart.update();
   }
 }
