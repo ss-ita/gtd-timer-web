@@ -30,7 +30,7 @@ export class ArchiveComponent implements OnInit {
         if (err.error instanceof ErrorEvent) {
           this.tosterService.showToaster(err.error.message);
         } else {
-          this.tosterService.showToaster("Server error");
+          this.tosterService.showToaster('Server error');
         }
       }
     };
@@ -47,7 +47,7 @@ export class ArchiveComponent implements OnInit {
         if (err.error instanceof ErrorEvent) {
           this.tosterService.showToaster(err.error.message);
         } else {
-          this.tosterService.showToaster("Server error");
+          this.tosterService.showToaster('Server error');
         }
       }
     };
@@ -74,7 +74,7 @@ export class ArchiveComponent implements OnInit {
         if (err.error instanceof ErrorEvent) {
           this.tosterService.showToaster(err.error.message);
         } else {
-          this.tosterService.showToaster("Server error");
+          this.tosterService.showToaster('Server error');
         }
       }
     };

@@ -5,7 +5,6 @@ import { Injectable } from '@angular/core';
 })
 
 export class ConfigService {
-  
   public readonly baseUrl: string = 'https://localhost:44398';
   public readonly urlTask: string = this.baseUrl + '/api/Tasks/';
   public readonly urlPreset: string = this.baseUrl + '/api/Preset/';
