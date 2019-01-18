@@ -67,20 +67,7 @@ export class StatisticsComponent implements OnInit {
   }
 
   drawChart(namesOfTasks: any[], durationsOfTasks: any[]) {
-    var type;
-    switch (this.typeOfChart) {
-      case 0: {
-        type = 'doughnut';
-        break;
-      }
-      case 1: {
-        type = 'bar';
-        break;
-      }
-      default: {
-        break;
-      }
-    }
+    const type = this.getTypeOfChart();
     const self = this;
     this.chart = new Chart('tasksChart', {
       type: type,
@@ -163,18 +150,13 @@ export class StatisticsComponent implements OnInit {
   }
 
   numberToTimeString(digit: number) {
-    const value = 10;
     const targetLength = 2;
-    if (digit < value) {
-      var str = digit.toString();
-      return str.padStart(targetLength, '0');
-    }
-    return digit;
+    const str = digit.toString();
+    return str.padStart(targetLength, '0');
   }
 
-  changeTypeOfChart(digit: number) {
-    this.typeOfChart = digit;
-    var type;
+  getTypeOfChart() {
+    let type;
     switch (this.typeOfChart) {
       case 0: {
         type = 'doughnut';
@@ -188,6 +170,13 @@ export class StatisticsComponent implements OnInit {
         break;
       }
     }
+
+    return type;
+  }
+
+  changeTypeOfChart(digit: number) {
+    this.typeOfChart = digit;
+    const type = this.getTypeOfChart();
     this.chart.config.type = type;
     if (this.chart.config.options.scales) {
       this.chart.config.options.scales.xAxes[0].display = type == 'bar';

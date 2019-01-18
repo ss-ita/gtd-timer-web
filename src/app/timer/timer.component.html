@@ -59,7 +59,6 @@
         <mat-error>{{getErrorMessageMinuteAndSecond()}}</mat-error>
       </mat-form-field>
       <div class="button-area">
-        <span class="timer-setting-buttons">
           <button mat-icon-button (click)="timerServise.startTimer()" [disabled]="(timerServise.maxValueHour == null 
             && timerServise.maxValueMinute == null && timerServise.maxValueSecond == null) || !timerForm.valid || timerServise.isTimerPause === false">
             <mat-icon>arrow_right</mat-icon>
