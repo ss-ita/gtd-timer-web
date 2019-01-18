@@ -87,24 +87,13 @@ export class UserService {
       passwordNew: user.passwordNew,
       passwordConfirm: user.passwordConfirm
     };
-    const headers = this.getHeaders();
 
-    return this.http.put(this.config.urlUser, body, { headers: headers });
+    return this.http.put(this.config.urlUser, body);
   }
 
   deleteAccount() {
-    const headers = this.getHeaders();
 
-    return this.http.delete(this.config.urlUser, { headers: headers });
-  }
-
-  private getHeaders() {
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Authorization': 'Bearer ' + localStorage.getItem('access_token')
-    });
-
-    return headers;
+    return this.http.delete(this.config.urlUser);
   }
 
   signinGoogle(accessTokenSocial) {

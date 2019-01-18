@@ -10,7 +10,6 @@ import { SocialAuthService } from '../services/social-auth.service';
 import { ConfigService } from '../services/config.service';
 import { NavbarService } from '../services/navbar.service';
 
-
 @Component({
     selector: 'app-signin',
     templateUrl: './signin.component.html',

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { JwtService } from '../services/jwt.service';
 import { NavbarService } from '../services/navbar.service';
+import { JwtHelperService } from '@auth0/angular-jwt';
 import { UserService } from '../services/user.service';
 
 
@@ -17,17 +18,19 @@ export class NavBarComponent implements OnInit {
   activeLinkIndex = -1;
   show = false;
   email = localStorage.getItem('email');
+  hours = 24;
+  milisecinhours = 3600000;
   signinLink = '/signin';
 
   constructor(private router: Router,
     private jwtservice: JwtService,
     private navservice: NavbarService,
+    private jwthelper: JwtHelperService,
     private userService: UserService) {
 
     this.navservice.navLinks.subscribe(value => { this.navLinks = value; });
     this.navservice.show.subscribe(value => { this.show = value; });
     this.navservice.email.subscribe(value => { this.email = value; });
-
     if (localStorage.getItem('access_token')) {
       this.show = true;
       this.navLinks = [
@@ -110,6 +113,12 @@ export class NavBarComponent implements OnInit {
     this.router.navigateByUrl(link ? this.userService.redirectUrl : this.signinLink);
   }
 
+  tokenexpire() {
+    if ((this.jwthelper.getTokenExpirationDate(localStorage.getItem('access_token')).getTime()
+      - this.hours * this.milisecinhours) < (new Date()).getTime()) {
+      this.signout();
+    }
+  }
   signin(): void {
     this.navLinks.push(
       {

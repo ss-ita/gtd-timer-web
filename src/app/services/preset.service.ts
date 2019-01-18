@@ -4,6 +4,7 @@ import { ConfigService } from './config.service';
 import { TimerService } from './timer.service';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { JwtHelperService } from '@auth0/angular-jwt';
 
 @Injectable({ providedIn: 'root' })
 
@@ -18,28 +19,22 @@ export class PresetService {
   constructor(
     private configService: ConfigService,
     private timerService: TimerService,
-    private httpClient: HttpClient) { }
-
-  private getHeaders() {
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Authorization': 'Bearer ' + localStorage.getItem('access_token')
-    });
-    return headers;
-  }
+    private httpClient: HttpClient,
+    private jwthelper: JwtHelperService) { }
 
   createPreset(presetModel: PresetModel) {
     this.pushPresetToLocalArray(presetModel);
     this.presetModelJson = this.convertToPresetModelJson(presetModel);
-    return this.httpClient.post(this.configService.urlPreset + 'CreatePreset', this.presetModelJson, { headers: this.getHeaders() });
+    return this.httpClient.post(this.configService.urlPreset + 'CreatePreset', this.presetModelJson);
   }
 
   getAllStandardPresetsFromServer(): Observable<PresetModelJson[]> {
-    return this.httpClient.get<PresetModelJson[]>(this.configService.urlPreset + 'GetAllStandardPresets', { headers: this.getHeaders() });
+    return this.httpClient.get<PresetModelJson[]>(this.configService.urlPreset + 'GetAllStandardPresets');
   }
 
   getAllCustomPresetsFromServer(): Observable<PresetModelJson[]> {
-    return this.httpClient.get<PresetModelJson[]>(this.configService.urlPreset + 'GetAllCustomPresets', { headers: this.getHeaders() });
+
+    return this.httpClient.get<PresetModelJson[]>(this.configService.urlPreset + 'GetAllCustomPresets');
   }
 
   pushPresetToLocalArray(preset: PresetModel) {

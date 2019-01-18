@@ -16,7 +16,7 @@ import { MatDialogModule, MatDialog, MatDialogRef, MatSnackBarModule, MatSidenav
 import { MatMenuModule, MatButtonModule, MatIconModule, MatCardModule, MatRadioModule } from '@angular/material';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { UserService } from './services/user.service';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { CapslockDetectorDirective } from './capslock-detector/capslock-detector.directive';
 import { ToasterService } from './services/toaster.service';
 import { JwtModule } from '@auth0/angular-jwt';
@@ -45,6 +45,7 @@ import { SignupDialogComponent } from './signup-dialog/signup-dialog.component';
 import { ProgressComponent } from './progress/progress.component';
 import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-dialog.component';
 import { PresetDialogComponent } from './preset-dialog/preset-dialog.component';
+import { HttpTokenInterceptor } from './services/http-interceptor.service';
 
 export function jwtTokenGetter() {
   return localStorage.getItem('access_token');
@@ -116,6 +117,7 @@ export function jwtTokenGetter() {
     AuthService,
     MatDialog,
     { provide: MatDialogRef, useValue: {} },
+    { provide: HTTP_INTERCEPTORS, useClass: HttpTokenInterceptor, multi: true },
     UserService,
     ToasterService,
     SocialAuthService

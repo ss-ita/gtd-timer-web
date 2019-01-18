@@ -85,9 +85,9 @@ export class TasksComponent implements OnInit {
     return (a.toLowerCase() < b.toLowerCase() ? -1 : 1);
   }
 
-  resetTask(task: TaskCreateJson) {
-    this.archiveService.resetTask(task.id).subscribe();
-  }
+  // resetTask(task: TaskCreateJson) {
+  //   this.archiveService.resetTask(task.id).subscribe();
+  // }
 
   deleteTask(task: TaskCreateJson) {
     this.archiveService.switchTaskStatus(task).subscribe();
