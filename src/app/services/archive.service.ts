@@ -20,60 +20,42 @@ export class ArchiveService implements OnInit {
   }
 
   getArchivedTasksFromServer(): Observable<TaskJson[]> {
-    const headers = this.getHeaders();
-    return this.http.get<TaskJson[]>(this.service.urlTask + 'GetAllArchivedTasksByUserId', { headers: headers });
+    return this.http.get<TaskJson[]>(this.service.urlTask + 'GetAllArchivedTasksByUserId');
   }
   getActiveTasksFromServer(): Observable<TaskJson[]> {
-    const headers = this.getHeaders();
-    return this.http.get<TaskJson[]>(this.service.urlTask + 'GetAllActiveTasksByUserId', { headers: headers });
+    return this.http.get<TaskJson[]>(this.service.urlTask + 'GetAllActiveTasksByUserId');
   }
 
   deleteTask(id: Number) {
-    const headers = this.getHeaders();
-    return this.http.delete(this.service.urlTask + 'DeleteTask/' + id.toString(), { headers: headers });
+    return this.http.delete(this.service.urlTask + 'DeleteTask/' + id.toString());
   }
 
   switchtaskStatus(task: Task) {
-    const headers = this.getHeaders();
-    return this.http.put<TaskJson>(this.service.urlTask + 'SwitchArchivedStatus', task.convertToTaskJson(), { headers: headers });
+    return this.http.put<TaskJson>(this.service.urlTask + 'SwitchArchivedStatus', task.convertToTaskJson());
   }
 
   switchTaskStatus(task: TaskCreateJson) {
-    const headers = this.getHeaders();
-    return this.http.put<TaskCreateJson>(this.service.urlTask + 'SwitchArchivedStatus', task, { headers: headers });
+    return this.http.put<TaskCreateJson>(this.service.urlTask + 'SwitchArchivedStatus', task);
   }
 
   startTask(task: TaskCreateJson) {
-    const headers = this.getHeaders();
-    return this.http.put<TaskCreateJson>(this.service.urlTask + 'StartTask', task, { headers: headers });
+    return this.http.put<TaskCreateJson>(this.service.urlTask + 'StartTask', task);
   }
 
   pauseTask(task: TaskCreateJson) {
-    const headers = this.getHeaders();
-    return this.http.put<TaskCreateJson>(this.service.urlTask + 'PauseTask', task, { headers: headers });
+    return this.http.put<TaskCreateJson>(this.service.urlTask + 'PauseTask', task);
   }
 
-  resetTask(id: Number) {
-    const headers = this.getHeaders();
-    return this.http.put(this.service.urlTask + 'ResetTask/' + id.toString(), { headers: headers });
-  }
+  // resetTask(id: Number) {
+  //   return this.http.put(this.service.urlTask + 'ResetTask/' + id.toString());
+  // }
 
   createTask(task: TaskCreateJson) {
-    const headers = this.getHeaders();
-    return this.http.post<TaskJson>(this.service.urlTask + 'CreateTask', task, { headers: headers });
+    return this.http.post<TaskJson>(this.service.urlTask + 'CreateTask', task);
   }
 
   updateTask(task: Task) {
-    const headers = this.getHeaders();
-    return this.http.put<TaskJson>(this.service.urlTask + 'CreateTask', task.convertToTaskJson(), { headers: headers });
+    return this.http.put<TaskJson>(this.service.urlTask + 'CreateTask', task.convertToTaskJson());
   }
 
-  private getHeaders() {
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Authorization': 'Bearer ' + localStorage.getItem('access_token')
-    });
-
-    return headers;
-  }
 }

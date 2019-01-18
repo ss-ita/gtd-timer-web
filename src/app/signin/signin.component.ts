@@ -1,6 +1,6 @@
-import { Component, OnInit, NgZone } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { SignupDialogComponent } from '../signup-dialog/signup-dialog.component';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { SigninModel } from '../models/signin.model';
@@ -8,8 +8,6 @@ import { JwtService } from '../services/jwt.service';
 import { UserService } from '../services/user.service';
 import { SocialAuthService } from '../services/social-auth.service';
 import { ConfigService } from '../services/config.service';
-import { NavbarService } from '../services/navbar.service';
-
 
 @Component({
     selector: 'app-signin',
