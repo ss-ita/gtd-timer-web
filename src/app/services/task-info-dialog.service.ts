@@ -10,9 +10,6 @@ export class TaskInfoDialogService {
 
   constructor(private dialog: MatDialog) { }
 
-  ngOnInit() {
-  }
-
   openSheet(task: Task) {
     const dialogRef = this.dialog.open(TaskInfoComponent, {
       hasBackdrop: true,
