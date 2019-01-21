@@ -1,18 +1,21 @@
-import { PresetModel, Timer, PresetModelJson, TimerJson } from '../models/preset.model';
+import { PresetModel, Timer, PresetModelJson, TimerJson, PresetModelToUpdate, TimerUpdate } from '../models/preset.model';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { ConfigService } from './config.service';
 import { TimerService } from './timer.service';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { JwtHelperService } from '@auth0/angular-jwt';
 
 @Injectable({ providedIn: 'root' })
 
 export class PresetService {
 
+  presetModelToUpdate: PresetModelToUpdate;
+  standardPresets: PresetModel[] = [];
   presetModelJson: PresetModelJson;
   timerJsonArray: TimerJson[] = [];
   presetsArray: PresetModel[];
+  presetIndexToUpdate: number;
+  presetToUpdate: PresetModel;
   presetModel: PresetModel;
   presetIndex: number;
 
@@ -25,7 +28,26 @@ export class PresetService {
   createPreset(presetModel: PresetModel) {
     this.pushPresetToLocalArray(presetModel);
     this.presetModelJson = this.convertToPresetModelJson(presetModel);
-    return this.httpClient.post(this.configService.urlPreset + 'CreatePreset', this.presetModelJson);
+    this.prepareModelToCreate();
+    return this.httpClient.post<PresetModelJson>(this.configService.urlPreset + 'CreatePreset', this.presetModelJson,
+      { headers: this.getHeaders() });
+  }
+
+  createTimer(timerToCreate: TimerUpdate) {
+    return this.httpClient.post<TimerUpdate>(this.configService.urlPreset + 'CreateTimer', timerToCreate, { headers: this.getHeaders() });
+  }
+
+  updatePreset(presetModel: PresetModel, presetToUpdate: PresetModel) {
+    this.convertToPresetUpdateModel(presetModel, presetToUpdate);
+    return this.httpClient.put(this.configService.urlPreset + 'UpdatePreset', this.presetModelToUpdate, { headers: this.getHeaders() });
+  }
+
+  deletePreset(id: number) {
+    return this.httpClient.delete(this.configService.urlPreset + 'DeletePreset/' + id.toString(), { headers: this.getHeaders() });
+  }
+
+  deleteTimer(id: number) {
+    return this.httpClient.delete(this.configService.urlPreset + 'DeleteTimer/' + id.toString(), { headers: this.getHeaders() });
   }
 
   getAllStandardPresetsFromServer(): Observable<PresetModelJson[]> {
@@ -37,12 +59,51 @@ export class PresetService {
     return this.httpClient.get<PresetModelJson[]>(this.configService.urlPreset + 'GetAllCustomPresets');
   }
 
+  deletePresetFromLocalArrayAndServer(presetIndex) {
+    this.deletePreset(this.presetsArray[presetIndex].id).subscribe();
+    const indexPresetToDelete = this.presetsArray.indexOf(this.presetsArray[presetIndex], 0);
+    this.presetsArray.splice(indexPresetToDelete, 1);
+  }
+
+  deleteTimerFromLocalArrayAndServer(timerIndex, presetIndex, presetToUpdate) {
+    this.presetToUpdate = presetToUpdate;
+    this.deleteTimer(this.presetsArray[presetIndex].timers[timerIndex].id).subscribe();
+    const indexTimerToDelete = this.presetsArray[presetIndex].timers.indexOf(this.presetsArray[presetIndex].timers[timerIndex], 0);
+    presetToUpdate.timers.splice(indexTimerToDelete, 1);
+  }
+
+  updatePresetInLocalArrayAndServer(presetModel: PresetModel, presetToUpdate: PresetModel, presetIndex: number) {
+    this.presetIndexToUpdate = presetIndex;
+    this.updatePreset(presetModel, presetToUpdate).subscribe();
+    this.presetsArray[presetIndex] = presetModel;
+    this.presetsArray[presetIndex].id = presetToUpdate.id;
+    for (let index = 0; index < presetToUpdate.timers.length; index++) {
+      this.presetsArray[presetIndex].timers[index].id = presetToUpdate.timers[index].id;
+    }
+  }
+
   pushPresetToLocalArray(preset: PresetModel) {
     this.presetsArray.push(preset);
   }
 
-  getCreatedPreset() {
+  pushToStandardPresetsArray(preset: PresetModel) {
+    this.standardPresets.push(preset);
+  }
+
+  getPresetByIndex(index) {
+    return this.presetsArray[index];
+  }
+
+  getPresetNameByIndex(index) {
+    return this.presetsArray[index].presetName;
+  }
+
+  getCreatedPresetName() {
     return this.presetsArray[this.presetsArray.length - 1].presetName;
+  }
+
+  getCreatedPreset() {
+    return this.presetsArray[this.presetsArray.length - 1];
   }
 
   startPresetTimers() {
@@ -58,12 +119,21 @@ export class PresetService {
     }
   }
 
+  prepareModelToCreate() {
+    this.presetModelJson.id = 0;
+    for (let index = 0; index < this.presetModelJson.timers.length; index++) {
+      this.presetModelJson.timers[index].id = 0;
+    }
+  }
+
   convertToPresetModelJson(presetModel: PresetModel) {
     this.presetModelJson = new PresetModelJson();
     this.presetModelJson.presetName = presetModel.presetName;
-    this.presetModelJson.timers = this.timerJsonArray;
+    this.presetModelJson.id = presetModel.id;
+    this.presetModelJson.timers = [];
     for (let index = 0; index < presetModel.timers.length; index++) {
       this.presetModelJson.timers[index] = new TimerJson();
+      this.presetModelJson.timers[index].id = presetModel.timers[index].id;
       this.presetModelJson.timers[index].name = presetModel.timers[index].timerName;
       this.presetModelJson.timers[index].interval = presetModel.timers[index].hours + ':' + presetModel.timers[index].minutes
         + ':' + presetModel.timers[index].seconds;
@@ -74,9 +144,11 @@ export class PresetService {
   convertToPresetModel(presetModelJson: PresetModelJson) {
     this.presetModel = new PresetModel();
     this.presetModel.presetName = presetModelJson.presetName;
+    this.presetModel.id = presetModelJson.id;
     this.presetModel.timers = [];
     for (let index = 0; index < presetModelJson.timers.length; index++) {
       this.presetModel.timers[index] = new Timer();
+      this.presetModel.timers[index].id = presetModelJson.timers[index].id;
       this.presetModel.timers[index].timerName = presetModelJson.timers[index].name;
       const interval = presetModelJson.timers[index].interval;
       const splitInterval = interval.split(':');
@@ -85,5 +157,32 @@ export class PresetService {
       this.presetModel.timers[index].seconds = Number(splitInterval[2]);
     }
     return this.presetModel;
+  }
+
+  convertToPresetUpdateModel(presetModel: PresetModel, presetToUpdate: PresetModel) {
+    this.presetModelToUpdate = new PresetModelToUpdate();
+    this.presetModelToUpdate.presetName = presetModel.presetName;
+    this.presetModelToUpdate.id = presetToUpdate.id;
+    this.presetModelToUpdate.timers = [];
+    for (let index = 0; index < presetModel.timers.length; index++) {
+      if (index >= presetToUpdate.timers.length) {
+        const timerToCreate = new TimerUpdate();
+        timerToCreate.id = 0;
+        timerToCreate.name = presetModel.timers[index].timerName;
+        timerToCreate.presetId = presetToUpdate.id;
+        timerToCreate.interval = presetModel.timers[index].hours + ':' + presetModel.timers[index].minutes
+          + ':' + presetModel.timers[index].seconds;
+        this.createTimer(timerToCreate).subscribe(data => {
+          this.presetsArray[this.presetIndexToUpdate].timers[index].id = data.id;
+        });
+      } else {
+        this.presetModelToUpdate.timers[index] = new TimerUpdate();
+        this.presetModelToUpdate.timers[index].name = presetModel.timers[index].timerName;
+        this.presetModelToUpdate.timers[index].presetId = presetToUpdate.id;
+        this.presetModelToUpdate.timers[index].interval = presetModel.timers[index].hours + ':'
+          + presetModel.timers[index].minutes + ':' + presetModel.timers[index].seconds;
+        this.presetModelToUpdate.timers[index].id = presetToUpdate.timers[index].id;
+      }
+    }
   }
 }

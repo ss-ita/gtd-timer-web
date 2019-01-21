@@ -116,11 +116,45 @@
     color: black;
     padding-bottom: 13px;
 }
-
+.font-preset-name {
+    font-size: 18px;
+    font-family: Roboto,"Helvetica Neue",sans-serif;
+}
+.font-timer-name {
+    float: left;
+    font-size: 17px;
+    font-family: Roboto,"Helvetica Neue",sans-serif;
+  
+}
+.preset-info-timers {
+    padding: 5px 10px 5px 20px;
+    text-align: left;
+}
+.preset-info-preset-name {
+    margin: 20px 10px 15px 10px;
+    text-align: left;
+ }
+.margin-bottom {
+    margin-bottom: 25px;
+}
+.mat-card>:first-child.negative-margin {
+    margin-top:-7px;
+}
+.temp-button {
+    background-color: transparent;
+    border: none;
+    font-size: 18px;
+    margin-top: -10px;
+    margin-bottom: 18px;
+    margin-right: -5px;
+    outline: none;
+    font-family: Roboto,"Helvetica Neue",sans-serif;
+}
 .text{
     color: black;
     font-size: 120px;
     margin: 5px;
+
 }
 
 .font-preset-name {

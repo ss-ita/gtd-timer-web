@@ -34,7 +34,6 @@ export class UserService {
       password: user.password,
       passwordConfirm: user.passwordConfirm
     };
-
     return this.http.post(this.config.urlUser, body);
   }
 

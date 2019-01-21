@@ -19,6 +19,9 @@
 .delete-timer-icon {
     color: black;
 }
+.delete-preset {
+    float: right;
+}
 .add-new-preset-button {
     background-color: transparent;
     border: none;

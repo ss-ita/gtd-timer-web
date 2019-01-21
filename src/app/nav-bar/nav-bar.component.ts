@@ -124,6 +124,7 @@ export class NavBarComponent implements OnInit {
       this.signout();
     }
   }
+  
   signin(): void {
     this.navLinks.push(
       {

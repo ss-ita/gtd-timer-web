@@ -1,7 +1,6 @@
 import { Component, OnInit, NgZone } from '@angular/core';
 import { SignupDialogComponent } from '../signup-dialog/signup-dialog.component';
 import { ActivatedRoute, Router } from '@angular/router';
-
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { SigninModel } from '../models/signin.model';
 import { JwtService } from '../services/jwt.service';

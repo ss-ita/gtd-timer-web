@@ -35,7 +35,7 @@ export class TimerService {
     timerSound = new Audio();
     color = '#609b9b';
     subscribe: Subscription;
-    public currentPreset = '#No chosen preset';
+    public currentPreset = '#Choose preset';
 
     initializeTimersArray(timerArray: Timer[]) {
         this.clearTimersArrayAndIndex();
