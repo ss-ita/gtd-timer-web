@@ -3,6 +3,11 @@ import { Chart } from 'chart.js';
 import { ToasterService } from '../services/toaster.service';
 import { TasksService } from '../services/tasks.service';
 
+export enum ChartTypes {
+  Doughnut,
+  Bar
+}
+
 @Component({
   selector: 'app-statistics',
   templateUrl: './statistics.component.html',
@@ -15,7 +20,7 @@ export class StatisticsComponent implements OnInit {
   colors = ['#FF80AB', '#2196F3', '#D81B60', '#00C853', '#FFEB3B', '#7986CB', '#F8BBD0', '#FFD600', '#FF5722', '#81D4FA'];
   public hasData = true;
   public isActiveChart = true;
-  public typeOfChart = 0;
+  public typeOfChart = ChartTypes.Doughnut;
 
   constructor(
     private tasksService: TasksService,
@@ -36,7 +41,10 @@ export class StatisticsComponent implements OnInit {
   map(data: any[]) {
     const items = [];
     for (let i = 0; i < data.length; i++) {
-      const task = { name: data[i].name, time: parseInt(data[i].elapsedTime, 16), isActive: data[i].isActive };
+      const task = {
+        name: data[i].name, time: parseInt(data[i].elapsedTime, 10),
+        isActive: data[i].isActive, hashTags: this.getHashTags(data[i].name)
+      };
       items.push(task);
     }
 
@@ -61,7 +69,7 @@ export class StatisticsComponent implements OnInit {
       namesOfTasks.push(tasks[i].name);
       durationsOfTasks.push(tasks[i].time);
     }
-    const data = { tasksName: namesOfTasks, tasksDurations: durationsOfTasks };
+    const data = { names: namesOfTasks, durations: durationsOfTasks };
 
     return data;
   }
@@ -99,8 +107,8 @@ export class StatisticsComponent implements OnInit {
   createInitialChart() {
     const tasks = this.filterTasks(this.tasks, this.isActiveChart);
     const data = this.prepareDataForChart(tasks);
-    this.hasData = (data.tasksName.length != 0);
-    this.drawChart(data.tasksName, data.tasksDurations);
+    this.hasData = (data.names.length != 0);
+    this.drawChart(data.names, data.durations);
   }
 
   drawActiveTasks() {
@@ -114,14 +122,14 @@ export class StatisticsComponent implements OnInit {
   updateChart(isActive: boolean) {
     const archiveTasks = this.filterTasks(this.tasks, isActive);
     const data = this.prepareDataForChart(archiveTasks);
-    this.hasData = (data.tasksName.length != 0);
+    this.hasData = (data.names.length != 0);
     this.isActiveChart = isActive;
     this.updateChartData(data);
   }
 
   updateChartData(data: any) {
-    this.chart.config.data.labels = data.tasksName;
-    this.chart.config.data.datasets[0].data = data.tasksDurations;
+    this.chart.config.data.labels = data.names;
+    this.chart.config.data.datasets[0].data = data.durations;
     this.chart.update();
   }
 
@@ -184,5 +192,66 @@ export class StatisticsComponent implements OnInit {
     }
     this.chart.config.options.legend.display = type !== 'bar';
     this.chart.update();
+  }
+
+  public getHashTags(text: string) {
+    const regex = /(?:^|\s)(?:#)([a-zA-Z\d]+)/gm;
+    const matches = [];
+    let match;
+
+    while ((match = regex.exec(text))) {
+      matches.push('#' + match[1]);
+    }
+
+    return matches;
+  }
+
+  drawHashTags() {
+    const dictionary = this.getHashTagsData();
+    this.hasData = (dictionary.length != 0);
+    const data = this.prepareHashTagsDataForChart(dictionary);
+    this.updateChartData(data);
+  }
+
+  getHashTagsData() {
+    const dictionary = [];
+    for (let i = 0; i < this.tasks.length; i++) {
+      for (let j = 0; j < this.tasks[i].hashTags.length; j++) {
+        const index = this.getHashTagsIndexInDictionary(dictionary, this.tasks[i].hashTags[j]);
+        if (index === -1) {
+          dictionary.push({
+            key: this.tasks[i].hashTags[j],
+            value: this.tasks[i].time
+          });
+        } else {
+          dictionary[index].value += this.tasks[i].time;
+        }
+      }
+    }
+
+    return dictionary;
+  }
+
+  prepareHashTagsDataForChart(dictionary: any) {
+    const namesOfHashTags = [];
+    const durationsOfHashTags = [];
+    for (let i = 0; i < dictionary.length; i++) {
+      namesOfHashTags.push(dictionary[i].key);
+      durationsOfHashTags.push(dictionary[i].value);
+    }
+
+    const data = { names: namesOfHashTags, durations: durationsOfHashTags };
+
+    return data;
+  }
+
+  getHashTagsIndexInDictionary(dictionary: any, nameOfHashTag: string) {
+    for (let i = 0; i < dictionary.length; i++) {
+      if (dictionary[i].key === nameOfHashTag) {
+        return i;
+      }
+    }
+
+    return -1;
   }
 }
