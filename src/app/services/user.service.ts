@@ -8,6 +8,7 @@ import { ToasterService } from './toaster.service';
 import { first } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { NavbarService } from './navbar.service';
+import { RoleService } from './role.service';
 
 @Injectable({
   providedIn: 'root'
@@ -22,7 +23,8 @@ export class UserService {
     private toasterService: ToasterService,
     private router: Router,
     private navbar: NavbarService,
-    private zone: NgZone) { }
+    private zone: NgZone,
+    private roleService: RoleService) { }
 
   registerUser(user: SignupModel) {
     const body: SignupModel = {
@@ -75,6 +77,7 @@ export class UserService {
           this.navbarsubscribe();
           this.router.navigateByUrl(this.redirectUrl);
           this.toasterService.showToaster('Successfuly signed in! ');
+          this.roleService.getRoles();
         },
         response => {
           this.toasterService.showToaster(response.error.Message);

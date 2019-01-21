@@ -6,6 +6,7 @@ import { Injectable } from '@angular/core';
 
 export class ConfigService {
   public readonly baseUrl: string = 'https://localhost:44398';
+  public readonly urlAdmin: string = this.baseUrl + '/api/User/';
   public readonly urlTask: string = this.baseUrl + '/api/Tasks/';
   public readonly urlPreset: string = this.baseUrl + '/api/Preset/';
   public readonly urlLogIn: string = this.baseUrl + '/api/LogIn';

@@ -1,0 +1,63 @@
+.back{
+    position: absolute;
+    top: auto;
+    min-height: calc(100vh - 49px);
+    width: 100%;
+    background-image: linear-gradient(to top, #d9afd9 0%, #97d9e1 100%);
+    min-width: 820px;
+}
+
+.mat-list-item{
+box-shadow:  0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
+margin-top: 6px;
+margin-bottom: 6px;
+background-color: #f9f9f9;
+border-radius: 5px;
+}
+
+.search{
+  height: 75px;
+}
+
+.search mat-form-field{
+  position: absolute;
+  width: 25%;
+  left:75%;
+  top: 22px;
+}
+
+.my-container{
+    position: relative;
+    margin-left: 10%;
+    margin-right: 10%;
+}
+
+.actions{
+    width: 60%;
+    text-align: right;
+}
+
+.button-with-text{
+    width: 35%;
+}
+
+.actions button{
+    margin-left: 4px;
+    background-color: #dededa;
+}
+
+.actions button:hover{
+    background-color:  #f9f9f9;
+}
+
+.mat-raised-button{
+     min-width: 1px;
+}
+
+.name{
+     width: 40%;
+}
+
+[hidden] {
+    display: none !important; 
+}

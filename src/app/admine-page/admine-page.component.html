@@ -1,0 +1,42 @@
+<div class="back">
+  <ng-template [ngIf]="roleService.isAdmin">
+    <div class="my-container">
+      <div class="search">
+        <mat-form-field>
+          <input matInput [(ngModel)]="searchText" placeholder="Filter" class="input">
+        </mat-form-field>
+      </div>
+      <mat-divider></mat-divider>
+      <mat-list>
+        <mat-list-item *ngFor='let email of roleService.emails | filterEmail : searchText'>
+          <div class="name">
+            <p>{{email}}</p>
+          </div>
+          <div class="actions">
+            <button mat-raised-button (click)="roleService.AddRole(email, 'Admin')" class="button-with-text">
+              Make an admin
+            </button>
+            <button mat-raised-button (click)="roleService.openConfirmationDialogUser(email)" class="button-with-text">
+              Delete user
+            </button>
+            <button mat-raised-button matTooltip="message" [disabled]="true" [matTooltipShowDelay]="2000">
+              <i class="fas fa-comment-dots"></i>
+            </button>
+            <mat-menu #appMenuForChangeView="matMenu">
+              <button mat-menu-item (click)="roleService.AddRole(email, 'SuperAdmin')">Make an super admin</button>
+              <button mat-menu-item (click)="roleService.openConfirmationDialogRole(email, 'Admin')">Delete admin role</button>
+              <button mat-menu-item (click)="roleService.openConfirmationDialogRole(email, 'SuperAdmin')">Delete super admin role</button>
+            </mat-menu>
+            <button mat-raised-button matTooltip="Super admin menu" [matMenuTriggerFor]="appMenuForChangeView" [hidden]="!roleService.isSuperAdmin"
+              [matTooltipShowDelay]="2000">
+              <i class="fas fa-angle-down"></i>
+            </button>
+          </div>
+        </mat-list-item>
+      </mat-list>
+    </div>
+  </ng-template>
+  <ng-template [ngIf]="!roleService.isAdmin">
+    <p>You are not admin</p>
+  </ng-template>
+</div>

@@ -7,6 +7,7 @@
   <mat-menu #menu="matMenu" [backdropClass]="'position'">
     <button mat-menu-item (click)="btnClickSettings()">Settings...</button>
     <button mat-menu-item (click)="btnClickInfo()">Info...</button>
+    <button mat-menu-item [hidden]="!roleService.isAdmin" (click)="btnClickAdmin()">Admin page</button>
     <button mat-menu-item (click)="signout()">Sign Out</button>
   </mat-menu>
 </nav>

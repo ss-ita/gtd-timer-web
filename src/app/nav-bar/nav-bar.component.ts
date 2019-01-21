@@ -4,7 +4,7 @@ import { JwtService } from '../services/jwt.service';
 import { NavbarService } from '../services/navbar.service';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { UserService } from '../services/user.service';
-
+import { RoleService } from '../services/role.service';
 
 @Component({
   selector: 'app-nav-bar',
@@ -25,6 +25,7 @@ export class NavBarComponent implements OnInit {
   constructor(private router: Router,
     private jwtservice: JwtService,
     private navservice: NavbarService,
+    private roleService: RoleService,
     private jwthelper: JwtHelperService,
     private userService: UserService) {
 
@@ -98,6 +99,10 @@ export class NavBarComponent implements OnInit {
 
   btnClickInfo(): void {
     this.router.navigateByUrl('/info');
+  }
+
+  btnClickAdmin(): void {
+    this.router.navigateByUrl('/admin');
   }
 
   signout(): void {
