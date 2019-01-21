@@ -4,9 +4,9 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class ConfigService {
-  public readonly urlTask = 'https://gtd-timer.azurewebsites.net/api/Tasks/';
-  public readonly baseUrl: string = 'https://gtd-timer.azurewebsites.net';
-  public readonly urlPreset = 'https://gtd-timer.azurewebsites.net/api/Preset/';
+  public readonly urlTask = 'https://gtdtimerserver.azurewebsites.net/api/Tasks/';
+  public readonly baseUrl: string = 'https://gtdtimerserver.azurewebsites.net';
+  public readonly urlPreset = 'https://gtdtimerserver.azurewebsites.net/api/Preset/';
   public readonly urlLogIn: string = this.baseUrl + '/api/LogIn';
   public readonly urlGoogleLogIn: string = this.baseUrl + '/api/LogIn/GoogleLogin';
   public readonly urlFacebookLogIn: string = this.baseUrl + '/api/LogIn/FacebookLogin';
