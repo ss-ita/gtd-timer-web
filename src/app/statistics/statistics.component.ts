@@ -97,6 +97,21 @@ export class StatisticsComponent implements OnInit {
         }]
       },
       options: {
+        legend: {
+          onHover: function (e) {
+            e.target.style.cursor = 'pointer';
+          }
+        },
+        hover: {
+          onHover: function (e) {
+            const point = this.getElementAtEvent(e);
+            if (point.length) {
+              e.target.style.cursor = 'pointer';
+            } else {
+              e.target.style.cursor = 'default';
+            }
+          }
+        },
         cutoutPercentage: 60,
         tooltips: {
           callbacks: {
@@ -137,7 +152,6 @@ export class StatisticsComponent implements OnInit {
     const archiveTasks = this.filterTasks(this.tasks, isActive);
     const data = this.prepareDataForChart(archiveTasks);
     this.hasData = (data.names.length != 0);
-    //this.isActive = isActive;
     this.updateChartData(data);
   }
 
@@ -202,7 +216,7 @@ export class StatisticsComponent implements OnInit {
   updateChartConfig() {
     const self = this;
     const type = this.getTypeOfChart();
-    let config = this.chart.config;
+    const config = this.chart.config;
     config.type = type;
     if (config.options.scales) {
       config.options.scales.xAxes[0].display = type === 'bar';
