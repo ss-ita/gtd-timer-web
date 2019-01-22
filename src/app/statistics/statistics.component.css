@@ -35,7 +35,8 @@
     background-color: white;
 }
 
-.buttons .mat-raised-button:first-child {
+.buttons .mat-raised-button:nth-child(1) {
+    margin-left: 80px;
     border-bottom-right-radius: 0px; 
     border-top-right-radius: 0px;
 }
@@ -46,12 +47,23 @@
 }
 
 .buttons .mat-raised-button:nth-child(3) {
-    margin-left: 30px;
+    margin-left: 80px;
     border-bottom-right-radius: 0px; 
     border-top-right-radius: 0px;
 }
 
 .buttons .mat-raised-button:nth-child(4){
+    border-bottom-left-radius: 0px; 
+    border-top-left-radius: 0px;
+}
+
+.buttons .mat-raised-button:nth-child(5) {
+    margin-left: 80px;
+    border-bottom-right-radius: 0px; 
+    border-top-right-radius: 0px;
+}
+
+.buttons .mat-raised-button:nth-child(6){
     border-bottom-left-radius: 0px; 
     border-top-left-radius: 0px;
 }
