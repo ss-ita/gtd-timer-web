@@ -9,8 +9,8 @@ export enum ChartTypes {
 }
 
 export enum DataTypes {
-  Active,
-  Archive
+  Tasks,
+  Hashtags
 }
 
 @Component({
@@ -23,10 +23,12 @@ export class StatisticsComponent implements OnInit {
   chart: Chart;
   tasks = [];
   colors = ['#FF80AB', '#2196F3', '#D81B60', '#00C853', '#FFEB3B', '#7986CB', '#F8BBD0', '#FFD600', '#FF5722', '#81D4FA'];
+  dataTypes = DataTypes;
+  chartTypes = ChartTypes;
   public hasData = true;
   public isActive = true;
   public typeOfChart = ChartTypes.Doughnut;
-  public typeOfData: number = DataTypes.Active;
+  public typeOfData = DataTypes.Tasks;
 
   constructor(
     private tasksService: TasksService,
@@ -80,10 +82,10 @@ export class StatisticsComponent implements OnInit {
     return data;
   }
 
-  drawChart(namesOfTasks: any[], durationsOfTasks: any[]) {
+  initChart(namesOfTasks: any[], durationsOfTasks: any[]) {
     const type = this.getTypeOfChart();
     const self = this;
-    this.chart = new Chart('tasksChart', {
+    this.chart = new Chart('canvasChart', {
       type: type,
       data: {
         labels: namesOfTasks,
@@ -114,42 +116,20 @@ export class StatisticsComponent implements OnInit {
     const tasks = this.filterTasks(this.tasks, this.isActive);
     const data = this.prepareDataForChart(tasks);
     this.hasData = (data.names.length != 0);
-    this.drawChart(data.names, data.durations);
+    this.initChart(data.names, data.durations);
   }
 
-  drawActiveTasks() {
-    this.isActive = true;
+  redraw(isActive: boolean) {
+    this.isActive = isActive;
     switch (this.typeOfData) {
-      case 0: {
-        this.updateChart(true);
+      case DataTypes.Tasks: {
+        this.updateChart(isActive);
         break;
       }
-      case 1: {
-        this.drawHashtags(true);
+      case DataTypes.Hashtags: {
+        this.drawHashtagsChart(isActive);
         break;
       }
-      default: {
-        break;
-      }
-
-    }
-  }
-
-  drawArchiveTasks() {
-    this.isActive = false;
-    switch (this.typeOfData) {
-      case 0: {
-        this.updateChart(false);
-        break;
-      }
-      case 1: {
-        this.drawHashtags(false);
-        break;
-      }
-      default: {
-        break;
-      }
-
     }
   }
 
@@ -157,7 +137,7 @@ export class StatisticsComponent implements OnInit {
     const archiveTasks = this.filterTasks(this.tasks, isActive);
     const data = this.prepareDataForChart(archiveTasks);
     this.hasData = (data.names.length != 0);
-    this.isActive = isActive;
+    //this.isActive = isActive;
     this.updateChartData(data);
   }
 
@@ -200,15 +180,12 @@ export class StatisticsComponent implements OnInit {
   getTypeOfChart() {
     let type;
     switch (this.typeOfChart) {
-      case 0: {
+      case ChartTypes.Doughnut: {
         type = 'doughnut';
         break;
       }
-      case 1: {
+      case ChartTypes.Bar: {
         type = 'bar';
-        break;
-      }
-      default: {
         break;
       }
     }
@@ -216,18 +193,24 @@ export class StatisticsComponent implements OnInit {
     return type;
   }
 
-  changeTypeOfChart(newTypeOfChart: number) {
-    const self = this;
+  changeTypeOfChart(newTypeOfChart: ChartTypes) {
     this.typeOfChart = newTypeOfChart;
+    this.updateChartConfig();
+    this.chart.update();
+  }
+
+  updateChartConfig() {
+    const self = this;
     const type = this.getTypeOfChart();
-    this.chart.config.type = type;
-    if (this.chart.config.options.scales) {
-      this.chart.config.options.scales.xAxes[0].display = type === 'bar';
-      this.chart.config.options.scales.yAxes[0].display = type === 'bar';
+    let config = this.chart.config;
+    config.type = type;
+    if (config.options.scales) {
+      config.options.scales.xAxes[0].display = type === 'bar';
+      config.options.scales.yAxes[0].display = type === 'bar';
     }
-    this.chart.config.options.legend.display = type !== 'bar';
-    if (this.chart.config.type === 'bar') {
-      this.chart.config.options.scales = {
+    config.options.legend.display = type !== 'bar';
+    if (config.type === 'bar') {
+      config.options.scales = {
         yAxes: [{
           ticks: {
             callback: function (value) {
@@ -239,19 +222,15 @@ export class StatisticsComponent implements OnInit {
         }]
       };
     }
-    this.chart.update();
   }
 
-  changeTypeOfData(newTypeOfData: number) {
+
+  changeTypeOfData(newTypeOfData: DataTypes) {
     this.typeOfData = newTypeOfData;
-    if (this.isActive) {
-      this.drawActiveTasks();
-    } else {
-      this.drawArchiveTasks();
-    }
+    this.redraw(this.isActive);
   }
 
-  public getHashtags(text: string) {
+  getHashtags(text: string) {
     const regex = /(?:^|\s)(?:#)([a-zA-Z\d]+)/gm;
     const matches = [];
     let match;
@@ -263,27 +242,26 @@ export class StatisticsComponent implements OnInit {
     return matches;
   }
 
-  drawHashtags(isActiveData: boolean) {
-    const dictionary = this.getHashtagsData(isActiveData);
+  drawHashtagsChart(isActiveData: boolean) {
+    const filterTasks = this.filterTasks(this.tasks, isActiveData);
+    const dictionary = this.getHashtagsData(filterTasks);
     this.hasData = (dictionary.length != 0);
     const data = this.prepareHashtagsDataForChart(dictionary);
     this.updateChartData(data);
   }
 
-  getHashtagsData(isActiveData: boolean) {
+  getHashtagsData(filterTasks: any) {
     const dictionary = [];
-    for (let i = 0; i < this.tasks.length; i++) {
-      if (this.tasks[i].isActive === isActiveData) {
-        for (let j = 0; j < this.tasks[i].hashtags.length; j++) {
-          const index = this.getHashtagsIndexInDictionary(dictionary, this.tasks[i].hashtags[j]);
-          if (index === -1) {
-            dictionary.push({
-              key: this.tasks[i].hashtags[j],
-              value: this.tasks[i].time
-            });
-          } else {
-            dictionary[index].value += this.tasks[i].time;
-          }
+    for (let i = 0; i < filterTasks.length; i++) {
+      for (let j = 0; j < filterTasks[i].hashtags.length; j++) {
+        const index = this.getHashtagsIndexInDictionary(dictionary, filterTasks[i].hashtags[j]);
+        if (index === -1) {
+          dictionary.push({
+            key: filterTasks[i].hashtags[j],
+            value: filterTasks[i].time
+          });
+        } else {
+          dictionary[index].value += filterTasks[i].time;
         }
       }
     }
