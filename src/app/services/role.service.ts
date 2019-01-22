@@ -14,45 +14,59 @@ export class RoleService {
 
     isAdmin = false;
     isSuperAdmin = false;
-    nameOfTab = 'Contact us...';
-    emails: string[] = [];
+    isDisplayUsers = true;
+    isDisplayAdmins = false;
+    isDisplaySuperAdmins = false;
+    emailOfUsers: string[] = [];
+    emailOfAdmins: string[] = [];
+    emailOfSuperAdmins: string[] = [];
+
 
     constructor(private http: HttpClient,
         private service: ConfigService,
         private toasterService: ToasterService,
         private dialog: MatDialog) { }
 
-    getEmailsFromServer(): Observable<string[]> {
-        const headers = this.getHeaders();
-        return this.http.get<string[]>(this.service.urlAdmin + 'GetUsersEmails', { headers: headers });
+    getEmailsFromServer(roleName: string): Observable<string[]> {
+        return this.http.get<string[]>(this.service.urlAdmin + 'GetUsersEmails/' + roleName);
     }
 
-    private getHeaders() {
-        const headers = new HttpHeaders({
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + localStorage.getItem('access_token')
-        });
+    getEmails(roleName: string) {
+        this.getEmailsFromServer(roleName).subscribe(data => {
 
-        return headers;
-    }
+            if (roleName === 'User') {
+                for (let i = 0; i < data.length; ++i) {
+                    this.emailOfUsers.push('');
+                    this.emailOfUsers[i] = data[i];
+                }
+            }
 
-    getEmails() {
-        this.getEmailsFromServer().subscribe(data => {
-            for (let i = 0; i < data.length; ++i) {
-                this.emails.push('');
-                this.emails[i] = data[i];
+            if (roleName === 'Admin') {
+                for (let i = 0; i < data.length; ++i) {
+                    this.emailOfAdmins.push('');
+                    this.emailOfAdmins[i] = data[i];
+                }
+            }
+
+            if (roleName === 'SuperAdmin') {
+                for (let i = 0; i < data.length; ++i) {
+                    this.emailOfSuperAdmins.push('');
+                    this.emailOfSuperAdmins[i] = data[i];
+                }
             }
         });
     }
 
     AddRole(email: string, role: string) {
-        const headers = this.getHeaders();
         const roleModel = new RoleModelJson();
         roleModel.email = email;
         roleModel.role = role;
-        this.http.post<RoleModelJson>(this.service.urlAdmin + 'AddRole', roleModel, { headers: headers }).pipe(first()).subscribe(
+        this.http.post<RoleModelJson>(this.service.urlAdmin + 'AddRole', roleModel).pipe(first()).subscribe(
             _ => {
                 this.toasterService.showToaster('Role added');
+                const indexUserToDelete = this.emailOfUsers.indexOf(email, 0);
+                this.emailOfUsers.splice(indexUserToDelete, 1);
+                this.emailOfAdmins.push(email);
             },
             response => {
                 this.toasterService.showToaster(response.error.Message);
@@ -60,12 +74,11 @@ export class RoleService {
     }
 
     DeletUser(email: string) {
-        const headers = this.getHeaders();
-        this.http.delete(this.service.urlAdmin + 'DeleteUserByEmail/' + email, { headers: headers }).pipe(first()).subscribe(
+        this.http.delete(this.service.urlAdmin + 'DeleteUserByEmail/' + email).pipe(first()).subscribe(
             _ => {
                 this.toasterService.showToaster('User is deleted');
-                const indexUserToDelete = this.emails.indexOf(email, 0);
-                this.emails.splice(indexUserToDelete, 1);
+                const indexUserToDelete = this.emailOfUsers.indexOf(email, 0);
+                this.emailOfUsers.splice(indexUserToDelete, 1);
             },
             response => {
                 this.toasterService.showToaster(response.error.Message);
@@ -73,13 +86,15 @@ export class RoleService {
     }
 
     DeletRole(email: string, role: string) {
-        const headers = this.getHeaders();
         const roleModel = new RoleModelJson();
         roleModel.email = email;
         roleModel.role = role;
-        this.http.delete(this.service.urlAdmin + 'RemoveRole/' + email + '/' + role, { headers: headers }).pipe(first()).subscribe(
+        this.http.delete(this.service.urlAdmin + 'RemoveRole/' + email + '/' + role).pipe(first()).subscribe(
             _ => {
                 this.toasterService.showToaster('Role is deleted');
+                const indexUserToDelete = this.emailOfAdmins.indexOf(email, 0);
+                this.emailOfAdmins.splice(indexUserToDelete, 1);
+                this.emailOfUsers.push(email);
             },
             response => {
                 this.toasterService.showToaster(response.error.Message);
@@ -117,27 +132,42 @@ export class RoleService {
     }
 
     getRolesFromServer(): Observable<string[]> {
-        const headers = this.getHeaders();
-        return this.http.get<string[]>(this.service.urlAdmin + 'GetRolesOfUser', { headers: headers });
+        return this.http.get<string[]>(this.service.urlAdmin + 'GetRolesOfUser');
     }
 
     getRoles() {
         this.getRolesFromServer().subscribe(data => {
+            this.isAdmin = false;
+            this.isSuperAdmin = false;
+
             for (let i = 0; i < data.length; ++i) {
 
                 if (data[i] == 'Admin') {
                     this.isAdmin = true;
-                    this.nameOfTab = 'Admin page...';
-                }else{
-                    this.isAdmin = false;
                 }
 
                 if (data[i] == 'SuperAdmin') {
                     this.isSuperAdmin = true;
-                }else{
-                    this.isSuperAdmin = false;
                 }
             }
         });
+    }
+
+    displayUsers(){
+        this.isDisplayUsers = true;
+        this.isDisplayAdmins = false;
+        this.isDisplaySuperAdmins = false;
+    }
+    
+    displayAdmins(){
+        this.isDisplayUsers = false;
+        this.isDisplayAdmins = true;
+        this.isDisplaySuperAdmins = false;
+    }
+
+    displaySuperAdmins(){
+        this.isDisplayUsers = false;
+        this.isDisplayAdmins = false;
+        this.isDisplaySuperAdmins = true;
     }
 }

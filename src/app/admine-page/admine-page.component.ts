@@ -9,10 +9,13 @@ import { RoleService } from '../services/role.service';
 export class AdminePageComponent implements OnInit {
   searchText: string;
 
-  constructor(private roleService: RoleService) { }
+  constructor(private roleService: RoleService) {
+    this.roleService.getRoles();
+   }
 
   ngOnInit() {
-    this.roleService.getEmails();
-    this.roleService.getRoles();
+    this.roleService.getEmails('User');
+    this.roleService.getEmails('Admin');
+    this.roleService.getEmails('SuperAdmin');
   }
 }
