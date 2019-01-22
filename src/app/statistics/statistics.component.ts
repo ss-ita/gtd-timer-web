@@ -217,6 +217,7 @@ export class StatisticsComponent implements OnInit {
   }
 
   changeTypeOfChart(newTypeOfChart: number) {
+    const self = this;
     this.typeOfChart = newTypeOfChart;
     const type = this.getTypeOfChart();
     this.chart.config.type = type;
@@ -225,6 +226,19 @@ export class StatisticsComponent implements OnInit {
       this.chart.config.options.scales.yAxes[0].display = type === 'bar';
     }
     this.chart.config.options.legend.display = type !== 'bar';
+    if (this.chart.config.type === 'bar') {
+      this.chart.config.options.scales = {
+        yAxes: [{
+          ticks: {
+            callback: function (value) {
+              const time = self.millisecondsToElapsedTime(parseInt(value, 10));
+              const str = self.elepsedTimeToString(time);
+              return str;
+            }
+          }
+        }]
+      };
+    }
     this.chart.update();
   }
 
@@ -243,7 +257,7 @@ export class StatisticsComponent implements OnInit {
     let match;
 
     while ((match = regex.exec(text))) {
-      matches.push('#' + match[1]);
+      matches.push(match[0]);
     }
 
     return matches;
