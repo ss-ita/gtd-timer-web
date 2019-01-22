@@ -116,6 +116,9 @@ export class NavBarComponent implements OnInit {
     this.show = false;
     const link = this.navLinks.find(tab => tab.link === '.' + this.userService.redirectUrl);
     this.router.navigateByUrl(link ? this.userService.redirectUrl : this.signinLink);
+    this.roleService.emailOfUsers = [];
+    this.roleService.emailOfAdmins = [];
+    this.roleService.emailOfSuperAdmins = [];
   }
 
   tokenexpire() {
