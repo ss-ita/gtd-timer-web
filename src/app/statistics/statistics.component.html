@@ -2,15 +2,16 @@
   <div class="container">
     <div>
       <div class="buttons">
-        <button mat-raised-button [ngClass]="{'active': isActiveChart}" (click)="drawActiveTasks()">Active</button>
-        <button mat-raised-button [ngClass]="{'active': !isActiveChart}" (click)="drawArchiveTasks()">Archive</button>
+        <button mat-raised-button [ngClass]="{'active': typeOfData === 0}" (click)="changeTypeOfData(0)">Tasks</button>
+        <button mat-raised-button [ngClass]="{'active': typeOfData === 1}" (click)="changeTypeOfData(1)">Tags</button>
         <button mat-raised-button [ngClass]="{'active': typeOfChart === 0}" (click)="changeTypeOfChart(0)">
-          <img src="assets/img/donut-chart.png">
-        </button>
-        <button mat-raised-button [ngClass]="{'active': typeOfChart === 1}" (click)="changeTypeOfChart(1)">
-          <i class="fa fa-bar-chart" aria-hidden="true"></i>
-        </button>
-        <button mat-raised-button [ngClass]="{'active': typeOfChart === 0}" (click)="drawHashTags()">HashTags</button>
+            <img src="assets/img/donut-chart.png">
+          </button>
+          <button mat-raised-button [ngClass]="{'active': typeOfChart === 1}" (click)="changeTypeOfChart(1)">
+            <i class="fa fa-bar-chart" aria-hidden="true"></i>
+          </button>
+        <button mat-raised-button [ngClass]="{'active': isActive}" (click)="drawActiveTasks()">Active</button>
+        <button mat-raised-button [ngClass]="{'active': !isActive}" (click)="drawArchiveTasks()">Archive</button>
       </div>
     </div>
     <div id="chart" [ngClass]="{'hidden': !hasData}">
