@@ -1,5 +1,5 @@
 import { PresetModel, Timer, PresetModelJson, TimerJson, PresetModelToUpdate, TimerUpdate } from '../models/preset.model';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { ConfigService } from './config.service';
 import { TimerService } from './timer.service';
 import { Injectable } from '@angular/core';
@@ -22,32 +22,30 @@ export class PresetService {
   constructor(
     private configService: ConfigService,
     private timerService: TimerService,
-    private httpClient: HttpClient,
-    private jwthelper: JwtHelperService) { }
+    private httpClient: HttpClient) { }
 
   createPreset(presetModel: PresetModel) {
     this.pushPresetToLocalArray(presetModel);
     this.presetModelJson = this.convertToPresetModelJson(presetModel);
     this.prepareModelToCreate();
-    return this.httpClient.post<PresetModelJson>(this.configService.urlPreset + 'CreatePreset', this.presetModelJson,
-      { headers: this.getHeaders() });
+    return this.httpClient.post<PresetModelJson>(this.configService.urlPreset + 'CreatePreset', this.presetModelJson);
   }
 
   createTimer(timerToCreate: TimerUpdate) {
-    return this.httpClient.post<TimerUpdate>(this.configService.urlPreset + 'CreateTimer', timerToCreate, { headers: this.getHeaders() });
+    return this.httpClient.post<TimerUpdate>(this.configService.urlPreset + 'CreateTimer', timerToCreate);
   }
 
   updatePreset(presetModel: PresetModel, presetToUpdate: PresetModel) {
     this.convertToPresetUpdateModel(presetModel, presetToUpdate);
-    return this.httpClient.put(this.configService.urlPreset + 'UpdatePreset', this.presetModelToUpdate, { headers: this.getHeaders() });
+    return this.httpClient.put(this.configService.urlPreset + 'UpdatePreset', this.presetModelToUpdate);
   }
 
   deletePreset(id: number) {
-    return this.httpClient.delete(this.configService.urlPreset + 'DeletePreset/' + id.toString(), { headers: this.getHeaders() });
+    return this.httpClient.delete(this.configService.urlPreset + 'DeletePreset/' + id.toString);
   }
 
   deleteTimer(id: number) {
-    return this.httpClient.delete(this.configService.urlPreset + 'DeleteTimer/' + id.toString(), { headers: this.getHeaders() });
+    return this.httpClient.delete(this.configService.urlPreset + 'DeleteTimer/' + id.toString());
   }
 
   getAllStandardPresetsFromServer(): Observable<PresetModelJson[]> {
