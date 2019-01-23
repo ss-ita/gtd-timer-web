@@ -1,10 +1,9 @@
 import { Injectable, OnInit } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { ConfigService } from './config.service';
 import { Observable } from 'rxjs';
 import { TaskJson } from '../models/taskjson.model';
 import { Task } from '../models/task.model';
-import { TaskCreateJson } from '../models/taskCreateJson.model';
 
 @Injectable({
   providedIn: 'root'
@@ -20,20 +19,13 @@ export class ArchiveService implements OnInit {
   }
 
   getArchivedTasksFromServer(): Observable<TaskJson[]> {
-    
-    return this.http.get<TaskJson[]>(this.service.urlTask + 'GetAllArchivedTasksByUserId', {  });
+    return this.http.get<TaskJson[]>(this.service.urlTask + 'GetAllArchivedTasksByUserId', {});
   }
   deleteTask(id: Number) {
-    
-    return this.http.delete(this.service.urlTask + 'DeleteTask/' + id.toString(), {  });
+    return this.http.delete(this.service.urlTask + 'DeleteTask/' + id.toString(), {});
   }
 
   switchtaskStatus(task: Task) {
-    
-    return this.http.put<TaskJson>(this.service.urlTask + 'SwitchArchivedStatus', task.convertToTaskJson(), { });
+    return this.http.put<TaskJson>(this.service.urlTask + 'SwitchArchivedStatus', task.convertToTaskJson(), {});
   }
-
-
- 
- 
 }

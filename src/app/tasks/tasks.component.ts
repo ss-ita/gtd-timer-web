@@ -101,8 +101,6 @@ export class TasksComponent implements OnInit {
     this.tasks.unshift(taskToPass);
   }
 
-
-
   deleteTask(task: TaskCreateJson) {
     this.taskService.switchTaskStatus(task).subscribe();
     const indexTaskToDelete = this.tasks.indexOf(task, 0);
@@ -126,7 +124,7 @@ export class TasksComponent implements OnInit {
 
 
   getMiliSecondsFromTime(task: TaskCreateJson) {
-    let now = Date.now();
+    const now = Date.now();
     return now - task.lastStartTimeNumber;
   }
 

@@ -28,11 +28,10 @@ export class NavBarComponent implements OnInit {
   constructor(private router: Router,
     private jwtservice: JwtService,
     private navservice: NavbarService,
-    private roleService: RoleService,
+    public roleService: RoleService,
     private jwthelper: JwtHelperService,
     private userService: UserService,
     private presetComponent: PresetComponent) {
-
     this.navservice.navLinks.subscribe(value => { this.navLinks = value; });
     this.navservice.show.subscribe(value => { this.show = value; });
     this.navservice.email.subscribe(value => { this.email = value; });
@@ -122,8 +121,6 @@ export class NavBarComponent implements OnInit {
     const link = this.navLinks.find(tab => tab.link === '.' + this.userService.redirectUrl);
     this.router.navigateByUrl(link ? this.userService.redirectUrl : this.signinLink);
     this.presetComponent.getAllStandardAndCustomPresets();
-    this.roleService.emailOfUsers = [];
-    this.roleService.emailOfAdmins = [];
   }
 
   tokenexpire() {
@@ -132,7 +129,7 @@ export class NavBarComponent implements OnInit {
       this.signout();
     }
   }
-  
+
   signin(): void {
     this.navLinks.push(
       {

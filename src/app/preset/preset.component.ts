@@ -37,9 +37,9 @@ export class PresetComponent implements OnInit {
     private router: Router,
     iconRegistry: MatIconRegistry,
     sanitizer: DomSanitizer,
-    ) { 
-      iconRegistry.addSvgIcon('delete',sanitizer.bypassSecurityTrustResourceUrl('assets/img/delete.svg'));
-      iconRegistry.addSvgIcon('edit',sanitizer.bypassSecurityTrustResourceUrl('assets/img/edit.svg'));
+  ) {
+    iconRegistry.addSvgIcon('delete', sanitizer.bypassSecurityTrustResourceUrl('assets/img/delete.svg'));
+    iconRegistry.addSvgIcon('edit', sanitizer.bypassSecurityTrustResourceUrl('assets/img/edit.svg'));
   }
 
   onCreate() {
@@ -107,7 +107,7 @@ export class PresetComponent implements OnInit {
     this.isUpdateState = !this.isUpdateState;
   }
 
-  onSignIn(){
+  onSignIn() {
     this.router.navigateByUrl('/signin');
     this.onClose();
   }

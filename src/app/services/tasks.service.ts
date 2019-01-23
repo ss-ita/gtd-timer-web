@@ -15,44 +15,31 @@ export class TasksService implements OnInit {
 
 
     public getAllTasks() {
-    
-
-        return this.http.get(this.service.urlGetAllTasks, { });
+        return this.http.get(this.service.urlGetAllTasks, {});
     }
     getActiveTasksFromServer(): Observable<TaskJson[]> {
-        
         return this.http.get<TaskJson[]>(this.service.urlTask + 'GetAllActiveTasksByUserId');
     }
     switchTaskStatus(task: TaskCreateJson) {
-        
         return this.http.put<TaskCreateJson>(this.service.urlTask + 'SwitchArchivedStatus', task);
     }
     startTask(task: TaskCreateJson) {
-        
         return this.http.put<TaskCreateJson>(this.service.urlTask + 'StartTask', task);
     }
 
     pauseTask(task: TaskCreateJson) {
-        
         return this.http.put<TaskCreateJson>(this.service.urlTask + 'PauseTask', task);
     }
 
     resetTask(task: TaskCreateJson) {
-        
         return this.http.put<TaskCreateJson>(this.service.urlTask + 'ResetTask/', task);
     }
 
     createTask(task: TaskCreateJson) {
-        
         return this.http.post<TaskCreateJson>(this.service.urlTask + 'CreateTask', task);
     }
 
     updateTask(task: TaskCreateJson) {
-        
         return this.http.put<TaskCreateJson>(this.service.urlTask + 'UpdateTask', task);
     }
-
-
-
-
 }

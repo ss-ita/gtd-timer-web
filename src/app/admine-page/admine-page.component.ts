@@ -9,7 +9,7 @@ import { RoleService } from '../services/role.service';
 export class AdminePageComponent implements OnInit {
   searchText: string;
 
-  constructor(private roleService: RoleService) {
+  constructor(public roleService: RoleService) {
    }
 
   ngOnInit() {

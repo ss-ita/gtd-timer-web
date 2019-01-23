@@ -76,6 +76,7 @@ export class UserService {
           this.navbarsubscribe();
           this.router.navigateByUrl(this.redirectUrl);
           this.toasterService.showToaster('Successfuly signed in! ');
+          this.roleService.getRoles();
         },
         response => {
           this.toasterService.showToaster(response.error.Message);
