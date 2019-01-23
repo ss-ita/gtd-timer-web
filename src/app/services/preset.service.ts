@@ -5,6 +5,7 @@ import { TimerService } from './timer.service';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
+
 @Injectable({ providedIn: 'root' })
 
 export class PresetService {
@@ -41,7 +42,7 @@ export class PresetService {
   }
 
   deletePreset(id: number) {
-    return this.httpClient.delete(this.configService.urlPreset + 'DeletePreset/' + id.toString);
+    return this.httpClient.delete(this.configService.urlPreset + 'DeletePreset/' + id.toString());
   }
 
   deleteTimer(id: number) {
@@ -53,7 +54,6 @@ export class PresetService {
   }
 
   getAllCustomPresetsFromServer(): Observable<PresetModelJson[]> {
-
     return this.httpClient.get<PresetModelJson[]>(this.configService.urlPreset + 'GetAllCustomPresets');
   }
 

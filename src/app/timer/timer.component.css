@@ -140,7 +140,7 @@
 .mat-card>:first-child.negative-margin {
     margin-top:-7px;
 }
-.temp-button {
+.presets-settings-button {
     background-color: transparent;
     border: none;
     font-size: 18px;
@@ -149,7 +149,14 @@
     margin-right: -5px;
     outline: none;
     font-family: Roboto,"Helvetica Neue",sans-serif;
+    transition-duration: 0.4s;
+    -webkit-transition-duration: 0.4s;
+    cursor: pointer;
 }
+.presets-settings-button:hover {
+    color: grey;
+    background-color: transparent;
+  }
 .text{
     color: black;
     font-size: 120px;

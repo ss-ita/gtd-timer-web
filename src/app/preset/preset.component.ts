@@ -1,10 +1,12 @@
 import { SignupDialogComponent } from '../signup-dialog/signup-dialog.component';
 import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
+import { MatDialogRef, MatIconRegistry } from '@angular/material';
 import { PresetService } from '../services/preset.service';
+import { DomSanitizer } from '@angular/platform-browser';
 import { TimerService } from '../services/timer.service';
 import { PresetModel } from '../models/preset.model';
 import { Component, OnInit } from '@angular/core';
-import { MatDialogRef } from '@angular/material';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-preset',
@@ -31,7 +33,14 @@ export class PresetComponent implements OnInit {
     private signupDialogComponent: SignupDialogComponent,
     private presetService: PresetService,
     private timerService: TimerService,
-    private formBuilder: FormBuilder) { }
+    private formBuilder: FormBuilder,
+    private router: Router,
+    iconRegistry: MatIconRegistry,
+    sanitizer: DomSanitizer,
+    ) { 
+      iconRegistry.addSvgIcon('delete',sanitizer.bypassSecurityTrustResourceUrl('assets/img/delete.svg'));
+      iconRegistry.addSvgIcon('edit',sanitizer.bypassSecurityTrustResourceUrl('assets/img/edit.svg'));
+  }
 
   onCreate() {
     this.presetService.createPreset(this.presetForm.value).subscribe(data => {
@@ -96,6 +105,11 @@ export class PresetComponent implements OnInit {
   onClose() {
     this.presetsFormDialogRef.close();
     this.isUpdateState = !this.isUpdateState;
+  }
+
+  onSignIn(){
+    this.router.navigateByUrl('/signin');
+    this.onClose();
   }
 
   cleanUpTheTimersFormGroupArray() {
@@ -178,6 +192,7 @@ export class PresetComponent implements OnInit {
       }
     });
 
+    this.getIsLoggedIn();
     if (this.isLoggedIn) {
       this.getAllCustomPresetsFromServer();
     }

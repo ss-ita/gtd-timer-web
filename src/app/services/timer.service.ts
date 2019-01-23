@@ -145,14 +145,14 @@ export class TimerService {
     pauseTimer() {
         if (this.isTimerRun) {
             this.isTimerPause = true;
-            this.color = 'red';
+            this.color = '#C23A33';
             this.subscribe.unsubscribe();
         }
     }
 
     updateTime() {
         if (this.minute == 0 && this.second < 11 && this.hour == 0) {
-            this.color = '#ad2265';
+            this.color = '#C23A33';
         }
 
         if (this.minute == 0 && this.second == 0 && this.hour == 0) {
