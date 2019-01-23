@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { ConfigService } from '../services/config.service';
 import { Observable } from 'rxjs';
 import { ToasterService } from './toaster.service';
@@ -16,10 +16,8 @@ export class RoleService {
     isSuperAdmin = false;
     isDisplayUsers = true;
     isDisplayAdmins = false;
-    isDisplaySuperAdmins = false;
     emailOfUsers: string[] = [];
     emailOfAdmins: string[] = [];
-    emailOfSuperAdmins: string[] = [];
 
 
     constructor(private http: HttpClient,
@@ -27,12 +25,8 @@ export class RoleService {
         private toasterService: ToasterService,
         private dialog: MatDialog) { }
 
-    getEmailsFromServer(roleName: string): Observable<string[]> {
-        return this.http.get<string[]>(this.service.urlAdmin + 'GetUsersEmails/' + roleName);
-    }
-
     getEmails(roleName: string) {
-        this.getEmailsFromServer(roleName).subscribe(data => {
+        this.http.get<string[]>(this.service.urlAdmin + 'GetUsersEmails/' + roleName).subscribe(data => {
 
             if (roleName === 'User') {
                 for (let i = 0; i < data.length; ++i) {
@@ -45,13 +39,6 @@ export class RoleService {
                 for (let i = 0; i < data.length; ++i) {
                     this.emailOfAdmins.push('');
                     this.emailOfAdmins[i] = data[i];
-                }
-            }
-
-            if (roleName === 'SuperAdmin') {
-                for (let i = 0; i < data.length; ++i) {
-                    this.emailOfSuperAdmins.push('');
-                    this.emailOfSuperAdmins[i] = data[i];
                 }
             }
         });
@@ -145,29 +132,17 @@ export class RoleService {
                 if (data[i] == 'Admin') {
                     this.isAdmin = true;
                 }
-
-                if (data[i] == 'SuperAdmin') {
-                    this.isSuperAdmin = true;
-                }
             }
         });
     }
 
-    displayUsers(){
+    displayUsers() {
         this.isDisplayUsers = true;
         this.isDisplayAdmins = false;
-        this.isDisplaySuperAdmins = false;
-    }
-    
-    displayAdmins(){
-        this.isDisplayUsers = false;
-        this.isDisplayAdmins = true;
-        this.isDisplaySuperAdmins = false;
     }
 
-    displaySuperAdmins(){
+    displayAdmins() {
         this.isDisplayUsers = false;
-        this.isDisplayAdmins = false;
-        this.isDisplaySuperAdmins = true;
+        this.isDisplayAdmins = true;
     }
 }

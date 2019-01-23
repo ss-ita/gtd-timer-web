@@ -10,12 +10,12 @@ export class AdminePageComponent implements OnInit {
   searchText: string;
 
   constructor(private roleService: RoleService) {
-    this.roleService.getRoles();
    }
 
   ngOnInit() {
+    this.roleService.emailOfUsers = [];
+    this.roleService.emailOfAdmins = [];
     this.roleService.getEmails('User');
     this.roleService.getEmails('Admin');
-    this.roleService.getEmails('SuperAdmin');
   }
 }

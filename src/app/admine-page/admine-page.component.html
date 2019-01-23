@@ -6,14 +6,12 @@
           <div class="buttons">
             <button mat-raised-button [ngClass]="{'active': roleService.isDisplayUsers}" (click)="roleService.displayUsers()">Users</button>
             <button mat-raised-button [ngClass]="{'active': roleService.isDisplayAdmins}" (click)="roleService.displayAdmins()">Admins</button>
-            <button mat-raised-button [ngClass]="{'active': roleService.isDisplaySuperAdmins}" (click)="roleService.displaySuperAdmins()">Super
-              admins</button>
           </div>
         </div>
       </div>
-        <mat-form-field>
-          <input matInput [(ngModel)]="searchText" placeholder="Filter" class="input">
-        </mat-form-field>
+      <mat-form-field>
+        <input matInput [(ngModel)]="searchText" placeholder="Filter" class="input">
+      </mat-form-field>
       <mat-divider></mat-divider>
       <mat-list>
         <ng-template [ngIf]="roleService.isDisplayUsers">
@@ -22,8 +20,7 @@
               <p>{{email}}</p>
             </div>
             <div class="actions">
-              <button mat-raised-button [hidden]="!roleService.isSuperAdmin" (click)="roleService.AddRole(email, 'Admin')"
-                class="button-with-text">
+              <button mat-raised-button (click)="roleService.AddRole(email, 'Admin')" class="button-with-text">
                 Make an admin
               </button>
               <button mat-raised-button matTooltip="message" [disabled]="true" [matTooltipShowDelay]="2000">
@@ -41,17 +38,9 @@
               <p>{{email}}</p>
             </div>
             <div class="actions">
-              <button mat-raised-button [hidden]="!roleService.isSuperAdmin" (click)="roleService.openConfirmationDialogRole(email, 'Admin')"
-                class="button-with-text">
+              <button mat-raised-button (click)="roleService.openConfirmationDialogRole(email, 'Admin')" class="button-with-text">
                 Delete admin role
               </button>
-            </div>
-          </mat-list-item>
-        </ng-template>
-        <ng-template [ngIf]="roleService.isDisplaySuperAdmins">
-          <mat-list-item *ngFor='let email of roleService.emailOfSuperAdmins | filterEmail : searchText'>
-            <div class="name">
-              <p>{{email}}</p>
             </div>
           </mat-list-item>
         </ng-template>

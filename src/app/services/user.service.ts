@@ -106,6 +106,7 @@ export class UserService {
             this.navbarsubscribe();
             this.router.navigateByUrl(this.redirectUrl);
             this.toasterService.showToaster('Successfuly signed in with Google! ');
+            this.roleService.getRoles();
           });
         },
         response => {
@@ -122,6 +123,7 @@ export class UserService {
             this.navbarsubscribe();
             this.router.navigateByUrl(this.redirectUrl);
             this.toasterService.showToaster('Successfuly signed in with Facebook! ');
+            this.roleService.getRoles();
           });
         },
         response => {

@@ -34,6 +34,7 @@ export class NavBarComponent implements OnInit {
     this.navservice.email.subscribe(value => { this.email = value; });
     if (localStorage.getItem('access_token')) {
       this.show = true;
+      this.roleService.getRoles();
       this.navLinks = [
         {
           label: 'Timer',
