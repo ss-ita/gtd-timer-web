@@ -1,5 +1,5 @@
 import { Injectable, OnInit } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { ConfigService } from './config.service';
 import { Observable } from 'rxjs';
 import { TaskJson } from '../models/taskjson.model';
