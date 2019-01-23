@@ -45,5 +45,4 @@ export class AuthGuardService implements CanActivate {
       }]);
     this.navbar.show.next(false);
   }
-
 }

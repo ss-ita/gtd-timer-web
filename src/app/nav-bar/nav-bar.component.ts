@@ -4,12 +4,15 @@ import { JwtService } from '../services/jwt.service';
 import { NavbarService } from '../services/navbar.service';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { UserService } from '../services/user.service';
-
+import { RoleService } from '../services/role.service';
+import { PresetComponent } from '../preset/preset.component';
+import { SignupDialogComponent } from '../signup-dialog/signup-dialog.component';
 
 @Component({
   selector: 'app-nav-bar',
   templateUrl: './nav-bar.component.html',
-  styleUrls: ['./nav-bar.component.css']
+  styleUrls: ['./nav-bar.component.css'],
+  providers: [PresetComponent , SignupDialogComponent]
 })
 export class NavBarComponent implements OnInit {
 
@@ -25,14 +28,16 @@ export class NavBarComponent implements OnInit {
   constructor(private router: Router,
     private jwtservice: JwtService,
     private navservice: NavbarService,
+    public roleService: RoleService,
     private jwthelper: JwtHelperService,
-    private userService: UserService) {
-
+    private userService: UserService,
+    private presetComponent: PresetComponent) {
     this.navservice.navLinks.subscribe(value => { this.navLinks = value; });
     this.navservice.show.subscribe(value => { this.show = value; });
     this.navservice.email.subscribe(value => { this.email = value; });
     if (localStorage.getItem('access_token')) {
       this.show = true;
+      this.roleService.getRoles();
       this.navLinks = [
         {
           label: 'Timer',
@@ -100,6 +105,10 @@ export class NavBarComponent implements OnInit {
     this.router.navigateByUrl('/info');
   }
 
+  btnClickAdmin(): void {
+    this.router.navigateByUrl('/admin');
+  }
+
   signout(): void {
     this.jwtservice.signout();
     this.navLinks = this.navLinks.slice(0, 3);
@@ -111,6 +120,7 @@ export class NavBarComponent implements OnInit {
     this.show = false;
     const link = this.navLinks.find(tab => tab.link === '.' + this.userService.redirectUrl);
     this.router.navigateByUrl(link ? this.userService.redirectUrl : this.signinLink);
+    this.presetComponent.getAllStandardAndCustomPresets();
   }
 
   tokenexpire() {
@@ -119,6 +129,7 @@ export class NavBarComponent implements OnInit {
       this.signout();
     }
   }
+
   signin(): void {
     this.navLinks.push(
       {

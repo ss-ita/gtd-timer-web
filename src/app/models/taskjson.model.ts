@@ -8,4 +8,10 @@ export class TaskJson {
    isActive: boolean;
    isRunning: boolean;
    userId: number;
+   hour: number;
+   minutes: number;
+   seconds: number;
+   lastStartTimeNumber: number;
+   currentSecond: number;
+   isStoped: boolean;
 }

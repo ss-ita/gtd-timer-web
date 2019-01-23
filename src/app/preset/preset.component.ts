@@ -1,10 +1,12 @@
 import { SignupDialogComponent } from '../signup-dialog/signup-dialog.component';
 import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
+import { MatDialogRef, MatIconRegistry } from '@angular/material';
 import { PresetService } from '../services/preset.service';
+import { DomSanitizer } from '@angular/platform-browser';
 import { TimerService } from '../services/timer.service';
 import { PresetModel } from '../models/preset.model';
 import { Component, OnInit } from '@angular/core';
-import { MatDialogRef } from '@angular/material';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-preset',
@@ -15,9 +17,13 @@ import { MatDialogRef } from '@angular/material';
 
 export class PresetComponent implements OnInit {
 
+  presetToUpdate: PresetModel;
   presetModel: PresetModel;
   selectedPreset: string;
+  isUpdateState: boolean;
+  isCreateState: boolean;
   presetForm: FormGroup;
+  presetIndex: number;
   isViewable: boolean;
   isLoggedIn: boolean;
   isValid: boolean;
@@ -27,12 +33,67 @@ export class PresetComponent implements OnInit {
     private signupDialogComponent: SignupDialogComponent,
     private presetService: PresetService,
     private timerService: TimerService,
-    private formBuilder: FormBuilder) { }
+    private formBuilder: FormBuilder,
+    private router: Router,
+    iconRegistry: MatIconRegistry,
+    sanitizer: DomSanitizer,
+  ) {
+    iconRegistry.addSvgIcon('delete', sanitizer.bypassSecurityTrustResourceUrl('assets/img/delete.svg'));
+    iconRegistry.addSvgIcon('edit', sanitizer.bypassSecurityTrustResourceUrl('assets/img/edit.svg'));
+  }
 
   onCreate() {
-    this.presetService.createPreset(this.presetForm.value).subscribe();
-    this.selectedPreset = this.presetService.getCreatedPreset();
+    this.presetService.createPreset(this.presetForm.value).subscribe(data => {
+      this.presetService.presetsArray[this.presetService.presetsArray.length - 1].id = data.id;
+      for (let index = 0; index < data.timers.length; index++) {
+        this.presetService.presetsArray[this.presetService.presetsArray.length - 1].timers[index].id = data.timers[index].id;
+      }
+    });
+    this.selectedPreset = this.presetService.getCreatedPresetName();
+    for (let index = 0; index < this.presetService.getCreatedPreset().timers.length; index++) {
+      this.returnTimersFormGroupArray.removeAt(index);
+    }
     this.toggle();
+  }
+
+  onUpdate() {
+    this.presetService.updatePresetInLocalArrayAndServer(this.presetForm.value, this.presetToUpdate, this.presetIndex);
+    this.selectedPreset = this.presetService.getPresetNameByIndex(this.presetIndex);
+    this.cleanUpTheTimersFormGroupArray();
+    this.switchTheCreateAndUpdateState();
+    this.toggle();
+  }
+
+  onUpdateIcon(presetIndex) {
+    this.presetIndex = presetIndex;
+    this.presetToUpdate = this.presetService.getPresetByIndex(presetIndex);
+    this.cleanUpTheTimersFormGroupArray();
+    this.loadDataToUpdateMenu(this.presetToUpdate);
+    this.switchTheCreateAndUpdateState();
+    this.toggle();
+  }
+
+  onDeletePreset(presetIndex) {
+    this.presetService.deletePresetFromLocalArrayAndServer(presetIndex);
+    this.selectedPreset = this.getFirstStandardPreset();
+  }
+
+  onDeleteTimer(index) {
+    if (this.isUpdateState) {
+      if (this.returnTimersFormGroupArray.length >= 2) {
+        if (index >= this.presetToUpdate.timers.length) {
+          this.returnTimersFormGroupArray.removeAt(index);
+        } else {
+          this.presetService.deleteTimerFromLocalArrayAndServer(index, this.presetIndex, this.presetToUpdate);
+          this.returnTimersFormGroupArray.removeAt(index);
+        }
+      }
+    }
+    if (this.isCreateState) {
+      if (this.returnTimersFormGroupArray.length !== 1) {
+        this.returnTimersFormGroupArray.removeAt(index);
+      }
+    }
   }
 
   onSave() {
@@ -43,10 +104,28 @@ export class PresetComponent implements OnInit {
 
   onClose() {
     this.presetsFormDialogRef.close();
+    this.isUpdateState = !this.isUpdateState;
+  }
+
+  onSignIn() {
+    this.router.navigateByUrl('/signin');
+    this.onClose();
+  }
+
+  cleanUpTheTimersFormGroupArray() {
+    for (let index = 0; index < this.presetToUpdate.timers.length; index++) {
+      this.returnTimersFormGroupArray.removeAt(index);
+    }
   }
 
   toggle() {
     this.isViewable = !this.isViewable;
+    this.isCreateState = !this.isCreateState;
+  }
+
+  switchTheCreateAndUpdateState() {
+    this.isUpdateState = !this.isUpdateState;
+    this.isCreateState = !this.isCreateState;
   }
 
   openSignUpDialogComponent() {
@@ -62,8 +141,21 @@ export class PresetComponent implements OnInit {
     return this.presetService.presetsArray;
   }
 
+  getFirstStandardPreset() {
+    return this.presetService.standardPresets[0].presetName;
+  }
+
   getIsLoggedIn() {
     if (localStorage.getItem('access_token') === null) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+  isPresetStandard(preset: PresetModel) {
+    if (preset.id === this.presetService.standardPresets[0].id
+      || preset.id === this.presetService.standardPresets[1].id) {
       return false;
     } else {
       return true;
@@ -91,17 +183,19 @@ export class PresetComponent implements OnInit {
   getAllStandardAndCustomPresets() {
     this.presetService.presetsArray = [];
 
-    if (this.isLoggedIn) {
-      this.getAllCustomPresetsFromServer();
-    }
-
     this.presetService.getAllStandardPresetsFromServer().subscribe(data => {
       for (let index = 0; index < data.length; index++) {
         this.presetModel = new PresetModel();
         this.presetModel = this.presetService.convertToPresetModel(data[index]);
         this.presetService.pushPresetToLocalArray(this.presetModel);
+        this.presetService.pushToStandardPresetsArray(this.presetModel);
       }
     });
+
+    this.getIsLoggedIn();
+    if (this.isLoggedIn) {
+      this.getAllCustomPresetsFromServer();
+    }
   }
 
   getAllCustomPresetsFromServer() {
@@ -112,12 +206,6 @@ export class PresetComponent implements OnInit {
         this.presetService.pushPresetToLocalArray(this.presetModel);
       }
     });
-  }
-
-  deleteTimerGroupRow(index) {
-    if (this.returnTimersFormGroupArray.length !== 1) {
-      this.returnTimersFormGroupArray.removeAt(index);
-    }
   }
 
   addTimerGroupRow() {
@@ -133,6 +221,19 @@ export class PresetComponent implements OnInit {
     });
   }
 
+  loadDataToUpdateMenu(presetToUpdate: PresetModel) {
+    this.returnTimersFormGroupArray.removeAt(0);
+    this.presetForm.controls['presetName'].setValue(presetToUpdate.presetName);
+    for (let index = 0; index < presetToUpdate.timers.length; index++) {
+      (<FormArray>this.presetForm.get('timers')).push(this.formBuilder.group({
+        timerName: [presetToUpdate.timers[index].timerName, [Validators.required, Validators.maxLength(35)]],
+        hours: [presetToUpdate.timers[index].hours, [Validators.required, Validators.min(0), Validators.max(23)]],
+        minutes: [presetToUpdate.timers[index].minutes, [Validators.required, Validators.min(0), Validators.max(59)]],
+        seconds: [presetToUpdate.timers[index].seconds, [Validators.required, Validators.min(0), Validators.max(59)]]
+      }));
+    }
+  }
+
   ngOnInit() {
     this.presetForm = this.formBuilder.group({
       presetName: ['', [Validators.required, Validators.maxLength(35)]],
@@ -140,7 +241,9 @@ export class PresetComponent implements OnInit {
     });
     this.isValid = true;
     this.isViewable = false;
-    this.selectedPreset = 'Standard №1';
+    this.isUpdateState = false;
+    this.isCreateState = false;
     this.isLoggedIn = this.getIsLoggedIn();
+    this.selectedPreset = this.getFirstStandardPreset();
   }
 }

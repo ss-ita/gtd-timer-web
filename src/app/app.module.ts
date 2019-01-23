@@ -35,6 +35,7 @@ import { InfoComponent } from './info/info.component';
 import { PresetComponent } from './preset/preset.component';
 import { TaskInfoComponent } from './task-info/task-info.component';
 import { FilterPipe } from './filter.pipe';
+import { FilterEmailPipe } from './filter-email.pipe';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { AngularFireModule } from 'angularfire2';
 import { AngularFirestoreModule } from 'angularfire2/firestore';
@@ -45,6 +46,8 @@ import { SignupDialogComponent } from './signup-dialog/signup-dialog.component';
 import { ProgressComponent } from './progress/progress.component';
 import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-dialog.component';
 import { PresetDialogComponent } from './preset-dialog/preset-dialog.component';
+import { AdminePageComponent } from './admine-page/admine-page.component';
+import { RoleService } from './services/role.service';
 import { HttpTokenInterceptor } from './services/http-interceptor.service';
 
 export function jwtTokenGetter() {
@@ -73,9 +76,11 @@ export function jwtTokenGetter() {
     ProgressComponent,
     PresetComponent,
     FilterPipe,
+    FilterEmailPipe,
     ConfirmationDialogComponent,
     PresetDialogComponent,
-    TaskInfoComponent
+    TaskInfoComponent,
+    AdminePageComponent
   ],
   imports: [
     BrowserModule,
@@ -109,7 +114,8 @@ export function jwtTokenGetter() {
         ],
         blacklistedRoutes: []
       }
-    })
+    }),
+
   ],
   providers: [
     AuthGuardService,
@@ -120,7 +126,8 @@ export function jwtTokenGetter() {
     { provide: HTTP_INTERCEPTORS, useClass: HttpTokenInterceptor, multi: true },
     UserService,
     ToasterService,
-    SocialAuthService
+    SocialAuthService,
+    RoleService
   ],
   bootstrap: [AppComponent],
   entryComponents: [
@@ -131,4 +138,5 @@ export function jwtTokenGetter() {
   ]
 })
 export class AppModule { }
+
 

@@ -3,6 +3,16 @@ import { Chart } from 'chart.js';
 import { ToasterService } from '../services/toaster.service';
 import { TasksService } from '../services/tasks.service';
 
+export enum ChartTypes {
+  Doughnut,
+  Bar
+}
+
+export enum DataTypes {
+  Tasks,
+  Hashtags
+}
+
 @Component({
   selector: 'app-statistics',
   templateUrl: './statistics.component.html',
@@ -13,9 +23,12 @@ export class StatisticsComponent implements OnInit {
   chart: Chart;
   tasks = [];
   colors = ['#FF80AB', '#2196F3', '#D81B60', '#00C853', '#FFEB3B', '#7986CB', '#F8BBD0', '#FFD600', '#FF5722', '#81D4FA'];
+  dataTypes = DataTypes;
+  chartTypes = ChartTypes;
   public hasData = true;
-  public isActiveChart = true;
-  public typeOfChart = 0;
+  public isActive = true;
+  public typeOfChart = ChartTypes.Doughnut;
+  public typeOfData = DataTypes.Tasks;
 
   constructor(
     private tasksService: TasksService,
@@ -36,7 +49,10 @@ export class StatisticsComponent implements OnInit {
   map(data: any[]) {
     const items = [];
     for (let i = 0; i < data.length; i++) {
-      const task = { name: data[i].name, time: parseInt(data[i].elapsedTime, 16), isActive: data[i].isActive };
+      const task = {
+        name: data[i].name, time: parseInt(data[i].elapsedTime, 10),
+        isActive: data[i].isActive, hashtags: this.getHashtags(data[i].name)
+      };
       items.push(task);
     }
 
@@ -61,15 +77,15 @@ export class StatisticsComponent implements OnInit {
       namesOfTasks.push(tasks[i].name);
       durationsOfTasks.push(tasks[i].time);
     }
-    const data = { tasksName: namesOfTasks, tasksDurations: durationsOfTasks };
+    const data = { names: namesOfTasks, durations: durationsOfTasks };
 
     return data;
   }
 
-  drawChart(namesOfTasks: any[], durationsOfTasks: any[]) {
+  initChart(namesOfTasks: any[], durationsOfTasks: any[]) {
     const type = this.getTypeOfChart();
     const self = this;
-    this.chart = new Chart('tasksChart', {
+    this.chart = new Chart('canvasChart', {
       type: type,
       data: {
         labels: namesOfTasks,
@@ -81,6 +97,21 @@ export class StatisticsComponent implements OnInit {
         }]
       },
       options: {
+        legend: {
+          onHover: function (e) {
+            e.target.style.cursor = 'pointer';
+          }
+        },
+        hover: {
+          onHover: function (e) {
+            const point = this.getElementAtEvent(e);
+            if (point.length) {
+              e.target.style.cursor = 'pointer';
+            } else {
+              e.target.style.cursor = 'default';
+            }
+          }
+        },
         cutoutPercentage: 60,
         tooltips: {
           callbacks: {
@@ -97,31 +128,36 @@ export class StatisticsComponent implements OnInit {
   }
 
   createInitialChart() {
-    const tasks = this.filterTasks(this.tasks, this.isActiveChart);
+    const tasks = this.filterTasks(this.tasks, this.isActive);
     const data = this.prepareDataForChart(tasks);
-    this.hasData = (data.tasksName.length != 0);
-    this.drawChart(data.tasksName, data.tasksDurations);
+    this.hasData = (data.names.length != 0);
+    this.initChart(data.names, data.durations);
   }
 
-  drawActiveTasks() {
-    this.updateChart(true);
-  }
-
-  drawArchiveTasks() {
-    this.updateChart(false);
+  redraw(isActive: boolean) {
+    this.isActive = isActive;
+    switch (this.typeOfData) {
+      case DataTypes.Tasks: {
+        this.updateChart(isActive);
+        break;
+      }
+      case DataTypes.Hashtags: {
+        this.drawHashtagsChart(isActive);
+        break;
+      }
+    }
   }
 
   updateChart(isActive: boolean) {
     const archiveTasks = this.filterTasks(this.tasks, isActive);
     const data = this.prepareDataForChart(archiveTasks);
-    this.hasData = (data.tasksName.length != 0);
-    this.isActiveChart = isActive;
+    this.hasData = (data.names.length != 0);
     this.updateChartData(data);
   }
 
   updateChartData(data: any) {
-    this.chart.config.data.labels = data.tasksName;
-    this.chart.config.data.datasets[0].data = data.tasksDurations;
+    this.chart.config.data.labels = data.names;
+    this.chart.config.data.datasets[0].data = data.durations;
     this.chart.update();
   }
 
@@ -158,15 +194,12 @@ export class StatisticsComponent implements OnInit {
   getTypeOfChart() {
     let type;
     switch (this.typeOfChart) {
-      case 0: {
+      case ChartTypes.Doughnut: {
         type = 'doughnut';
         break;
       }
-      case 1: {
+      case ChartTypes.Bar: {
         type = 'bar';
-        break;
-      }
-      default: {
         break;
       }
     }
@@ -174,15 +207,102 @@ export class StatisticsComponent implements OnInit {
     return type;
   }
 
-  changeTypeOfChart(newTypeOfChart: number) {
+  changeTypeOfChart(newTypeOfChart: ChartTypes) {
     this.typeOfChart = newTypeOfChart;
-    const type = this.getTypeOfChart();
-    this.chart.config.type = type;
-    if (this.chart.config.options.scales) {
-      this.chart.config.options.scales.xAxes[0].display = type === 'bar';
-      this.chart.config.options.scales.yAxes[0].display = type === 'bar';
-    }
-    this.chart.config.options.legend.display = type !== 'bar';
+    this.updateChartConfig();
     this.chart.update();
+  }
+
+  updateChartConfig() {
+    const self = this;
+    const type = this.getTypeOfChart();
+    const config = this.chart.config;
+    config.type = type;
+    if (config.options.scales) {
+      config.options.scales.xAxes[0].display = type === 'bar';
+      config.options.scales.yAxes[0].display = type === 'bar';
+    }
+    config.options.legend.display = type !== 'bar';
+    if (config.type === 'bar') {
+      config.options.scales = {
+        yAxes: [{
+          ticks: {
+            callback: function (value) {
+              const time = self.millisecondsToElapsedTime(parseInt(value, 10));
+              const str = self.elepsedTimeToString(time);
+              return str;
+            }
+          }
+        }]
+      };
+    }
+  }
+
+
+  changeTypeOfData(newTypeOfData: DataTypes) {
+    this.typeOfData = newTypeOfData;
+    this.redraw(this.isActive);
+  }
+
+  getHashtags(text: string) {
+    const regex = /(?:^|\s)(?:#)([a-zA-Z\d]+)/gm;
+    const matches = [];
+    let match;
+
+    while ((match = regex.exec(text))) {
+      matches.push(match[0]);
+    }
+
+    return matches;
+  }
+
+  drawHashtagsChart(isActiveData: boolean) {
+    const filterTasks = this.filterTasks(this.tasks, isActiveData);
+    const dictionary = this.getHashtagsData(filterTasks);
+    this.hasData = (dictionary.length != 0);
+    const data = this.prepareHashtagsDataForChart(dictionary);
+    this.updateChartData(data);
+  }
+
+  getHashtagsData(filterTasks: any) {
+    const dictionary = [];
+    for (let i = 0; i < filterTasks.length; i++) {
+      for (let j = 0; j < filterTasks[i].hashtags.length; j++) {
+        const index = this.getHashtagsIndexInDictionary(dictionary, filterTasks[i].hashtags[j]);
+        if (index === -1) {
+          dictionary.push({
+            key: filterTasks[i].hashtags[j],
+            value: filterTasks[i].time
+          });
+        } else {
+          dictionary[index].value += filterTasks[i].time;
+        }
+      }
+    }
+
+    return dictionary;
+  }
+
+  prepareHashtagsDataForChart(dictionary: any) {
+    const namesOfHashtags = [];
+    const durationsOfHashtags = [];
+    for (let i = 0; i < dictionary.length; i++) {
+      namesOfHashtags.push(dictionary[i].key);
+      durationsOfHashtags.push(dictionary[i].value);
+    }
+
+    const data = { names: namesOfHashtags, durations: durationsOfHashtags };
+
+    return data;
+  }
+
+  getHashtagsIndexInDictionary(dictionary: any, nameOfHashtag: string) {
+    for (let i = 0; i < dictionary.length; i++) {
+      if (dictionary[i].key === nameOfHashtag) {
+        return i;
+      }
+    }
+
+    return -1;
   }
 }

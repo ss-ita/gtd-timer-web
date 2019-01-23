@@ -26,3 +26,7 @@
     top: 48px;
     left: 86.3%;
 }
+
+[hidden] {
+    display: none !important; 
+}

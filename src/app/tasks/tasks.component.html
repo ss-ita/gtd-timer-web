@@ -4,13 +4,12 @@
     <div class="fields">
       <fieldset class="add_new">
         <form (submit)="addTask()">
-          <input class="input" placeholder="New Task Name" type="text" [(ngModel)]="taskName" name="Name">
+          <input class="input" placeholder="New Timer Name" type="text" [(ngModel)]="taskName" name="Name">
           <button class="but" type="submit">Add</button>
         </form>
       </fieldset>
       <fieldset class="other">
-        <input [(ngModel)]="searchText" class="search" placeholder="Search">
-        <button class="but">Start</button>
+        <input [(ngModel)]="searchText" class="search" placeholder="Find Timer By Name">
       </fieldset>
     </div>
     <div class="top-tittles">
@@ -18,10 +17,10 @@
         Name
       </div>
       <div class="time-title">
-        Time
+        Goal
       </div>
       <div class="goal-title">
-        Goal
+        Time
       </div>
       <div class="progres-title">
         Progress
@@ -34,30 +33,34 @@
       <mat-list-item *ngFor='let task of tasks | filter: searchText' class="grid-container">
         <div class="name">
           <p>{{task.name}}</p>
+          <input [(ngModel)]="task.name"/>
+          <button (click)="updateTask(task)">save</button>
         </div>
+        <div class="time">--:--</div>
         <div class="time">
-          <app-line-progress class="textSize" [value]="stopwatchService.hour" [isActive]="stopwatchService.isStopwatchRun"
-            [isPaused]="stopwatchService.isStopwatchPause" [text]="':'"></app-line-progress>
-          <app-line-progress class="textSize" [value]="stopwatchService.minute" [isActive]="stopwatchService.isStopwatchRun"
-            [isPaused]="stopwatchService.isStopwatchPause" [text]="':'"></app-line-progress>
-          <app-line-progress class="textSize" [value]="stopwatchService.second" [isActive]="stopwatchService.isStopwatchRun"
-            [isPaused]="stopwatchService.isStopwatchPause" [text]="''"></app-line-progress>
+          <app-line-progress class="textsize" [value]="task.hour"
+            [text]="':'"></app-line-progress>
+          <app-line-progress class="textsize" [value]="task.minutes" 
+            [text]="':'"></app-line-progress>
+          <app-line-progress class="textsize" [value]="task.seconds" 
+            [text]="''"></app-line-progress>
         </div>
-        <div class="time">
-          00:00:00</div>
         <div class="right">
           <app-progress [value]="progress | async"></app-progress>
         </div>
         <div class="actions">
           <button class="but" (click)="startTask(task)"><i class="fa fa-play"></i></button>
-          <button class="but" (click)="pauseTask(task)"><i class="fa fa-pause"></i></button>
-          <button class="but" (click)="resetTask(task)"><i class="fa fa-refresh"></i></button>
+          <button class="but" [disabled]="task.isRunning === false" (click)="pauseTask(task)"><i class="fa fa-pause"></i></button>
+          <button class="but" [disabled]="task.isRunning === false" (click)="reset(task)"><i class="fa fa-refresh"></i></button>
           <button class="but"><i class="fa fa-bars"></i></button>
           <button class="but" (click)="deleteTask(task)"><i class="fa fa-times"></i></button>
         </div>
       </mat-list-item>
     </mat-list>
   </div>
+  
+  
+  
 
 
 
