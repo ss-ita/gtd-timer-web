@@ -105,7 +105,13 @@ export class Task {
             goal: goalTime,
             isActive: this.isActive,
             isRunning: this.isRunning,
-            userId: this.userId
+            userId: this.userId,
+            lastStartTimeNumber: 0,
+            hour: 0,
+            minutes: 0,
+            seconds: 0,
+            currentSecond: 0,
+            isStoped: false
         };
         return taskJsonToReturn;
     }
@@ -119,14 +125,5 @@ export class Task {
         return valStr;
     }
 
-    getWithoutComa(n: String) {
-        const doesExist = n.indexOf(',');
-        let valStr = String(0);
-        if (doesExist !== -1) {
-            valStr = n.slice(n.indexOf(','));
-            valStr = n[0] + valStr;
-        }
-        return valStr;
-    }
 
 }

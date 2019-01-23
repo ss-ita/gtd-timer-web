@@ -124,7 +124,6 @@ export class NavBarComponent implements OnInit {
     this.presetComponent.getAllStandardAndCustomPresets();
     this.roleService.emailOfUsers = [];
     this.roleService.emailOfAdmins = [];
-    this.roleService.emailOfSuperAdmins = [];
   }
 
   tokenexpire() {

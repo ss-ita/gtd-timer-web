@@ -46,6 +46,7 @@ import { SignupDialogComponent } from './signup-dialog/signup-dialog.component';
 import { ProgressComponent } from './progress/progress.component';
 import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-dialog.component';
 import { PresetDialogComponent } from './preset-dialog/preset-dialog.component';
+import { NgxClickToEditModule } from 'ngx-click-to-edit';
 import { AdminePageComponent } from './admine-page/admine-page.component';
 import { RoleService } from './services/role.service';
 import { HttpTokenInterceptor } from './services/http-interceptor.service';
@@ -114,7 +115,9 @@ export function jwtTokenGetter() {
         ],
         blacklistedRoutes: []
       }
-    })
+    }),
+    NgxClickToEditModule.forRoot()
+
   ],
   providers: [
     AuthGuardService,
@@ -137,4 +140,5 @@ export function jwtTokenGetter() {
   ]
 })
 export class AppModule { }
+
 
