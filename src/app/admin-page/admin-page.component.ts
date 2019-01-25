@@ -2,11 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { RoleService } from '../services/role.service';
 
 @Component({
-  selector: 'app-admine-page',
-  templateUrl: './admine-page.component.html',
-  styleUrls: ['./admine-page.component.css']
+  selector: 'app-admin-page',
+  templateUrl: './admin-page.component.html',
+  styleUrls: ['./admin-page.component.css']
 })
-export class AdminePageComponent implements OnInit {
+export class AdminPageComponent implements OnInit {
   searchText: string;
 
   constructor(public roleService: RoleService) {

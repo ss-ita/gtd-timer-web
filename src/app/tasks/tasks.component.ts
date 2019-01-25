@@ -15,14 +15,13 @@ import { timer, Subscription } from 'rxjs';
 export class TasksComponent implements OnInit {
 
   constructor(
-    private taskService: TasksService,
+    public taskService: TasksService,
   ) {
     this.progress = this.emulateProgress();
 
   }
 
 
-  public tasks: TaskCreateJson[] = [];
   public activeTasks: TaskCreateJson[] = [];
   readonly progress: Observable<number>;
   public searchText: string;
@@ -58,7 +57,7 @@ export class TasksComponent implements OnInit {
   }
 
   filterByProperty(propertyName: string) {
-    this.tasks = this.tasks.sort((a, b) => {
+    this.taskService.tasks = this.taskService.tasks.sort((a, b) => {
       switch (propertyName) {
         case 'name': return this.compare(a.name, b.name);
       }
@@ -98,13 +97,13 @@ export class TasksComponent implements OnInit {
     };
 
     this.taskService.createTask(taskToPass).subscribe(myObserver);
-    this.tasks.unshift(taskToPass);
+    this.taskService.tasks.unshift(taskToPass);
   }
 
   deleteTask(task: TaskCreateJson) {
     this.taskService.switchTaskStatus(task).subscribe();
-    const indexTaskToDelete = this.tasks.indexOf(task, 0);
-    this.tasks.splice(indexTaskToDelete, 1);
+    const indexTaskToDelete = this.taskService.tasks.indexOf(task, 0);
+    this.taskService.tasks.splice(indexTaskToDelete, 1);
   }
 
   updateTask(task: TaskCreateJson) {
@@ -113,11 +112,11 @@ export class TasksComponent implements OnInit {
 
   getActiveTasks() {
     this.taskService.getActiveTasksFromServer().subscribe(data => {
-      this.tasks = [];
+      this.taskService.tasks = [];
       for (let i = 0; i < data.length; ++i) {
         data[i].currentSecond = 0;
         data[i].isStoped = false;
-        this.tasks.push(data[i]);
+        this.taskService.tasks.push(data[i]);
       }
     });
   }
@@ -175,7 +174,5 @@ export class TasksComponent implements OnInit {
       task.seconds = Math.floor((task.currentSecond - (3600 * task.hour)) % 60);
     }
   }
-
-
 
 }

@@ -24,6 +24,7 @@ fieldset{
     border: none;
     border-radius: 5%;
     background-color: lightgrey;
+    position: relative;
 }
 .but:hover{
    background-color: darkgrey;
@@ -57,26 +58,24 @@ select{
     padding: 20px;
 }
 .right{
-    position: relative;
-    right:130px;
+    width: 1%;
 }
 .textSize{
     font-size: 14px;
 }
 
 .name{
-    width: 25%;
+    width: 30%;
 }
 .time{
-    width: 25%;
+    width: 10%;
 }
 .goal{
     width: 25%;
 }
 .actions{
-    width: 25%;
-    position: absolute;
-    left: 77%;
+    width: 50%;
+    text-align: right;
 }
 
 mat-list-item{
@@ -102,21 +101,29 @@ mat-list-item{
     justify-content: space-between;
 }
 .name-title{
-    margin-left:20px;
+    width: 32%;
     cursor: pointer;
 }
 .time-title{
-    margin-left:19%;
+    width: 10%;
 }
 .goal-title{
-    margin-left:22%;
+    width: 10%;
 }
 .progres-title{
-    margin-left: 14%;
+    width: 10%;
+    text-align: center !important;
 }
 .actions-title{
-    margin-left: 14%;
+    width: 45%;
+    text-align: center;
 }
+
+app-progress{
+    text-align: left !important;
+    width: 10%;
+}
+
 .time{
     font-size: 14px;
 }

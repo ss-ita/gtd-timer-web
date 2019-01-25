@@ -46,7 +46,7 @@ import { SignupDialogComponent } from './signup-dialog/signup-dialog.component';
 import { ProgressComponent } from './progress/progress.component';
 import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-dialog.component';
 import { PresetDialogComponent } from './preset-dialog/preset-dialog.component';
-import { AdminePageComponent } from './admine-page/admine-page.component';
+import { AdminPageComponent } from './admin-page/admin-page.component';
 import { RoleService } from './services/role.service';
 import { HttpTokenInterceptor } from './services/http-interceptor.service';
 
@@ -80,7 +80,7 @@ export function jwtTokenGetter() {
     ConfirmationDialogComponent,
     PresetDialogComponent,
     TaskInfoComponent,
-    AdminePageComponent
+    AdminPageComponent
   ],
   imports: [
     BrowserModule,

@@ -60,7 +60,7 @@ export class RoleService {
             });
     }
 
-    DeletUser(email: string) {
+    DeleteUser(email: string) {
         this.http.delete(this.service.urlAdmin + 'DeleteUserByEmail/' + email).pipe(first()).subscribe(
             _ => {
                 this.toasterService.showToaster('User is deleted');
@@ -114,7 +114,7 @@ export class RoleService {
         confirmationDialogRef.componentInstance.btnCancelText = 'Cancel';
         confirmationDialogRef.componentInstance.btnOkText = 'Confirm';
         confirmationDialogRef.componentInstance.acceptAction = () => {
-            this.DeletUser(email);
+            this.DeleteUser(email);
         };
     }
 

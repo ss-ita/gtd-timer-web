@@ -23,6 +23,8 @@ export class StopwatchService {
   color = '#609b9b';
   subscribe: Subscription;
 
+  constructor() { }
+
   reset() {
     this.pause();
     this.hour = this.minute = this.second = 0;
@@ -75,5 +77,4 @@ export class StopwatchService {
     }
   }
 
-  constructor() { }
 }
