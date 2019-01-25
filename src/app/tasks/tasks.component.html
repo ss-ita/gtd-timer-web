@@ -6,7 +6,11 @@
           <input class="input" placeholder="New Timer Name" type="text" [(ngModel)]="taskName" name="Name">
           <button class="but" type="submit">Add</button>
         </form>
-      </fieldset>
+        <div class="upload-wrap">
+          <button mat-raised-button class="btn wide-button"><span class="fas fa-file-import fa-lg"></span></button>
+          <input type="file" (change)="browseFile($event)" name="uploadFile" accept=".csv,.xml" class="upload-btn"/>
+        </div>
+      </fieldset>     
       <fieldset class="other">
         <input [(ngModel)]="searchText" class="search" placeholder="Find Timer By Name">
       </fieldset>
@@ -55,4 +59,14 @@
         </div>
       </mat-list-item>
     </mat-list>
+    <mat-list>
+      <mat-list-item class="grid-container">
+        <div class="flex-spacer"></div>
+        <div class="btn-group">
+            <button (click)="exportAllActiveTasksAsXml()"><span class="fas fa-file-excel fa-lg"></span>&nbsp;<span class="fas fa fa-download fa-lg"></span></button>
+            <button (click)="exportAllActiveTasksAsCsv()"><span class="fas fa-file-csv fa-lg"></span>&nbsp;<span class="fas fa fa-download fa-lg"></span></button>
+        </div>
+      </mat-list-item>
+    </mat-list>
   </div>
+  

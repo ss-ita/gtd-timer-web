@@ -1,7 +1,7 @@
 import { Injectable, OnInit } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { ConfigService } from './config.service';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { TaskJson } from '../models/taskjson.model';
 import { TaskCreateJson } from '../models/taskCreateJson.model';
 import { StopwatchService } from './stopwatch.service';
@@ -17,7 +17,6 @@ export class TasksService implements OnInit {
         private service: ConfigService,
         private stopwatchService: StopwatchService) { }
     ngOnInit() { }
-
 
     public getAllTasks() {
         return this.http.get(this.service.urlGetAllTasks, {});
@@ -48,6 +47,38 @@ export class TasksService implements OnInit {
         return this.http.put<TaskCreateJson>(this.service.urlTask + 'UpdateTask', task);
     }
 
+    public importFile(event: any): Observable<any> {
+        let fileList: FileList = event.target.files;
+        if(fileList.length > 0) {           
+            let file: File = fileList[0];
+            let formData:FormData = new FormData();
+            formData.append('uploadFile', file, file.name);   
+            if(file.name.split('.').pop() === 'xml') {
+                return this.http.post(this.service.urlImportTasksAsXml, formData );
+            }
+            else if (file.name.split('.').pop() === 'csv') {
+                return this.http.post(this.service.urlImportTasksAsCsv, formData );              
+            }
+            else {
+                return throwError(Error);
+            }
+        }
+    }
+    public downloadFile(fileName: string, urlPath: string): void {
+        this.http.get(urlPath, {responseType: 'blob'})
+        .subscribe(fileData => 
+            {                            
+                const a = document.createElement("a");
+                a.style.display = "none"; 
+                var url = window.URL.createObjectURL(fileData);                 
+                a.href = url;
+                a.download = fileName;
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url); 
+                document.body.removeChild(a);
+            });
+    }
     public addTaskFromStopwatch() {
         const taskToPass: TaskCreateJson = {
             id: 0,

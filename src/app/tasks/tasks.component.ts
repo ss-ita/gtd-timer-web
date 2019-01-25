@@ -3,6 +3,7 @@ import { Observable } from 'rxjs';
 import { TaskCreateJson } from '../models/taskCreateJson.model';
 import { TasksService } from '../services/tasks.service';
 import { timer, Subscription } from 'rxjs';
+import { ConfigService } from '../services/config.service';
 
 @Component({
   selector: 'app-tasks',
@@ -15,7 +16,8 @@ import { timer, Subscription } from 'rxjs';
 export class TasksComponent implements OnInit {
 
   constructor(
-    public taskService: TasksService,
+    private taskService: TasksService,
+    private configService: ConfigService
   ) {
     this.progress = this.emulateProgress();
 
@@ -89,15 +91,14 @@ export class TasksComponent implements OnInit {
     };
 
     const myObserver = {
-      next: x => { },
-      error: err => { },
-      complete: () => {
-        this.taskService.getActiveTasksFromServer().subscribe();
+      next: task => {
+        this.taskService.tasks.push(task);
       },
+      error: err => { },
+      complete: () => { }
     };
-
+    
     this.taskService.createTask(taskToPass).subscribe(myObserver);
-    this.taskService.tasks.unshift(taskToPass);
   }
 
   deleteTask(task: TaskCreateJson) {
@@ -120,7 +121,6 @@ export class TasksComponent implements OnInit {
       }
     });
   }
-
 
   getMiliSecondsFromTime(task: TaskCreateJson) {
     const now = Date.now();
@@ -177,4 +177,28 @@ export class TasksComponent implements OnInit {
     }
   }
 
+  browseFile(event: any) {
+    this.taskService.importFile(event)
+    .subscribe (
+      event => {
+          this.taskService.tasks.push(...event.filter(task => task.isActive));
+      }
+    ) 
+  }
+
+  exportAllTasksAsXml() {
+    this.taskService.downloadFile("all_tasks.xml", this.configService.urlExportAllTasksAsXml);
+  }
+
+  exportAllTasksAsCsv() {
+    this.taskService.downloadFile("all_tasks.csv", this.configService.urlExportAllTasksAsCsv);
+  }
+
+  exportAllActiveTasksAsXml() {
+    this.taskService.downloadFile("active_tasks.xml", this.configService.urlExportAllActiveTasksAsXml);
+  }
+
+  exportAllActiveTasksAsCsv() {
+    this.taskService.downloadFile("active_tasks.csv", this.configService.urlExportAllActiveTasksAsCsv);
+  }
 }
