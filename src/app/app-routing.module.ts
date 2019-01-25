@@ -15,7 +15,7 @@ import { ArchiveComponent } from './archive/archive.component';
 import { SettingsComponent } from './settings/settings.component';
 import { AuthGuardFalse } from './auth/auth-guard-false.service';
 import { InfoComponent } from './info/info.component';
-import { AdminePageComponent } from './admine-page/admine-page.component';
+import { AdminPageComponent } from './admin-page/admin-page.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/stopwatch', pathMatch: 'full' },
@@ -29,7 +29,7 @@ const routes: Routes = [
   { path: 'info', component: InfoComponent, canActivate: [AuthGuard] },
   { path: 'signin', component: SigninComponent, canActivate: [AuthGuardFalse] },
   { path: 'task-management', component: TaskManagementComponent },
-  { path: 'admin', component: AdminePageComponent,  canActivate: [AuthGuard] }
+  { path: 'admin', component: AdminPageComponent,  canActivate: [AuthGuard] }
 ];
 
 export const appRouting = RouterModule.forRoot(routes);

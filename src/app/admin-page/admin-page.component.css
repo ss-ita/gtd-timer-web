@@ -7,23 +7,24 @@
     min-width: 820px;
 }
 
+.search-container{
+    margin-top: 2%;
+}
+
+fieldset{
+    border:none;
+}
+
+.search{
+    height: 30px !important;;
+}
+
 .mat-list-item{
 box-shadow:  0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
 margin-top: 6px;
 margin-bottom: 6px;
 background-color: #f9f9f9;
 border-radius: 5px;
-}
-
-.search{
-  height: 75px;
-}
-
-.search mat-form-field{
-  position: absolute;
-  width: 25%;
-  left:75%;
-  top: 22px;
 }
 
 .my-container{
@@ -88,3 +89,11 @@ border-radius: 5px;
     border-bottom-right-radius: 0px; 
     border-top-right-radius: 0px;
 }
+
+.error{
+    width: 100%;
+    height: 100%;
+    background-color: white;
+    text-align: center;
+}
+

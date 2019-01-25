@@ -3,6 +3,7 @@
     <div class="negative-margin">
     <mat-menu #appMenu="matMenu">
       <button mat-menu-item (click)="styleService.changeStyle()">{{styleService.changeStyleString}}</button>
+      <button mat-menu-item (click)="taskService.addTaskFromStopwatch()">Add to List</button>
     </mat-menu>
     <button mat-icon-button [matMenuTriggerFor]="appMenu" class="style-menu">
       <mat-icon>more_vert</mat-icon>

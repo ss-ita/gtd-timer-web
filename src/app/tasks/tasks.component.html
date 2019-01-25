@@ -1,4 +1,3 @@
-
 <div class="background">
   <div class="my-container">
     <div class="fields">
@@ -30,20 +29,17 @@
       </div>
     </div>
     <mat-list>
-      <mat-list-item *ngFor='let task of tasks | filter: searchText' class="grid-container">
+      <mat-list-item *ngFor='let task of taskService.tasks | filter: searchText' class="grid-container">
         <div class="name">
           <p>{{task.name}}</p>
-          <input [(ngModel)]="task.name"/>
+          <input [(ngModel)]="task.name" />
           <button (click)="updateTask(task)">save</button>
         </div>
         <div class="time">--:--</div>
         <div class="time">
-          <app-line-progress class="textsize" [value]="task.hour"
-            [text]="':'"></app-line-progress>
-          <app-line-progress class="textsize" [value]="task.minutes" 
-            [text]="':'"></app-line-progress>
-          <app-line-progress class="textsize" [value]="task.seconds" 
-            [text]="''"></app-line-progress>
+          <app-line-progress class="textsize" [value]="task.hour" [text]="':'"></app-line-progress>
+          <app-line-progress class="textsize" [value]="task.minutes" [text]="':'"></app-line-progress>
+          <app-line-progress class="textsize" [value]="task.seconds" [text]="''"></app-line-progress>
         </div>
         <div class="right">
           <app-progress [value]="progress | async"></app-progress>
@@ -54,14 +50,9 @@
           <button class="but" [disabled]="task.isRunning === false" (click)="reset(task)"><i class="fa fa-refresh"></i></button>
           <button class="but"><i class="fa fa-bars"></i></button>
           <button class="but" (click)="deleteTask(task)"><i class="fa fa-times"></i></button>
+          <button class="but" (click)="taskService.DisplayTaskOnStopwatchPage(task)" [matTooltipShowDelay]="2000"
+            matTooltip="Display on stopwatch page"><i class="fa fa-clock-o"></i></button>
         </div>
       </mat-list-item>
     </mat-list>
   </div>
-  
-  
-  
-
-
-
-

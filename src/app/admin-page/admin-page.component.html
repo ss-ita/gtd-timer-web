@@ -1,5 +1,5 @@
-<div class="back">
-  <ng-template [ngIf]="roleService.isAdmin">
+<ng-template [ngIf]="roleService.isAdmin">
+  <div class="back">
     <div class="my-container">
       <div class="display-buttons">
         <div>
@@ -9,9 +9,9 @@
           </div>
         </div>
       </div>
-      <mat-form-field>
-        <input matInput [(ngModel)]="searchText" placeholder="Filter" class="input">
-      </mat-form-field>
+      <div class="search-container">
+        <input [(ngModel)]="searchText" class="search" placeholder="Find Timer By Name">
+      </div>
       <mat-divider></mat-divider>
       <mat-list>
         <ng-template [ngIf]="roleService.isDisplayUsers">
@@ -39,15 +39,19 @@
             </div>
             <div class="actions">
               <button mat-raised-button (click)="roleService.openConfirmationDialogRole(email, 'Admin')" class="button-with-text">
-                Delete admin role
+                Remove from admins
               </button>
             </div>
           </mat-list-item>
         </ng-template>
       </mat-list>
     </div>
-  </ng-template>
-  <ng-template [ngIf]="!roleService.isAdmin">
-    <p>You are not admin</p>
-  </ng-template>
-</div>
+  </div>
+</ng-template>
+<ng-template [ngIf]="!roleService.isAdmin">
+  <div class="error">
+    <i class="fa fa-exclamation-circle" aria-hidden="true" style="font-size:128px;color:red"></i>
+    <h1 class="error-text">Sorry you are not admin...</h1>
+    <h2>So you can not go to this page</h2>
+  </div>
+</ng-template>
