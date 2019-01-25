@@ -8,6 +8,7 @@ import { MatDialog } from '@angular/material';
 import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
 import { JwtService } from '../services/jwt.service';
 import { Router } from '@angular/router';
+import { NavbarService } from '../services/navbar.service';
 
 @Component({
   selector: 'app-settings',
@@ -27,7 +28,8 @@ export class SettingsComponent implements OnInit {
     private userService: UserService,
     private jwtservice: JwtService,
     private dialog: MatDialog,
-    private router: Router
+    private router: Router,
+    private navbar: NavbarService
   ) { }
 
   passwordPattern = /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=.,\-_!])([a-zA-Z0-9 @#$%^&+=*.,\-_!]){8,}$/;
@@ -85,6 +87,26 @@ export class SettingsComponent implements OnInit {
         this.toasterService.showToaster('Account deleted! Redirecting to Sign In page...');
         setTimeout(() => {
           this.jwtservice.signout();
+          this.navbar.navLinks.next([
+            {
+              label: 'Timer',
+              link: './timer',
+              index: 0
+            }, {
+              label: 'Alarm',
+              link: './alarm',
+              index: 1
+            }, {
+              label: 'Stopwatch',
+              link: './stopwatch',
+              index: 2
+            }, {
+              label: 'Sign In',
+              link: './signin',
+              index: 3
+            }
+          ]);
+          this.navbar.show.next(false);
           this.router.navigateByUrl('/signin');
         },
           2000);
