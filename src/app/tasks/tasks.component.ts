@@ -151,6 +151,8 @@ export class TasksComponent implements OnInit {
   start(task: TaskCreateJson) {
     task.isRunning = true;
     if (!task.isStoped) {
+      this.ticks = task.elapsedTime;
+      task.currentSecond = task.elapsedTime / 1000;
       this.subscribe = timer(0, this.milisecondPerSecond).subscribe((x) => {
         if (task.isRunning) {
           this.updateTime(task);

@@ -50,7 +50,7 @@
           <button class="but" [disabled]="task.isRunning === false" (click)="reset(task)"><i class="fa fa-refresh"></i></button>
           <button class="but"><i class="fa fa-bars"></i></button>
           <button class="but" (click)="deleteTask(task)"><i class="fa fa-times"></i></button>
-          <button class="but" (click)="taskService.DisplayTaskOnStopwatchPage(task)" [matTooltipShowDelay]="2000"
+          <button class="but" [disabled]="task.isRunning === false" (click)="taskService.DisplayTaskOnStopwatchPage(task)" [matTooltipShowDelay]="2000"
             matTooltip="Display on stopwatch page"><i class="fa fa-clock-o"></i></button>
         </div>
       </mat-list-item>
