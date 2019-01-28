@@ -9,6 +9,7 @@ export class ConfigService {
   public readonly urlAdmin: string = this.baseUrl + '/api/User/';
   public readonly urlTask: string = this.baseUrl + '/api/Tasks/';
   public readonly urlPreset: string = this.baseUrl + '/api/Preset/';
+  public readonly urlAlarm: string = this.baseUrl + '/api/Alarm/';
   public readonly urlLogIn: string = this.baseUrl + '/api/LogIn';
   public readonly urlGoogleLogIn: string = this.baseUrl + '/api/LogIn/GoogleLogin';
   public readonly urlFacebookLogIn: string = this.baseUrl + '/api/LogIn/FacebookLogin';

@@ -1,0 +1,19 @@
+<h1 mat-dialog-title>Repeat</h1>
+<mat-dialog-content>
+   <form [formGroup]="alarmForm">
+      <div class="repeatDaysList">
+         <div class="repeatDay" *ngFor="let dayOfWeek of alarmService.repeatOptionsDay; let i = index; trackBy:trackByIndex;">
+            <div class="dayName">
+               <span>{{dayOfWeek.day}}</span>
+            </div>
+            <div class="dayCheckBox">
+               <mat-checkbox class="example-margin" name="check{{i}}" [(ngModel)]="chosenDaysList[i]" formControlName="chosenDay{{i}}"></mat-checkbox>
+            </div>
+         </div>
+      </div>
+      <div class="buttonArea">
+         <button mat-raised-button color="primary" (click)="onSave()" [disabled]="isChecheDay()">Turn on</button>
+         <button mat-raised-button color="warn" (click)="onClose()" [disabled]="alarmService.chosenDaysString==''">Cancel</button>
+      </div>
+   </form>
+</mat-dialog-content>

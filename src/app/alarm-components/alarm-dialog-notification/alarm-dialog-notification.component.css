@@ -1,0 +1,42 @@
+::ng-deep .mat-dialog-container {
+    min-width: 350px;
+}
+
+.mat-dialog-title {
+    text-align: center;
+}
+
+.alarmIcon {
+    text-align: center;
+}
+
+.mat-icon {
+    font-size: 120px;
+    height: 120px;
+    width: 120px;
+}
+
+.timeDate {
+    text-align: center;
+    font-size: 40px;
+    margin-top: 10px;
+}
+
+.dateBlock {
+    margin-left: 10px;
+}
+
+.message {
+    text-align: center;
+    font-size: 25px;
+    margin-top: 20px;
+}
+
+.buttonArea {
+    text-align: center;
+    margin: 25px auto 10px;
+}
+
+.stopButton {
+    font-size: 18px;
+}

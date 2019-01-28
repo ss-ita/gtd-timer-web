@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { Routes, RouterModule } from '@angular/router';
 import { SigninComponent } from './signin/signin.component';
 import { TimerComponent } from './timer/timer.component';
-import { AlarmComponent } from './alarm/alarm.component';
+import { AlarmComponent } from './alarm-components/alarm/alarm.component';
 import { TaskManagementComponent } from './task-management/task-management.component';
 import { TasksComponent } from './tasks/tasks.component';
 import { StopwatchComponent } from './stopwatch/stopwatch.component';

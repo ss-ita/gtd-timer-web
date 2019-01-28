@@ -1,0 +1,23 @@
+<h1 mat-dialog-title>Alarm notification</h1>
+<mat-dialog-content>
+  <div class="alarmIcon">
+    <mat-icon>alarm_on</mat-icon>
+  </div>
+  <div class="timeDate">
+    <ng-template [ngIf]="currentTime.getHours() < 10">
+      <span>0</span>
+    </ng-template>
+    <span>{{currentTime.getHours()}}</span>
+    <span>:</span>
+    <ng-template [ngIf]="currentTime.getMinutes() < 10">
+      <span>0</span>
+    </ng-template>
+    <span>{{currentTime.getMinutes()}}</span>
+    <span>:</span>
+    <span>00</span>
+  </div>
+  <div class="message">{{message}}</div>
+  <div class="buttonArea">
+    <button mat-raised-button color="primary" class="stopButton" (click)="onClose()">Stop alarm</button>
+  </div>
+</mat-dialog-content>
