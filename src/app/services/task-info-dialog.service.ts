@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material';
-import { TaskInfoComponent } from '../task-info/task-info.component';
-import { Task } from '../models/task.model';
+import { RecordInfoComponent } from '../record-info/record-info.component';
+import { Record } from '../models/record.model';
 
 @Injectable({
   providedIn: 'root'
@@ -10,12 +10,12 @@ export class TaskInfoDialogService {
 
   constructor(private dialog: MatDialog) { }
 
-  openSheet(task: Task) {
-    const dialogRef = this.dialog.open(TaskInfoComponent, {
+  openSheet(record: Record) {
+    const dialogRef = this.dialog.open(RecordInfoComponent, {
       hasBackdrop: true,
       closeOnNavigation: true
     });
-    dialogRef.componentInstance.task = task;
+    dialogRef.componentInstance.record = record;
 
   }
 }

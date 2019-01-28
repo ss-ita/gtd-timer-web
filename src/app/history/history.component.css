@@ -54,11 +54,11 @@ display: inline-block;
     padding-left: 10px;
 }
 
-.time{
+.start{
     width: 25%;
 }
 
-.goal{
+.elapsed{
     width: 25%;
 }
 

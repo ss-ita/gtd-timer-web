@@ -19,20 +19,25 @@ export class Task {
 
     }
     convertFromTaskJson(task: TaskJson) {
+
+        let milisecondsInHour: number = 3600000;
+        let milisecondsInMinute: number = 60000;
+        let milisecondsInSecond: number = 1000;
+
         this.id = task.id;
         this.name = task.name;
         this.description = task.description;
 
         this.elapsedTime = null;
         if (task.elapsedTime != null) {
-            const hours = Math.floor(Number(task.elapsedTime) / 3600000);
-            const minutes = Math.floor((Number(task.elapsedTime) - hours * 3600000) / 60000);
-            const seconds = Math.floor((Number(task.elapsedTime) - hours * 3600000 - minutes * 60000) / 1000);
+            const hours = Math.floor(Number(task.elapsedTime) / milisecondsInHour);
+            const minutes = Math.floor((Number(task.elapsedTime) - hours * milisecondsInHour) / milisecondsInMinute);
+            const seconds = Math.floor((Number(task.elapsedTime) - hours * milisecondsInHour - minutes * milisecondsInMinute) /  milisecondsInSecond);
             this.elapsedTime = {
                 hours: hours,
                 minutes: minutes,
                 seconds: seconds,
-                miliseconds: Number(task.elapsedTime) - (hours * 3600000 + minutes * 60000 + seconds * 1000)
+                miliseconds: Number(task.elapsedTime) - (hours * milisecondsInHour + minutes * milisecondsInMinute + seconds * milisecondsInSecond)
             };
         }
 
@@ -51,7 +56,7 @@ export class Task {
                 hours: Number(timeArray[0]),
                 minutes: Number(timeArray[1]),
                 seconds: Math.floor(Number(timeArray[2])),
-                miliseconds: Number(this.getFraction(timeArray[2])) * 1000
+                miliseconds: Number(this.getFraction(timeArray[2])) * milisecondsInSecond
             };
         }
 
@@ -62,7 +67,7 @@ export class Task {
                 hours: Number(times[0]),
                 minutes: Number(times[1]),
                 seconds: Math.floor(Number(times[2])),
-                miliseconds: Number(this.getFraction(times[2])) * 1000
+                miliseconds: Number(this.getFraction(times[2])) * milisecondsInSecond
             };
         }
 
@@ -72,11 +77,16 @@ export class Task {
     }
 
     convertToTaskJson(): TaskJson {
+
+        let milisecondsInHour: number  = 3600000;
+        let milisecondsInMinute: number = 60000;
+        let milisecondsInSecond: number = 1000;
+
         const dec = new DecimalPipe('en-au');
         let elTime = null;
         if (this.elapsedTime) {
-            elTime = this.elapsedTime.hours * 3600000 + this.elapsedTime.minutes * 60000
-                + this.elapsedTime.seconds * 1000 + this.elapsedTime.miliseconds;
+            elTime = this.elapsedTime.hours * milisecondsInHour + this.elapsedTime.minutes * milisecondsInMinute
+                + this.elapsedTime.seconds * milisecondsInSecond + this.elapsedTime.miliseconds;
         }
 
 
@@ -106,12 +116,6 @@ export class Task {
             isActive: this.isActive,
             isRunning: this.isRunning,
             userId: this.userId,
-            lastStartTimeNumber: 0,
-            hour: 0,
-            minutes: 0,
-            seconds: 0,
-            currentSecond: 0,
-            isStoped: false
         };
         return taskJsonToReturn;
     }
@@ -124,6 +128,4 @@ export class Task {
         }
         return valStr;
     }
-
-
 }

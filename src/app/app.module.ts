@@ -26,7 +26,7 @@ import { AuthGuardService } from './auth/auth-guard.service';
 import { AuthService } from './auth/auth.service';
 import { StopwatchComponent } from './stopwatch/stopwatch.component';
 import { StatisticsComponent } from './statistics/statistics.component';
-import { ArchiveComponent } from './archive/archive.component';
+import { HistoryComponent } from './history/history.component';
 import { SettingsComponent } from './settings/settings.component';
 import { RoundProgressModule } from 'angular-svg-round-progressbar';
 import { RoundProgressComponent } from './round-progress/round-progress.component';
@@ -34,7 +34,7 @@ import { LineProgressComponent } from './line-progress/line-progress.component';
 import { AuthGuardFalse } from './auth/auth-guard-false.service';
 import { InfoComponent } from './info/info.component';
 import { PresetComponent } from './preset/preset.component';
-import { TaskInfoComponent } from './task-info/task-info.component';
+import { RecordInfoComponent } from './record-info/record-info.component';
 import { FilterPipe } from './filter.pipe';
 import { FilterEmailPipe } from './filter-email.pipe';
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -72,7 +72,7 @@ export function jwtTokenGetter() {
     TasksComponent,
     StopwatchComponent,
     StatisticsComponent,
-    ArchiveComponent,
+    HistoryComponent,
     SettingsComponent,
     RoundProgressComponent,
     LineProgressComponent,
@@ -84,7 +84,7 @@ export function jwtTokenGetter() {
     FilterEmailPipe,
     ConfirmationDialogComponent,
     PresetDialogComponent,
-    TaskInfoComponent,
+    RecordInfoComponent,
     AlarmDialogComponent,
     AlarmDialogNotificationComponent,
     RepeatAlarmDialogComponent,
@@ -144,7 +144,7 @@ export function jwtTokenGetter() {
   bootstrap: [AppComponent],
   entryComponents: [
     SignupComponent,
-    TaskInfoComponent,
+    RecordInfoComponent,
     ConfirmationDialogComponent,
     PresetComponent,
     AlarmDialogComponent,

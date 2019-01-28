@@ -62,8 +62,8 @@ export class UserService {
         link: './statistics',
         index: 4
       }, {
-        label: 'Archive',
-        link: './archive',
+        label: 'History',
+        link: './history',
         index: 5
       }]);
     this.navbar.show.next(true);

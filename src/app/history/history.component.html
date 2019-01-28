@@ -1,0 +1,50 @@
+<div class="back">
+  <div class="my-container">
+    <div class="search">
+      <mat-form-field>
+        <input matInput [(ngModel)]="searchText" placeholder="Filter" class="input">
+      </mat-form-field>
+    </div>
+    <div class="top-tittles">
+      <span class="name">
+        <p>Name</p>
+      </span>
+      <span class="start">
+        <p>StartTime</p>
+      </span>
+      <span class="elapsed">
+        <p>Elapsed</p>
+      </span>
+      <span class="actions">
+        <p>Actions</p>
+      </span>
+    </div>
+    <mat-divider></mat-divider>
+    <mat-list>
+      <mat-list-item *ngFor='let record of records | filter: searchText' (mouseenter)=mouseEnter(record)>
+        <div class="name">
+          <p>{{record.name}}</p>
+        </div>
+        <div class="start">
+         <p>{{record.startTime | date}}</p>
+        </div>
+        <div class="elapsed">
+          <p>{{record.elapsedTime}}</p>
+        </div>
+        <div class="actions">
+          <button mat-raised-button matTooltip="Resume record" [matTooltipShowDelay]="1000" (click)="onResumeTask(record)"
+            id="resumeButton">
+            <i class="fas fa-reply"></i>
+          </button>
+          <button mat-raised-button [matTooltipShowDelay]="1000" (click)="onInfo(record)" matTooltip="Info" id="infoButton">
+            <i class="fas fa-bars"></i>
+          </button>
+          <button mat-raised-button [matTooltipShowDelay]="1000" (click)="onDeleteTask(record)" matTooltip="Permanently delete record"
+            id="deleteButton">
+            <i class="fas fa-trash-alt"></i>
+          </button>
+        </div>
+      </mat-list-item>
+    </mat-list>
+  </div>
+</div>

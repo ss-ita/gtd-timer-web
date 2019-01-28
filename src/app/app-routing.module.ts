@@ -11,7 +11,7 @@ import {
   AuthGuardService as AuthGuard
 } from './auth/auth-guard.service';
 import { StatisticsComponent } from './statistics/statistics.component';
-import { ArchiveComponent } from './archive/archive.component';
+import { HistoryComponent } from './history/history.component';
 import { SettingsComponent } from './settings/settings.component';
 import { AuthGuardFalse } from './auth/auth-guard-false.service';
 import { InfoComponent } from './info/info.component';
@@ -26,7 +26,7 @@ const routes: Routes = [
   { path: 'tasks', component: TasksComponent, canActivate: [AuthGuard] },
   { path: 'statistics', component: StatisticsComponent, canActivate: [AuthGuard] },
   { path: 'settings', component: SettingsComponent, canActivate: [AuthGuard] },
-  { path: 'archive', component: ArchiveComponent, canActivate: [AuthGuard] },
+  { path: 'history', component: HistoryComponent, canActivate: [AuthGuard] },
   { path: 'info', component: InfoComponent, canActivate: [AuthGuard] },
   { path: 'signin', component: SigninComponent, canActivate: [AuthGuardFalse] },
   { path: 'task-management', component: TaskManagementComponent },
