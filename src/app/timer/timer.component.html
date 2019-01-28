@@ -17,7 +17,7 @@
         <p class="preset-info-preset-name , font-preset-name">Preset: {{timerServise.currentPreset}}</p>
         <div *ngFor="let timer of getTimersArray; let currentTimerIndex = index">
             <div class="preset-info-timers , font-timer-name" [ngClass]="{'current-timer': currentTimerIndex === getTimerArrayIndex}">
-              {{currentTimerIndex + 1}}) {{timer.timerName}} - {{timer.hours}}:{{timer.minutes}}:{{timer.seconds}}
+              {{currentTimerIndex + 1}}) {{timer.taskName}} - {{timer.hours}}:{{timer.minutes}}:{{timer.seconds}}
             </div>
         </div>
         <div class="margin-bottom"></div>

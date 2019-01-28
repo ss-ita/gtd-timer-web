@@ -27,6 +27,7 @@ export class PresetComponent implements OnInit {
   isViewable: boolean;
   isLoggedIn: boolean;
   isValid: boolean;
+  timersToDelete: any[];
 
   constructor(
     private presetsFormDialogRef: MatDialogRef<PresetComponent>,
@@ -40,23 +41,28 @@ export class PresetComponent implements OnInit {
   ) {
     iconRegistry.addSvgIcon('delete', sanitizer.bypassSecurityTrustResourceUrl('assets/img/delete.svg'));
     iconRegistry.addSvgIcon('edit', sanitizer.bypassSecurityTrustResourceUrl('assets/img/edit.svg'));
+    this.timersToDelete = [];
   }
 
   onCreate() {
     this.presetService.createPreset(this.presetForm.value).subscribe(data => {
       this.presetService.presetsArray[this.presetService.presetsArray.length - 1].id = data.id;
-      for (let index = 0; index < data.timers.length; index++) {
-        this.presetService.presetsArray[this.presetService.presetsArray.length - 1].timers[index].id = data.timers[index].id;
+      for (let index = 0; index < data.tasks.length; index++) {
+        this.presetService.presetsArray[this.presetService.presetsArray.length - 1].tasks[index].id = data.tasks[index].id;
       }
     });
     this.selectedPreset = this.presetService.getCreatedPresetName();
-    for (let index = 0; index < this.presetService.getCreatedPreset().timers.length; index++) {
+    for (let index = 0; index < this.presetService.getCreatedPreset().tasks.length; index++) {
       this.returnTimersFormGroupArray.removeAt(index);
     }
     this.toggle();
   }
 
   onUpdate() {
+    for (let index = 0; index < this.timersToDelete.length; index++) {
+      this.presetService.deleteTimerFromLocalArrayAndServer(this.timersToDelete[index], this.presetIndex, this.presetToUpdate);
+    }
+
     this.presetService.updatePresetInLocalArrayAndServer(this.presetForm.value, this.presetToUpdate, this.presetIndex);
     this.selectedPreset = this.presetService.getPresetNameByIndex(this.presetIndex);
     this.cleanUpTheTimersFormGroupArray();
@@ -81,10 +87,10 @@ export class PresetComponent implements OnInit {
   onDeleteTimer(index) {
     if (this.isUpdateState) {
       if (this.returnTimersFormGroupArray.length >= 2) {
-        if (index >= this.presetToUpdate.timers.length) {
+        if (index >= this.presetToUpdate.tasks.length) {
           this.returnTimersFormGroupArray.removeAt(index);
         } else {
-          this.presetService.deleteTimerFromLocalArrayAndServer(index, this.presetIndex, this.presetToUpdate);
+          this.timersToDelete.push(index);
           this.returnTimersFormGroupArray.removeAt(index);
         }
       }
@@ -113,7 +119,7 @@ export class PresetComponent implements OnInit {
   }
 
   cleanUpTheTimersFormGroupArray() {
-    for (let index = 0; index < this.presetToUpdate.timers.length; index++) {
+    for (let index = 0; index < this.presetToUpdate.tasks.length; index++) {
       this.returnTimersFormGroupArray.removeAt(index);
     }
   }
@@ -134,7 +140,7 @@ export class PresetComponent implements OnInit {
   }
 
   get returnTimersFormGroupArray() {
-    return this.presetForm.get('timers') as FormArray;
+    return this.presetForm.get('tasks') as FormArray;
   }
 
   get returnPresetsArray() {
@@ -168,8 +174,8 @@ export class PresetComponent implements OnInit {
   }
 
   getErrorMessageTimerName(item: FormGroup) {
-    return item.controls['timerName'].hasError('required') ? 'This field is required' :
-      item.controls['timerName'].hasError('maxlength') ? 'Max length - 35 symbols' : '';
+    return item.controls['taskName'].hasError('required') ? 'This field is required' :
+      item.controls['taskName'].hasError('maxlength') ? 'Max length - 35 symbols' : '';
   }
 
   getErrorMessageHours() {
@@ -209,12 +215,12 @@ export class PresetComponent implements OnInit {
   }
 
   addTimerGroupRow() {
-    (<FormArray>this.presetForm.get('timers')).push(this.addTimerFormGroup());
+    (<FormArray>this.presetForm.get('tasks')).push(this.addTimerFormGroup());
   }
 
   addTimerFormGroup(): FormGroup {
     return this.formBuilder.group({
-      timerName: ['', [Validators.required, Validators.maxLength(35)]],
+      taskName: ['', [Validators.required, Validators.maxLength(35)]],
       hours: ['', [Validators.required, Validators.min(0), Validators.max(23)]],
       minutes: ['', [Validators.required, Validators.min(0), Validators.max(59)]],
       seconds: ['', [Validators.required, Validators.min(0), Validators.max(59)]]
@@ -224,12 +230,12 @@ export class PresetComponent implements OnInit {
   loadDataToUpdateMenu(presetToUpdate: PresetModel) {
     this.returnTimersFormGroupArray.removeAt(0);
     this.presetForm.controls['presetName'].setValue(presetToUpdate.presetName);
-    for (let index = 0; index < presetToUpdate.timers.length; index++) {
-      (<FormArray>this.presetForm.get('timers')).push(this.formBuilder.group({
-        timerName: [presetToUpdate.timers[index].timerName, [Validators.required, Validators.maxLength(35)]],
-        hours: [presetToUpdate.timers[index].hours, [Validators.required, Validators.min(0), Validators.max(23)]],
-        minutes: [presetToUpdate.timers[index].minutes, [Validators.required, Validators.min(0), Validators.max(59)]],
-        seconds: [presetToUpdate.timers[index].seconds, [Validators.required, Validators.min(0), Validators.max(59)]]
+    for (let index = 0; index < presetToUpdate.tasks.length; index++) {
+      (<FormArray>this.presetForm.get('tasks')).push(this.formBuilder.group({
+        taskName: [presetToUpdate.tasks[index].taskName, [Validators.required, Validators.maxLength(35)]],
+        hours: [presetToUpdate.tasks[index].hours, [Validators.required, Validators.min(0), Validators.max(23)]],
+        minutes: [presetToUpdate.tasks[index].minutes, [Validators.required, Validators.min(0), Validators.max(59)]],
+        seconds: [presetToUpdate.tasks[index].seconds, [Validators.required, Validators.min(0), Validators.max(59)]]
       }));
     }
   }
@@ -237,7 +243,7 @@ export class PresetComponent implements OnInit {
   ngOnInit() {
     this.presetForm = this.formBuilder.group({
       presetName: ['', [Validators.required, Validators.maxLength(35)]],
-      timers: this.formBuilder.array([this.addTimerFormGroup()])
+      tasks: this.formBuilder.array([this.addTimerFormGroup()])
     });
     this.isValid = true;
     this.isViewable = false;

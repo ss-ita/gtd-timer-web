@@ -1,4 +1,4 @@
-import { PresetModel, Timer, PresetModelJson, TimerJson, PresetModelToUpdate, TimerUpdate } from '../models/preset.model';
+import { PresetModel, Task, PresetModelJson, TaskJson, PresetModelToUpdate, TimerUpdate } from '../models/preset.model';
 import { HttpClient } from '@angular/common/http';
 import { ConfigService } from './config.service';
 import { TimerService } from './timer.service';
@@ -14,12 +14,13 @@ export class PresetService {
   presetModelToUpdate: PresetModelToUpdate;
   standardPresets: PresetModel[] = [];
   presetModelJson: PresetModelJson;
-  timerJsonArray: TimerJson[] = [];
+  taskJsonArray: TaskJson[] = [];
   presetsArray: PresetModel[];
   presetIndexToUpdate: number;
   presetToUpdate: PresetModel;
   presetModel: PresetModel;
   presetIndex: number;
+  timer = 0;
 
   constructor(
     private configService: ConfigService,
@@ -33,13 +34,13 @@ export class PresetService {
     return this.httpClient.post<PresetModelJson>(this.configService.urlPreset + 'CreatePreset', this.presetModelJson);
   }
 
-  createTimer(timerToCreate: TimerUpdate) {
-    return this.httpClient.post<TimerUpdate>(this.configService.urlPreset + 'CreateTimer', timerToCreate);
+  createTask(taskToCreate: TaskJson) {
+    return this.httpClient.post<TaskJson>(this.configService.urlTask + 'CreateTask', taskToCreate);
   }
 
   updatePreset(presetModel: PresetModel, presetToUpdate: PresetModel) {
     this.convertToPresetUpdateModel(presetModel, presetToUpdate);
-    return this.httpClient.put(this.configService.urlPreset + 'UpdatePreset', this.presetModelToUpdate);
+    return this.httpClient.put<PresetModelToUpdate>(this.configService.urlPreset + 'UpdatePreset', this.presetModelToUpdate);
   }
 
   deletePreset(id: number) {
@@ -47,7 +48,7 @@ export class PresetService {
   }
 
   deleteTimer(id: number) {
-    return this.httpClient.delete(this.configService.urlPreset + 'DeleteTimer/' + id.toString());
+    return this.httpClient.delete(this.configService.urlTask + 'DeleteTask/' + id.toString());
   }
 
   getAllStandardPresetsFromServer(): Observable<PresetModelJson[]> {
@@ -66,19 +67,34 @@ export class PresetService {
 
   deleteTimerFromLocalArrayAndServer(timerIndex, presetIndex, presetToUpdate) {
     this.presetToUpdate = presetToUpdate;
-    this.deleteTimer(this.presetsArray[presetIndex].timers[timerIndex].id).subscribe();
-    const indexTimerToDelete = this.presetsArray[presetIndex].timers.indexOf(this.presetsArray[presetIndex].timers[timerIndex], 0);
-    presetToUpdate.timers.splice(indexTimerToDelete, 1);
+    this.deleteTimer(this.presetsArray[presetIndex].tasks[timerIndex].id).subscribe();
+    const indexTimerToDelete = this.presetsArray[presetIndex].tasks.indexOf(this.presetsArray[presetIndex].tasks[timerIndex], 0);
+    presetToUpdate.tasks.splice(indexTimerToDelete, 1);
   }
 
   updatePresetInLocalArrayAndServer(presetModel: PresetModel, presetToUpdate: PresetModel, presetIndex: number) {
     this.presetIndexToUpdate = presetIndex;
-    this.updatePreset(presetModel, presetToUpdate).subscribe();
-    this.presetsArray[presetIndex] = presetModel;
-    this.presetsArray[presetIndex].id = presetToUpdate.id;
-    for (let index = 0; index < presetToUpdate.timers.length; index++) {
-      this.presetsArray[presetIndex].timers[index].id = presetToUpdate.timers[index].id;
-    }
+    this.updatePreset(presetModel, presetToUpdate).subscribe(data => {
+      this.presetsArray[presetIndex].presetName = data.presetName;
+      for (let index = 0; index < data.tasks.length; index++) {
+        const times = data.tasks[index].goal.split(':');
+        if (index >= this.presetsArray[presetIndex].tasks.length) {
+          const task = new Task();
+          task.id = data.tasks[index].id;
+          task.taskName = data.tasks[index].name;
+          task.hours = Number(times[0]);
+          task.minutes = Number(times[1]);
+          task.seconds = Number(times[2]);
+          this.presetsArray[presetIndex].tasks.push(task);
+        } else {
+          this.presetsArray[presetIndex].tasks[index].id = data.tasks[index].id;
+          this.presetsArray[presetIndex].tasks[index].taskName = data.tasks[index].name;
+          this.presetsArray[presetIndex].tasks[index].hours = Number(times[0]);
+          this.presetsArray[presetIndex].tasks[index].minutes = Number(times[1]);
+          this.presetsArray[presetIndex].tasks[index].seconds = Number(times[2]);
+        }
+      }
+    });
   }
 
   pushPresetToLocalArray(preset: PresetModel) {
@@ -107,7 +123,7 @@ export class PresetService {
 
   startPresetTimers() {
     this.getChosenPresetIndex();
-    this.timerService.initializeTimersArray(this.presetsArray[this.presetIndex].timers);
+    this.timerService.initializeTimersArray(this.presetsArray[this.presetIndex].tasks);
   }
 
   getChosenPresetIndex() {
@@ -120,8 +136,8 @@ export class PresetService {
 
   prepareModelToCreate() {
     this.presetModelJson.id = 0;
-    for (let index = 0; index < this.presetModelJson.timers.length; index++) {
-      this.presetModelJson.timers[index].id = 0;
+    for (let index = 0; index < this.presetModelJson.tasks.length; index++) {
+      this.presetModelJson.tasks[index].id = 0;
     }
   }
 
@@ -129,13 +145,19 @@ export class PresetService {
     this.presetModelJson = new PresetModelJson();
     this.presetModelJson.presetName = presetModel.presetName;
     this.presetModelJson.id = presetModel.id;
-    this.presetModelJson.timers = [];
-    for (let index = 0; index < presetModel.timers.length; index++) {
-      this.presetModelJson.timers[index] = new TimerJson();
-      this.presetModelJson.timers[index].id = presetModel.timers[index].id;
-      this.presetModelJson.timers[index].name = presetModel.timers[index].timerName;
-      this.presetModelJson.timers[index].interval = presetModel.timers[index].hours + ':' + presetModel.timers[index].minutes
-        + ':' + presetModel.timers[index].seconds;
+    this.presetModelJson.tasks = [];
+    for (let index = 0; index < presetModel.tasks.length; index++) {
+      this.presetModelJson.tasks[index] = new TaskJson();
+      this.presetModelJson.tasks[index].id = presetModel.tasks[index].id;
+      this.presetModelJson.tasks[index].name = presetModel.tasks[index].taskName;
+      this.presetModelJson.tasks[index].description = '';
+      this.presetModelJson.tasks[index].elapsedTime = 0;
+      this.presetModelJson.tasks[index].lastStartTime = '0001-01-01T00:00:00Z';
+      this.presetModelJson.tasks[index].goal = presetModel.tasks[index].hours + ':' + presetModel.tasks[index].minutes
+        + ':' + presetModel.tasks[index].seconds;
+      this.presetModelJson.tasks[index].isActive = false;
+      this.presetModelJson.tasks[index].isRunning = false;
+      this.presetModelJson.tasks[index].watchtype = this.timer;
     }
     return this.presetModelJson;
   }
@@ -144,16 +166,16 @@ export class PresetService {
     this.presetModel = new PresetModel();
     this.presetModel.presetName = presetModelJson.presetName;
     this.presetModel.id = presetModelJson.id;
-    this.presetModel.timers = [];
-    for (let index = 0; index < presetModelJson.timers.length; index++) {
-      this.presetModel.timers[index] = new Timer();
-      this.presetModel.timers[index].id = presetModelJson.timers[index].id;
-      this.presetModel.timers[index].timerName = presetModelJson.timers[index].name;
-      const interval = presetModelJson.timers[index].interval;
+    this.presetModel.tasks = [];
+    for (let index = 0; index < presetModelJson.tasks.length; index++) {
+      this.presetModel.tasks[index] = new Task();
+      this.presetModel.tasks[index].id = presetModelJson.tasks[index].id;
+      this.presetModel.tasks[index].taskName = presetModelJson.tasks[index].name;
+      const interval = presetModelJson.tasks[index].goal;
       const splitInterval = interval.split(':');
-      this.presetModel.timers[index].hours = Number(splitInterval[0]);
-      this.presetModel.timers[index].minutes = Number(splitInterval[1]);
-      this.presetModel.timers[index].seconds = Number(splitInterval[2]);
+      this.presetModel.tasks[index].hours = Number(splitInterval[0]);
+      this.presetModel.tasks[index].minutes = Number(splitInterval[1]);
+      this.presetModel.tasks[index].seconds = Number(splitInterval[2]);
     }
     return this.presetModel;
   }
@@ -162,26 +184,23 @@ export class PresetService {
     this.presetModelToUpdate = new PresetModelToUpdate();
     this.presetModelToUpdate.presetName = presetModel.presetName;
     this.presetModelToUpdate.id = presetToUpdate.id;
-    this.presetModelToUpdate.timers = [];
-    for (let index = 0; index < presetModel.timers.length; index++) {
-      if (index >= presetToUpdate.timers.length) {
-        const timerToCreate = new TimerUpdate();
-        timerToCreate.id = 0;
-        timerToCreate.name = presetModel.timers[index].timerName;
-        timerToCreate.presetId = presetToUpdate.id;
-        timerToCreate.interval = presetModel.timers[index].hours + ':' + presetModel.timers[index].minutes
-          + ':' + presetModel.timers[index].seconds;
-        this.createTimer(timerToCreate).subscribe(data => {
-          this.presetsArray[this.presetIndexToUpdate].timers[index].id = data.id;
-        });
+    this.presetModelToUpdate.tasks = [];
+    for (let index = 0; index < presetModel.tasks.length; index++) {
+      this.presetModelToUpdate.tasks[index] = new TaskJson();
+      this.presetModelToUpdate.tasks[index].name = presetModel.tasks[index].taskName;
+      this.presetModelToUpdate.tasks[index].goal = presetModel.tasks[index].hours + ':'
+        + presetModel.tasks[index].minutes + ':' + presetModel.tasks[index].seconds;
+      if (index >= presetToUpdate.tasks.length) {
+        this.presetModelToUpdate.tasks[index].id = 0;
       } else {
-        this.presetModelToUpdate.timers[index] = new TimerUpdate();
-        this.presetModelToUpdate.timers[index].name = presetModel.timers[index].timerName;
-        this.presetModelToUpdate.timers[index].presetId = presetToUpdate.id;
-        this.presetModelToUpdate.timers[index].interval = presetModel.timers[index].hours + ':'
-          + presetModel.timers[index].minutes + ':' + presetModel.timers[index].seconds;
-        this.presetModelToUpdate.timers[index].id = presetToUpdate.timers[index].id;
+        this.presetModelToUpdate.tasks[index].id = presetToUpdate.tasks[index].id;
       }
+      this.presetModelToUpdate.tasks[index].description = '';
+      this.presetModelToUpdate.tasks[index].elapsedTime = 0;
+      this.presetModelToUpdate.tasks[index].isActive = false;
+      this.presetModelToUpdate.tasks[index].isRunning = false;
+      this.presetModelToUpdate.tasks[index].watchtype = this.timer;
+      this.presetModelToUpdate.tasks[index].lastStartTime = '0001-01-01T00:00:00Z';
     }
   }
 }

@@ -1,5 +1,5 @@
 import { ConfigService } from './config.service';
-import { Timer } from '../models/preset.model';
+import { Timer, Task } from '../models/preset.model';
 import { Injectable } from '@angular/core';
 import { timer, Subscription } from 'rxjs';
 
@@ -11,7 +11,7 @@ export class TimerService {
 
     timerArrayLenght: number;
     timerIndex = -1;
-    timerArray: Timer[];
+    timerArray: Task[];
     maxValueHour: number;
     maxValueMinute: number;
     maxValueSecond: number;
@@ -37,7 +37,7 @@ export class TimerService {
     subscribe: Subscription;
     public currentPreset = '#Choose preset';
 
-    initializeTimersArray(timerArray: Timer[]) {
+    initializeTimersArray(timerArray: Task[]) {
         this.clearTimersArrayAndIndex();
         this.resetTimer();
         this.timerIndex++;

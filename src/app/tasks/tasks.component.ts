@@ -94,10 +94,10 @@ export class TasksComponent implements OnInit {
       next: task => {
         this.taskService.tasks.push(task);
       },
-      error: err => { },
+      error: _ => { },
       complete: () => { }
     };
-    
+
     this.taskService.createTask(taskToPass).subscribe(myObserver);
   }
 
@@ -179,26 +179,25 @@ export class TasksComponent implements OnInit {
 
   browseFile(event: any) {
     this.taskService.importFile(event)
-    .subscribe (
-      event => {
-          this.taskService.tasks.push(...event.filter(task => task.isActive));
-      }
-    ) 
+      .subscribe(
+        data => {
+          this.taskService.tasks.push(...data.filter(task => task.isActive));
+        });
   }
 
   exportAllTasksAsXml() {
-    this.taskService.downloadFile("all_tasks.xml", this.configService.urlExportAllTasksAsXml);
+    this.taskService.downloadFile('all_tasks.xml', this.configService.urlExportAllTasksAsXml);
   }
 
   exportAllTasksAsCsv() {
-    this.taskService.downloadFile("all_tasks.csv", this.configService.urlExportAllTasksAsCsv);
+    this.taskService.downloadFile('all_tasks.csv', this.configService.urlExportAllTasksAsCsv);
   }
 
   exportAllActiveTasksAsXml() {
-    this.taskService.downloadFile("active_tasks.xml", this.configService.urlExportAllActiveTasksAsXml);
+    this.taskService.downloadFile('active_tasks.xml', this.configService.urlExportAllActiveTasksAsXml);
   }
 
   exportAllActiveTasksAsCsv() {
-    this.taskService.downloadFile("active_tasks.csv", this.configService.urlExportAllActiveTasksAsCsv);
+    this.taskService.downloadFile('active_tasks.csv', this.configService.urlExportAllActiveTasksAsCsv);
   }
 }

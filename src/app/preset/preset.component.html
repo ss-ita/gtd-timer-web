@@ -35,10 +35,10 @@
         <input matInput formControlName="presetName" placeholder="Preset name">
         <mat-error>{{getErrorMessagePresetName()}}</mat-error>
       </mat-form-field>
-      <div formArrayName="timers">
+      <div formArrayName="tasks">
         <div *ngFor="let item of returnTimersFormGroupArray.controls; let timerIndex = index" [formGroupName]="timerIndex">
           <mat-form-field>
-            <input matInput formControlName="timerName" placeholder="Timer name">
+            <input matInput formControlName="taskName" placeholder="Timer name">
             <mat-error>{{getErrorMessageTimerName(item)}}</mat-error>
           </mat-form-field>
           <mat-form-field class="timer-element-width">
