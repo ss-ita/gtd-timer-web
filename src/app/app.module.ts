@@ -8,11 +8,12 @@ import { SigninComponent } from './signin/signin.component';
 import { NavBarComponent } from './nav-bar/nav-bar.component';
 import { AppRoutingModule } from './app-routing.module';
 import { TimerComponent } from './timer/timer.component';
-import { AlarmComponent } from './alarm/alarm.component';
+import { AlarmComponent } from './alarm-components/alarm/alarm.component';
 import { TaskManagementComponent } from './task-management/task-management.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CompareValidatorDirective } from './compare-validator/compare-validator.directive';
-import { MatDialogModule, MatDialog, MatDialogRef, MatSnackBarModule, MatSidenavModule, MatExpansionModule } from '@angular/material';
+import { MatDialogModule, MatDialog, MatDialogRef, MatSnackBarModule } from '@angular/material';
+import { MatSidenavModule, MatExpansionModule, MatNativeDateModule } from '@angular/material';
 import { MatMenuModule, MatButtonModule, MatIconModule, MatCardModule, MatRadioModule } from '@angular/material';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { UserService } from './services/user.service';
@@ -46,6 +47,10 @@ import { SignupDialogComponent } from './signup-dialog/signup-dialog.component';
 import { ProgressComponent } from './progress/progress.component';
 import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-dialog.component';
 import { PresetDialogComponent } from './preset-dialog/preset-dialog.component';
+import { AlarmDialogComponent } from './alarm-components/alarm-dialog/alarm-dialog.component';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import { RepeatAlarmDialogComponent } from './alarm-components/repeat-alarm-dialog/repeat-alarm-dialog.component';
+import { AlarmDialogNotificationComponent } from './alarm-components/alarm-dialog-notification/alarm-dialog-notification.component';
 import { AdminPageComponent } from './admin-page/admin-page.component';
 import { RoleService } from './services/role.service';
 import { HttpTokenInterceptor } from './services/http-interceptor.service';
@@ -80,6 +85,10 @@ export function jwtTokenGetter() {
     ConfirmationDialogComponent,
     PresetDialogComponent,
     TaskInfoComponent,
+    AlarmDialogComponent,
+    AlarmDialogNotificationComponent,
+    RepeatAlarmDialogComponent,
+    AlarmDialogNotificationComponent,
     AdminPageComponent
   ],
   imports: [
@@ -105,6 +114,8 @@ export function jwtTokenGetter() {
     AngularFirestoreModule,
     AngularFireAuthModule,
     MatRadioModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
     JwtModule.forRoot({
       config: {
         tokenGetter: jwtTokenGetter,
@@ -122,6 +133,7 @@ export function jwtTokenGetter() {
     AuthGuardFalse,
     AuthService,
     MatDialog,
+    MatDatepickerModule,
     { provide: MatDialogRef, useValue: {} },
     { provide: HTTP_INTERCEPTORS, useClass: HttpTokenInterceptor, multi: true },
     UserService,
@@ -134,7 +146,10 @@ export function jwtTokenGetter() {
     SignupComponent,
     TaskInfoComponent,
     ConfirmationDialogComponent,
-    PresetComponent
+    PresetComponent,
+    AlarmDialogComponent,
+    AlarmDialogNotificationComponent,
+    RepeatAlarmDialogComponent
   ]
 })
 export class AppModule { }

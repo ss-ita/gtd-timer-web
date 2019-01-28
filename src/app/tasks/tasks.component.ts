@@ -16,7 +16,7 @@ import { ConfigService } from '../services/config.service';
 export class TasksComponent implements OnInit {
 
   constructor(
-    private taskService: TasksService,
+    public taskService: TasksService,
     private configService: ConfigService
   ) {
     this.progress = this.emulateProgress();

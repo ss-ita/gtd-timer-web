@@ -7,6 +7,7 @@ import { UserService } from '../services/user.service';
 import { RoleService } from '../services/role.service';
 import { PresetComponent } from '../preset/preset.component';
 import { SignupDialogComponent } from '../signup-dialog/signup-dialog.component';
+import { AlarmService } from '../services/alarm.service';
 
 @Component({
   selector: 'app-nav-bar',
@@ -31,7 +32,8 @@ export class NavBarComponent implements OnInit {
     public roleService: RoleService,
     private jwthelper: JwtHelperService,
     private userService: UserService,
-    private presetComponent: PresetComponent) {
+    private presetComponent: PresetComponent,
+    private alarmService: AlarmService) {
     this.navservice.navLinks.subscribe(value => { this.navLinks = value; });
     this.navservice.show.subscribe(value => { this.show = value; });
     this.navservice.email.subscribe(value => { this.email = value; });
@@ -121,6 +123,7 @@ export class NavBarComponent implements OnInit {
     const link = this.navLinks.find(tab => tab.link === '.' + this.userService.redirectUrl);
     this.router.navigateByUrl(link ? this.userService.redirectUrl : this.signinLink);
     this.presetComponent.getAllStandardAndCustomPresets();
+    this.alarmService.clearData();
   }
 
   tokenexpire() {

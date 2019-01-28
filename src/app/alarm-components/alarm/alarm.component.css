@@ -1,0 +1,274 @@
+.main-area {
+	position: absolute;
+	top: auto;
+	min-width: 820px;
+	min-height: calc(100vh - 49px);
+	width: 100%;
+	background-image: linear-gradient(to top, #d9afd9 0%, #97d9e1 100%);
+}
+
+.mat-icon-button {
+	width: 40px;
+	height: 40px;
+	border: none;
+	text-decoration: underline;
+}
+
+.mat-icon-button:hover {
+	background-color: rgb(172, 205, 255);
+}
+
+.mat-icon {
+	font-size: 32px !important;
+	height: 32px !important;
+	width: 32px !important;
+}
+
+.turnOffAlarmBackground {
+	background-color: #609b9b;
+}
+
+.turnOnAlarmBackground {
+	background-image: linear-gradient(45deg, #874da2 0%, #c43a30 100%);
+}
+
+.content-area {
+	width: 700px;
+	height: 380px;
+	margin: 5% auto;
+}
+
+.show-time-area {
+	text-align: center;
+}
+
+.line-show-time {
+	padding: 8px;
+}
+
+.show-time-area .time-element {
+	margin: 30px 0px 13px;
+	display: inline-block;
+	font-size: 120px;
+	padding: 5px 5px;
+	border-radius: 50%;
+	min-width: 133.5px;
+}
+
+.show-time-area .time-span {
+	display: inline-block;
+	font-size: 120px;
+}
+
+
+.turnOnPlay-alarm {
+	color: red;
+}
+
+.progress-percentage-wrapper {
+	position: relative;
+	font-size: 50px;
+	margin: 0 0.5%;
+	width: 200px;
+	height: 200px;
+	display: inline-block;
+}
+
+.progress-percentage {
+	position: absolute;
+	width: 100%;
+	text-align: center !important;
+	top: 35%;
+}
+
+.show-time-area .non-inputed-time {
+	text-align: center;
+	font-size: 90px;
+	color: #609b9b;
+	margin: 75px auto;
+}
+
+.input-time-area {
+	text-align: center;
+}
+
+.input-time-area .mat-form-field {
+	width: 175px;
+	margin: 0px 35px;
+}
+
+.mat-card-content {
+	margin-bottom: 30px;
+	margin-top: 35px;
+}
+
+.mat-card-content.line-show-time {
+	margin-bottom: 29px;
+}
+
+.button-area {
+	text-align: center;
+}
+
+.button-area .toogleBlock {
+	display: inline-block;
+	margin-top: 10px;
+}
+
+.button-area .label {
+	margin: 10px;
+}
+
+.button-area .mat-button.stopAlarmButton {
+	height: 3rem;
+	font-size: 20px;
+	margin-top: 7px;
+	background-color: #99d8e1bd;
+}
+
+.button-area .mat-button.addAlarmButton {
+	border-radius: 50%;
+	width: 4rem;
+	height: 4rem;
+	border: none;
+	text-decoration: underline;
+	display: inline-block;
+	position: absolute;
+	right: 20px;
+	background-color: #b797ff24;
+}
+
+.button-area .mat-button.addAlarmButton:hover {
+	background-color: #b757ff24;
+}
+
+.style-menu {
+	width: 40px;
+	height: 40px;
+}
+
+.mat-card>:first-child.negative-margin {
+	margin-top: -7px;
+	display: flex;
+}
+
+::ng-deep .mat-form-field-appearance-legacy.mat-form-field-disabled .mat-form-field-underline {
+	background-image: linear-gradient(to right, rgba(0, 0, 0, 0.41) 0, rgba(0, 0, 0, 0.28) 33%, #00000052 0);
+}
+
+.no-set-alarm {
+	margin: 20px 10px 10px 15px;
+	font-size: 18px;
+	font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+.alarm-info {
+	top: 0;
+	width: 255px;
+	height: auto;
+	right: -250px;
+	position: absolute;
+	border-radius: 4px;
+	background: white;
+	word-break: break-all;
+	padding-bottom: 25px;
+	padding-top: 5px;
+	max-width: 350px;
+}
+
+.alarmList {
+	margin: 5px;
+	overflow-y: auto;
+	max-height: 350px;
+}
+
+.view-alarm-menu {
+	width: 40px;
+	height: 40px;
+	position: absolute;
+	right: 13px;
+}
+
+.mat-icon.toggle {
+	font-size: 22px !important;
+	color: black;
+	vertical-align: -webkit-baseline-middle;
+}
+
+.alarmItem {
+	padding: 10px 5px 10px;
+	margin: 0px 10px;
+	border-bottom: 1px solid grey;
+	position: relative;
+}
+
+.alarmItem:last-child {
+	border-bottom: none;
+}
+
+.alarmItem .mat-icon {
+	font-size: 25px !important;
+	height: 25px !important;
+	width: 25px !important;
+}
+
+.alarmItem div {
+	display: inline-block;
+	vertical-align: -webkit-baseline-middle;
+}
+
+.alarmItem .time {
+	font-size: 18px;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	-o-user-select: none;
+	user-select: none;
+}
+
+.alarmItem .toogle {
+	right: 45px;
+	position: absolute;
+	top: 15px;
+}
+
+.alarmItem .deleteButton {
+	right: 0px;
+	position: absolute;
+	top: 8px;
+	min-width: 10px;
+}
+
+.alarmItem .deleteButton .mat-button {
+	min-width: 10px;
+}
+
+.alarmItem .deleteButton .mat-button {
+	padding: 0;
+}
+
+.turnOffAlarm{
+	color: #7e7ed0;
+}
+
+.turnOnAlarm{
+color:#609b9b;
+}
+
+::ng-deep .mat-slide-toggle-bar {
+	height: 15px !important;
+}
+
+::ng-deep .mat-slide-toggle-thumb {
+	height: 20px !important;
+	width: 20px !important;
+}
+
+::ng-deep .mat-slide-toggle:not(.mat-disabled).cdk-focused .mat-slide-toggle-persistent-ripple {
+	background-color: transparent;
+}
+
+
+::ng-deep .mat-tooltip {
+	max-width: 150px !important;
+}

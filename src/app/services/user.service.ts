@@ -9,6 +9,7 @@ import { first } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { NavbarService } from './navbar.service';
 import { RoleService } from './role.service';
+import { AlarmService } from './alarm.service';
 
 @Injectable({
   providedIn: 'root'
@@ -24,7 +25,8 @@ export class UserService {
     private router: Router,
     private navbar: NavbarService,
     private zone: NgZone,
-    private roleService: RoleService) { }
+    private roleService: RoleService,
+    private alarmService: AlarmService) { }
 
   registerUser(user: SignupModel) {
     const body: SignupModel = {
@@ -77,6 +79,7 @@ export class UserService {
           this.router.navigateByUrl(this.redirectUrl);
           this.toasterService.showToaster('Successfuly signed in! ');
           this.roleService.getRoles();
+          this.alarmService.loadAlarmsFromDatabase();
         },
         response => {
           this.toasterService.showToaster(response.error.Message);
@@ -108,6 +111,7 @@ export class UserService {
             this.router.navigateByUrl(this.redirectUrl);
             this.toasterService.showToaster('Successfuly signed in with Google! ');
             this.roleService.getRoles();
+            this.alarmService.loadAlarmsFromDatabase();
           });
         },
         response => {
@@ -125,6 +129,7 @@ export class UserService {
             this.router.navigateByUrl(this.redirectUrl);
             this.toasterService.showToaster('Successfuly signed in with Facebook! ');
             this.roleService.getRoles();
+            this.alarmService.loadAlarmsFromDatabase();
           });
         },
         response => {

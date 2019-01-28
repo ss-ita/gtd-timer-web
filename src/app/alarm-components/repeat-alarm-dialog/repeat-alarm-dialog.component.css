@@ -1,0 +1,51 @@
+.repeatDaysList {
+    padding: 10px;
+}
+
+.repeatDaysList .repeatDay {
+    font-size: 20px;
+    padding: 5px 5px 10px;
+    border-bottom: 1px solid #aaa;
+}
+
+.repeatDaysList .repeatDay div {
+    display: inline-block;
+}
+
+.dayName {
+    margin-right: 120px;
+}
+
+.dayCheckBox {
+    float: right;
+    margin-top: 4px;
+}
+
+::ng-deep .mat-checkbox-checked.mat-accent .mat-checkbox-background {
+    background-color: blue;
+}
+
+.mat-dialog-title {
+    margin: 0 0 0px;
+    display: block;
+    text-align: center;
+}
+
+.buttonArea {
+    margin: 10px auto;
+    text-align: center;
+}
+
+.buttonArea button {
+    margin: 0px 10px;
+    padding: 1px 20px;
+    font-size: 16px;
+}
+
+::ng-deep .mat-button:hover .mat-button-focus-overlay {
+    opacity: 0;
+}
+
+.cancelButton:hover {
+    text-decoration: underline;
+}
