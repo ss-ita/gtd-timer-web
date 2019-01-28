@@ -1,7 +1,7 @@
 import { Injectable, OnInit } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { ConfigService } from './config.service';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { TaskJson } from '../models/taskjson.model';
 import { TaskCreateJson } from '../models/taskCreateJson.model';
 import { StopwatchService } from './stopwatch.service';
@@ -17,7 +17,6 @@ export class TasksService implements OnInit {
         private service: ConfigService,
         private stopwatchService: StopwatchService) { }
     ngOnInit() { }
-
 
     public getAllTasks() {
         return this.http.get(this.service.urlGetAllTasks, {});
@@ -48,45 +47,77 @@ export class TasksService implements OnInit {
         return this.http.put<TaskCreateJson>(this.service.urlTask + 'UpdateTask', task);
     }
 
+    public importFile(event: any): Observable<any> {
+        const fileList: FileList = event.target.files;
+        if (fileList.length > 0) {
+            const file: File = fileList[0];
+            const formData: FormData = new FormData();
+            formData.append('uploadFile', file, file.name);
+            if (file.name.split('.').pop() === 'xml') {
+                return this.http.post(this.service.urlImportTasksAsXml, formData);
+            } else if (file.name.split('.').pop() === 'csv') {
+                return this.http.post(this.service.urlImportTasksAsCsv, formData);
+            } else {
+                return throwError(Error);
+            }
+        }
+    }
+    public downloadFile(fileName: string, urlPath: string): void {
+        this.http.get(urlPath, { responseType: 'blob' })
+            .subscribe(fileData => {
+                const a = document.createElement('a');
+                a.style.display = 'none';
+                const url = window.URL.createObjectURL(fileData);
+                a.href = url;
+                a.download = fileName;
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url);
+                document.body.removeChild(a);
+            });
+    }
     public addTaskFromStopwatch() {
         const taskToPass: TaskCreateJson = {
             id: 0,
             name: '',
             description: '',
-            elapsedTime: this.stopwatchService.ticks * 100,
+            elapsedTime: this.stopwatchService.ticks * 1000,
             goal: '',
             lastStartTime: '0001-01-01T00:00:00Z',
             isActive: true,
-            isRunning: true,
+            isRunning: false,
             hour: this.stopwatchService.hour,
             minutes: this.stopwatchService.minute,
             seconds: this.stopwatchService.second,
             lastStartTimeNumber: 0,
             currentSecond: this.stopwatchService.ticks,
-            isStoped: false
+            isStoped: true
         };
 
         const myObserver = {
-            next: x => { },
-            error: err => { },
+            next: _ => { },
+            error: _ => { },
             complete: () => {
                 this.getActiveTasksFromServer().subscribe();
             },
         };
 
+        this.stopwatchService.reset();
         this.createTask(taskToPass).subscribe(myObserver);
         this.tasks.unshift(taskToPass);
     }
 
     public DisplayTaskOnStopwatchPage(task: TaskCreateJson) {
-        this.stopwatchService.hour = task.hour;
-        this.stopwatchService.minute = task.minutes;
-        this.stopwatchService.second = task.seconds;
-        this.stopwatchService.ticks = task.hour * task.minutes * task.seconds;
-        this.stopwatchService.isStopwatchPause = true;
-        if (task.isRunning) {
-            this.stopwatchService.start();
-        }
+        this.stopwatchService.ticks = task.currentSecond;
+        this.stopwatchService.hour = Math.floor(this.stopwatchService.ticks / this.stopwatchService.secondPerHour);
+        this.stopwatchService.minute = Math.floor((this.stopwatchService.ticks % this.stopwatchService.secondPerHour)
+            / this.stopwatchService.secondPerMinute);
+        this.stopwatchService.second = Math.floor((this.stopwatchService.ticks % this.stopwatchService.secondPerHour)
+            % this.stopwatchService.secondPerMinute);
+        this.stopwatchService.isStopwatchRun = true;
+        this.stopwatchService.start();
+        const indexTaskToDelete = this.tasks.indexOf(task, 0);
+        this.tasks.splice(indexTaskToDelete, 1);
     }
 
 }

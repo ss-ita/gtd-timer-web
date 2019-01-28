@@ -127,3 +127,33 @@ app-progress{
 .time{
     font-size: 14px;
 }
+
+.upload-wrap {
+    position: relative;
+}
+
+.upload-btn {
+    position: absolute;
+    left: 0;
+    opacity: 0;
+}
+
+.flex-spacer {
+    flex: 1 1 auto;
+}
+
+.btn-group button {
+    height: auto;
+    color: white;
+    padding: 10px 24px;
+    cursor: pointer;
+    float: left;
+}
+
+.fa {
+    color: black;
+}
+
+.fas {
+    color: black;
+}
