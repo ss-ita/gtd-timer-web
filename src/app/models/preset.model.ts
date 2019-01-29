@@ -1,6 +1,3 @@
-import { DateTime } from './datetime.model';
-import { Time } from './time.model';
-
 export class PresetModel {
     id: number;
     presetName: string;
@@ -28,29 +25,7 @@ export class TaskJson {
     elapsedTime: number;
     lastStartTime: String;
     goal: String;
-    isActive: boolean;
     isRunning: boolean;
     userId: number;
     watchtype: number;
-}
-
-export class PresetModelToUpdate {
-    id: number;
-    presetName: string;
-    tasks: TaskJson[];
-}
-
-export class TimerUpdate {
-    id: number;
-    name: String;
-    interval: string;
-    presetId: number;
-}
-
-export class Timer {
-    id: number;
-    timerName: string;
-    hours: number;
-    minutes: number;
-    seconds: number;
 }

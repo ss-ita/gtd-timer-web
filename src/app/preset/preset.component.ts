@@ -103,7 +103,7 @@ export class PresetComponent implements OnInit {
   }
 
   onSave() {
-    this.timerService.currentPreset = '#' + this.selectedPreset;
+    this.timerService.currentPreset = this.selectedPreset;
     this.onClose();
     this.presetService.startPresetTimers();
   }

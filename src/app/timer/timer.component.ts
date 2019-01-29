@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
+import { FormBuilder, FormGroup, AbstractControl } from '@angular/forms';
 import { TimerService } from '../services/timer.service';
 import { PresetDialogComponent } from '../preset-dialog/preset-dialog.component';
 import { StyleService } from '../services/style.service';
