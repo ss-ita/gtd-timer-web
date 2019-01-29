@@ -59,6 +59,9 @@
         <mat-error>{{getErrorMessageMinuteAndSecond()}}</mat-error>
       </mat-form-field>
       <div class="button-area">
+          <button mat-icon-button [disabled]="timerServise.isTimerRun === false" (click)="timerServise.previousTimer()">
+              <mat-icon>first_page</mat-icon>
+          </button>
           <button mat-icon-button (click)="timerServise.startTimer()" [disabled]="(timerServise.maxValueHour == null 
             && timerServise.maxValueMinute == null && timerServise.maxValueSecond == null) || !timerForm.valid || timerServise.isTimerPause === false">
             <mat-icon>arrow_right</mat-icon>
@@ -69,8 +72,8 @@
           <button mat-icon-button [disabled]="timerServise.isTimerRun === false" (click)="timerServise.refreshTimer()">
             <mat-icon>refresh</mat-icon>
           </button>
-          <button mat-icon-button [disabled]="timerServise.isTimerRun === false" (click)="timerServise.resetTimer()">
-            <mat-icon>stop</mat-icon>
+          <button mat-icon-button [disabled]="timerServise.isTimerRun === false" (click)="timerServise.nextTimer()">
+            <mat-icon>last_page</mat-icon>
           </button>
       </div>
     </mat-card-actions>

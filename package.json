@@ -8,8 +8,8 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "staging":"ng build --configuration=staging",
-    "azure":"ng build --configuration=azure"
+    "staging": "ng build --configuration=staging",
+    "azure": "ng build --configuration=azure"
   },
   "private": true,
   "dependencies": {

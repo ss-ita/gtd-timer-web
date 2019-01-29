@@ -7,7 +7,7 @@
             {{preset.presetName}} 
           </span>
           <span *ngIf="isPresetStandard(preset)" class="delete-preset">
-            <button mat-icon-button type="button" (click)="onDeletePreset(presetIndex)">
+            <button mat-icon-button type="button" (click)="openConfirmationDialog(presetIndex)">
               <mat-icon class="delete-timer-icon" svgIcon="delete"></mat-icon>
             </button>
           </span>
@@ -20,13 +20,12 @@
       </mat-select>
     </mat-form-field>
     <div *ngIf="isLoggedIn; else loggedOut">
-      <p *ngIf="!isViewable" class="additional-message">Choose preset from default list or<button
-          class="add-new-preset-button" type="button" (click)="toggle()">create</button>your own.</p>
+      <p *ngIf="!isViewable" class="additional-message">Choose preset from default list or <button
+          class="add-new-preset-button" type="button" (click)="toggle()">create</button> your own.</p>
     </div>
     <ng-template #loggedOut>
-      <p *ngIf="!isViewable" class="additional-message">Choose the preset from default list.<button class="add-new-preset-button"
-        type="button" (click)="openSignUpDialogComponent()">Register</button>or
-        <button class="add-new-preset-button" type="button" (click)="onSignIn()">sign in
+      <p *ngIf="!isViewable" class="additional-message">Choose preset from default list.
+        <button class="add-new-preset-button" type="button" (click)="onSignIn()"> Sign in
         </button> to create your own.
       </p>
     </ng-template>

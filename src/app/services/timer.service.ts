@@ -9,6 +9,7 @@ export class TimerService {
 
     constructor(private configService: ConfigService) { }
 
+    isForward: boolean;
     timerArrayLenght: number;
     timerIndex = -1;
     timerArray: Task[];
@@ -39,7 +40,7 @@ export class TimerService {
 
     initializeTimersArray(timerArray: Task[]) {
         this.clearTimersArrayAndIndex();
-        this.resetTimer();
+        this.nextTimer();
         this.timerIndex++;
         this.timerArray = timerArray;
         this.refreshTimer();
@@ -156,8 +157,10 @@ export class TimerService {
         }
 
         if (this.minute == 0 && this.second == 0 && this.hour == 0) {
-            this.timerIndex++;
-            this.resetTimer();
+            if (this.isForward === true) {
+                this.timerIndex++;
+            }
+            this.nextTimer();
             this.refreshTimer();
             this.timerSound.src = this.configService.urlSoundTimer;
             this.timerSound.play();
@@ -178,11 +181,25 @@ export class TimerService {
         this.timerIndex = -1;
     }
 
-    resetTimer() {
+    nextTimer() {
+        this.isForward = true;
+        this.isTimerFinished = false;
         this.hour = 0;
         this.minute = 0;
         this.second = 0;
-        this.isTimerFinished = false;
         this.color = '#609b9b';
+    }
+    previousTimer() {
+        this.isForward = false;
+        this.isTimerFinished = false;
+        this.hour = 0;
+        this.minute = 0;
+        this.second = 0;
+        this.color = '#609b9b';
+        if (this.timerIndex === 0) {
+            this.timerIndex = this.timerArray.length - 1;
+        } else {
+            this.timerIndex = this.timerIndex - 1;
+        }
     }
 }
