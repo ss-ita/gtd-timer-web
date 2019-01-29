@@ -29,3 +29,11 @@ export class TaskJson {
     userId: number;
     watchtype: number;
 }
+
+export class Timer {
+    id: number;
+    timerName: string;
+    hours: number;
+    minutes: number;
+    seconds: number;
+}

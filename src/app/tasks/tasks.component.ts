@@ -115,9 +115,23 @@ export class TasksComponent implements OnInit {
     this.taskService.getActiveTasksFromServer().subscribe(data => {
       this.taskService.tasks = [];
       for (let i = 0; i < data.length; ++i) {
-        data[i].currentSecond = 0;
-        data[i].isStoped = false;
-        this.taskService.tasks.push(data[i]);
+       let toPush:TaskCreateJson = {
+id:data[i].id,
+name:data[i].name,
+description: data[i].description,
+goal: data[i].goal,
+elapsedTime: data[i].elapsedTime,
+lastStartTime: data[i].lastStartTime,
+isActive:data[i].isActive,
+isRunning:data[i].isRunning,
+hour:0,
+minutes:0,
+seconds:0,
+isStoped:false,
+lastStartTimeNumber:0,
+currentSecond:0
+       };
+        this.activeTasks.push(toPush);
       }
     });
   }

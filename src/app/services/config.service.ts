@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 
 export class ConfigService {
-  public readonly baseUrl: string = 'https://localhost:44398';
+  public readonly baseUrl: string = environment.apiUrl;
   public readonly urlAdmin: string = this.baseUrl + '/api/User/';
   public readonly urlTask: string = this.baseUrl + '/api/Tasks/';
   public readonly urlPreset: string = this.baseUrl + '/api/Preset/';

@@ -62,8 +62,8 @@ export class NavBarComponent implements OnInit {
           link: './statistics',
           index: 4
         }, {
-          label: 'Archive',
-          link: './archive',
+          label: 'History',
+          link: './history',
           index: 5
         }
       ];
@@ -144,8 +144,8 @@ export class NavBarComponent implements OnInit {
         link: './statistics',
         index: 4
       }, {
-        label: 'Archive',
-        link: './archive',
+        label: 'History',
+        link: './history',
         index: 5
       });
   }

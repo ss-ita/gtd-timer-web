@@ -11,7 +11,8 @@ export const environment = {
     projectId: 'gtd-timer',
     storageBucket: 'gtd-timer.appspot.com',
     messagingSenderId: '43786259325'
-  }
+  },
+  apiUrl:"https://localhost:44398"
 };
 
 /*
