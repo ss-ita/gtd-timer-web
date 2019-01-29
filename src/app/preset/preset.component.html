@@ -20,13 +20,13 @@
       </mat-select>
     </mat-form-field>
     <div *ngIf="isLoggedIn; else loggedOut">
-      <p *ngIf="!isViewable" class="additional-message">Choose the preset from default list or create your own. Just click<button
-          class="add-new-preset-button" (click)="toggle()">Here.</button></p>
+      <p *ngIf="!isViewable" class="additional-message">Choose preset from default list or<button
+          class="add-new-preset-button" type="button" (click)="toggle()">create</button>your own.</p>
     </div>
     <ng-template #loggedOut>
       <p *ngIf="!isViewable" class="additional-message">Choose the preset from default list.<button class="add-new-preset-button"
-          (click)="openSignUpDialogComponent()">Register</button>or
-        <button class="add-new-preset-button" (click)="onSignIn()">sign in
+        type="button" (click)="openSignUpDialogComponent()">Register</button>or
+        <button class="add-new-preset-button" type="button" (click)="onSignIn()">sign in
         </button> to create your own.
       </p>
     </ng-template>
@@ -74,7 +74,7 @@
     <button mat-raised-button color="primary" (click)="onUpdate()" [disabled]="!presetForm.valid" *ngIf="isUpdateState">Update</button>
   </span>
   <span [matTooltipDisabled] = "presetForm.valid" matTooltip = "There must be no empty fields!">
-    <button mat-raised-button color="primary" (click)="onCreate()" [disabled]="!presetForm.valid" *ngIf="isCreateState">Create</button>
+    <button mat-raised-button color="primary" type="button" (click)="onCreate()" [disabled]="!presetForm.valid" *ngIf="isCreateState">Create</button>
   </span>
   <button mat-raised-button color="primary" (click)="onSave()" *ngIf="!isViewable">Save</button>
   <span class = "close-button">

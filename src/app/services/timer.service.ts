@@ -1,5 +1,5 @@
 import { ConfigService } from './config.service';
-import { Timer, Task } from '../models/preset.model';
+import { Task } from '../models/preset.model';
 import { Injectable } from '@angular/core';
 import { timer, Subscription } from 'rxjs';
 
@@ -35,7 +35,7 @@ export class TimerService {
     timerSound = new Audio();
     color = '#609b9b';
     subscribe: Subscription;
-    public currentPreset = '#Choose preset';
+    public currentPreset = 'Choose preset';
 
     initializeTimersArray(timerArray: Task[]) {
         this.clearTimersArrayAndIndex();

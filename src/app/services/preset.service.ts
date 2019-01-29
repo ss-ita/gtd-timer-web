@@ -1,17 +1,16 @@
-import { PresetModel, Task, PresetModelJson, TaskJson, PresetModelToUpdate, TimerUpdate } from '../models/preset.model';
+import { PresetModel, Task, PresetModelJson, TaskJson } from '../models/preset.model';
 import { HttpClient } from '@angular/common/http';
 import { ConfigService } from './config.service';
 import { TimerService } from './timer.service';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { JwtHelperService } from '@auth0/angular-jwt';
 
 
 @Injectable({ providedIn: 'root' })
 
 export class PresetService {
 
-  presetModelToUpdate: PresetModelToUpdate;
+  presetModelToUpdate: PresetModelJson;
   standardPresets: PresetModel[] = [];
   presetModelJson: PresetModelJson;
   taskJsonArray: TaskJson[] = [];
@@ -40,7 +39,7 @@ export class PresetService {
 
   updatePreset(presetModel: PresetModel, presetToUpdate: PresetModel) {
     this.convertToPresetUpdateModel(presetModel, presetToUpdate);
-    return this.httpClient.put<PresetModelToUpdate>(this.configService.urlPreset + 'UpdatePreset', this.presetModelToUpdate);
+    return this.httpClient.put<PresetModelJson>(this.configService.urlPreset + 'UpdatePreset', this.presetModelToUpdate);
   }
 
   deletePreset(id: number) {
@@ -128,7 +127,7 @@ export class PresetService {
 
   getChosenPresetIndex() {
     for (let index = 0; index < this.presetsArray.length; index++) {
-      if (this.presetsArray[index].presetName === (this.timerService.currentPreset).substring(1)) {
+      if (this.presetsArray[index].presetName === (this.timerService.currentPreset)) {
         this.presetIndex = index;
       }
     }
@@ -155,7 +154,6 @@ export class PresetService {
       this.presetModelJson.tasks[index].lastStartTime = '0001-01-01T00:00:00Z';
       this.presetModelJson.tasks[index].goal = presetModel.tasks[index].hours + ':' + presetModel.tasks[index].minutes
         + ':' + presetModel.tasks[index].seconds;
-      this.presetModelJson.tasks[index].isActive = false;
       this.presetModelJson.tasks[index].isRunning = false;
       this.presetModelJson.tasks[index].watchtype = this.timer;
     }
@@ -181,7 +179,7 @@ export class PresetService {
   }
 
   convertToPresetUpdateModel(presetModel: PresetModel, presetToUpdate: PresetModel) {
-    this.presetModelToUpdate = new PresetModelToUpdate();
+    this.presetModelToUpdate = new PresetModelJson();
     this.presetModelToUpdate.presetName = presetModel.presetName;
     this.presetModelToUpdate.id = presetToUpdate.id;
     this.presetModelToUpdate.tasks = [];
@@ -197,7 +195,6 @@ export class PresetService {
       }
       this.presetModelToUpdate.tasks[index].description = '';
       this.presetModelToUpdate.tasks[index].elapsedTime = 0;
-      this.presetModelToUpdate.tasks[index].isActive = false;
       this.presetModelToUpdate.tasks[index].isRunning = false;
       this.presetModelToUpdate.tasks[index].watchtype = this.timer;
       this.presetModelToUpdate.tasks[index].lastStartTime = '0001-01-01T00:00:00Z';
