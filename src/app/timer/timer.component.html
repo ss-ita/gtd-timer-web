@@ -9,7 +9,7 @@
         <mat-icon>more_vert</mat-icon>
       </button>
       <span class="current-preset"><button class="presets-settings-button" (click)="openPresetFormDialog()">{{timerServise.currentPreset}}</button></span>
-      <button mat-icon-button class="view-preset-menu" (click)="toggle()">
+      <button mat-icon-button class="view-preset-menu" (click)="toggle()" [ngClass]="{rotateIconLeft: isViewable && innerWidth < 1250, rotateIconRight: ((!isViewable && innerWidth < 1250) || innerWidth > 1250)}">
         <mat-icon class="toggle" [inline]="true" >arrow_forward_ios</mat-icon>
       </button>
     </div>

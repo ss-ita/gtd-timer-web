@@ -7,13 +7,13 @@
       <button mat-icon-button [matMenuTriggerFor]="appMenuForChangeView" class="view-change-menu">
         <mat-icon>more_vert</mat-icon>
       </button>
-      <button mat-icon-button class="view-alarm-menu" (click)="toggle()">
+      <button mat-icon-button class="view-alarm-menu" (click)="toggle()" [ngClass]="{rotateIconLeft: isViewable && innerWidth < 1250, rotateIconRight: ((!isViewable && innerWidth < 1250) || innerWidth > 1250)}">
         <mat-icon class="toggle">arrow_forward_ios</mat-icon>
       </button>
     </div>
     <div class="alarm-info" *ngIf="isViewable">
       <ng-template [ngIf]="alarmService.alarmsArray.length==0" class="currentTimeColor">
-        <p class="no-set-alarm">Alarm: #No set alarm</p>
+        <p class="no-set-alarm">Alarm: No set alarm</p>
       </ng-template>
       <div class="alarmList">
         <div class="alarmItem" [ngClass]="{noScrollArea: alarmService.alarmsArray.length<=5}" *ngFor="let alarmModel of alarmService.alarmsArray; let i = index"

@@ -5,7 +5,6 @@
 	min-height: calc(100vh - 49px);
 	width: 100%;
 	background-image: linear-gradient(to top, #d9afd9 0%, #97d9e1 100%);
-	min-width: 1230px;
 }
 
 .mat-icon-button {
@@ -167,14 +166,33 @@
 	top: 0;
 	width: 255px;
 	height: auto;
-	right: -250px;
+	right: -255px;
 	position: absolute;
 	border-radius: 4px;
-	background: white;
+	background: #f9f9f9;
 	word-break: break-all;
-	padding-bottom: 25px;
+	padding-bottom: 20px;
 	padding-top: 15px;
 	max-width: 350px;
+}
+
+.rotateIconLeft {
+	transform: rotate(-180deg);
+	transition-duration: 0.5s;
+}
+
+.rotateIconRight {
+	transform: rotate(0deg);
+	transition-duration: 0.5s;
+}
+
+@media(max-width: 1250px) {
+	.alarm-info {
+		top: -1px;
+		right: 60px;
+		border: 1px solid #d0d0d0;
+		z-index: 100;
+	}
 }
 
 .alarmList {
@@ -187,7 +205,8 @@
 	width: 40px;
 	height: 40px;
 	position: absolute;
-	right: 13px;
+	right: 16px;
+    top: 8px;
 }
 
 .mat-icon.toggle {
