@@ -8,7 +8,7 @@ import { Record } from '../models/record.model';
 })
 export class RecordInfoComponent implements OnInit {
 
-  record:Record ;
+  record: Record;
 
   constructor() { }
 

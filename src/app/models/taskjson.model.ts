@@ -8,4 +8,5 @@ export class TaskJson {
    isActive: boolean;
    isRunning: boolean;
    userId: number;
+   watchType: number;
 }

@@ -157,3 +157,6 @@ app-progress{
 .fas {
     color: black;
 }
+.display-buttons {
+    position: relative;
+}

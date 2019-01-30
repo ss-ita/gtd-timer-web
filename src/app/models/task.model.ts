@@ -14,6 +14,7 @@ export class Task {
     isActive: boolean;
     isRunning: boolean;
     userId: number;
+    watchType: number;
 
     constructor() {
 
@@ -32,7 +33,7 @@ export class Task {
         if (task.elapsedTime != null) {
             const hours = Math.floor(Number(task.elapsedTime) / milisecondsInHour);
             const minutes = Math.floor((Number(task.elapsedTime) - hours * milisecondsInHour) / milisecondsInMinute);
-            const seconds = Math.floor((Number(task.elapsedTime) - hours * milisecondsInHour - minutes * milisecondsInMinute) /  milisecondsInSecond);
+            const seconds = Math.floor((Number(task.elapsedTime) - hours * milisecondsInHour - minutes * milisecondsInMinute) / milisecondsInSecond);
             this.elapsedTime = {
                 hours: hours,
                 minutes: minutes,
@@ -74,11 +75,12 @@ export class Task {
         this.isActive = task.isActive;
         this.isRunning = task.isRunning;
         this.userId = task.userId;
+        this.watchType = task.watchType;
     }
 
     convertToTaskJson(): TaskJson {
 
-        let milisecondsInHour: number  = 3600000;
+        let milisecondsInHour: number = 3600000;
         let milisecondsInMinute: number = 60000;
         let milisecondsInSecond: number = 1000;
 
@@ -116,6 +118,7 @@ export class Task {
             isActive: this.isActive,
             isRunning: this.isRunning,
             userId: this.userId,
+            watchType: this.watchType
         };
         return taskJsonToReturn;
     }

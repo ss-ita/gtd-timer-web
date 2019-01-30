@@ -1,5 +1,5 @@
 import { Injectable, OnInit } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { ConfigService } from './config.service';
 import { Observable, throwError } from 'rxjs';
 import { TaskJson } from '../models/taskjson.model';
@@ -11,24 +11,20 @@ import { StopwatchService } from './stopwatch.service';
 })
 export class TasksService implements OnInit {
 
-    public tasks: TaskCreateJson[] = [];
+    //public tasks: TaskCreateJson[] = [];
+    public stopwatches: TaskCreateJson[] = [];
+    public timers: TaskCreateJson[] = [];
 
     constructor(private http: HttpClient,
         private service: ConfigService,
         private stopwatchService: StopwatchService) { }
     ngOnInit() { }
 
-    public getAllTasks() {
-        return this.http.get(this.service.urlGetAllTasks, {});
-    }
-    getActiveTasksFromServer(): Observable<TaskJson[]> {
-        return this.http.get<TaskJson[]>(this.service.urlTask + 'GetAllActiveTasksByUserId');
-    }
-    switchTaskStatus(task: TaskCreateJson) {
-        return this.http.put<TaskCreateJson>(this.service.urlTask + 'SwitchArchivedStatus', task);
-    }
     startTask(task: TaskCreateJson) {
         return this.http.put<TaskCreateJson>(this.service.urlTask + 'StartTask', task);
+    }
+    deleteTask(id: Number) {
+        return this.http.delete(this.service.urlTask + 'DeleteTask/' + id.toString(), {});
     }
 
     pauseTask(task: TaskCreateJson) {
@@ -46,6 +42,16 @@ export class TasksService implements OnInit {
     updateTask(task: TaskCreateJson) {
         return this.http.put<TaskCreateJson>(this.service.urlTask + 'UpdateTask', task);
     }
+    getTimers(): Observable<TaskJson[]> {
+        return this.http.get<TaskJson[]>(this.service.urlTask + 'GetAllTimersByUserId');
+    }
+    getStopwatches(): Observable<TaskJson[]> {
+        return this.http.get<TaskJson[]>(this.service.urlTask + 'GetAllStopwathesByUserId');
+    }
+    public getAllTasks(): Observable<TaskJson[]> {
+        return this.http.get<TaskJson[]>(this.service.urlGetAllTasks, {});
+    }
+
 
     public importFile(event: any): Observable<any> {
         const fileList: FileList = event.target.files;
@@ -91,20 +97,27 @@ export class TasksService implements OnInit {
             seconds: this.stopwatchService.second,
             lastStartTimeNumber: 0,
             currentSecond: this.stopwatchService.ticks,
-            isStoped: true
+            isStoped: true,
+            isCollapsed: true,
+            watchType: 0,
+            maxValueHour: 0,
+            maxValueMinute: 0,
+            maxValueSecond: 0,
+            isTimerFinished: false,
+            goals: 0
         };
 
         const myObserver = {
             next: _ => { },
             error: _ => { },
             complete: () => {
-                this.getActiveTasksFromServer().subscribe();
+                this.getStopwatches().subscribe();
             },
         };
 
         this.stopwatchService.reset();
         this.createTask(taskToPass).subscribe(myObserver);
-        this.tasks.unshift(taskToPass);
+        this.stopwatches.unshift(taskToPass);
     }
 
     public DisplayTaskOnStopwatchPage(task: TaskCreateJson) {
@@ -116,8 +129,13 @@ export class TasksService implements OnInit {
             % this.stopwatchService.secondPerMinute);
         this.stopwatchService.isStopwatchRun = true;
         this.stopwatchService.start();
-        const indexTaskToDelete = this.tasks.indexOf(task, 0);
-        this.tasks.splice(indexTaskToDelete, 1);
+        const indexTaskToDelete = this.stopwatches.indexOf(task, 0);
+        this.stopwatches.splice(indexTaskToDelete, 1);
     }
+
+
+
+
+
 
 }
