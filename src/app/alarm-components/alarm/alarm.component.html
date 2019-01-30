@@ -151,6 +151,10 @@
         <div class="showTimeStart">
           <div>{{alarmService.calculateTimeStart(alarmService.alarmModel)}}</div></div>
       </ng-template>
+      <ng-template [ngIf]="alarmService.startedAlarmsArray.length==0">
+        <div class="showTimeStart">
+          <div>Today is {{alarmService.currentTime | date:'EEEE'}}, {{alarmService.currentTime | date:'d'}} {{alarmService.currentTime | date:'MMMM'}} {{alarmService.currentTime | date:'yyyy'}}</div></div>
+      </ng-template>
     <div class="button-area">
       <button mat-button class="addAlarmButton" (click)="openSetAlarmPage()">
         <mat-icon>add</mat-icon>
