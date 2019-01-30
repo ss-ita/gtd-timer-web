@@ -13,7 +13,7 @@ import { AlarmService } from '../services/alarm.service';
   selector: 'app-nav-bar',
   templateUrl: './nav-bar.component.html',
   styleUrls: ['./nav-bar.component.css'],
-  providers: [PresetComponent , SignupDialogComponent]
+  providers: [PresetComponent, SignupDialogComponent]
 })
 export class NavBarComponent implements OnInit {
 
@@ -97,6 +97,7 @@ export class NavBarComponent implements OnInit {
         this.userService.redirectUrl = this.router.url;
       }
     });
+    this.alarmService.getAlarmsFromDatabase();
   }
 
   btnClickSettings(): void {

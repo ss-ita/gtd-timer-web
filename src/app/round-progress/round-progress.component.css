@@ -13,3 +13,15 @@
     text-align: center !important;
     top: 35%;
 }
+
+.isTurnOn{
+    color: #609b9b;
+}
+
+.isTurnOff{
+    color: #bfbfbf;
+}
+
+.isStoped{
+    color: #ad2265;
+}

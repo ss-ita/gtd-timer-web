@@ -20,7 +20,7 @@ export class StopwatchService {
   isStopwatchRun = false;
   isStopwatchPause = true;
 
-  color = '#609b9b';
+  color = 'black';
   subscribe: Subscription;
 
   constructor() { }
@@ -30,6 +30,7 @@ export class StopwatchService {
     this.hour = this.minute = this.second = 0;
     this.isStopwatchRun = false;
     this.isStopwatchPause = true;
+    this.color = 'black';
   }
 
   start() {
@@ -52,7 +53,7 @@ export class StopwatchService {
   pause() {
     if (this.isStopwatchRun) {
       this.isStopwatchPause = true;
-      this.color = '#ad2265';
+      this.color = '#c23a33';
       this.subscribe.unsubscribe();
     }
   }

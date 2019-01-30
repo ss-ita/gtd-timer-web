@@ -26,7 +26,7 @@ export class AlarmComponent implements OnInit {
   }
 
   doubleClickFunction(alarmModel: AlarmModel) {
-    if (!alarmModel.isTurnOn) {
+    if (!alarmModel.isOn) {
       this.dialog.open(AlarmDialogComponent, {
         hasBackdrop: true,
         closeOnNavigation: true,
@@ -66,6 +66,21 @@ export class AlarmComponent implements OnInit {
     confirmationDialogRef.componentInstance.btnOkText = 'Confirm';
     confirmationDialogRef.componentInstance.acceptAction = () => {
       this.alarmService.deleteAlarm(index);
+    };
+  }
+
+  openDialogDeleteAllAlarm() {
+    const confirmationDialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      hasBackdrop: true,
+      closeOnNavigation: true,
+      disableClose: false
+    });
+    confirmationDialogRef.componentInstance.title = 'Warning';
+    confirmationDialogRef.componentInstance.message = 'Are you sure to permanently delete all alarms?';
+    confirmationDialogRef.componentInstance.btnCancelText = 'Cancel';
+    confirmationDialogRef.componentInstance.btnOkText = 'Confirm';
+    confirmationDialogRef.componentInstance.acceptAction = () => {
+      this.alarmService.deleteAllAlarms();
     };
   }
 }

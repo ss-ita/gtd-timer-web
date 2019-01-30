@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { AlarmService } from './services/alarm.service';
 
 @Component({
   selector: 'app-root',
@@ -7,4 +8,8 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'gtd-timer-web';
+  constructor(
+    public alarmService: AlarmService) {
+      this.alarmService.getAlarmsFromDatabase();
+    }
 }

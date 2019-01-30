@@ -4,6 +4,7 @@ import { AlarmService } from '../../services/alarm.service';
 import { FormGroup, FormBuilder, Validators, FormControl, AbstractControl, ValidatorFn } from '@angular/forms';
 import { AlarmModel } from '../../models/alarm.model';
 import { RepeatAlarmDialogComponent } from '../repeat-alarm-dialog/repeat-alarm-dialog.component';
+import { database } from 'firebase';
 
 @Component({
   selector: 'app-alarm-dialog',
@@ -32,7 +33,12 @@ export class AlarmDialogComponent implements OnInit {
 
   ngOnInit() {
     if (this.data !== null) {
+      if (this.checkRepeatOption()) {
+        this.alarmService.resetData();
+      }
       this.substituteAlarmValue(this.data.model);
+    } else {
+      this.alarmService.resetData();
     }
 
     this.alarmForm = this.formBuilder.group({
@@ -58,20 +64,35 @@ export class AlarmDialogComponent implements OnInit {
     this.alarmFormDialogRef.close();
   }
 
+  checkRepeatOption() {
+    if (this.data.model.repeat == this.alarmService.repeatOptions[0]
+      || this.data.model.repeat == this.alarmService.repeatOptions[1]
+      || this.data.model.repeat == this.alarmService.repeatOptions[2]) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   convertTimeToDate() {
     const hours = Number(this.hour);
     const minutes = Number(this.minute);
     const date = new Date();
+
     date.setHours(hours);
     date.setMinutes(minutes);
     date.setSeconds(0);
+
+    if (date < (new Date())) {
+      date.setDate((new Date().getDate()) + 1);
+    }
     return date;
   }
 
   convertToAlarmModel() {
     const alarm = new AlarmModel();
-    alarm.isSound = this.isChecked;
-    alarm.isTurnOn = true;
+    alarm.soundOn = this.isChecked;
+    alarm.isOn = true;
     alarm.isPlay = false;
     alarm.repeat = this.repeat;
     alarm.message = this.message;
@@ -85,18 +106,22 @@ export class AlarmDialogComponent implements OnInit {
     this.minute = model.date.getMinutes();
     this.isChecked = model.isSound;
     this.message = model.message;
-    this.repeat = model.repeat;
+    this.repeat = this.alarmService.getRepeatOption(model.cronExpression);
   }
 
   customOptionRepeat() {
-    const presetFormDialogRef = this.dialog.open(RepeatAlarmDialogComponent, {
+    const alarmRepeatFormDialog = this.dialog.open(RepeatAlarmDialogComponent, {
       hasBackdrop: true,
       closeOnNavigation: true,
       disableClose: true
     });
 
-    presetFormDialogRef.afterClosed().subscribe( _ => {
-      this.repeat = this.alarmService.chosenDaysString;
+    alarmRepeatFormDialog.afterClosed().subscribe(_ => {
+      if (this.alarmService.chosenDaysString !== '') {
+        this.repeat = this.alarmService.chosenDaysString;
+      } else {
+        this.repeat = this.alarmService.repeatOptions[0];
+      }
     });
   }
 }

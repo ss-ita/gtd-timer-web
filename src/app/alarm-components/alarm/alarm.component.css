@@ -5,6 +5,7 @@
 	min-height: calc(100vh - 49px);
 	width: 100%;
 	background-image: linear-gradient(to top, #d9afd9 0%, #97d9e1 100%);
+	min-width: 1230px;
 }
 
 .mat-icon-button {
@@ -59,7 +60,6 @@
 	display: inline-block;
 	font-size: 120px;
 }
-
 
 .turnOnPlay-alarm {
 	color: red;
@@ -134,7 +134,8 @@
 	text-decoration: underline;
 	display: inline-block;
 	position: absolute;
-	right: 20px;
+	right: 25px;
+	bottom: 35px;
 	background-color: #b797ff24;
 }
 
@@ -157,7 +158,7 @@
 }
 
 .no-set-alarm {
-	margin: 20px 10px 10px 15px;
+	margin: 10px 10px 26px 15px;
 	font-size: 18px;
 	font-family: Roboto, "Helvetica Neue", sans-serif;
 }
@@ -172,14 +173,14 @@
 	background: white;
 	word-break: break-all;
 	padding-bottom: 25px;
-	padding-top: 5px;
+	padding-top: 15px;
 	max-width: 350px;
 }
 
 .alarmList {
 	margin: 5px;
 	overflow-y: auto;
-	max-height: 350px;
+	max-height: 275px;
 }
 
 .view-alarm-menu {
@@ -196,23 +197,38 @@
 }
 
 .alarmItem {
-	padding: 10px 5px 10px;
+	padding: 10px 5px 0px;
 	margin: 0px 10px;
 	border-bottom: 1px solid grey;
 	position: relative;
+}
+
+.noScrollArea {
+	margin-right: 27px;
+}
+
+.alarmItem :first {
+	padding: 0px 5px 0px;
+}
+
+.alarmBottomOptions {
+	padding: 20px 20px 10px;
+	margin: 15px 32px 0 15px;
+	position: relative;
+	border-top: 0.5px solid black;
 }
 
 .alarmItem:last-child {
 	border-bottom: none;
 }
 
-.alarmItem .mat-icon {
+.alarmItem .mat-icon, .alarmBottomOptions .mat-icon {
 	font-size: 25px !important;
 	height: 25px !important;
 	width: 25px !important;
 }
 
-.alarmItem div {
+.alarmItem div, .alarmBottomOptions div {
 	display: inline-block;
 	vertical-align: -webkit-baseline-middle;
 }
@@ -224,6 +240,15 @@
 	-ms-user-select: none;
 	-o-user-select: none;
 	user-select: none;
+}
+
+.repeatOption {
+	font-size: 14px;
+	display: inline-block;
+	width: 120px;
+	white-space: nowrap;
+	overflow: hidden !important;
+	text-overflow: ellipsis;
 }
 
 .alarmItem .toogle {
@@ -239,20 +264,46 @@
 	min-width: 10px;
 }
 
-.alarmItem .deleteButton .mat-button {
+.alarmBottomOptions .toogle {
+	right: 45px;
+	position: absolute;
+	top: 15px;
+}
+
+.alarmBottomOptions .deleteButton {
+	right: 0px;
+	position: absolute;
+	top: 8px;
 	min-width: 10px;
 }
 
-.alarmItem .deleteButton .mat-button {
+.alarmItem .deleteButton .mat-button, .alarmBottomOptions .deleteButton .mat-button {
+	min-width: 10px;
+}
+
+.alarmItem .deleteButton .mat-button, .alarmBottomOptions .deleteButton .mat-button {
 	padding: 0;
 }
 
-.turnOffAlarm{
-	color: #7e7ed0;
+.turnOffAlarm {
+	color: #5932f39e;
 }
 
-.turnOnAlarm{
-color:#609b9b;
+.turnOnAlarm {
+	color: #609b9b;
+}
+
+.showTimeStart {
+	position: absolute;
+	text-align: center;
+	bottom: 60px;
+	left: 50%;
+	font-size: 20px;
+}
+
+.showTimeStart div {
+	position: relative;
+	left: -50%;
 }
 
 ::ng-deep .mat-slide-toggle-bar {
@@ -267,7 +318,6 @@ color:#609b9b;
 ::ng-deep .mat-slide-toggle:not(.mat-disabled).cdk-focused .mat-slide-toggle-persistent-ripple {
 	background-color: transparent;
 }
-
 
 ::ng-deep .mat-tooltip {
 	max-width: 150px !important;

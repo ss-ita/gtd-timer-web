@@ -34,7 +34,7 @@ export class TimerService {
     isArrayEmpty = true;
 
     timerSound = new Audio();
-    color = '#609b9b';
+    color = 'black';
     subscribe: Subscription;
     public currentPreset = 'Choose preset';
 
@@ -121,7 +121,7 @@ export class TimerService {
     refreshTimer() {
         this.startTimersFromPreset();
         this.pauseTimer();
-        this.color = 'grey';
+        this.color = 'black';
         this.isTimerRun = false;
         this.isTimerPause = true;
 

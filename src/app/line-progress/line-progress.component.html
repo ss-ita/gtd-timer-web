@@ -1,9 +1,9 @@
 <div class="margin-class">
   <ng-template [ngIf]="value < 10">
-    <span class="text" [ngClass]="{'run-stopwatch': isActive, 'pause-stopwatch': isPaused && isActive}"> 0{{value}}</span>
+    <span class="text" [ngStyle]="{'color': color}" > 0{{value}}</span>
   </ng-template>
   <ng-template [ngIf]="value >= 10">
-    <span class="text" [ngClass]="{'run-stopwatch': isActive, 'pause-stopwatch': isPaused && isActive}"> {{value}}</span>
+    <span class="text" [ngStyle]="{'color': color}"> {{value}}</span>
   </ng-template>
-  <span class="text" [ngClass]="{'run-stopwatch': isActive, 'pause-stopwatch': isPaused && isActive}">{{text}}</span>
+  <span class="text" [ngStyle]="{'color': color}" >{{text}}</span>
 </div>
