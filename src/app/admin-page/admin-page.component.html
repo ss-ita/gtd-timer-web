@@ -1,15 +1,13 @@
 <div class="back">
   <div class="my-container">
-    <div class="display-buttons">
-      <div>
-        <div class="buttons">
-          <button mat-raised-button [ngClass]="{'active': roleService.isDisplayUsers}" (click)="roleService.displayUsers()">Users</button>
-          <button mat-raised-button [ngClass]="{'active': roleService.isDisplayAdmins}" (click)="roleService.displayAdmins()">Admins</button>
-        </div>
-      </div>
-    </div>
-    <div class="search-container">
-      <input [(ngModel)]="searchText" class="search" placeholder="Find Timer By Name">
+    <mat-form-field>
+      <mat-select [(value)]="selected">
+        <mat-option value="Users" (click)="roleService.displayUsers()">Users</mat-option>
+        <mat-option value="Admins" (click)="roleService.displayAdmins()">Admins</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <div>
+      <input [(ngModel)]="searchText" class="search" placeholder="Find by email">
     </div>
     <mat-divider></mat-divider>
     <mat-list>
