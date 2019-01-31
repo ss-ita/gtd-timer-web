@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 
 import { timer, Subscription } from 'rxjs';
+import { TaskCreateJson } from '../models/taskCreateJson.model';
 
 @Injectable({
   providedIn: 'root'
@@ -21,7 +22,9 @@ export class StopwatchService {
   isStopwatchPause = true;
 
   color = 'black';
+  task: String = ' ';
   subscribe: Subscription;
+  taskJson: TaskCreateJson;
 
   constructor() { }
 
@@ -78,4 +81,8 @@ export class StopwatchService {
     }
   }
 
+  stopwatchClear() {
+    this.task = ' ';
+    this.reset();
+  }
 }
