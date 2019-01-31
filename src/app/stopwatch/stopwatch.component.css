@@ -21,11 +21,13 @@
     width: 32px !important;
 }
 
-.mat-card{
-    width: 700px;
-    height: 380px;
-    margin: 5% auto;
-    text-align: right;
+.show-time-area {
+	margin: 30px 0px 13px;
+	display: inline-block;
+	font-size: 120px;
+	padding: 5px 5px;
+	border-radius: 50%;
+	min-width: 133.5px;
 }
 
 .background{
@@ -34,12 +36,17 @@
     min-height: calc(100vh - 49px);
     width: 100%;
     background-image: linear-gradient(to top, #d9afd9 0%, #97d9e1 100%);
-    min-width: 820px;
+}
+
+.content-area {
+	width: 700px;
+	height: 380px;
+	margin: 5% auto;
 }
 
 .unselectable{
     margin-top: 5% !important;
-    margin-left: 10%;
+    margin-left: 10px;
     -webkit-touch-callout: none; /* iOS Safari */
 -webkit-user-select: none; /* Safari */
  -khtml-user-select: none; /* Konqueror HTML */
@@ -48,8 +55,11 @@
         user-select: none;
 }
 
-.mat-card-header {
-    height: 280px;
+.mat-card-content {
+	margin-bottom: 30px;
+    margin-top: 9px;
+    margin-left: -9px;
+    text-align: center;
 }
 
 .mat-card-actions{
@@ -66,13 +76,26 @@
     display: flex;
 }
 
-.round-progress{
-    margin-left: 1% !important;
-    margin-top: 5% !important;
+.progress-percentage-wrapper {
+	position: relative;
+	font-size: 50px;
+	width: 200px;
+	height: 200px;
+    display: inline-block;
+    margin: 0 0.5%;
 }
 
 .textsize{
     color: black;
     font-size: 120px;
     margin: 5px;
+}
+
+.positioning {
+    position: absolute;
+    margin-left: auto;
+    margin-right: auto;
+    left: 0;
+    right: 0;
+    bottom: 15px;
 }

@@ -4,80 +4,78 @@
     min-height: calc(100vh - 49px);
     width: 100%;
     background-image: linear-gradient(to top, #d9afd9 0%, #97d9e1 100%);
-    min-width: 820px;
-}
-
-.container {
+    min-width: 100%;
+    }
+    
+    .container {
     position: relative;
-}
-
-.container>div:first-child {
+    }
+    
+    .container>div:first-child {
     width: 100%;
     height: 50px;
     padding-top: 10px;
-}
+    }
 
-#chart {
+    .datepicker {
+    display: inherit;
+    max-width: 200px;
+    }
+
+    #chart {
     margin: 0 25%;
     padding-top: 40px;
-}
-
-.buttons {
+    }
+    
+    .buttons {
     margin-top: 5px;
     margin: 0 10%;
-}
-
-.buttons .mat-raised-button{
-    background-color: #dededa;
-}
- 
-.buttons .active {
+    display: flex;
+    }
+    
+    .buttons .mat-raised-button{
     background-color: white;
-}
-
-.buttons .mat-raised-button:nth-child(1) {
-    margin-left: 80px;
-    border-bottom-right-radius: 0px; 
+    }
+    
+    .buttons .active {
+    background-color: lightgray;
+    }
+    
+    .buttons .mat-raised-button:nth-child(odd) {
+    margin-left: 5%;
+    border-bottom-right-radius: 0px;
     border-top-right-radius: 0px;
-}
-
-.buttons .mat-raised-button:nth-child(2){
-    border-bottom-left-radius: 0px; 
+    margin-top: 17px;
+    height: 35px;
+    min-width: auto;
+    }
+    
+    .buttons .mat-raised-button:nth-child(even){
+    border-bottom-left-radius: 0px;
     border-top-left-radius: 0px;
-}
-
-.buttons .mat-raised-button:nth-child(3) {
-    margin-left: 80px;
-    border-bottom-right-radius: 0px; 
-    border-top-right-radius: 0px;
-}
-
-.buttons .mat-raised-button:nth-child(4){
-    border-bottom-left-radius: 0px; 
-    border-top-left-radius: 0px;
-}
-
-.buttons .mat-raised-button:nth-child(5) {
-    margin-left: 80px;
-    border-bottom-right-radius: 0px; 
-    border-top-right-radius: 0px;
-}
-
-.buttons .mat-raised-button:nth-child(6){
-    border-bottom-left-radius: 0px; 
-    border-top-left-radius: 0px;
-}
-
-#noData {
+    margin-top: 17px;
+    height: 35px;
+    min-width: auto;
+    }
+    
+    ::ng-deep .buttons .mat-form-field {
+    margin-left: 5%;
+    }
+    
+    ::ng-deep .buttons .mat-form-field:last-of-type {
+    margin-left: 2.5%;
+    }
+    
+    #noData {
     padding-top: 50px;
-}
-
-.hidden {
+    }
+    
+    .hidden {
     display: none;
-}
-
-#noData p {
+    }
+    
+    #noData p {
     font-size: x-large;
     width: 350px;
     margin: 0 auto;
-}
+    }
