@@ -27,12 +27,10 @@ export class TasksComponent implements OnInit {
   readonly progress: Observable<number>;
   public searchText: string;
   public taskName: String;
-  public elapsedTime: number;
   subscribe: Subscription;
   displayStopwatch = true;
   displayTimer = false;
   ticks = 0;
-  ticksi = 0;
   milisecondPerSecond = 1000;
   secondPerHour = 3600;
   secondPerMinute = 60;
@@ -98,12 +96,10 @@ export class TasksComponent implements OnInit {
       elapsedTime: 0,
       goal: '',
       lastStartTime: '0001-01-01T00:00:00Z',
-      isActive: true,
       isRunning: false,
       hour: 0,
       minutes: 0,
       seconds: 0,
-      lastStartTimeNumber: 0,
       currentSecond: 0,
       isCollapsed: true,
       isStoped: false,
@@ -112,7 +108,8 @@ export class TasksComponent implements OnInit {
       maxValueMinute: 0,
       maxValueSecond: 0,
       isTimerFinished: false,
-      goals: 0
+      goals: 0,
+      ticksi: 0
     };
 
     const myObserver = {
@@ -135,12 +132,10 @@ export class TasksComponent implements OnInit {
       elapsedTime: 0,
       goal: '',
       lastStartTime: '0001-01-01T00:00:00Z',
-      isActive: true,
       isRunning: false,
       hour: 0,
       minutes: 0,
       seconds: 0,
-      lastStartTimeNumber: 0,
       currentSecond: 0,
       isCollapsed: true,
       isStoped: false,
@@ -149,7 +144,8 @@ export class TasksComponent implements OnInit {
       maxValueMinute: 0,
       maxValueSecond: 0,
       isTimerFinished: false,
-      goals: 0
+      goals: 0,
+      ticksi: 0
     };
 
     const myObserver = {
@@ -169,6 +165,12 @@ export class TasksComponent implements OnInit {
     const indexTaskToDelete = this.taskService.stopwatches.indexOf(task, 0);
     this.taskService.stopwatches.splice(indexTaskToDelete, 1);
   }
+  deleteTimer(task: TaskCreateJson) {
+
+    this.taskService.deleteTask(task.id).subscribe();
+    const indexTaskToDelete = this.taskService.timers.indexOf(task, 0);
+    this.taskService.timers.splice(indexTaskToDelete, 1);
+  }
 
   updateTask(task: TaskCreateJson) {
     this.taskService.updateTask(task).subscribe();
@@ -177,28 +179,27 @@ export class TasksComponent implements OnInit {
     this.taskService.getStopwatches().subscribe(data => {
       this.taskService.stopwatches = [];
       for (let i = 0; i < data.length; ++i) {
-        let toPush: TaskCreateJson = {
+        const toPush: TaskCreateJson = {
           id: data[i].id,
           name: data[i].name,
           description: data[i].description,
           goal: data[i].goal,
           elapsedTime: data[i].elapsedTime,
           lastStartTime: data[i].lastStartTime,
-          isActive: data[i].isActive,
           isRunning: data[i].isRunning,
           watchType: data[i].watchType,
-          hour: 0,
-          minutes: 0,
-          seconds: 0,
+          hour: Math.floor((data[i].elapsedTime / 1000) / this.secondPerHour),
+          minutes: Math.floor(((data[i].elapsedTime / 1000) % this.secondPerHour) / this.secondPerMinute),
+          seconds: Math.floor(((data[i].elapsedTime / 1000) % this.secondPerHour) % this.secondPerMinute),
           isStoped: false,
-          lastStartTimeNumber: 0,
           currentSecond: 0,
           isCollapsed: true,
           maxValueHour: 0,
           maxValueMinute: 0,
           maxValueSecond: 0,
           isTimerFinished: false,
-          goals: 0
+          goals: 0,
+          ticksi: 0
         };
         this.taskService.stopwatches.push(toPush);
       }
@@ -208,28 +209,27 @@ export class TasksComponent implements OnInit {
     this.taskService.getTimers().subscribe(data => {
       this.taskService.timers = [];
       for (let i = 0; i < data.length; ++i) {
-        let toPush: TaskCreateJson = {
+        const toPush: TaskCreateJson = {
           id: data[i].id,
           name: data[i].name,
           description: data[i].description,
           goal: data[i].goal,
           elapsedTime: data[i].elapsedTime,
-          lastStartTime: data[i].lastStartTime,
-          isActive: data[i].isActive,
+          lastStartTime: data[i].lastStartTime, 
           isRunning: data[i].isRunning,
           watchType: data[i].watchType,
           hour: 0,
           minutes: 0,
           seconds: 0,
           isStoped: false,
-          lastStartTimeNumber: 0,
           currentSecond: 0,
           isCollapsed: true,
           maxValueHour: 0,
           maxValueMinute: 0,
           maxValueSecond: 0,
           isTimerFinished: false,
-          goals: 0
+          goals: 0,
+          ticksi: 0
         };
         this.taskService.timers.push(toPush);
       }
@@ -242,45 +242,65 @@ export class TasksComponent implements OnInit {
         event => {
           this.taskService.stopwatches.push(...event.filter(task => task.isActive));
         }
-      )
+      );
   }
 
   exportAllTasksAsXml() {
-    this.taskService.downloadFile("all_tasks.xml", this.configService.urlExportAllTasksAsXml);
+    this.taskService.downloadFile('all_tasks.xml', this.configService.urlExportAllTasksAsXml);
   }
 
   exportAllTasksAsCsv() {
-    this.taskService.downloadFile("all_tasks.csv", this.configService.urlExportAllTasksAsCsv);
+    this.taskService.downloadFile('all_tasks.csv', this.configService.urlExportAllTasksAsCsv);
   }
 
   exportAllActiveTasksAsXml() {
-    this.taskService.downloadFile("active_tasks.xml", this.configService.urlExportAllActiveTasksAsXml);
+    this.taskService.downloadFile('active_tasks.xml', this.configService.urlExportAllActiveTasksAsXml);
   }
 
   exportAllActiveTasksAsCsv() {
-    this.taskService.downloadFile("active_tasks.csv", this.configService.urlExportAllActiveTasksAsCsv);
+    this.taskService.downloadFile('active_tasks.csv', this.configService.urlExportAllActiveTasksAsCsv);
+  }
+  pauseTask(task: TaskCreateJson) {
+    task.isRunning = false;
+    task.isStoped = true;
+    task.elapsedTime = task.currentSecond * 1000;
+
+    this.taskService.pauseTask(task).subscribe();
+  }
+  pauseTimer(task: TaskCreateJson) {
+    task.isRunning = false;
+    task.isStoped = true;
+    this.taskService.pauseTask(task).subscribe();
+  }
+  resetTimer(task: TaskCreateJson) {
+    task.hour = task.minutes = task.seconds = 0;
+    task.isStoped = task.isRunning = false;
+    this.taskService.resetTask(task).subscribe();
+
   }
 
+  reset(task: TaskCreateJson) {
+    task.hour = task.minutes = task.seconds = 0;
 
-  getMiliSecondsFromTime(task: TaskCreateJson) {
-    let now = Date.now();
-    return now - task.lastStartTimeNumber;
+    task.elapsedTime = 0;
+    task.isStoped = task.isRunning = false;
+    this.taskService.resetTask(task).subscribe();
+
   }
-
-
   startTask(task: TaskCreateJson) {
-    this.taskService.startTask(task).subscribe();
-    task.lastStartTimeNumber = Date.now();
-    /*task.lastStartTime = now.getFullYear().toString() + '-' + now.getMonth().toString()
-    + '-' + now.getDay().toString() + 'T' + now.getHours() + ':' + now.getMinutes().toString() + ':'
-    + now.getSeconds().toString() + '.' + now.getMilliseconds().toString();*/
     this.start(task);
+    task.lastStartTime = new Date().toISOString();
+    this.taskService.startTask(task).subscribe();
+
+
   }
   startTimer(task: TaskCreateJson) {
-    this.taskService.startTask(task).subscribe();
-    task.lastStartTimeNumber = Date.now();
     this.startTimeTimer(task);
+    task.lastStartTime = new Date().toISOString();
+    this.taskService.startTask(task).subscribe();
   }
+
+
   startTimeTimer(task: TaskCreateJson) {
     task.isRunning = true;
     if (!task.isStoped) {
@@ -295,15 +315,16 @@ export class TasksComponent implements OnInit {
       if (task.maxValueSecond == null) {
         task.maxValueSecond = 0;
       }
-
-      //task.maxValueSecond = task.goals / 1000;
+      task.goal=task.maxValueHour.toString()+':'+task.maxValueMinute.toString()+':'+task.maxValueSecond.toString();
+      task.hour = task.maxValueHour;
+      task.minutes = task.maxValueMinute;
+      task.seconds = task.maxValueSecond;
+      task.ticksi = (task.hour * this.secondPerHour) + (task.minutes * this.secondPerMinute) + (task.seconds * this.secondPerSecond);
       this.subscribe = timer(0, this.milisecondPerSecond).subscribe((x) => {
-        if (task.isRunning) {
-          this.updateTimeTimer(task);
-        }
+        task.ticksi--; this.updateTimeTimer(task);
       });
     }
-    return this.ticksi;
+    return task.ticksi;
   }
   start(task: TaskCreateJson) {
     task.isRunning = true;
@@ -326,42 +347,17 @@ export class TasksComponent implements OnInit {
       task.seconds = Math.floor((task.currentSecond - (this.secondPerHour * task.hour)) % this.secondPerMinute);
     }
   }
+
   updateTimeTimer(task: TaskCreateJson) {
     if (task.isRunning) {
-      task.currentSecond--;
-      task.hour = task.maxValueHour;
-      task.minutes = task.maxValueMinute;
-      task.seconds = task.maxValueSecond;
-      this.ticksi = (task.hour * this.secondPerHour) + (task.minutes * this.secondPerMinute) + (task.seconds * this.secondPerSecond);
-      task.goals = ((task.maxValueHour * this.secondPerHour) + (task.maxValueMinute * this.secondPerMinute) + (task.maxValueSecond * this.secondPerSecond));
-      task.currentSecond = task.goals / 1000;
-
-      task.hour = Math.floor(task.goals / this.secondPerHour);
-      task.minutes = Math.floor((task.goals % this.secondPerHour) / this.secondPerMinute);
-      task.seconds = Math.floor((task.goals % this.secondPerHour) % this.secondPerMinute);
-      task.currentSecond--;
-
-      //task.hour = Math.floor(task.currentSecond / this.secondPerHour);
-      //task.minutes = Math.floor((task.currentSecond - (this.secondPerHour * task.hour)) / this.secondPerMinute);
-      //task.seconds = Math.floor((task.currentSecond - (this.secondPerHour * task.hour)) % this.secondPerMinute);
-
+      if (task.minutes == 0 && task.seconds == 0 && task.hour == 0) {
+        task.isStoped = true;
+      }else {
+        task.hour = Math.floor(task.ticksi / this.secondPerHour);
+        task.minutes = Math.floor((task.ticksi % this.secondPerHour) / this.secondPerMinute);
+        task.seconds = Math.floor((task.ticksi % this.secondPerHour) % this.secondPerMinute);
+      }
     }
   }
 
-  pauseTask(task: TaskCreateJson) {
-    task.isRunning = false;
-    task.isStoped = true;
-    task.elapsedTime = task.currentSecond * 1000;
-    //task.elapsedTime = this.getMiliSecondsFromTime(task);
-    this.taskService.pauseTask(task).subscribe();
-  }
-
-  reset(task: TaskCreateJson) {
-    task.hour = task.minutes = task.seconds = 0;
-    //task.elapsedTime = this.getMiliSecondsFromTime(task);
-    task.elapsedTime = 0;
-    task.isStoped = task.isRunning = false;
-    this.taskService.resetTask(task).subscribe();
-
-  }
 }

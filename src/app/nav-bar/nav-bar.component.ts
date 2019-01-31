@@ -57,7 +57,7 @@ export class NavBarComponent implements OnInit {
           icon: 'fa-stopwatch fa-lg',
           index: 2
         }, {
-          label: 'Tasks',
+          label: 'List',
           link: './tasks',
           icon: 'fa-tasks fa-lg',
           index: 3
@@ -148,7 +148,7 @@ export class NavBarComponent implements OnInit {
   signin(): void {
     this.navLinks.push(
       {
-          label: 'Tasks',
+          label: 'List',
           link: './tasks',
           icon: 'fa-tasks fa-lg',
           index: 3

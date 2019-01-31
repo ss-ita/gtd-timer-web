@@ -57,7 +57,7 @@ export class UserService {
         icon: 'fa-stopwatch fa-lg',
         index: 2
       }, {
-        label: 'Tasks',
+        label: 'List',
         link: './tasks',
         icon: 'fa-tasks fa-lg',
         index: 3

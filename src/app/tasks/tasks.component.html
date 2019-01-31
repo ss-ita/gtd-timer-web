@@ -111,10 +111,10 @@
           </div>
           <div class="actions">
             <button class="but" (click)="startTimer(task)"><i class="fa fa-play"></i></button>
-            <button class="but" [disabled]="task.isRunning === false" (click)="pause(task)"><i class="fa fa-pause"></i></button>
-            <button class="but" [disabled]="task.isRunning === false" (click)="reset(task)"><i class="fa fa-refresh"></i></button>
+            <button class="but" [disabled]="task.isRunning === false" (click)="pauseTimer(task)"><i class="fa fa-pause"></i></button>
+            <button class="but" [disabled]="task.isRunning === false" (click)="resetTimer(task)"><i class="fa fa-refresh"></i></button>
             <button class="but"><i class="fa fa-bars"></i></button>
-            <button class="but" (click)="deleteTask(task)"><i class="fa fa-times"></i></button>
+            <button class="but" (click)="deleteTimer(task)"><i class="fa fa-times"></i></button>
             <button class="but" [disabled]="task.isRunning === false" (click)="taskService.DisplayTaskOnStopwatchPage(task)"
               [matTooltipShowDelay]="2000" matTooltip="Display on stopwatch page"><i class="fa fa-clock-o"></i></button>
           </div>

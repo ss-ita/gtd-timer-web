@@ -109,7 +109,8 @@ export class TimerService {
                 + (this.maxValueSecond * this.secondPerSecond))) {
                 this.refreshTimer();
                 this.startTimer();
-            } else {
+            } 
+            else {
                 this.isTimerPause = false;
                 this.isTimerRun = true;
                 this.color = '#609b9b';
@@ -169,7 +170,8 @@ export class TimerService {
 
         if (this.ticks > this.maxValueOfHour * this.secondPerHour) {
             this.pauseTimer();
-        } else {
+        } 
+        else {
             this.hour = Math.floor(this.ticks / this.secondPerHour);
             this.minute = Math.floor((this.ticks % this.secondPerHour) / this.secondPerMinute);
             this.second = Math.floor((this.ticks % this.secondPerHour) % this.secondPerMinute);
