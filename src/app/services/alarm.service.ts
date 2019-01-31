@@ -86,7 +86,6 @@ export class AlarmService {
   startAlarm(id: number) {
     const alarm = this.findAlarmById(id);
     alarm.date = this.getNextDate(alarm.cronExpression);
-
     const ms: number = this.calculateSecond(alarm);
     const currentTime = new Date();
     const deadlineTime = new Date();
@@ -101,6 +100,7 @@ export class AlarmService {
     }
     this.setToogleStage();
     this.setTimeColor();
+    this.findFirstTurnOnAlarm();
   }
 
   setToogleStage() {
@@ -201,7 +201,6 @@ export class AlarmService {
         const alarmModel = this.convertToAlarmModelFronCronModel(value);
         this.alarmsArray.push(alarmModel);
       });
-      console.log(this.alarmsArray);
       this.startLoadedAlarms();
     });
   }
@@ -340,7 +339,6 @@ export class AlarmService {
   }
 
   switchAlarmState(id: number) {
-    console.log(this.alarmsArray);
     this.findFirstTurnOnAlarm();
     const model = this.findAlarmById(id);
     if (model.isOn) {
@@ -376,16 +374,19 @@ export class AlarmService {
   refreshCronExpression(cronExpression: string): string {
     let newCronExpression = '';
     if (!cronExpression.includes('*')) {
-      const cronArray = cronExpression.split(' ');
-      const nextDate = new Date();
-      nextDate.setDate(nextDate.getDate() + 1);
-      nextDate.setHours(Number(cronArray[2]));
-      nextDate.setMinutes(Number(cronArray[1]));
-      newCronExpression = this.convertToCronExpression(nextDate, this.repeatOptions[0]);
+      if (this.getNextDate(cronExpression) < (new Date())) {
+        const cronArray = cronExpression.split(' ');
+        const nextDate = new Date();
+        nextDate.setDate(nextDate.getDate() + 1);
+        nextDate.setHours(Number(cronArray[2]));
+        nextDate.setMinutes(Number(cronArray[1]));
+        newCronExpression = this.convertToCronExpression(nextDate, this.repeatOptions[0]);
+      } else {
+        newCronExpression = cronExpression;
+      }
     } else {
       newCronExpression = cronExpression;
     }
-    console.log(newCronExpression);
     return newCronExpression;
   }
 

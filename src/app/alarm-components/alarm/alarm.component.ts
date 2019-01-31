@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AlarmService } from '../../services/alarm.service';
 import { StyleService } from '../../services/style.service';
@@ -15,6 +15,7 @@ import { ConfirmationDialogComponent } from 'src/app/confirmation-dialog/confirm
 export class AlarmComponent implements OnInit {
 
   isViewable = false;
+  innerWidth: any;
 
   constructor(
     public alarmService: AlarmService,
@@ -22,7 +23,12 @@ export class AlarmComponent implements OnInit {
     private dialog: MatDialog) { }
 
   ngOnInit() {
+    this.innerWidth = window.innerWidth;
+  }
 
+  @HostListener('window:resize', ['$event'])
+  onResize(event) {
+    this.innerWidth = window.innerWidth;
   }
 
   doubleClickFunction(alarmModel: AlarmModel) {

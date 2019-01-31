@@ -5,6 +5,7 @@
     width: 100%;
     background-image: linear-gradient(to top, #d9afd9 0%, #97d9e1 100%);
     min-width: 820px;
+    font-family: 'Times New Roman', Times, serif !important;
 }
 
 .fields{
@@ -15,9 +16,11 @@
     flex-direction: row;
     justify-content: space-between;
 }
+
 fieldset{
     border:none;
 }
+
 .but{
     width: 50px;
     height: 36px;
@@ -26,14 +29,17 @@ fieldset{
     background-color: lightgrey;
     position: relative;
 }
+
 .but:hover{
    background-color: darkgrey;
 }
+
 .add_new{
     margin-right: 30%;
     margin-left: 2%;
     position: absolute;
 }
+
 .input{
     width: 320px;
     height: 30px;
@@ -44,22 +50,27 @@ fieldset{
     position: absolute;
     left:75%;
 }
+
 .search{
     margin-left: 4%;
     height: 30px;
 }
+
 select{
     height: 36px;
 }
+
 .taskName{
     font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
     font-size: 14px;
     color:#333;
     padding: 20px;
 }
+
 .right{
     width: 1%;
 }
+
 .textSize{
     font-size: 14px;
 }
@@ -67,12 +78,15 @@ select{
 .name{
     width: 30%;
 }
+
 .time{
     width: 10%;
 }
+
 .goal{
     width: 25%;
 }
+
 .actions{
     width: 50%;
     text-align: right;
@@ -85,35 +99,43 @@ mat-list-item{
     background-color:  #f9f9f9;
     border-radius: 5px;
 
-    }
+}
+
 .my-container{
     position: relative;
     margin-left: 10%;
     margin-right: 10%;
 }
+
 .top-tittles {
     display: flex;
     flex-direction: row;
     margin-top:50px;
     width: 100%;
 }
+
 .sth{
     justify-content: space-between;
 }
+
 .name-title{
     width: 32%;
     cursor: pointer;
 }
+
 .time-title{
     width: 10%;
 }
+
 .goal-title{
     width: 10%;
 }
+
 .progres-title{
     width: 10%;
     text-align: center !important;
 }
+
 .actions-title{
     width: 45%;
     text-align: center;
@@ -126,20 +148,6 @@ app-progress{
 
 .time{
     font-size: 14px;
-}
-
-.upload-wrap {
-    position: relative;
-}
-
-.upload-btn {
-    position: absolute;
-    left: 0;
-    opacity: 0;
-}
-
-.flex-spacer {
-    flex: 1 1 auto;
 }
 
 .btn-group button {
@@ -156,4 +164,12 @@ app-progress{
 
 .fas {
     color: black;
+}
+
+.display-buttons {
+    position: relative;
+}
+
+.mat-icon {
+    transform: scale(1.5);
 }

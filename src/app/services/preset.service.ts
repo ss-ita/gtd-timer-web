@@ -19,7 +19,7 @@ export class PresetService {
   presetToUpdate: PresetModel;
   presetModel: PresetModel;
   presetIndex: number;
-  timer = 0;
+  timer = 1;
 
   constructor(
     private configService: ConfigService,

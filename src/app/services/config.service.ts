@@ -15,12 +15,12 @@ export class ConfigService {
   public readonly urlGoogleLogIn: string = this.baseUrl + '/api/LogIn/GoogleLogin';
   public readonly urlFacebookLogIn: string = this.baseUrl + '/api/LogIn/FacebookLogin';
   public readonly urlExportAllTasksAsXml: string = this.baseUrl + '/api/Tasks/ExportAllTasksAsXmlByUserId';
-  public readonly urlExportAllActiveTasksAsXml: string = this.baseUrl + '/api/Tasks/ExportAllActiveTasksAsXmlByUserId';
-  public readonly urlExportAllArchivedTasksAsXml: string = this.baseUrl + '/api/Tasks/ExportAllArchivedTasksAsXmlByUserId';
   public readonly urlExportTaskAsXmlById: string = this.baseUrl + '/api/Tasks/ExportTaskAsXmlById/';
   public readonly urlExportAllTasksAsCsv: string = this.baseUrl + '/api/Tasks/ExportAllTasksAsCsvByUserId';
-  public readonly urlExportAllActiveTasksAsCsv: string = this.baseUrl + '/api/Tasks/ExportAllActiveTasksAsCsvByUserId';
-  public readonly urlExportAllArchivedTasksAsCsv: string = this.baseUrl + '/api/Tasks/ExportAllArchivedTasksAsCsvByUserId';
+  public readonly urlExportAllStopwatchesAsCsv: string = this.baseUrl + '/api/Tasks/ExportAllStopwatchesAsCsvByUserId';
+  public readonly urlExportAllTimersAsCsv: string = this.baseUrl + '/api/Tasks/ExportAllTimersAsCsvByUserId';
+  public readonly urlExportAllStopwatchesAsXml: string = this.baseUrl + '/api/Tasks/ExportAllStopwatchesAsXmlByUserId';
+  public readonly urlExportAllTimersAsXml: string = this.baseUrl + '/api/Tasks/ExportAllTimersAsXmlByUserId';
   public readonly urlExportTaskAsCsvById: string = this.baseUrl + '/api/Tasks/ExportTaskAsCsvById/';
   public readonly urlImportTasksAsCsv: string = this.baseUrl + '/api/Tasks/ImportTasksAsCsv';
   public readonly urlImportTasksAsXml: string = this.baseUrl + '/api/Tasks/ImportTasksAsXml';

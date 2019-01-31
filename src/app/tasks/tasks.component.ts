@@ -13,28 +13,55 @@ import { ConfigService } from '../services/config.service';
 
 
 })
-export class TasksComponent implements OnInit {
 
+export class TasksComponent implements OnInit {
   constructor(
     public taskService: TasksService,
     private configService: ConfigService
   ) {
     this.progress = this.emulateProgress();
-
   }
 
-
-  public activeTasks: TaskCreateJson[] = [];
   readonly progress: Observable<number>;
   public searchText: string;
   public taskName: String;
-  public elapsedTime: number;
-  isActive: boolean;
-  isPaused: boolean;
   subscribe: Subscription;
+  displayStopwatch = true;
+  displayTimer = false;
   ticks = 0;
   milisecondPerSecond = 1000;
+  secondPerHour = 3600;
+  secondPerMinute = 60;
+  secondPerSecond = 1;
 
+  displayStopwatches() {
+    this.displayStopwatch = true;
+    this.displayTimer = false;
+  }
+
+  displayTimers() {
+    this.displayStopwatch = false;
+    this.displayTimer = true;
+  }
+
+  toggleCollapsed(task: TaskCreateJson) {
+    task.isCollapsed = !task.isCollapsed;
+  }
+
+  fillTime(task) {
+    task.currentSecond = task.elapsedTime / this.milisecondPerSecond ;
+    task.hour = Math.floor(task.currentSecond / this.secondPerHour);
+    task.minutes = Math.floor((task.currentSecond - (this.secondPerHour * task.hour)) / this.secondPerMinute);
+    task.seconds = Math.floor((task.currentSecond - (this.secondPerHour * task.hour)) % this.secondPerMinute);
+    return task;
+  }
+
+  fillTimeAll(list) {
+    for (let task of list) {
+      this.fillTime(task)
+    }
+    return list;
+  }
 
   emulateProgress() {
     return new Observable<number>(observer => {
@@ -54,12 +81,15 @@ export class TasksComponent implements OnInit {
       };
     });
   }
+
   ngOnInit() {
-    this.getActiveTasks();
+    this.getStopwatches();
+    this.getTimers();
   }
 
+
   filterByProperty(propertyName: string) {
-    this.taskService.tasks = this.taskService.tasks.sort((a, b) => {
+    this.taskService.stopwatches = this.taskService.stopwatches.sort((a, b) => {
       switch (propertyName) {
         case 'name': return this.compare(a.name, b.name);
       }
@@ -70,9 +100,7 @@ export class TasksComponent implements OnInit {
     return (a.toLowerCase() < b.toLowerCase() ? -1 : 1);
   }
 
-
-
-  addTask() {
+  addStopwatch() {
     const taskToPass: TaskCreateJson = {
       id: 0,
       name: this.taskName,
@@ -80,86 +108,249 @@ export class TasksComponent implements OnInit {
       elapsedTime: 0,
       goal: '',
       lastStartTime: '0001-01-01T00:00:00Z',
-      isActive: true,
       isRunning: false,
       hour: 0,
       minutes: 0,
       seconds: 0,
-      lastStartTimeNumber: 0,
       currentSecond: 0,
-      isStoped: false
+      isCollapsed: true,
+      isStoped: false,
+      watchType: 0,
+      maxValueHour: 0,
+      maxValueMinute: 0,
+      maxValueSecond: 0,
+      isTimerFinished: false,
+      goals: 0,
+      ticksi: 0
     };
 
     const myObserver = {
       next: task => {
-        this.taskService.tasks.push(task);
+        this.taskService.stopwatches.unshift(task);
       },
-      error: _ => { },
+      error: err => { },
       complete: () => { }
     };
 
     this.taskService.createTask(taskToPass).subscribe(myObserver);
+
+  }
+
+  addTimer() {
+    const taskToPass: TaskCreateJson = {
+      id: 0,
+      name: this.taskName,
+      description: '',
+      elapsedTime: 0,
+      goal: '',
+      lastStartTime: '0001-01-01T00:00:00Z',
+      isRunning: false,
+      hour: 0,
+      minutes: 0,
+      seconds: 0,
+      currentSecond: 0,
+      isCollapsed: true,
+      isStoped: false,
+      watchType: 1,
+      maxValueHour: 0,
+      maxValueMinute: 0,
+      maxValueSecond: 0,
+      isTimerFinished: false,
+      goals: 0,
+      ticksi: 0
+    };
+
+    const myObserver = {
+      next: task => {
+        this.taskService.timers.unshift(task);
+      },
+      error: err => { },
+      complete: () => { }
+    };
+
+    this.taskService.createTask(taskToPass).subscribe(myObserver);
+
   }
 
   deleteTask(task: TaskCreateJson) {
-    this.taskService.switchTaskStatus(task).subscribe();
-    const indexTaskToDelete = this.taskService.tasks.indexOf(task, 0);
-    this.taskService.tasks.splice(indexTaskToDelete, 1);
+    this.taskService.deleteTask(task.id).subscribe();
+    const indexTaskToDelete = this.taskService.stopwatches.indexOf(task, 0);
+    this.taskService.stopwatches.splice(indexTaskToDelete, 1);
+  }
+
+  deleteTimer(task: TaskCreateJson) {
+
+    this.taskService.deleteTask(task.id).subscribe();
+    const indexTaskToDelete = this.taskService.timers.indexOf(task, 0);
+    this.taskService.timers.splice(indexTaskToDelete, 1);
   }
 
   updateTask(task: TaskCreateJson) {
     this.taskService.updateTask(task).subscribe();
   }
 
-  getActiveTasks() {
-    this.taskService.getActiveTasksFromServer().subscribe(data => {
-      this.taskService.tasks = [];
-      for (let i = 0; i < data.length; ++i) {
-       let toPush:TaskCreateJson = {
-id:data[i].id,
-name:data[i].name,
-description: data[i].description,
-goal: data[i].goal,
-elapsedTime: data[i].elapsedTime,
-lastStartTime: data[i].lastStartTime,
-isActive:data[i].isActive,
-isRunning:data[i].isRunning,
-hour:0,
-minutes:0,
-seconds:0,
-isStoped:false,
-lastStartTimeNumber:0,
-currentSecond:0
-       };
-        this.activeTasks.push(toPush);
+  getStopwatches() {
+    this.taskService.getStopwatches().subscribe(data => {
+      this.taskService.stopwatches = [];
+      for (let i = data.length-1; i >= 0; --i) {
+        const toPush: TaskCreateJson = {
+          id: data[i].id,
+          name: data[i].name,
+          description: data[i].description,
+          goal: data[i].goal,
+          elapsedTime: data[i].elapsedTime,
+          lastStartTime: data[i].lastStartTime,
+          isRunning: data[i].isRunning,
+          watchType: data[i].watchType,
+          hour: Math.floor((data[i].elapsedTime / 1000) / this.secondPerHour),
+          minutes: Math.floor(((data[i].elapsedTime / 1000) % this.secondPerHour) / this.secondPerMinute),
+          seconds: Math.floor(((data[i].elapsedTime / 1000) % this.secondPerHour) % this.secondPerMinute),
+          isStoped: false,
+          currentSecond: 0,
+          isCollapsed: true,
+          maxValueHour: 0,
+          maxValueMinute: 0,
+          maxValueSecond: 0,
+          isTimerFinished: false,
+          goals: 0,
+          ticksi: 0
+        };
+        this.taskService.stopwatches.push(toPush);
+      }
+    });
+  }
+  
+  getTimers() {
+    this.taskService.getTimers().subscribe(data => {
+      this.taskService.timers = [];
+      for (let i = data.length-1; i >= 0; --i) {
+        const toPush: TaskCreateJson = {
+          id: data[i].id,
+          name: data[i].name,
+          description: data[i].description,
+          goal: data[i].goal,
+          elapsedTime: data[i].elapsedTime,
+          lastStartTime: data[i].lastStartTime, 
+          isRunning: data[i].isRunning,
+          watchType: data[i].watchType,
+          hour: 0,
+          minutes: 0,
+          seconds: 0,
+          isStoped: false,
+          currentSecond: 0,
+          isCollapsed: true,
+          maxValueHour: 0,
+          maxValueMinute: 0,
+          maxValueSecond: 0,
+          isTimerFinished: false,
+          goals: 0,
+          ticksi: 0
+        };
+        this.taskService.timers.push(toPush);
       }
     });
   }
 
-  getMiliSecondsFromTime(task: TaskCreateJson) {
-    const now = Date.now();
-    return now - task.lastStartTimeNumber;
+  browseFile(event: any) {
+    this.taskService.importFile(event)
+      .subscribe(
+        data => {
+          this.taskService.stopwatches.unshift(...this.fillTimeAll(data).filter(task => task.watchType === 0));
+          this.taskService.timers.unshift(...this.fillTimeAll(data).filter(task => task.watchType === 1));
+        }
+      );
   }
 
-  startTask(task: TaskCreateJson) {
-    this.taskService.startTask(task).subscribe();
-    task.lastStartTimeNumber = Date.now();
-    this.start(task);
+  exportAllTasksAsXml() {
+    this.taskService.downloadFile('all_tasks.xml', this.configService.urlExportAllTasksAsXml);
+  }
+
+  exportAllTasksAsCsv() {
+    this.taskService.downloadFile('all_tasks.csv', this.configService.urlExportAllTasksAsCsv);
+  }
+
+  exportAllStopwatchesAsCsv() {
+    this.taskService.downloadFile("all_stopwatches.csv", this.configService.urlExportAllStopwatchesAsCsv);
+  }
+
+  exportAllTimersAsCsv() {
+    this.taskService.downloadFile("all_timers.csv", this.configService.urlExportAllTimersAsCsv);
+  }
+
+  exportAllStopwatchesAsXml() {
+    this.taskService.downloadFile("all_stopwatches.xml", this.configService.urlExportAllStopwatchesAsXml);
+  }
+
+  exportAllTimersAsXml() {
+    this.taskService.downloadFile("all_timers.xml", this.configService.urlExportAllTimersAsXml);
   }
 
   pauseTask(task: TaskCreateJson) {
     task.isRunning = false;
     task.isStoped = true;
-    task.elapsedTime = this.getMiliSecondsFromTime(task);
+    task.elapsedTime = task.currentSecond * 1000;
+
     this.taskService.pauseTask(task).subscribe();
   }
 
-  reset(task: TaskCreateJson) {
-    this.taskService.resetTask(task).subscribe();
+  pauseTimer(task: TaskCreateJson) {
+    task.isRunning = false;
+    task.isStoped = true;
+    this.taskService.pauseTask(task).subscribe();
+  }
+
+  resetTimer(task: TaskCreateJson) {
     task.hour = task.minutes = task.seconds = 0;
+    task.isStoped = task.isRunning = false;
+    this.taskService.resetTask(task).subscribe();
+
+  }
+
+  reset(task: TaskCreateJson) {
+    task.hour = task.minutes = task.seconds = 0;
+
     task.elapsedTime = 0;
     task.isStoped = task.isRunning = false;
+    this.taskService.resetTask(task).subscribe();
 
+  }
+
+  startTask(task: TaskCreateJson) {
+    this.start(task);
+    task.lastStartTime = new Date().toISOString();
+    this.taskService.startTask(task).subscribe();
+  }
+
+  startTimer(task: TaskCreateJson) {
+    this.startTimeTimer(task);
+    task.lastStartTime = new Date().toISOString();
+    this.taskService.startTask(task).subscribe();
+  }
+
+  startTimeTimer(task: TaskCreateJson) {
+    task.isRunning = true;
+    if (!task.isStoped) {
+      if (task.maxValueHour == null) {
+        task.maxValueHour = 0;
+      }
+
+      if (task.maxValueMinute == null) {
+        task.maxValueMinute = 0;
+      }
+
+      if (task.maxValueSecond == null) {
+        task.maxValueSecond = 0;
+      }
+      task.goal=task.maxValueHour.toString()+':'+task.maxValueMinute.toString()+':'+task.maxValueSecond.toString();
+      task.hour = task.maxValueHour;
+      task.minutes = task.maxValueMinute;
+      task.seconds = task.maxValueSecond;
+      task.ticksi = (task.hour * this.secondPerHour) + (task.minutes * this.secondPerMinute) + (task.seconds * this.secondPerSecond);
+      this.subscribe = timer(0, this.milisecondPerSecond).subscribe((x) => {
+        task.ticksi--; this.updateTimeTimer(task);
+      });
+    }
+    return task.ticksi;
   }
 
   start(task: TaskCreateJson) {
@@ -176,42 +367,25 @@ currentSecond:0
     return this.ticks;
   }
 
-  checkTaskIsPaused(task: TaskCreateJson) {
-    return (task.hour != undefined ? task.hour : 0) != 0
-      && (task.minutes != undefined ? task.minutes : 0) != 0
-      && (task.seconds != undefined ? task.seconds : 0) != 0;
-  }
-
   updateTime(task: TaskCreateJson) {
     if (task.isRunning) {
       task.currentSecond++;
-      task.hour = Math.floor(task.currentSecond / 3600);
-      task.minutes = Math.floor((task.currentSecond - (3600 * task.hour)) / 60);
-      task.seconds = Math.floor((task.currentSecond - (3600 * task.hour)) % 60);
+      task.hour = Math.floor(task.currentSecond / this.secondPerHour);
+      task.minutes = Math.floor((task.currentSecond - (this.secondPerHour * task.hour)) / this.secondPerMinute);
+      task.seconds = Math.floor((task.currentSecond - (this.secondPerHour * task.hour)) % this.secondPerMinute);
     }
   }
 
-  browseFile(event: any) {
-    this.taskService.importFile(event)
-      .subscribe(
-        data => {
-          this.taskService.tasks.push(...data.filter(task => task.isActive));
-        });
+  updateTimeTimer(task: TaskCreateJson) {
+    if (task.isRunning) {
+      if (task.minutes == 0 && task.seconds == 0 && task.hour == 0) {
+        task.isStoped = true;
+      }else {
+        task.hour = Math.floor(task.ticksi / this.secondPerHour);
+        task.minutes = Math.floor((task.ticksi % this.secondPerHour) / this.secondPerMinute);
+        task.seconds = Math.floor((task.ticksi % this.secondPerHour) % this.secondPerMinute);
+      }
+    }
   }
 
-  exportAllTasksAsXml() {
-    this.taskService.downloadFile('all_tasks.xml', this.configService.urlExportAllTasksAsXml);
-  }
-
-  exportAllTasksAsCsv() {
-    this.taskService.downloadFile('all_tasks.csv', this.configService.urlExportAllTasksAsCsv);
-  }
-
-  exportAllActiveTasksAsXml() {
-    this.taskService.downloadFile('active_tasks.xml', this.configService.urlExportAllActiveTasksAsXml);
-  }
-
-  exportAllActiveTasksAsCsv() {
-    this.taskService.downloadFile('active_tasks.csv', this.configService.urlExportAllActiveTasksAsCsv);
-  }
 }

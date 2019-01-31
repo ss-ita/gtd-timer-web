@@ -1,9 +1,9 @@
-<nav mat-tab-nav-bar (window:unload)="tokenexpire()">
+<nav mat-tab-nav-bar class="desktopMenu" (window:unload)="tokenexpire()">
   <a mat-tab-link *ngFor="let link of navLinks" [routerLink]="link.link" routerLinkActive #rla="routerLinkActive"
     [active]="rla.isActive">
-    {{link.label}}
+    <i [class]="'fas '+link.icon"></i><span class="link-label">{{link.label}}</span>
   </a>
-  <a mat-tab-link *ngIf="show" [matMenuTriggerFor]="menu">Welcome {{email}}</a>
+  <a mat-tab-link *ngIf="show" [matMenuTriggerFor]="menu"><i class="fas fa-user fa-lg"></i><span class="link-label">Welcome {{email}}</span></a>
   <mat-menu #menu="matMenu" [backdropClass]="'position'">
     <button mat-menu-item (click)="btnClickSettings()">Settings...</button>
     <button mat-menu-item (click)="btnClickInfo()">Info...</button>
@@ -11,3 +11,27 @@
     <button mat-menu-item (click)="signout()">Sign Out</button>
   </mat-menu>
 </nav>
+
+<div class="mobile-container" class="mobileMenu" (window:unload)="tokenexpire()">
+  <mat-toolbar color="primary" class="mobile-toolbar">
+    <button mat-icon-button onclick="this.blur()" (click)="snav.toggle()"><mat-icon #menuSign>menu</mat-icon></button>
+    <h1 class="mobile-app-name">GTD Timer</h1>
+  </mat-toolbar>
+  <mat-sidenav-container class="mobile-sidenav-container">
+    <mat-sidenav #snav [fixedInViewport]="true" [fixedTopGap]=48>
+      <mat-nav-list>
+        <a mat-list-item *ngFor="let link of navLinks" [routerLink]="link.link" routerLinkActive="active" (click)="snav.close();">
+            <i class="fas"><span [class]="link.icon"></span></i>{{link.label}}
+        </a>
+        <a mat-list-item *ngIf="show" [matMenuTriggerFor]="menu"><i class="fas fa-user fa-lg"></i>Welcome {{email}}</a>
+          <mat-menu #menu="matMenu" [backdropClass]="'position'">
+            <button mat-menu-item (click)="btnClickSettings();snav.close()">Settings...</button>
+            <button mat-menu-item (click)="btnClickInfo();snav.close()">Info...</button>
+            <button mat-menu-item [hidden]="!roleService.isAdmin" (click)="btnClickAdmin();snav.close()">Admin page</button>
+            <button mat-menu-item (click)="signout();snav.close()">Sign Out</button>
+            </mat-menu>
+      </mat-nav-list>
+    </mat-sidenav>
+  </mat-sidenav-container>
+</div>
+<div class="margin-spacer"></div>

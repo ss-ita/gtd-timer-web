@@ -1,72 +1,146 @@
 <div class="background">
   <div class="my-container">
-    <div class="fields">
-      <fieldset class="add_new">
-        <form (submit)="addTask()">
-          <input class="input" placeholder="New Timer Name" type="text" [(ngModel)]="taskName" name="Name">
-          <button class="but" type="submit">Add</button>
-        </form>
-        <div class="upload-wrap">
-          <button mat-raised-button class="btn wide-button"><span class="fas fa-file-import fa-lg"></span></button>
-          <input type="file" (change)="browseFile($event)" name="uploadFile" accept=".csv,.xml" class="upload-btn"/>
-        </div>
-      </fieldset>     
-      <fieldset class="other">
-        <input [(ngModel)]="searchText" class="search" placeholder="Find Timer By Name">
-      </fieldset>
-    </div>
-    <div class="top-tittles">
-      <div class="name-title" (click)="filterByProperty('name')">
-        Name
+    <ng-template [ngIf]="displayStopwatch">
+      <div class="fields">
+        <fieldset class="add_new">
+          <form (submit)="addStopwatch()">
+            <input class="input" placeholder="New Stopwatch Name" type="text" [(ngModel)]="taskName" name="Name">
+            <button class="but" type="submit">Add</button>
+            <mat-menu #shareStopwatch="matMenu">
+              <button type="button" mat-menu-item (click)="exportAllStopwatchesAsXml()">Download .XML</button>
+              <button type="button" mat-menu-item (click)="exportAllStopwatchesAsCsv()">Download .CSV</button>
+              <button type="button" mat-menu-item (click)="importFile.click()">Import file...</button>
+              <input type="file" (change)="browseFile($event)" name="uploadFile" accept=".csv,.xml" #importFile hidden> 
+            </mat-menu>
+            <button type="button" matTooltip="Import/Export" mat-icon-button [matMenuTriggerFor]="shareStopwatch">
+              <mat-icon>import_export</mat-icon>
+            </button>
+          </form>
+        </fieldset>
+        <fieldset class="other">
+          <input [(ngModel)]="searchText" class="search" placeholder="Find Stopwatch By Name">
+        </fieldset>
       </div>
-      <div class="time-title">
-        Goal
-      </div>
-      <div class="goal-title">
-        Time
-      </div>
-      <div class="progres-title">
-        Progress
-      </div>
-      <div class="actions-title">
-        Actions
-      </div>
-    </div>
-    <mat-list>
-      <mat-list-item *ngFor='let task of taskService.tasks | filter: searchText' class="grid-container">
-        <div class="name">
-          <p>{{task.name}}</p>
-          <input [(ngModel)]="task.name" />
-          <button (click)="updateTask(task)">save</button>
+      <div class="top-tittles">
+        <div class="name-title" (click)="filterByProperty('name')">
+          Name
         </div>
-        <div class="time">--:--</div>
-        <div class="time">
-          <app-line-progress class="textsize" [value]="task.hour" [text]="':'"></app-line-progress>
-          <app-line-progress class="textsize" [value]="task.minutes" [text]="':'"></app-line-progress>
-          <app-line-progress class="textsize" [value]="task.seconds" [text]="''"></app-line-progress>
+        <div class="goal-title">
+          Time
         </div>
-        <div class="right">
-          <app-progress [value]="progress | async"></app-progress>
+        <div class="actions-title">
+          Actions
         </div>
-        <div class="actions">
-          <button class="but" (click)="startTask(task)"><i class="fa fa-play"></i></button>
-          <button class="but" [disabled]="task.isRunning === false" (click)="pauseTask(task)"><i class="fa fa-pause"></i></button>
-          <button class="but" [disabled]="task.isRunning === false" (click)="reset(task)"><i class="fa fa-refresh"></i></button>
-          <button class="but"><i class="fa fa-bars"></i></button>
-          <button class="but" (click)="deleteTask(task)"><i class="fa fa-times"></i></button>
-          <button class="but" [disabled]="task.isRunning === false" (click)="taskService.DisplayTaskOnStopwatchPage(task)" [matTooltipShowDelay]="2000"
-            matTooltip="Display on stopwatch page"><i class="fa fa-clock-o"></i></button>
+      </div>
+      <mat-list>
+        <mat-list-item *ngFor='let task of taskService.stopwatches | filter: searchText' class="grid-container">
+          <div class="name">
+            <p (click)="toggleCollapsed(task)">{{task.name}}</p>
+            <div *ngIf="task.isCollapsed===false">
+              <input [(ngModel)]="task.name" />
+              <button (click)="updateTask(task)">save</button>
+            </div>
+          </div>
+          <div class="time">
+            <app-line-progress class="textsize" [value]="task.hour" [text]="':'"></app-line-progress>
+            <app-line-progress class="textsize" [value]="task.minutes" [text]="':'"></app-line-progress>
+            <app-line-progress class="textsize" [value]="task.seconds" [text]="''"></app-line-progress>
+          </div>
+          <div class="actions">
+            <button class="but" (click)="startTask(task)"><i class="fa fa-play"></i></button>
+            <button class="but" [disabled]="task.isRunning === false" (click)="pauseTask(task)"><i class="fa fa-pause"></i></button>
+            <button class="but" [disabled]="task.isRunning === false" (click)="reset(task)"><i class="fa fa-refresh"></i></button>
+            <button class="but"><i class="fa fa-bars"></i></button>
+            <button class="but" (click)="deleteTask(task)"><i class="fa fa-times"></i></button>
+            <button class="but" [disabled]="task.isRunning === false" (click)="taskService.DisplayTaskOnStopwatchPage(task)"
+              [matTooltipShowDelay]="2000" matTooltip="Display on stopwatch page"><i class="fa fa-clock-o"></i></button>
+          </div>
+        </mat-list-item>
+      </mat-list>
+    </ng-template>
+    <ng-template [ngIf]="displayTimer">
+      <div class="fields">
+        <fieldset class="add_new">
+          <form (submit)="addTimer()">
+            <input class="input" placeholder="New Timer Name" type="text" [(ngModel)]="taskName" name="Name">
+            <button class="but" type="submit">Add</button>
+            <mat-menu #shareTimer="matMenu">
+              <button type="button" mat-menu-item (click)="exportAllTimersAsXml()">Download .XML</button>
+              <button type="button" mat-menu-item (click)="exportAllTimersAsCsv()">Download .CSV</button>
+              <button type="button" mat-menu-item (click)="importFile.click()">Import file...</button>
+              <input type="file" (change)="browseFile($event)" name="uploadFile" accept=".csv,.xml" #importFile hidden> 
+            </mat-menu>
+            <button type="button" matTooltip="Import/Export" mat-icon-button [matMenuTriggerFor]="shareTimer">
+              <mat-icon>import_export</mat-icon>
+            </button>
+          </form>
+        </fieldset>
+        <fieldset class="other">
+          <input [(ngModel)]="searchText" class="search" placeholder="Find Timer By Name">
+        </fieldset>
+      </div>
+      <div class="top-tittles">
+        <div class="name-title" (click)="filterByProperty('name')">
+          Name
         </div>
-      </mat-list-item>
-    </mat-list>
+        <div class="time-title">
+          Goal
+        </div>
+        <div class="goal-title">
+          Time
+        </div>
+        <div class="progres-title">
+          Progress
+        </div>
+        <div class="actions-title">
+          Actions
+        </div>
+      </div>
+      <mat-list>
+        <mat-list-item *ngFor='let task of taskService.timers | filter: searchText' class="grid-container">
+          <div class="name">
+            <p (click)="toggleCollapsed(task)">{{task.name}}</p>
+            <div *ngIf="task.isCollapsed===false">
+              <input [(ngModel)]="task.name" />
+              <button (click)="updateTask(task)">save</button>
+            </div>
+          </div>
+          <div class="time">
+            <input matInput type="number" min="0" max="23" [(ngModel)]="task.maxValueHour">
+            <input matInput type="number" min="0" max="59" [(ngModel)]="task.maxValueMinute">
+            <input matInput type="number" min="0" max="59" [(ngModel)]="task.maxValueSecond">
+          </div>
+          <div class="time">
+            <app-line-progress class="textsize" [value]="task.hour" [text]="':'"></app-line-progress>
+            <app-line-progress class="textsize" [value]="task.minutes" [text]="':'"></app-line-progress>
+            <app-line-progress class="textsize" [value]="task.seconds" [text]="''"></app-line-progress>
+          </div>
+          <div class="right">
+            <app-progress [value]="progress | async"></app-progress>
+          </div>
+          <div class="actions">
+            <button class="but" (click)="startTimer(task)"><i class="fa fa-play"></i></button>
+            <button class="but" [disabled]="task.isRunning === false" (click)="pauseTimer(task)"><i class="fa fa-pause"></i></button>
+            <button class="but" [disabled]="task.isRunning === false" (click)="resetTimer(task)"><i class="fa fa-refresh"></i></button>
+            <button class="but"><i class="fa fa-bars"></i></button>
+            <button class="but" (click)="deleteTimer(task)"><i class="fa fa-times"></i></button>
+            <button class="but" [disabled]="task.isRunning === false" (click)="taskService.DisplayTaskOnStopwatchPage(task)"
+              [matTooltipShowDelay]="2000" matTooltip="Display on stopwatch page"><i class="fa fa-clock-o"></i></button>
+          </div>
+        </mat-list-item>
+      </mat-list>
+    </ng-template>
     <mat-list>
       <mat-list-item class="grid-container">
-        <div class="flex-spacer"></div>
-        <div class="btn-group">
-            <button (click)="exportAllActiveTasksAsXml()"><span class="fas fa-file-excel fa-lg"></span>&nbsp;<span class="fas fa fa-download fa-lg"></span></button>
-            <button (click)="exportAllActiveTasksAsCsv()"><span class="fas fa-file-csv fa-lg"></span>&nbsp;<span class="fas fa fa-download fa-lg"></span></button>
+        <div class="display-buttons">
+          <div>
+            <div class="buttons">
+              <button mat-raised-button [ngClass]="{'active': displayStopwatch}" (click)="displayStopwatches()">Stopwatches</button>
+              <button mat-raised-button [ngClass]="{'active': displayTimer}" (click)="displayTimers()">Timers</button>
+            </div>
+          </div>
         </div>
       </mat-list-item>
     </mat-list>
   </div>
-  
+</div>

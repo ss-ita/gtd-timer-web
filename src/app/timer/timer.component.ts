@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { FormBuilder, FormGroup, AbstractControl } from '@angular/forms';
 import { TimerService } from '../services/timer.service';
 import { PresetDialogComponent } from '../preset-dialog/preset-dialog.component';
@@ -17,6 +17,7 @@ export class TimerComponent implements OnInit {
 
   timerForm: FormGroup;
   isViewable: boolean;
+  innerWidth: any;
 
   constructor(private formBuilder: FormBuilder,
     private presetComponent: PresetComponent,
@@ -64,6 +65,12 @@ export class TimerComponent implements OnInit {
     this.presetComponent.getAllStandardAndCustomPresets();
     this.timerServise.getIsTimerArrayEmpty();
     this.isViewable = false;
+    this.innerWidth = window.innerWidth;
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event) {
+    this.innerWidth = window.innerWidth;
   }
 
   getErrorMessageHour() {

@@ -89,22 +89,26 @@ export class SettingsComponent implements OnInit {
           this.jwtservice.signout();
           this.navbar.navLinks.next([
             {
-              label: 'Timer',
-              link: './timer',
-              index: 0
-            }, {
-              label: 'Alarm',
-              link: './alarm',
-              index: 1
-            }, {
-              label: 'Stopwatch',
-              link: './stopwatch',
-              index: 2
-            }, {
-              label: 'Sign In',
-              link: './signin',
-              index: 3
-            }
+          label: 'Timer',
+          link: './timer',
+          icon: 'fa-clock fa-lg',
+          index: 0
+        }, {
+          label: 'Alarm',
+          link: './alarm',
+          icon: 'fa-bell fa-lg',
+          index: 1
+        }, {
+          label: 'Stopwatch',
+          link: './stopwatch',
+          icon: 'fa-stopwatch fa-lg',
+          index: 2
+        }, {
+          label: 'Sign In',
+          link: './signin',
+          icon: 'fa-sign-in-alt fa-lg',
+          index: 3
+        }
           ]);
           this.navbar.show.next(false);
           this.router.navigateByUrl('/signin');

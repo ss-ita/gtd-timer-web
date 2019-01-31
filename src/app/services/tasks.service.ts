@@ -1,34 +1,32 @@
 import { Injectable, OnInit } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { ConfigService } from './config.service';
 import { Observable, throwError } from 'rxjs';
 import { TaskJson } from '../models/taskjson.model';
 import { TaskCreateJson } from '../models/taskCreateJson.model';
 import { StopwatchService } from './stopwatch.service';
+import { ToasterService } from './toaster.service';
 
 @Injectable({
     providedIn: 'root'
 })
 export class TasksService implements OnInit {
 
-    public tasks: TaskCreateJson[] = [];
+    public stopwatches: TaskCreateJson[] = [];
+    public timers: TaskCreateJson[] = [];
 
     constructor(private http: HttpClient,
         private service: ConfigService,
-        private stopwatchService: StopwatchService) { }
+        public stopwatchService: StopwatchService,
+        private toasterService: ToasterService
+        ) { }
     ngOnInit() { }
 
-    public getAllTasks() {
-        return this.http.get(this.service.urlGetAllRecordsByUserId, {});
-    }
-    getActiveTasksFromServer(): Observable<TaskJson[]> {
-        return this.http.get<TaskJson[]>(this.service.urlTask + 'GetAllActiveTasksByUserId');
-    }
-    switchTaskStatus(task: TaskCreateJson) {
-        return this.http.put<TaskCreateJson>(this.service.urlTask + 'SwitchArchivedStatus', task);
-    }
     startTask(task: TaskCreateJson) {
         return this.http.put<TaskCreateJson>(this.service.urlTask + 'StartTask', task);
+    }
+    deleteTask(id: Number) {
+        return this.http.delete(this.service.urlTask + 'DeleteTask/' + id.toString(), {});
     }
 
     pauseTask(task: TaskCreateJson) {
@@ -46,6 +44,15 @@ export class TasksService implements OnInit {
     updateTask(task: TaskCreateJson) {
         return this.http.put<TaskCreateJson>(this.service.urlTask + 'UpdateTask', task);
     }
+    getTimers(): Observable<TaskJson[]> {
+        return this.http.get<TaskJson[]>(this.service.urlTask + 'GetAllTimersByUserId');
+    }
+    getStopwatches(): Observable<TaskJson[]> {
+        return this.http.get<TaskJson[]>(this.service.urlTask + 'GetAllStopwathesByUserId');
+    }
+    public getAllTasks(): Observable<TaskJson[]> {
+        return this.http.get<TaskJson[]>(this.service.urlGetAllTasks, {});
+    }
 
     public importFile(event: any): Observable<any> {
         const fileList: FileList = event.target.files;
@@ -58,7 +65,8 @@ export class TasksService implements OnInit {
             } else if (file.name.split('.').pop() === 'csv') {
                 return this.http.post(this.service.urlImportTasksAsCsv, formData);
             } else {
-                return throwError(Error);
+                this.toasterService.showToaster("Unsupported file extension!");
+                return throwError("Unsupported file extension!");
             }
         }
     }
@@ -76,48 +84,13 @@ export class TasksService implements OnInit {
                 document.body.removeChild(a);
             });
     }
-    public addTaskFromStopwatch() {
-        const taskToPass: TaskCreateJson = {
-            id: 0,
-            name: '',
-            description: '',
-            elapsedTime: this.stopwatchService.ticks * 1000,
-            goal: '',
-            lastStartTime: '0001-01-01T00:00:00Z',
-            isActive: true,
-            isRunning: false,
-            hour: this.stopwatchService.hour,
-            minutes: this.stopwatchService.minute,
-            seconds: this.stopwatchService.second,
-            lastStartTimeNumber: 0,
-            currentSecond: this.stopwatchService.ticks,
-            isStoped: true
-        };
-
-        const myObserver = {
-            next: _ => { },
-            error: _ => { },
-            complete: () => {
-                this.getActiveTasksFromServer().subscribe();
-            },
-        };
-
-        this.stopwatchService.reset();
-        this.createTask(taskToPass).subscribe(myObserver);
-        this.tasks.unshift(taskToPass);
-    }
 
     public DisplayTaskOnStopwatchPage(task: TaskCreateJson) {
-        this.stopwatchService.ticks = task.currentSecond;
-        this.stopwatchService.hour = Math.floor(this.stopwatchService.ticks / this.stopwatchService.secondPerHour);
-        this.stopwatchService.minute = Math.floor((this.stopwatchService.ticks % this.stopwatchService.secondPerHour)
-            / this.stopwatchService.secondPerMinute);
-        this.stopwatchService.second = Math.floor((this.stopwatchService.ticks % this.stopwatchService.secondPerHour)
-            % this.stopwatchService.secondPerMinute);
+        this.stopwatchService.task = task.name;
+        this.stopwatchService.taskJson = task;
+        this.stopwatchService.color = '#609b9b';
+        this.stopwatchService.isStopwatchPause = false;
         this.stopwatchService.isStopwatchRun = true;
-        this.stopwatchService.start();
-        const indexTaskToDelete = this.tasks.indexOf(task, 0);
-        this.tasks.splice(indexTaskToDelete, 1);
     }
 
 }

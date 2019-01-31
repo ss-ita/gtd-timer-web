@@ -44,26 +44,32 @@ export class UserService {
       {
         label: 'Timer',
         link: './timer',
+        icon: 'fa-clock fa-lg',
         index: 0
       }, {
         label: 'Alarm',
         link: './alarm',
+        icon: 'fa-bell fa-lg',
         index: 1
       }, {
         label: 'Stopwatch',
         link: './stopwatch',
+        icon: 'fa-stopwatch fa-lg',
         index: 2
       }, {
-        label: 'Tasks',
+        label: 'List',
         link: './tasks',
+        icon: 'fa-tasks fa-lg',
         index: 3
       }, {
         label: 'Statistics',
         link: './statistics',
+        icon: 'fa-chart-pie fa-lg',
         index: 4
       }, {
         label: 'History',
         link: './history',
+        icon: 'fa-history fa-lg',
         index: 5
       }]);
     this.navbar.show.next(true);
