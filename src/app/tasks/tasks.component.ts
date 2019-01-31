@@ -5,7 +5,6 @@ import { TasksService } from '../services/tasks.service';
 import { timer, Subscription } from 'rxjs';
 import { ConfigService } from '../services/config.service';
 
-
 @Component({
   selector: 'app-tasks',
   templateUrl: './tasks.component.html',
@@ -14,14 +13,13 @@ import { ConfigService } from '../services/config.service';
 
 
 })
-export class TasksComponent implements OnInit {
 
+export class TasksComponent implements OnInit {
   constructor(
     public taskService: TasksService,
     private configService: ConfigService
   ) {
     this.progress = this.emulateProgress();
-
   }
 
   readonly progress: Observable<number>;
@@ -36,20 +34,34 @@ export class TasksComponent implements OnInit {
   secondPerMinute = 60;
   secondPerSecond = 1;
 
-
   displayStopwatches() {
     this.displayStopwatch = true;
     this.displayTimer = false;
   }
+
   displayTimers() {
     this.displayStopwatch = false;
     this.displayTimer = true;
   }
+
   toggleCollapsed(task: TaskCreateJson) {
     task.isCollapsed = !task.isCollapsed;
   }
 
+  fillTime(task) {
+    task.currentSecond = task.elapsedTime / this.milisecondPerSecond ;
+    task.hour = Math.floor(task.currentSecond / this.secondPerHour);
+    task.minutes = Math.floor((task.currentSecond - (this.secondPerHour * task.hour)) / this.secondPerMinute);
+    task.seconds = Math.floor((task.currentSecond - (this.secondPerHour * task.hour)) % this.secondPerMinute);
+    return task;
+  }
 
+  fillTimeAll(list) {
+    for (let task of list) {
+      this.fillTime(task)
+    }
+    return list;
+  }
 
   emulateProgress() {
     return new Observable<number>(observer => {
@@ -165,6 +177,7 @@ export class TasksComponent implements OnInit {
     const indexTaskToDelete = this.taskService.stopwatches.indexOf(task, 0);
     this.taskService.stopwatches.splice(indexTaskToDelete, 1);
   }
+
   deleteTimer(task: TaskCreateJson) {
 
     this.taskService.deleteTask(task.id).subscribe();
@@ -175,10 +188,11 @@ export class TasksComponent implements OnInit {
   updateTask(task: TaskCreateJson) {
     this.taskService.updateTask(task).subscribe();
   }
+
   getStopwatches() {
     this.taskService.getStopwatches().subscribe(data => {
       this.taskService.stopwatches = [];
-      for (let i = 0; i < data.length; ++i) {
+      for (let i = data.length-1; i >= 0; --i) {
         const toPush: TaskCreateJson = {
           id: data[i].id,
           name: data[i].name,
@@ -205,10 +219,11 @@ export class TasksComponent implements OnInit {
       }
     });
   }
+  
   getTimers() {
     this.taskService.getTimers().subscribe(data => {
       this.taskService.timers = [];
-      for (let i = 0; i < data.length; ++i) {
+      for (let i = data.length-1; i >= 0; --i) {
         const toPush: TaskCreateJson = {
           id: data[i].id,
           name: data[i].name,
@@ -239,8 +254,9 @@ export class TasksComponent implements OnInit {
   browseFile(event: any) {
     this.taskService.importFile(event)
       .subscribe(
-        event => {
-          this.taskService.stopwatches.push(...event.filter(task => task.isActive));
+        data => {
+          this.taskService.stopwatches.unshift(...this.fillTimeAll(data).filter(task => task.watchType === 0));
+          this.taskService.timers.unshift(...this.fillTimeAll(data).filter(task => task.watchType === 1));
         }
       );
   }
@@ -253,13 +269,22 @@ export class TasksComponent implements OnInit {
     this.taskService.downloadFile('all_tasks.csv', this.configService.urlExportAllTasksAsCsv);
   }
 
-  exportAllActiveTasksAsXml() {
-    this.taskService.downloadFile('active_tasks.xml', this.configService.urlExportAllActiveTasksAsXml);
+  exportAllStopwatchesAsCsv() {
+    this.taskService.downloadFile("all_stopwatches.csv", this.configService.urlExportAllStopwatchesAsCsv);
   }
 
-  exportAllActiveTasksAsCsv() {
-    this.taskService.downloadFile('active_tasks.csv', this.configService.urlExportAllActiveTasksAsCsv);
+  exportAllTimersAsCsv() {
+    this.taskService.downloadFile("all_timers.csv", this.configService.urlExportAllTimersAsCsv);
   }
+
+  exportAllStopwatchesAsXml() {
+    this.taskService.downloadFile("all_stopwatches.xml", this.configService.urlExportAllStopwatchesAsXml);
+  }
+
+  exportAllTimersAsXml() {
+    this.taskService.downloadFile("all_timers.xml", this.configService.urlExportAllTimersAsXml);
+  }
+
   pauseTask(task: TaskCreateJson) {
     task.isRunning = false;
     task.isStoped = true;
@@ -267,11 +292,13 @@ export class TasksComponent implements OnInit {
 
     this.taskService.pauseTask(task).subscribe();
   }
+
   pauseTimer(task: TaskCreateJson) {
     task.isRunning = false;
     task.isStoped = true;
     this.taskService.pauseTask(task).subscribe();
   }
+
   resetTimer(task: TaskCreateJson) {
     task.hour = task.minutes = task.seconds = 0;
     task.isStoped = task.isRunning = false;
@@ -287,19 +314,18 @@ export class TasksComponent implements OnInit {
     this.taskService.resetTask(task).subscribe();
 
   }
+
   startTask(task: TaskCreateJson) {
     this.start(task);
     task.lastStartTime = new Date().toISOString();
     this.taskService.startTask(task).subscribe();
-
-
   }
+
   startTimer(task: TaskCreateJson) {
     this.startTimeTimer(task);
     task.lastStartTime = new Date().toISOString();
     this.taskService.startTask(task).subscribe();
   }
-
 
   startTimeTimer(task: TaskCreateJson) {
     task.isRunning = true;
@@ -326,6 +352,7 @@ export class TasksComponent implements OnInit {
     }
     return task.ticksi;
   }
+
   start(task: TaskCreateJson) {
     task.isRunning = true;
     if (!task.isStoped) {
@@ -339,6 +366,7 @@ export class TasksComponent implements OnInit {
     }
     return this.ticks;
   }
+
   updateTime(task: TaskCreateJson) {
     if (task.isRunning) {
       task.currentSecond++;
