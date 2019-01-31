@@ -3,7 +3,7 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: true,
+  production: false,
   firebase: {
     apiKey: 'AIzaSyAe8XrKaqFrpgYC80z5-L1FEnGdpCpXSHI',
     authDomain: 'gtd-timer.firebaseapp.com',
@@ -12,7 +12,7 @@ export const environment = {
     storageBucket: 'gtd-timer.appspot.com',
     messagingSenderId: '43786259325'
   },
-  apiUrl:"https://localhost:44398"
+  apiUrl: 'https://localhost:44398'
 };
 
 /*

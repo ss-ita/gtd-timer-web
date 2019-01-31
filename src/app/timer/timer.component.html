@@ -9,7 +9,7 @@
         <mat-icon>more_vert</mat-icon>
       </button>
       <span class="current-preset"><button class="presets-settings-button" (click)="openPresetFormDialog()">{{timerServise.currentPreset}}</button></span>
-      <button mat-icon-button class="view-preset-menu" (click)="toggle()">
+      <button mat-icon-button class="view-preset-menu" (click)="toggle()" [ngClass]="{rotateIconLeft: isViewable && innerWidth < 1250, rotateIconRight: ((!isViewable && innerWidth < 1250) || innerWidth > 1250)}">
         <mat-icon class="toggle" [inline]="true" >arrow_forward_ios</mat-icon>
       </button>
     </div>
@@ -33,12 +33,11 @@
       </ng-template>
       <ng-template [ngIf]="styleService.isLineStyle">
         <div class="container-stopwatch" class="unselectable">
-          <app-line-progress class="text" [value]="timerServise.hour" [isActive]="timerServise.isTimerRun" [isPaused]="timerServise.isTimerPause"
-            [text]="':'"></app-line-progress>
-          <app-line-progress class="text" [value]="timerServise.minute" [isActive]="timerServise.isTimerRun" [isPaused]="timerServise.isTimerPause"
-            [text]="':'"></app-line-progress>
-          <app-line-progress class="text" [value]="timerServise.second" [isActive]="timerServise.isTimerRun" [isPaused]="timerServise.isTimerPause"
-            [text]="''"></app-line-progress>
+          <app-line-progress class="text" [value]="timerServise.hour" [color]="timerServise.color"></app-line-progress>
+          <div class="semicolomn">:</div>
+          <app-line-progress class="text" [value]="timerServise.minute" [color]="timerServise.color"></app-line-progress>
+          <div class="semicolomn">:</div>
+          <app-line-progress class="text" [value]="timerServise.second" [color]="timerServise.color" [text]="''"></app-line-progress>
         </div>
       </ng-template>
     </mat-card-header>
@@ -59,6 +58,9 @@
         <mat-error>{{getErrorMessageMinuteAndSecond()}}</mat-error>
       </mat-form-field>
       <div class="button-area">
+          <button mat-icon-button [disabled]="timerServise.isTimerRun === false" (click)="timerServise.previousTimer()">
+              <mat-icon>first_page</mat-icon>
+          </button>
           <button mat-icon-button (click)="timerServise.startTimer()" [disabled]="(timerServise.maxValueHour == null 
             && timerServise.maxValueMinute == null && timerServise.maxValueSecond == null) || !timerForm.valid || timerServise.isTimerPause === false">
             <mat-icon>arrow_right</mat-icon>
@@ -69,8 +71,8 @@
           <button mat-icon-button [disabled]="timerServise.isTimerRun === false" (click)="timerServise.refreshTimer()">
             <mat-icon>refresh</mat-icon>
           </button>
-          <button mat-icon-button [disabled]="timerServise.isTimerRun === false" (click)="timerServise.resetTimer()">
-            <mat-icon>stop</mat-icon>
+          <button mat-icon-button [disabled]="timerServise.isTimerRun === false" (click)="timerServise.nextTimer()">
+            <mat-icon>last_page</mat-icon>
           </button>
       </div>
     </mat-card-actions>

@@ -9,7 +9,7 @@ import { Observable } from 'rxjs';
 import { AlarmDialogNotificationComponent } from '../alarm-components/alarm-dialog-notification/alarm-dialog-notification.component';
 import { RepeatAlarmModel } from '../models/repeat-alarm.model';
 
-declare var require: any;
+declare let require: any;
 
 @Injectable({
   providedIn: 'root'
@@ -19,11 +19,13 @@ export class AlarmService {
 
   colorTime = 'grey';
   colorToggle = 'primary';
-  currentTimeColor = '#9393e2';
+  currentTimeColor = '#5932f39e';
   index: number;
   stopAlarm = false;
   showToaster = true;
   isAuthorized = false;
+  alarmsToogle = false;
+  isActive = false;
   chosenDaysString = '';
   alarmModel: AlarmModel = null;
   alarmSound = new Audio(this.configService.urlSoundAlarm);
@@ -40,6 +42,7 @@ export class AlarmService {
   currentTime: Date = new Date();
   alarmsArray: AlarmModel[] = [];
   startedAlarmsArray: AlarmModel[] = [];
+  alreadyExecuted = false;
 
   constructor(
     private configService: ConfigService,
@@ -52,9 +55,7 @@ export class AlarmService {
       this.currentTime = new Date();
     }, 250);
 
-    if (this.isAuthorized && this.alarmsArray.length === 0) {
-      this.loadAlarmsFromDatabase();
-    }
+    this.getAlarmsFromDatabase();
   }
 
   createAlarm(alarmModel: AlarmCronModel) {
@@ -73,10 +74,18 @@ export class AlarmService {
     return this.httpClient.get<AlarmCronModel[]>(this.configService.urlAlarm + 'GetAllAlarmsByUserId');
   }
 
+  getAlarmsFromDatabase() {
+    if (this.isAuthorized && this.alarmsArray.length === 0) {
+      if (!this.alreadyExecuted) {
+        this.alreadyExecuted = true;
+        this.loadAlarmsFromDatabase();
+      }
+    }
+  }
+
   startAlarm(id: number) {
     const alarm = this.findAlarmById(id);
     alarm.date = this.getNextDate(alarm.cronExpression);
-
     const ms: number = this.calculateSecond(alarm);
     const currentTime = new Date();
     const deadlineTime = new Date();
@@ -89,7 +98,17 @@ export class AlarmService {
     if (this.showToaster) {
       this.toasterService.showToaster(this.calculateTimeStart(alarm));
     }
+    this.setToogleStage();
     this.setTimeColor();
+    this.findFirstTurnOnAlarm();
+  }
+
+  setToogleStage() {
+    if ((this.alarmsArray.length == this.startedAlarmsArray.length) && this.alarmsArray.length != 0) {
+      this.alarmsToogle = true;
+    } else {
+      this.alarmsToogle = false;
+    }
   }
 
   findAlarmById(id: number) {
@@ -100,9 +119,12 @@ export class AlarmService {
   }
 
   playAlarm() {
+    this.colorTime = 'red';
+    this.isActive = true;
     const alarm = this.findAlarmById(this.alarmModel.id);
+    this.showNotificationWindow(alarm.message);
     this.alarmSound.loop = true;
-    if (alarm.isSound) {
+    if (alarm.soundOn) {
       this.alarmSound.volume = 1;
     } else {
       this.alarmSound.volume = 0;
@@ -110,8 +132,6 @@ export class AlarmService {
 
     alarm.isPlay = true;
     this.alarmSound.play();
-    this.colorTime = 'red';
-    this.showNotificationWindow(alarm.message);
   }
 
   stopAlarmPlaying() {
@@ -140,25 +160,28 @@ export class AlarmService {
       const currentDate = new Date();
       alarm.date = new Date(date.getTime());
       if (date > currentDate) {
-        alarm.isTurnOn = true;
+        alarm.isOn = true;
         this.startAlarm(alarm.id);
         this.findFirstTurnOnAlarm();
       } else {
-        alarm.isTurnOn = false;
+        alarm.isOn = false;
       }
       this.stopAlarm = false;
       this.showToaster = true;
     } else {
-      alarm.isTurnOn = false;
+      alarm.isOn = false;
     }
 
-    if (alarm.isTurnOn == false && this.isAuthorized) {
+    if (alarm.isOn == false && this.isAuthorized) {
       const cronModel = this.convertToCronModelFromAlarmModel(alarm);
       this.updateAlarm(cronModel).subscribe(date => {
       });
     }
+
+    this.isActive = false;
     this.setTimeColor();
     this.findFirstTurnOnAlarm();
+    this.setToogleStage();
   }
 
   isLoggedIn() {
@@ -186,7 +209,7 @@ export class AlarmService {
     if (this.isTurnOnAlarms() && !this.alarmModel.isPlay) {
       this.colorTime = '#609b9b';
     } else if (this.isTurnOnAlarms() && this.alarmModel.isPlay) {
-      this.colorTime = 'red';
+      this.colorTime = '#c23a33';
     } else {
       this.colorTime = 'grey';
     }
@@ -205,6 +228,13 @@ export class AlarmService {
 
     this.alarmsArray.splice(index, 1);
     this.findFirstTurnOnAlarm();
+    this.setToogleStage();
+  }
+
+  deleteAllAlarms() {
+    while (this.alarmsArray.length != 0) {
+      this.deleteAlarm(0);
+    }
   }
 
   clearData() {
@@ -257,7 +287,7 @@ export class AlarmService {
 
   findTurnOnAlarms() {
     this.startedAlarmsArray = this.alarmsArray.filter(value => {
-      return value.isTurnOn == true;
+      return value.isOn == true;
     });
   }
 
@@ -286,7 +316,7 @@ export class AlarmService {
     if (this.alarmsArray.length != 0 && this.isTurnOnAlarms()) {
       this.showToaster = false;
       this.alarmsArray.forEach((value, index) => {
-        if (value.isTurnOn) {
+        if (value.isOn) {
           const date = this.getNextDate(value.cronExpression);
           const currentDate = new Date();
           this.alarmsArray[index].date = new Date(date.getTime());
@@ -296,7 +326,7 @@ export class AlarmService {
             }
             this.startAlarm(value.id);
           } else {
-            this.alarmsArray[index].isTurnOn = false;
+            this.alarmsArray[index].isOn = false;
             const cronModel = this.convertToCronModelFromAlarmModel(this.alarmsArray[index]);
             this.updateAlarm(cronModel).subscribe();
             this.findFirstTurnOnAlarm();
@@ -311,12 +341,11 @@ export class AlarmService {
   switchAlarmState(id: number) {
     this.findFirstTurnOnAlarm();
     const model = this.findAlarmById(id);
-    if (model.isTurnOn) {
+    if (model.isOn) {
       const cronModel = this.convertToCronModelFromAlarmModel(model);
-      console.log(cronModel);
+      cronModel.cronExpression = this.refreshCronExpression(cronModel.cronExpression);
+      model.cronExpression = cronModel.cronExpression;
       if (this.isAuthorized) {
-        cronModel.cronExpression = this.refreshCronExpression(cronModel.cronExpression);
-        console.log(cronModel);
         this.updateAlarm(cronModel).subscribe();
       }
       this.startAlarm(id);
@@ -325,12 +354,36 @@ export class AlarmService {
     }
   }
 
+  switchAllAlarmsState() {
+    if (this.alarmsToogle) {
+      this.alarmsArray.forEach(value => {
+        if (value.isOn == false) {
+          value.isOn = true;
+          this.switchAlarmState(value.id);
+        }
+      });
+    } else {
+      this.startedAlarmsArray.forEach(value => {
+        const model = this.findAlarmById(value.id);
+        model.isOn = false;
+        this.switchAlarmState(value.id);
+      });
+    }
+  }
+
   refreshCronExpression(cronExpression: string): string {
     let newCronExpression = '';
     if (!cronExpression.includes('*')) {
-      const nextDate = new Date();
-      nextDate.setDate(nextDate.getDate() + 1);
-      newCronExpression = this.convertToCronExpression(nextDate, this.repeatOptions[0]);
+      if (this.getNextDate(cronExpression) < (new Date())) {
+        const cronArray = cronExpression.split(' ');
+        const nextDate = new Date();
+        nextDate.setDate(nextDate.getDate() + 1);
+        nextDate.setHours(Number(cronArray[2]));
+        nextDate.setMinutes(Number(cronArray[1]));
+        newCronExpression = this.convertToCronExpression(nextDate, this.repeatOptions[0]);
+      } else {
+        newCronExpression = cronExpression;
+      }
     } else {
       newCronExpression = cronExpression;
     }
@@ -374,10 +427,10 @@ export class AlarmService {
   copyAlarmModel(alarmModel: AlarmModel): AlarmModel {
     const alarm = new AlarmModel();
     const nextDate = this.getNextDate(alarmModel.cronExpression);
-    alarm.isSound = alarmModel.isSound;
-    alarm.isTurnOn = alarmModel.isTurnOn;
+    alarm.soundOn = alarmModel.soundOn;
+    alarm.isOn = alarmModel.isOn;
     alarm.isPlay = alarmModel.isPlay;
-    alarm.repeat = alarmModel.repeat;
+    alarm.repeat = this.getRepeatOption(alarmModel.cronExpression);
     alarm.message = alarmModel.message;
     alarm.timeoutIndex = alarmModel.timeoutIndex;
     alarm.id = alarmModel.id;
@@ -389,10 +442,10 @@ export class AlarmService {
   convertToAlarmModelFronCronModel(cronModel: AlarmCronModel): AlarmModel {
     const alarm = new AlarmModel();
     const nextDate = this.getNextDate(cronModel.cronExpression);
-    alarm.isSound = cronModel.isSound;
-    alarm.isTurnOn = cronModel.isTurnOn;
+    alarm.soundOn = cronModel.soundOn;
+    alarm.isOn = cronModel.isOn;
     alarm.isPlay = false;
-    alarm.repeat = '';
+    alarm.repeat = this.getRepeatOption(cronModel.cronExpression);
     alarm.message = cronModel.message;
     alarm.timeoutIndex = -1;
     alarm.id = cronModel.id;
@@ -409,13 +462,17 @@ export class AlarmService {
       alarm.id = alarmModel.id;
     }
     alarm.cronExpression = alarmModel.cronExpression;
-    alarm.isSound = alarmModel.isSound;
-    alarm.isTurnOn = alarmModel.isTurnOn;
+    alarm.soundOn = alarmModel.soundOn;
+    alarm.isOn = alarmModel.isOn;
     alarm.message = alarmModel.message;
     return alarm;
   }
 
   calculateTimeStart(alarmModel: AlarmModel) {
+    if (alarmModel == null) {
+      return '';
+    }
+
     const currentDate = new Date();
     const startAlarmSecond = 60;
     const differentSecond = startAlarmSecond - currentDate.getSeconds();
@@ -509,6 +566,38 @@ export class AlarmService {
     const nextDate = new Date(date.value.toString());
 
     return nextDate;
+  }
+
+  getRepeatOption(cronExpression: string): string {
+    let repeat = '';
+    const cronElementsArray = cronExpression.split(' ');
+    if (!cronElementsArray.includes('*')) {
+      repeat = this.repeatOptions[0];
+    } else if (cronElementsArray[5] != '?') {
+      let monToFriString = '';
+      this.repeatOptionsDay.forEach((day, index) => {
+        if (index < 5) {
+          monToFriString += day.value;
+          monToFriString += ',';
+        }
+      });
+      monToFriString = monToFriString.replace(/,\s*$/, '');
+      if (cronElementsArray[5] == monToFriString) {
+        repeat = this.repeatOptions[2];
+      } else {
+        this.resetData();
+        this.chosenDaysString = cronElementsArray[5];
+        repeat = cronElementsArray[5];
+        this.repeatOptionsDay.forEach((day, index) => {
+          if (repeat.indexOf(day.value) >= 0) {
+            this.chosenDaysList[index] = true;
+          }
+        });
+      }
+    } else {
+      repeat = this.repeatOptions[1];
+    }
+    return repeat;
   }
 
   showNotificationWindow(message: string) {

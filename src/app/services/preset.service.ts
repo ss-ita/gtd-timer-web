@@ -19,7 +19,7 @@ export class PresetService {
   presetToUpdate: PresetModel;
   presetModel: PresetModel;
   presetIndex: number;
-  timer = 0;
+  timer = 1;
 
   constructor(
     private configService: ConfigService,
@@ -73,6 +73,7 @@ export class PresetService {
 
   updatePresetInLocalArrayAndServer(presetModel: PresetModel, presetToUpdate: PresetModel, presetIndex: number) {
     this.presetIndexToUpdate = presetIndex;
+    this.presetsArray[presetIndex] = presetModel;
     this.updatePreset(presetModel, presetToUpdate).subscribe(data => {
       this.presetsArray[presetIndex].presetName = data.presetName;
       for (let index = 0; index < data.tasks.length; index++) {
@@ -127,7 +128,7 @@ export class PresetService {
 
   getChosenPresetIndex() {
     for (let index = 0; index < this.presetsArray.length; index++) {
-      if (this.presetsArray[index].presetName === (this.timerService.currentPreset)) {
+      if (this.presetsArray[index].presetName === this.timerService.currentPreset) {
         this.presetIndex = index;
       }
     }

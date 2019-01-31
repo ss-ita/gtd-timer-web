@@ -2,8 +2,8 @@ export class AlarmModel {
     id: number;
     date: Date;
     repeat: string;
-    isSound: boolean;
-    isTurnOn: boolean;
+    soundOn: boolean;
+    isOn: boolean;
     isPlay: boolean;
     message: string;
     timeoutIndex: any;

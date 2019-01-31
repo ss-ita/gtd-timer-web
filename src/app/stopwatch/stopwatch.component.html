@@ -26,12 +26,11 @@
       </ng-template>
       <ng-template [ngIf]="styleService.isLineStyle">
         <div class="container-stopwatch" class="unselectable">
-          <app-line-progress class="textsize" [value]="stopwatchService.hour" [isActive]="stopwatchService.isStopwatchRun" [isPaused]="stopwatchService.isStopwatchPause"
-            [text]="':'"></app-line-progress>
-          <app-line-progress class="textsize" [value]="stopwatchService.minute" [isActive]="stopwatchService.isStopwatchRun" [isPaused]="stopwatchService.isStopwatchPause"
-            [text]="':'"></app-line-progress>
-          <app-line-progress class="textsize" [value]="stopwatchService.second" [isActive]="stopwatchService.isStopwatchRun" [isPaused]="stopwatchService.isStopwatchPause"
-            [text]="''"></app-line-progress>
+          <app-line-progress class="textsize" [color]="stopwatchService.color" [value]="stopwatchService.hour"></app-line-progress>
+          <div class="semicolomn">:</div>
+          <app-line-progress class="textsize" [color]="stopwatchService.color" [value]="stopwatchService.minute"></app-line-progress>
+          <div class="semicolomn">:</div>
+          <app-line-progress class="textsize" [color]="stopwatchService.color" [value]="stopwatchService.second" [text]="''"></app-line-progress>
         </div>
       </ng-template>
     </mat-card-content>

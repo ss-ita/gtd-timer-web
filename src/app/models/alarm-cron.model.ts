@@ -1,7 +1,7 @@
 export class AlarmCronModel {
     id: number;
     cronExpression: string;
-    isTurnOn: boolean;
-    isSound: boolean;
+    isOn: boolean;
+    soundOn: boolean;
     message: string;
 }

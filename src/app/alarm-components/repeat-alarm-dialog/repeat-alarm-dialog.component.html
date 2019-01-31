@@ -12,8 +12,8 @@
          </div>
       </div>
       <div class="buttonArea">
-         <button mat-raised-button color="primary" (click)="onSave()" [disabled]="isChecheDay()">Turn on</button>
-         <button mat-raised-button color="warn" (click)="onClose()" [disabled]="alarmService.chosenDaysString==''">Cancel</button>
+         <button mat-raised-button color="primary" class="saveButton" (click)="onSave()" [disabled]="isChecheDay()">Ok</button>
+         <button mat-raised-button color="warn" (click)="onClose()">Cancel</button>
       </div>
    </form>
 </mat-dialog-content>

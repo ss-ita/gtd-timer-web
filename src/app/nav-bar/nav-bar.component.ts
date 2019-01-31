@@ -13,7 +13,7 @@ import { AlarmService } from '../services/alarm.service';
   selector: 'app-nav-bar',
   templateUrl: './nav-bar.component.html',
   styleUrls: ['./nav-bar.component.css'],
-  providers: [PresetComponent , SignupDialogComponent]
+  providers: [PresetComponent, SignupDialogComponent]
 })
 export class NavBarComponent implements OnInit {
 
@@ -44,26 +44,32 @@ export class NavBarComponent implements OnInit {
         {
           label: 'Timer',
           link: './timer',
+          icon: 'fa-clock fa-lg',
           index: 0
         }, {
           label: 'Alarm',
           link: './alarm',
+          icon: 'fa-bell fa-lg',
           index: 1
         }, {
           label: 'Stopwatch',
           link: './stopwatch',
+          icon: 'fa-stopwatch fa-lg',
           index: 2
         }, {
           label: 'Tasks',
           link: './tasks',
+          icon: 'fa-tasks fa-lg',
           index: 3
         }, {
           label: 'Statistics',
           link: './statistics',
+          icon: 'fa-chart-pie fa-lg',
           index: 4
         }, {
           label: 'History',
           link: './history',
+          icon: 'fa-history fa-lg',
           index: 5
         }
       ];
@@ -72,18 +78,22 @@ export class NavBarComponent implements OnInit {
         {
           label: 'Timer',
           link: './timer',
+          icon: 'fa-clock fa-lg',
           index: 0
         }, {
           label: 'Alarm',
           link: './alarm',
+          icon: 'fa-clock fa-lg',
           index: 1
         }, {
           label: 'Stopwatch',
           link: './stopwatch',
+          icon: 'fa-stopwatch fa-lg',
           index: 2
         }, {
           label: 'Sign In',
           link: './signin',
+          icon: 'fa-sign-in-alt fa-lg',
           index: 3
         }
       ];
@@ -97,6 +107,7 @@ export class NavBarComponent implements OnInit {
         this.userService.redirectUrl = this.router.url;
       }
     });
+    this.alarmService.getAlarmsFromDatabase();
   }
 
   btnClickSettings(): void {
@@ -117,6 +128,7 @@ export class NavBarComponent implements OnInit {
     this.navLinks.push({
       label: 'Sign In',
       link: './signin',
+      icon: 'fa-sign-in-alt fa-lg',
       index: 3
     });
     this.show = false;
@@ -136,17 +148,20 @@ export class NavBarComponent implements OnInit {
   signin(): void {
     this.navLinks.push(
       {
-        label: 'Tasks',
-        link: './tasks',
-        index: 3
-      }, {
-        label: 'Statistics',
-        link: './statistics',
-        index: 4
-      }, {
-        label: 'History',
-        link: './history',
-        index: 5
-      });
+          label: 'Tasks',
+          link: './tasks',
+          icon: 'fa-tasks fa-lg',
+          index: 3
+        }, {
+          label: 'Statistics',
+          link: './statistics',
+          icon: 'fa-chart-pie fa-lg',
+          index: 4
+        }, {
+          label: 'History',
+          link: './history',
+          icon: 'fa-history fa-lg',
+          index: 5
+        });
   }
 }

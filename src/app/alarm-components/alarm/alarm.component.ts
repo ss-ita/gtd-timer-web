@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AlarmService } from '../../services/alarm.service';
 import { StyleService } from '../../services/style.service';
@@ -15,6 +15,7 @@ import { ConfirmationDialogComponent } from 'src/app/confirmation-dialog/confirm
 export class AlarmComponent implements OnInit {
 
   isViewable = false;
+  innerWidth: any;
 
   constructor(
     public alarmService: AlarmService,
@@ -22,11 +23,16 @@ export class AlarmComponent implements OnInit {
     private dialog: MatDialog) { }
 
   ngOnInit() {
+    this.innerWidth = window.innerWidth;
+  }
 
+  @HostListener('window:resize', ['$event'])
+  onResize(event) {
+    this.innerWidth = window.innerWidth;
   }
 
   doubleClickFunction(alarmModel: AlarmModel) {
-    if (!alarmModel.isTurnOn) {
+    if (!alarmModel.isOn) {
       this.dialog.open(AlarmDialogComponent, {
         hasBackdrop: true,
         closeOnNavigation: true,
@@ -66,6 +72,21 @@ export class AlarmComponent implements OnInit {
     confirmationDialogRef.componentInstance.btnOkText = 'Confirm';
     confirmationDialogRef.componentInstance.acceptAction = () => {
       this.alarmService.deleteAlarm(index);
+    };
+  }
+
+  openDialogDeleteAllAlarm() {
+    const confirmationDialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      hasBackdrop: true,
+      closeOnNavigation: true,
+      disableClose: false
+    });
+    confirmationDialogRef.componentInstance.title = 'Warning';
+    confirmationDialogRef.componentInstance.message = 'Are you sure to permanently delete all alarms?';
+    confirmationDialogRef.componentInstance.btnCancelText = 'Cancel';
+    confirmationDialogRef.componentInstance.btnOkText = 'Confirm';
+    confirmationDialogRef.componentInstance.acceptAction = () => {
+      this.alarmService.deleteAllAlarms();
     };
   }
 }

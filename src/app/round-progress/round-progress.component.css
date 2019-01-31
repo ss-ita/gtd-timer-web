@@ -5,6 +5,7 @@
     width: 200px;
     height: 200px;
     display: inline-block;
+    margin-top: 0.5px;
 }
 
 .progress-percentage {
@@ -12,4 +13,16 @@
     width: 100%;
     text-align: center !important;
     top: 35%;
+}
+
+.isTurnOn{
+    color: #609b9b;
+}
+
+.isTurnOff{
+    color: #bfbfbf;
+}
+
+.isStoped{
+    color: #ad2265;
 }

@@ -3,10 +3,6 @@
     display: inline-block;
 }
 
-.run-stopwatch{
-    color: #609b9b;
-}
-
-.pause-stopwatch{
-    color: red;
+.mat-card-header-text {
+    margin: 0 0;
 }

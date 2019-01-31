@@ -5,14 +5,7 @@
     width: 100%;
     background-image: linear-gradient(to top, #d9afd9 0%, #97d9e1 100%);
     min-width: 820px;
-}
-
-.search-container{
-    margin-top: 2%;
-}
-
-fieldset{
-    border:none;
+    font-family: 'Times New Roman', Times, serif !important;
 }
 
 .search{
@@ -62,38 +55,3 @@ border-radius: 5px;
 [hidden] {
     display: none !important; 
 }
-
-.display-buttons {
-    position: relative;
-}
-
-.container>div:first-child {
-    width: 100%;
-    height: 50px;
-    padding-top: 10px;
-}
-
-.buttons {
-    margin-top: 5px;
-}
-
-.buttons .mat-raised-button{
-    background-color: #dededa;
-}
- 
-.buttons .active {
-    background-color: white;
-}
-
-.buttons {
-    border-bottom-right-radius: 0px; 
-    border-top-right-radius: 0px;
-}
-
-.error{
-    width: 100%;
-    height: 100%;
-    background-color: white;
-    text-align: center;
-}
-

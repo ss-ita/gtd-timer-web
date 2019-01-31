@@ -8,6 +8,7 @@ import { RoleService } from '../services/role.service';
 })
 export class AdminPageComponent implements OnInit {
   searchText: string;
+  selected = 'Users';
 
   constructor(public roleService: RoleService) {
    }

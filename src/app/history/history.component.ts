@@ -23,11 +23,11 @@ export class HistoryComponent implements OnInit {
       stopTime: '111111',
       action: 'stop',
       taskId: 77,
-      userId:20
+      userId: 20
     },
     {
       id: 2,
-      userId:20,
+      userId: 20,
       name: 'Second',
       description: 'uzuzuzu',
       elapsedTime: 22222,

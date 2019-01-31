@@ -1,6 +1,6 @@
-import { SignupDialogComponent } from '../signup-dialog/signup-dialog.component';
+import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
 import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
-import { MatDialogRef, MatIconRegistry } from '@angular/material';
+import { MatDialogRef, MatIconRegistry, MatDialog } from '@angular/material';
 import { PresetService } from '../services/preset.service';
 import { DomSanitizer } from '@angular/platform-browser';
 import { TimerService } from '../services/timer.service';
@@ -12,29 +12,30 @@ import { Router } from '@angular/router';
   selector: 'app-preset',
   templateUrl: './preset.component.html',
   styleUrls: ['./preset.component.css'],
-  providers: [SignupDialogComponent]
+  providers: [ConfirmationDialogComponent]
 })
 
 export class PresetComponent implements OnInit {
 
+  minTimersGroupFormArrayLength: number;
   presetToUpdate: PresetModel;
   presetModel: PresetModel;
   selectedPreset: string;
   isUpdateState: boolean;
   isCreateState: boolean;
+  timersToDelete: any[];
   presetForm: FormGroup;
   presetIndex: number;
   isViewable: boolean;
   isLoggedIn: boolean;
   isValid: boolean;
-  timersToDelete: any[];
 
   constructor(
     private presetsFormDialogRef: MatDialogRef<PresetComponent>,
-    private signupDialogComponent: SignupDialogComponent,
     private presetService: PresetService,
     private timerService: TimerService,
     private formBuilder: FormBuilder,
+    private dialog: MatDialog,
     private router: Router,
     iconRegistry: MatIconRegistry,
     sanitizer: DomSanitizer,
@@ -62,7 +63,6 @@ export class PresetComponent implements OnInit {
     for (let index = 0; index < this.timersToDelete.length; index++) {
       this.presetService.deleteTimerFromLocalArrayAndServer(this.timersToDelete[index], this.presetIndex, this.presetToUpdate);
     }
-
     this.presetService.updatePresetInLocalArrayAndServer(this.presetForm.value, this.presetToUpdate, this.presetIndex);
     this.selectedPreset = this.presetService.getPresetNameByIndex(this.presetIndex);
     this.cleanUpTheTimersFormGroupArray();
@@ -85,20 +85,16 @@ export class PresetComponent implements OnInit {
   }
 
   onDeleteTimer(index) {
-    if (this.isUpdateState) {
-      if (this.returnTimersFormGroupArray.length >= 2) {
-        if (index >= this.presetToUpdate.tasks.length) {
-          this.returnTimersFormGroupArray.removeAt(index);
-        } else {
-          this.timersToDelete.push(index);
-          this.returnTimersFormGroupArray.removeAt(index);
-        }
-      }
-    }
-    if (this.isCreateState) {
-      if (this.returnTimersFormGroupArray.length !== 1) {
+    if (this.isUpdateState && this.returnTimersFormGroupArray.length >= this.minTimersGroupFormArrayLength) {
+      if (index >= this.presetToUpdate.tasks.length) {
+        this.returnTimersFormGroupArray.removeAt(index);
+      } else {
+        this.timersToDelete.push(index);
         this.returnTimersFormGroupArray.removeAt(index);
       }
+    }
+    if (this.isCreateState && this.returnTimersFormGroupArray.length !== 1) {
+      this.returnTimersFormGroupArray.removeAt(index);
     }
   }
 
@@ -118,6 +114,24 @@ export class PresetComponent implements OnInit {
     this.onClose();
   }
 
+  openConfirmationDialog(presetIndex) {
+    const confirmationDialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      hasBackdrop: true,
+      closeOnNavigation: true,
+      disableClose: false
+    });
+    confirmationDialogRef.componentInstance.title = 'Warning';
+    confirmationDialogRef.componentInstance.message = 'Are you sure to delete preset?';
+    confirmationDialogRef.componentInstance.btnCancelText = 'Cancel';
+    confirmationDialogRef.componentInstance.btnOkText = 'Confirm';
+    confirmationDialogRef.componentInstance.acceptAction = () => {
+      this.onDeletePreset(presetIndex);
+    };
+    confirmationDialogRef.componentInstance.declineAction = () => {
+      this.selectedPreset = this.getFirstStandardPreset();
+    };
+  }
+
   cleanUpTheTimersFormGroupArray() {
     for (let index = 0; index < this.presetToUpdate.tasks.length; index++) {
       this.returnTimersFormGroupArray.removeAt(index);
@@ -134,11 +148,6 @@ export class PresetComponent implements OnInit {
     this.isCreateState = !this.isCreateState;
   }
 
-  openSignUpDialogComponent() {
-    this.signupDialogComponent.openSignUpForm();
-    this.onClose();
-  }
-
   get returnTimersFormGroupArray() {
     return this.presetForm.get('tasks') as FormArray;
   }
@@ -152,11 +161,7 @@ export class PresetComponent implements OnInit {
   }
 
   getIsLoggedIn() {
-    if (localStorage.getItem('access_token') === null) {
-      return false;
-    } else {
-      return true;
-    }
+    return localStorage.getItem('access_token') === null ? false : true;
   }
 
   isPresetStandard(preset: PresetModel) {
@@ -249,6 +254,7 @@ export class PresetComponent implements OnInit {
     this.isViewable = false;
     this.isUpdateState = false;
     this.isCreateState = false;
+    this.minTimersGroupFormArrayLength = 2;
     this.isLoggedIn = this.getIsLoggedIn();
     this.selectedPreset = this.getFirstStandardPreset();
   }

@@ -7,8 +7,7 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class LineProgressComponent implements OnInit {
   @Input() value = 0;
-  @Input() isActive: boolean;
-  @Input() isPaused: boolean;
+  @Input() color = 'black';
   @Input() text: string;
 
   constructor() { }
