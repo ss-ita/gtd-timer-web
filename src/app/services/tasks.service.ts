@@ -11,13 +11,12 @@ import { StopwatchService } from './stopwatch.service';
 })
 export class TasksService implements OnInit {
 
-    //public tasks: TaskCreateJson[] = [];
     public stopwatches: TaskCreateJson[] = [];
     public timers: TaskCreateJson[] = [];
 
     constructor(private http: HttpClient,
         private service: ConfigService,
-        private stopwatchService: StopwatchService
+        public stopwatchService: StopwatchService
         ) { }
     ngOnInit() { }
 
@@ -91,10 +90,5 @@ export class TasksService implements OnInit {
         this.stopwatchService.isStopwatchPause = false;
         this.stopwatchService.isStopwatchRun = true;
     }
-
-
-
-
-
 
 }

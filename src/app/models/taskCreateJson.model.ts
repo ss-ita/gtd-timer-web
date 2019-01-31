@@ -4,10 +4,8 @@ export class TaskCreateJson {
     description: String;
     elapsedTime: number;
     lastStartTime: String;
-    lastStartTimeNumber: number;
     goal: String;
     watchType: number;
-    isActive: boolean;
     isRunning: boolean;
     isTimerFinished: boolean;
     hour: number;
@@ -20,4 +18,6 @@ export class TaskCreateJson {
     maxValueMinute: number;
     maxValueSecond: number;
     goals: number;
+    ticksi: number;
 }
+

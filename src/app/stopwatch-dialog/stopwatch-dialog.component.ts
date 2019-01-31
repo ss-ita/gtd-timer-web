@@ -19,7 +19,7 @@ export class StopwatchDialogComponent implements OnInit {
   constructor(
     private stopwatchDialogRef: MatDialogRef<StopwatchDialogComponent>,
     private formBuilder: FormBuilder,
-    private stopwatchService: StopwatchService,
+    public stopwatchService: StopwatchService,
     private taskService: TasksService
   ) { }
 
@@ -37,12 +37,10 @@ export class StopwatchDialogComponent implements OnInit {
       elapsedTime: this.stopwatchService.ticks * 1000,
       goal: '',
       lastStartTime: '0001-01-01T00:00:00Z',
-      isActive: true,
       isRunning: false,
       hour: this.stopwatchService.hour,
       minutes: this.stopwatchService.minute,
       seconds: this.stopwatchService.second,
-      lastStartTimeNumber: 0,
       currentSecond: this.stopwatchService.ticks,
       isStoped: true,
       isCollapsed: true,
@@ -51,7 +49,8 @@ export class StopwatchDialogComponent implements OnInit {
       maxValueMinute: 0,
       maxValueSecond: 0,
       isTimerFinished: false,
-      goals: 0
+      goals: 0,
+      ticksi: this.stopwatchService.ticks
     };
 
     const myObserver = {

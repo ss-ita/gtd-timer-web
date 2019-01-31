@@ -21,9 +21,9 @@ export class Task {
     }
     convertFromTaskJson(task: TaskJson) {
 
-        let milisecondsInHour: number = 3600000;
-        let milisecondsInMinute: number = 60000;
-        let milisecondsInSecond: number = 1000;
+        const milisecondsInHour = 3600000;
+        const milisecondsInMinute = 60000;
+        const milisecondsInSecond  = 1000;
 
         this.id = task.id;
         this.name = task.name;
@@ -80,9 +80,9 @@ export class Task {
 
     convertToTaskJson(): TaskJson {
 
-        let milisecondsInHour: number = 3600000;
-        let milisecondsInMinute: number = 60000;
-        let milisecondsInSecond: number = 1000;
+        const milisecondsInHour = 3600000;
+        const milisecondsInMinute = 60000;
+        const milisecondsInSecond = 1000;
 
         const dec = new DecimalPipe('en-au');
         let elTime = null;
