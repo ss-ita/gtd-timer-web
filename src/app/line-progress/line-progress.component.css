@@ -2,3 +2,7 @@
     margin: 7% auto;
     display: inline-block;
 }
+
+.mat-card-header-text {
+    margin: 0 0;
+}

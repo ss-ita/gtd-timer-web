@@ -11,6 +11,7 @@
     white-space: nowrap;
     overflow: auto;
     height:48px;
+    font-family: 'Times New Roman', Times, serif !important;
 }
 
 .mat-tab-link {
