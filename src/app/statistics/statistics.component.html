@@ -3,7 +3,7 @@
     <div>
       <div class="buttons">
         <button mat-raised-button [ngClass]="{'active': typeOfData === dataTypes.Tasks}" (click)="changeTypeOfData(dataTypes.Tasks)">
-          Tasks
+          All
         </button>
         <button mat-raised-button [ngClass]="{'active': typeOfData === dataTypes.Hashtags}" (click)="changeTypeOfData(dataTypes.Hashtags)">
           Tags
@@ -14,8 +14,20 @@
         <button mat-raised-button [ngClass]="{'active': typeOfChart === chartTypes.Bar}" (click)="changeTypeOfChart(chartTypes.Bar)">
           <i class="fa fa-bar-chart" aria-hidden="true"></i>
         </button>
-        <button mat-raised-button [ngClass]="{'active': isActive}" (click)="redraw(true)">Active</button>
-        <button mat-raised-button [ngClass]="{'active': !isActive}" (click)="redraw(false)">Archive</button>
+        <button mat-raised-button [ngClass]="{'active': typeOfTasks === tasksTypes.Stopwatch}" (click)="redraw(tasksTypes.Stopwatch)">Stopwatch</button>
+        <button mat-raised-button [ngClass]="{'active': typeOfTasks === tasksTypes.Timer}" (click)="redraw(tasksTypes.Timer)">Timer</button>
+        <mat-form-field class="datepicker">
+          <input matInput [matDatepicker]="pickerFrom" [matDatepickerFilter]="startDateFilter" placeholder="Start date"
+            (dateChange)="filterByDate($event)" [(ngModel)]="startDate">
+          <mat-datepicker-toggle matSuffix [for]="pickerFrom"></mat-datepicker-toggle>
+          <mat-datepicker #pickerFrom></mat-datepicker>
+        </mat-form-field>
+        <mat-form-field class="datepicker">
+          <input matInput [matDatepicker]="pickerTo" [matDatepickerFilter]="endDateFilter" placeholder="End date"
+            [(ngModel)]="toDate" (dateChange)="filterByDate($event)">
+          <mat-datepicker-toggle matSuffix [for]="pickerTo"></mat-datepicker-toggle>
+          <mat-datepicker #pickerTo></mat-datepicker>
+        </mat-form-field>
       </div>
     </div>
     <div id="chart" [ngClass]="{'hidden': !hasData}">

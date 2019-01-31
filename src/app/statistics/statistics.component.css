@@ -28,11 +28,11 @@
 }
 
 .buttons .mat-raised-button{
-    background-color: #dededa;
+    background-color: white;
 }
  
 .buttons .active {
-    background-color: white;
+    background-color: lightgray;
 }
 
 .buttons .mat-raised-button:nth-child(1) {
@@ -66,6 +66,19 @@
 .buttons .mat-raised-button:nth-child(6){
     border-bottom-left-radius: 0px; 
     border-top-left-radius: 0px;
+}
+
+
+::ng-deep .buttons .mat-form-field {
+    margin-left: 80px;
+}
+
+::ng-deep .buttons .mat-form-field:nth-child(2) {
+    margin-left: 40px;
+}
+
+.datepicker{
+    width: 100px;
 }
 
 #noData {

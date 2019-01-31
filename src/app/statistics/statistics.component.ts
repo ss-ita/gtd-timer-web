@@ -13,6 +13,11 @@ export enum DataTypes {
   Hashtags
 }
 
+export enum TaskTypes {
+  Stopwatch,
+  Timer
+}
+
 @Component({
   selector: 'app-statistics',
   templateUrl: './statistics.component.html',
@@ -25,10 +30,25 @@ export class StatisticsComponent implements OnInit {
   colors = ['#FF80AB', '#2196F3', '#D81B60', '#00C853', '#FFEB3B', '#7986CB', '#F8BBD0', '#FFD600', '#FF5722', '#81D4FA'];
   dataTypes = DataTypes;
   chartTypes = ChartTypes;
+  tasksTypes = TaskTypes;
   public hasData = true;
-  public isActive = true;
+  public typeOfTasks;
   public typeOfChart = ChartTypes.Doughnut;
   public typeOfData = DataTypes.Tasks;
+  public startDate: Date = null;
+  public endDate: Date = null;
+  public startDateFilter = (date: Date): boolean => {
+    if (this.endDate !== null) {
+      return this.endDate >= date;
+    }
+    return true;
+  }
+  public endDateFilter = (date: Date): boolean => {
+    if (this.startDate !== null) {
+      return this.startDate <= date;
+    }
+    return true;
+  }
 
   constructor(
     private tasksService: TasksService,
@@ -50,8 +70,13 @@ export class StatisticsComponent implements OnInit {
     const items = [];
     for (let i = 0; i < data.length; i++) {
       const task = {
-        name: data[i].name, time: parseInt(data[i].elapsedTime, 10),
-        isActive: data[i].isActive, hashtags: this.getHashtags(data[i].name)
+        taskId: data[i].taskId,
+        name: data[i].name,
+        time: parseInt(data[i].elapsedTime, 10),
+        type: data[i].watchType,
+        startDate: new Date(data[i].startTime),
+        stopDate: new Date(data[i].stopTime),
+        hashtags: this.getHashtags(data[i].name)
       };
       items.push(task);
     }
@@ -59,15 +84,46 @@ export class StatisticsComponent implements OnInit {
     return items;
   }
 
-  filterTasks(tasks: any[], isActive: boolean) {
+  filterByDate(event: any) {
+    this.redraw();
+  }
+
+  filterTasks(tasks: any[], type?: any) {
     const items = [];
     for (let i = 0; i < tasks.length; i++) {
-      if (tasks[i].isActive === isActive && tasks[i].time > 0) {
+      if ((type == undefined || tasks[i].type === type)
+        && tasks[i].time > 0
+        && (this.startDate == undefined || this.tasks[i].startDate >= this.startDate)
+        && (this.endDate == undefined || this.tasks[i].stopDate <= this.endDate)) {
         items.push(tasks[i]);
       }
     }
 
     return items;
+  }
+
+  getTasksWithTotalTime(tasks: any) {
+    const listOfTasksWithTotalTime = [];
+    for (let i = 0; i < tasks.length; i++) {
+      const index = this.getIndex(listOfTasksWithTotalTime, tasks[i].taskId);
+      if (index !== -1) {
+        listOfTasksWithTotalTime[index].time += tasks[i].time;
+      } else {
+        listOfTasksWithTotalTime.push(Object.assign({}, tasks[i]));
+      }
+    }
+
+    return listOfTasksWithTotalTime;
+  }
+
+  getIndex(tasks: any, taskId: number) {
+    for (let i = 0; i < tasks.length; i++) {
+      if (tasks[i].taskId === taskId) {
+        return i;
+      }
+    }
+
+    return -1;
   }
 
   prepareDataForChart(tasks: any[]) {
@@ -128,29 +184,31 @@ export class StatisticsComponent implements OnInit {
   }
 
   createInitialChart() {
-    const tasks = this.filterTasks(this.tasks, this.isActive);
-    const data = this.prepareDataForChart(tasks);
+    const tasks = this.filterTasks(this.tasks);
+    const listOfTasksWithTotalTime = this.getTasksWithTotalTime(tasks);
+    const data = this.prepareDataForChart(listOfTasksWithTotalTime);
     this.hasData = (data.names.length != 0);
     this.initChart(data.names, data.durations);
   }
 
-  redraw(isActive: boolean) {
-    this.isActive = isActive;
+  redraw(type?: any) {
+    this.typeOfTasks = type;
     switch (this.typeOfData) {
       case DataTypes.Tasks: {
-        this.updateChart(isActive);
+        this.updateChart(this.typeOfTasks);
         break;
       }
       case DataTypes.Hashtags: {
-        this.drawHashtagsChart(isActive);
+        this.drawHashtagsChart(this.typeOfTasks);
         break;
       }
     }
   }
 
-  updateChart(isActive: boolean) {
-    const archiveTasks = this.filterTasks(this.tasks, isActive);
-    const data = this.prepareDataForChart(archiveTasks);
+  updateChart(type: any) {
+    const tasks = this.filterTasks(this.tasks, type);
+    const listOfTasksWithTotalTime = this.getTasksWithTotalTime(tasks);
+    const data = this.prepareDataForChart(listOfTasksWithTotalTime);
     this.hasData = (data.names.length != 0);
     this.updateChartData(data);
   }
@@ -238,10 +296,9 @@ export class StatisticsComponent implements OnInit {
     }
   }
 
-
   changeTypeOfData(newTypeOfData: DataTypes) {
     this.typeOfData = newTypeOfData;
-    this.redraw(this.isActive);
+    this.redraw();
   }
 
   getHashtags(text: string) {
@@ -256,8 +313,8 @@ export class StatisticsComponent implements OnInit {
     return matches;
   }
 
-  drawHashtagsChart(isActiveData: boolean) {
-    const filterTasks = this.filterTasks(this.tasks, isActiveData);
+  drawHashtagsChart(type: any) {
+    const filterTasks = this.filterTasks(this.tasks, type);
     const dictionary = this.getHashtagsData(filterTasks);
     this.hasData = (dictionary.length != 0);
     const data = this.prepareHashtagsDataForChart(dictionary);
@@ -268,7 +325,7 @@ export class StatisticsComponent implements OnInit {
     const dictionary = [];
     for (let i = 0; i < filterTasks.length; i++) {
       for (let j = 0; j < filterTasks[i].hashtags.length; j++) {
-        const index = this.getHashtagsIndexInDictionary(dictionary, filterTasks[i].hashtags[j]);
+        const index = this.getIndexInDictionary(dictionary, filterTasks[i].hashtags[j]);
         if (index === -1) {
           dictionary.push({
             key: filterTasks[i].hashtags[j],
@@ -296,7 +353,7 @@ export class StatisticsComponent implements OnInit {
     return data;
   }
 
-  getHashtagsIndexInDictionary(dictionary: any, nameOfHashtag: string) {
+  getIndexInDictionary(dictionary: any, nameOfHashtag: string) {
     for (let i = 0; i < dictionary.length; i++) {
       if (dictionary[i].key === nameOfHashtag) {
         return i;

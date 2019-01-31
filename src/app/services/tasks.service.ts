@@ -19,7 +19,7 @@ export class TasksService implements OnInit {
     ngOnInit() { }
 
     public getAllTasks() {
-        return this.http.get(this.service.urlGetAllTasks, {});
+        return this.http.get(this.service.urlGetAllRecordsByUserId, {});
     }
     getActiveTasksFromServer(): Observable<TaskJson[]> {
         return this.http.get<TaskJson[]>(this.service.urlTask + 'GetAllActiveTasksByUserId');
