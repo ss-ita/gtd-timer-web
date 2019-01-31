@@ -61,18 +61,14 @@
             </ng-template>
             <span class="text">{{alarmService.alarmModel.date.getHours()}}</span>
           </div>
-          <div class="time-span" [ngClass]="{'turnOn-alarm': (alarmService.startedAlarmsArray.length!=0&&(!alarmService.isActive)), 'turnOnPlay-alarm': alarmService.isActive}">
-            <span class="text">:</span>
-          </div>
+          <div class="time-span" [ngClass]="{'turnOn-alarm': (alarmService.startedAlarmsArray.length!=0&&(!alarmService.isActive)), 'turnOnPlay-alarm': alarmService.isActive}">:</div>
           <div class="time-element" [ngClass]="{'turnOn-alarm': (alarmService.startedAlarmsArray.length!=0&&(!alarmService.isActive)), 'turnOnPlay-alarm': alarmService.isActive}">
             <ng-template [ngIf]="alarmService.alarmModel.date.getMinutes() < 10">
               <span class="text">0</span>
             </ng-template>
             <span class="text">{{alarmService.alarmModel.date.getMinutes()}}</span>
           </div>
-          <div class="time-span" [ngClass]="{'turnOn-alarm': (alarmService.startedAlarmsArray.length!=0&&(!alarmService.isActive)), 'turnOnPlay-alarm': alarmService.isActive}">
-            <span class="text">:</span>
-          </div>
+          <div class="time-span" [ngClass]="{'turnOn-alarm': (alarmService.startedAlarmsArray.length!=0&&(!alarmService.isActive)), 'turnOnPlay-alarm': alarmService.isActive}">:</div>
           <div class="time-element" [ngClass]="{'turnOn-alarm': (alarmService.startedAlarmsArray.length!=0&&(!alarmService.isActive)), 'turnOnPlay-alarm': alarmService.isActive}">
             <span class="text">0</span>
             <span class="text">0</span>

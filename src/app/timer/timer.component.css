@@ -47,20 +47,19 @@
     text-align: center !important;
 }
 
-.unselectable {
-    margin-left: 10%;
-    -webkit-touch-callout: none;
-    /* iOS Safari */
-    -webkit-user-select: none;
-    /* Safari */
-    -khtml-user-select: none;
-    /* Konqueror HTML */
-    -moz-user-select: none;
-    /* Firefox */
+.unselectable{
+    margin-top: -14px !important;
+    -webkit-touch-callout: none;   
+    -webkit-user-select: none;   
+    -moz-user-select: none;   
     -ms-user-select: none;
-    /* Internet Explorer/Edge */
     user-select: none;
-    padding-top: 1px;
+    padding-top: 41px;    
+    display: inline-flex;    
+    justify-content: center;    
+    width: 100%;   
+    align-items: baseline;
+    margin-left: -32px;
 }
 
 .mat-card {
@@ -106,7 +105,6 @@
 .text {
     color: grey;
     font-size: 120px;
-    margin: 5px;
 }
 
 .view-preset-menu {
@@ -211,7 +209,6 @@
 .text {
     color: black;
     font-size: 120px;
-    margin: 5px;
 }
 
 .font-preset-name {
