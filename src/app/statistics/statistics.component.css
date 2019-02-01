@@ -61,18 +61,6 @@
     border-top-left-radius: 0px;
 }
 
-.buttons .mat-raised-button:nth-child(5) {
-    margin-left: 80px;
-    border-bottom-right-radius: 0px; 
-    border-top-right-radius: 0px;
-    min-width: auto;
-}
-
-.buttons .mat-raised-button:nth-child(6){
-    border-bottom-left-radius: 0px; 
-    border-top-left-radius: 0px;
-}
-
 ::ng-deep .buttons .mat-form-field {
     margin-left: 80px;
 }

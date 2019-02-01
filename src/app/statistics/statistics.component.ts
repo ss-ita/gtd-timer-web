@@ -302,7 +302,7 @@ export class StatisticsComponent implements OnInit {
   }
 
   getHashtags(text: string) {
-    const regex = /(?:^|\s)(?:#)([a-zA-Z\d]+)/gm;
+    const regex = /\#([a-zA-Z0-9\.\-\&]+)/gm;
     const matches = [];
     let match;
 
