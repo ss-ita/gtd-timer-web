@@ -18,8 +18,7 @@
       <div class="alarmList">
         <div class="alarmItem" [ngClass]="{noScrollArea: alarmService.alarmsArray.length<=5}" *ngFor="let alarmModel of alarmService.alarmsArray; let i = index"
           [attr.data-index]="i">
-          <div class="time" (dblclick)="openEditWindow(alarmModel)" [matTooltipDisabled]="!alarmModel.isOn"
-            matTooltip="{{alarmService.calculateTimeStart(alarmModel)}}">
+          <div class="time" (dblclick)="openEditWindow(alarmModel)">
             <ng-template [ngIf]="alarmModel.date.getHours() < 10">
               <span>0</span>
             </ng-template>
