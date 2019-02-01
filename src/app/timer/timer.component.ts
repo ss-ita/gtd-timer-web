@@ -5,12 +5,15 @@ import { PresetDialogComponent } from '../preset-dialog/preset-dialog.component'
 import { StyleService } from '../services/style.service';
 import { PresetComponent } from '../preset/preset.component';
 import { SignupDialogComponent } from '../signup-dialog/signup-dialog.component';
+import { TimerDialogComponent } from '../timer-dialog/timer-dialog.component';
+import { MatDialog } from '@angular/material';
+import { TasksComponent } from '../tasks/tasks.component';
 
 @Component({
   selector: 'app-timer',
   templateUrl: './timer.component.html',
   styleUrls: ['./timer.component.css'],
-  providers: [PresetDialogComponent, PresetComponent, SignupDialogComponent]
+  providers: [PresetDialogComponent, PresetComponent, SignupDialogComponent, TasksComponent]
 })
 
 export class TimerComponent implements OnInit {
@@ -21,9 +24,11 @@ export class TimerComponent implements OnInit {
 
   constructor(private formBuilder: FormBuilder,
     private presetComponent: PresetComponent,
-    public timerServise: TimerService,
     private service: PresetDialogComponent,
-    public styleService: StyleService
+    private dialog: MatDialog,
+    public styleService: StyleService,
+    private taskComponent: TasksComponent,
+    public timerServise: TimerService
   ) { }
 
   openPresetFormDialog() {
@@ -79,5 +84,40 @@ export class TimerComponent implements OnInit {
 
   getErrorMessageMinuteAndSecond() {
     return 'please enter a number from 0 to 59';
+  }
+
+  pauseTask() {
+    this.taskComponent.pauseTimer(this.timerServise.taskJson);
+    this.timerServise.isTimerPause = true;
+    this.timerServise.color = '#c23a33';
+  }
+
+  startTask() {
+    this.taskComponent.startTimer(this.timerServise.taskJson);
+    this.timerServise.color = '#609b9b';
+    this.timerServise.isTimerPause = false;
+    this.timerServise.isTimerRun = true;
+  }
+
+  resetTask() {
+    this.pauseTask();
+    this.taskComponent.resetTimer(this.timerServise.taskJson);
+    this.timerServise.isTimerRun = false;
+    this.timerServise.isTimerPause = true;
+    this.timerServise.color = 'black';
+  }
+
+  addTaskFromTimer() {
+    const timerFormDialogRef = this.dialog.open(TimerDialogComponent, {
+      hasBackdrop: true,
+      closeOnNavigation: true,
+      disableClose: true
+    });
+
+    timerFormDialogRef.afterClosed().subscribe();
+  }
+
+  getIsLoggedIn() {
+    return localStorage.getItem('access_token') === null ? false : true;
   }
 }

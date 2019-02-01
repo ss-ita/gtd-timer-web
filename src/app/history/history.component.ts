@@ -3,6 +3,11 @@ import { HistoryService } from '../services/history.service';
 import { TaskInfoDialogService } from '../services/task-info-dialog.service';
 import { ToasterService } from '../services/toaster.service';
 import { Record } from '../models/record.model';
+import {MatDialog } from '@angular/material';
+import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
+import {TimeFilterPipe} from '../pipes/time-filter.pipe';
+import { TasksService } from '../services/tasks.service';
+import { ConfigService } from '../services/config.service';
 
 @Component({
   selector: 'app-history',
@@ -13,34 +18,17 @@ import { Record } from '../models/record.model';
 export class HistoryComponent implements OnInit {
 
   searchText: string;
-  records: Record[] = [
-    {
-      id: 1,
-      name: 'First',
-      description: 'azazazaza',
-      elapsedTime: 111111,
-      startTime: '111111',
-      stopTime: '111111',
-      action: 'stop',
-      taskId: 77,
-      userId: 20
-    },
-    {
-      id: 2,
-      userId: 20,
-      name: 'Second',
-      description: 'uzuzuzu',
-      elapsedTime: 22222,
-      startTime: '22222',
-      stopTime: '22222',
-      action: 'pauze',
-      taskId: 77
-    }
-  ]
+  records: Record[];
+  recordsToDisplay:Record[];
+  isStopwatch: number = 2;
 
   constructor(private historyService: HistoryService,
     private service: TaskInfoDialogService,
-    private tosterService: ToasterService) { }
+    private tosterService: ToasterService,
+    private matDialog: MatDialog,
+    private timePipe: TimeFilterPipe,
+    private taskService: TasksService,
+    private configService: ConfigService ) { }
 
   ngOnInit() {
     this.getRecords();
@@ -50,15 +38,50 @@ export class HistoryComponent implements OnInit {
     console.log("WECJNDFLJDF");
   }
 
+
+  exportAllStopwatchRecordsAsXml() {
+    this.taskService.downloadFile('stopwatches_history.xml', this.configService.urlExportAllStopwatchesRecordsAsXml);
+  }
+
+  exportAllStopwatchRecordsAsCsv() {
+    this.taskService.downloadFile('stopwatches_history.csv', this.configService.urlExportAllStopwatchesRecordsAsCsv);
+  }
+
+  exportAllTimerRecordsAsXml() {
+    this.taskService.downloadFile('timers_history.xml', this.configService.urlExportAllTimersRecordsAsXml);
+  }
+
+  exportAllTimerRecordsAsCsv() {
+    this.taskService.downloadFile('timers_history.csv', this.configService.urlExportAllTimersRecordsAsCsv);
+  }
+
+  exportAllRecordsAsXml() {
+    this.taskService.downloadFile('all_history.xml', this.configService.urlExportAllRecordsAsXml);
+  }
+
+  exportAllRecordsAsCsv() {
+    this.taskService.downloadFile('all_history.csv', this.configService.urlExportAllRecordsAsCsv);
+  }
+
+  changeType(num:number){
+    this.isStopwatch = num;
+    if (this.isStopwatch === 1)
+      this.recordsToDisplay = [... this.records.filter(it => {return  it.watchType === 0; })];
+    else if (this.isStopwatch === 0)
+     this.recordsToDisplay = [... this.records.filter(it => { return it.watchType === 1; })];
+    else
+      this.recordsToDisplay = this.records;
+  }
+
   getRecords() {
-    this.historyService.getAllRecords().subscribe(data => this.records = data);
+    this.historyService.getAllRecords().subscribe(data => {this.records = data;  this.recordsToDisplay = [...this.records];});
   }
 
   onInfo(record: Record) {
     this.service.openSheet(record);
   }
 
-  /*onDeleteTask(task: Task): void {
+  deleteRecord(record: Record): void {
     const observer = {
       error: err => {
         if (err.error instanceof ErrorEvent) {
@@ -69,14 +92,35 @@ export class HistoryComponent implements OnInit {
       }
     };
 
-    this.historyService.deleteTask(task.id).subscribe(observer);
-    const indexTaskToDelete = this.tasks.indexOf(task, 0);
-    this.tasks.splice(indexTaskToDelete, 1);
+    this.historyService.deleteRecord(record.id).subscribe(observer);
+    const indexTaskToDelete = this.records.indexOf(record, 0);
+    this.records.splice(indexTaskToDelete, 1);
   }
 
-  onResumeTask(task: Task): void {
+  onDeleteRecord(record:Record){
+    const warningDialogRef = this.matDialog.open(ConfirmationDialogComponent, {
+      hasBackdrop: true,
+      closeOnNavigation: true,
+      disableClose: false
+    });
+    warningDialogRef.componentInstance.title = 'Warning';
+      warningDialogRef.componentInstance.message = 'Are you sure to delete this record?';
+      warningDialogRef.componentInstance.btnCancelText = 'Cancel';
+      warningDialogRef.componentInstance.btnOkText = 'Confirm';
+      warningDialogRef.componentInstance.acceptAction = () => {
+        this.deleteRecord(record);
+      };
+  }
+
+  resumeTask(record: Record): void {
 
     const observer = {
+      next: data => {
+        if (data) {
+          this.records.push(data);
+        }
+      },
+
       error: err => {
         if (err.error instanceof ErrorEvent) {
           this.tosterService.showToaster(err.error.message);
@@ -85,11 +129,28 @@ export class HistoryComponent implements OnInit {
         }
       }
     };
-    this.historyService.switchtaskStatus(task).subscribe(observer);
-    const indexTaskToDelete = this.tasks.indexOf(task, 0);
-    this.tasks.splice(indexTaskToDelete, 1);
+    this.historyService.resetAndStartTask(record.taskId).subscribe(observer);
   }
 
+  openWarningDialog(record: Record) {
+    const warningDialogRef = this.matDialog.open(ConfirmationDialogComponent, {
+      hasBackdrop: true,
+      closeOnNavigation: true,
+      disableClose: false
+    });
+    warningDialogRef.componentInstance.title = 'Warning';
+    if (record.watchType == 1)
+      warningDialogRef.componentInstance.message = 'This timer will be reset!';
+    else
+      warningDialogRef.componentInstance.message = "This stopwatch will be reset!";
+      warningDialogRef.componentInstance.btnCancelText = 'Cancel';
+      warningDialogRef.componentInstance.btnOkText = 'Confirm';
+      warningDialogRef.componentInstance.acceptAction = () => {
+        this.resumeTask(record);
+      };
+
+  }
+/*
   getTasks() {
 
     this.tasks = [];

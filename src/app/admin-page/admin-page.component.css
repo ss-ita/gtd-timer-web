@@ -35,6 +35,10 @@ border-radius: 5px;
     width: 35%;
 }
 
+.button-with-text-admins{
+    width: 43%;
+}
+
 .actions button{
     margin-left: 4px;
     background-color: #dededa;

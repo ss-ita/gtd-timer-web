@@ -22,6 +22,12 @@ export class ConfigService {
   public readonly urlExportAllStopwatchesAsXml: string = this.baseUrl + '/api/Tasks/ExportAllStopwatchesAsXmlByUserId';
   public readonly urlExportAllTimersAsXml: string = this.baseUrl + '/api/Tasks/ExportAllTimersAsXmlByUserId';
   public readonly urlExportTaskAsCsvById: string = this.baseUrl + '/api/Tasks/ExportTaskAsCsvById/';
+  public readonly urlExportAllRecordsAsCsv: string = this.baseUrl + '/api/Tasks/ExportAllRecordsAsCsvByUserId';
+  public readonly urlExportAllRecordsAsXml: string = this.baseUrl + '/api/Tasks/ExportAllRecordsAsXmlByUserId';
+  public readonly urlExportAllStopwatchesRecordsAsCsv: string = this.baseUrl + '/api/Tasks/ExportAllStopwatchesRecordsAsCsvByUserId';
+  public readonly urlExportAllStopwatchesRecordsAsXml: string = this.baseUrl + '/api/Tasks/ExportAllStopwatchesRecordsAsXmlByUserId';
+  public readonly urlExportAllTimersRecordsAsCsv: string = this.baseUrl + '/api/Tasks/ExportAllTimersRecordsAsCsvByUserId';
+  public readonly urlExportAllTimersRecordsAsXml: string = this.baseUrl + '/api/Tasks/ExportAllTimersRecordsAsXmlByUserId';
   public readonly urlImportTasksAsCsv: string = this.baseUrl + '/api/Tasks/ImportTasksAsCsv';
   public readonly urlImportTasksAsXml: string = this.baseUrl + '/api/Tasks/ImportTasksAsXml';
   public readonly urlSoundAlarm: string = 'https://www.freespecialeffects.co.uk/soundfx/animals/cuckoo.wav';

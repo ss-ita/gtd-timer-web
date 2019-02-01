@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,Input } from '@angular/core';
 import { Record } from '../models/record.model';
+import { MatDialogRef } from '@angular/material';
 
 @Component({
   selector: 'app-record-info',
@@ -10,8 +11,12 @@ export class RecordInfoComponent implements OnInit {
 
   record: Record;
 
-  constructor() { }
+  constructor(public dialogRef: MatDialogRef<RecordInfoComponent>) { }
 
   ngOnInit() {
+  }
+
+  closeDialog(){
+    this.dialogRef.close();
   }
 }

@@ -2,6 +2,7 @@ import { ConfigService } from './config.service';
 import { Task } from '../models/preset.model';
 import { Injectable } from '@angular/core';
 import { timer, Subscription } from 'rxjs';
+import { TaskCreateJson } from '../models/taskCreateJson.model';
 
 @Injectable({ providedIn: 'root' })
 
@@ -37,6 +38,9 @@ export class TimerService {
     color = 'black';
     subscribe: Subscription;
     public currentPreset = 'Choose preset';
+    isForce = false;
+    task: String = ' ';
+    taskJson: TaskCreateJson;
 
     initializeTimersArray(timerArray: Task[]) {
         this.clearTimersArrayAndIndex();
@@ -55,6 +59,10 @@ export class TimerService {
         } else {
             this.isArrayEmpty = false;
         }
+    }
+
+    getIsChosenPreset() {
+        return this.currentPreset === "Choose preset" ? true : false; 
     }
 
     startTimersFromPreset() {
@@ -109,8 +117,7 @@ export class TimerService {
                 + (this.maxValueSecond * this.secondPerSecond))) {
                 this.refreshTimer();
                 this.startTimer();
-            } 
-            else {
+            } else {
                 this.isTimerPause = false;
                 this.isTimerRun = true;
                 this.color = '#609b9b';
@@ -152,7 +159,9 @@ export class TimerService {
         }
     }
 
+  
     updateTime() {
+
         if (this.minute == 0 && this.second < 11 && this.hour == 0) {
             this.color = '#C23A33';
         }
@@ -163,15 +172,18 @@ export class TimerService {
             }
             this.nextTimer();
             this.refreshTimer();
-            this.timerSound.src = this.configService.urlSoundTimer;
-            this.timerSound.play();
-            this.isTimerFinished = true;
+            if(this.isForce === false){
+                this.timerSound.src = this.configService.urlSoundTimer;
+                this.timerSound.play();
+                this.isTimerFinished = true;
+            } else {
+                this.isForce = false;
+            }
         }
 
         if (this.ticks > this.maxValueOfHour * this.secondPerHour) {
             this.pauseTimer();
-        } 
-        else {
+        } else {
             this.hour = Math.floor(this.ticks / this.secondPerHour);
             this.minute = Math.floor((this.ticks % this.secondPerHour) / this.secondPerMinute);
             this.second = Math.floor((this.ticks % this.secondPerHour) % this.secondPerMinute);
@@ -183,7 +195,12 @@ export class TimerService {
         this.timerIndex = -1;
     }
 
-    nextTimer() {
+    forceNextTimer(){
+        this.isForce = true;
+        this.nextTimer();
+    }
+
+    nextTimer() { 
         this.isForward = true;
         this.isTimerFinished = false;
         this.hour = 0;
@@ -192,6 +209,7 @@ export class TimerService {
         this.color = '#609b9b';
     }
     previousTimer() {
+        this.isForce = true;
         this.isForward = false;
         this.isTimerFinished = false;
         this.hour = 0;
@@ -204,4 +222,9 @@ export class TimerService {
             this.timerIndex = this.timerIndex - 1;
         }
     }
+
+    timerClear() {
+        this.task = ' ';
+        this.refreshTimer();
+      }
 }

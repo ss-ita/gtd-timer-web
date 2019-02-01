@@ -4,7 +4,7 @@ import { Pipe, PipeTransform } from '@angular/core';
   name: 'filter'
 })
 export class FilterPipe implements PipeTransform {
-  transform(items: any[], searchText: string): any[] {
+  transform(items: any[], searchText: string, type: number): any[] {
 
     if (!items) {
       return [];
@@ -18,5 +18,5 @@ export class FilterPipe implements PipeTransform {
       return it.name.toLowerCase().includes(searchText);
     });
   }
-  
+
 }

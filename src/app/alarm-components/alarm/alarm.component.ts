@@ -27,11 +27,11 @@ export class AlarmComponent implements OnInit {
   }
 
   @HostListener('window:resize', ['$event'])
-  onResize(event) {
+  onResize(_) {
     this.innerWidth = window.innerWidth;
   }
 
-  doubleClickFunction(alarmModel: AlarmModel) {
+  openEditWindow(alarmModel: AlarmModel) {
     if (!alarmModel.isOn) {
       this.dialog.open(AlarmDialogComponent, {
         hasBackdrop: true,
@@ -66,8 +66,8 @@ export class AlarmComponent implements OnInit {
       closeOnNavigation: true,
       disableClose: false
     });
-    confirmationDialogRef.componentInstance.title = 'Warning';
-    confirmationDialogRef.componentInstance.message = 'Are you sure to permanently delete alarm?';
+    confirmationDialogRef.componentInstance.title = 'Confirmation';
+    confirmationDialogRef.componentInstance.message = 'Are you sure you want to delete alarm?';
     confirmationDialogRef.componentInstance.btnCancelText = 'Cancel';
     confirmationDialogRef.componentInstance.btnOkText = 'Confirm';
     confirmationDialogRef.componentInstance.acceptAction = () => {
@@ -81,8 +81,8 @@ export class AlarmComponent implements OnInit {
       closeOnNavigation: true,
       disableClose: false
     });
-    confirmationDialogRef.componentInstance.title = 'Warning';
-    confirmationDialogRef.componentInstance.message = 'Are you sure to permanently delete all alarms?';
+    confirmationDialogRef.componentInstance.title = 'Confirmation';
+    confirmationDialogRef.componentInstance.message = 'Are you sure you want to delete all alarms?';
     confirmationDialogRef.componentInstance.btnCancelText = 'Cancel';
     confirmationDialogRef.componentInstance.btnOkText = 'Confirm';
     confirmationDialogRef.componentInstance.acceptAction = () => {

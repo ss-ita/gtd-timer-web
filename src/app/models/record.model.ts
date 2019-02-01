@@ -8,4 +8,5 @@ export class Record {
     stopTime: string;
     action: string;
     taskId: number;
+    watchType:number;
 }

@@ -4,6 +4,7 @@ import { MatDialogRef } from '@angular/material';
 import { TasksService } from '../services/tasks.service';
 import { StopwatchService } from '../services/stopwatch.service';
 import { TaskCreateJson } from '../models/taskCreateJson.model';
+import { ToasterService } from '../services/toaster.service';
 
 @Component({
   selector: 'app-stopwatch-dialog',
@@ -14,27 +15,31 @@ export class StopwatchDialogComponent implements OnInit {
 
   stopwatchDialogForm: FormGroup;
   stopwatchName = 'New stopwatch';
-  stopwatchTag = 'NaN';
+  stopwatchTag = 'None';
 
   constructor(
     private stopwatchDialogRef: MatDialogRef<StopwatchDialogComponent>,
     private formBuilder: FormBuilder,
     public stopwatchService: StopwatchService,
-    private taskService: TasksService
+    private taskService: TasksService,
+    private toasterService: ToasterService
   ) { }
 
   onSave() {
     let name: string;
+    const milisecondPerSecond = 1000;
 
-    if (this.stopwatchTag === 'NaN') {
+    if (this.stopwatchTag === 'None') {
       name = this.stopwatchName;
-    } else name = this.stopwatchName + ' ' + '#' + this.stopwatchTag;
+    } else {
+      name = this.stopwatchName + ' ' + '#' + this.stopwatchTag;
+    }
 
     const taskToPass: TaskCreateJson = {
       id: 0,
       name: name,
       description: '',
-      elapsedTime: this.stopwatchService.ticks * 1000,
+      elapsedTime: this.stopwatchService.ticks * milisecondPerSecond,
       goal: '',
       lastStartTime: '0001-01-01T00:00:00Z',
       isRunning: false,
@@ -64,6 +69,7 @@ export class StopwatchDialogComponent implements OnInit {
     this.stopwatchService.reset();
     this.taskService.createTask(taskToPass).subscribe(myObserver);
     this.taskService.stopwatches.unshift(taskToPass);
+    this.toasterService.showToaster('Added to List');
     this.onClose();
   }
 
