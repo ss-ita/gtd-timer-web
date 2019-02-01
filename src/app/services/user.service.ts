@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
 import { NavbarService } from './navbar.service';
 import { RoleService } from './role.service';
 import { AlarmService } from './alarm.service';
+import { ConfirmEmailService } from './confirm-email.service';
 
 @Injectable({
   providedIn: 'root'
@@ -26,7 +27,8 @@ export class UserService {
     private navbar: NavbarService,
     private zone: NgZone,
     private roleService: RoleService,
-    private alarmService: AlarmService) { }
+    private alarmService: AlarmService,
+    private confirmEmailService: ConfirmEmailService) { }
 
   registerUser(user: SignupModel) {
     const body: SignupModel = {
@@ -142,4 +144,15 @@ export class UserService {
           this.toasterService.showToaster(response.error.Message);
         });
   }
+
+  verifyEmail(id, token) {
+    this.confirmEmailService.verifyEmailToken(id, token).subscribe(_ => {
+        this.router.navigateByUrl(this.redirectUrl);
+        this.toasterService.showToaster('Successfuly confirmed email!');
+      },
+      response => {
+        this.toasterService.showToaster(response.error.Message);
+      });
+  }
+
 }
