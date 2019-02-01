@@ -1,4 +1,4 @@
-.background{
+.background {
     position: absolute;
     top: auto;
     min-height: calc(100vh - 49px);
@@ -6,29 +6,24 @@
     background-image: linear-gradient(to top, #d9afd9 0%, #97d9e1 100%);
     min-width: 100%;
     font-family: 'Times New Roman', Times, serif !important;
-    }
+}
     
-    .container {
+.container {
     position: relative;
-    }
+}
     
-    .container>div:first-child {
+.container>div:first-child {
     width: 100%;
     height: 50px;
     padding-top: 10px;
-    }
+}
 
-    .datepicker {
-    display: inherit;
-    max-width: 200px;
-    }
-
-    #chart {
+#chart {
     margin: 0 25%;
     padding-top: 40px;
-    }
+}
     
-    .buttons {
+.buttons {
     margin-top: 5px;
     margin: 0 10%;
 }
@@ -36,24 +31,18 @@
 .buttons .mat-raised-button{
     background-color: white;
 }
+
 .buttons .active {
     background-color: lightgray;
-    }
+}
     
-    .buttons .active {
-    background-color: lightgray;
-    }
-    
-    .buttons .mat-raised-button:nth-child(odd) {
+.buttons .mat-raised-button:nth-child(1) {
     margin-left: 5%;
     border-bottom-right-radius: 0px;
     border-top-right-radius: 0px;
-    margin-top: 17px;
-    height: 35px;
-    min-width: auto;
-    }
-    
-    .buttons .mat-raised-button:nth-child(even){
+}
+
+.buttons .mat-raised-button:nth-child(2){
     border-bottom-left-radius: 0px;
     border-top-left-radius: 0px;
 }
@@ -80,9 +69,8 @@
     border-top-left-radius: 0px;
 }
 
-
 ::ng-deep .buttons .mat-form-field {
-    margin-left: 80px;
+    margin-left: 40px;
 }
 
 ::ng-deep .buttons .mat-form-field:nth-child(2) {
@@ -95,14 +83,14 @@
 
 #noData {
     padding-top: 50px;
-    }
+}
     
-    .hidden {
+.hidden {
     display: none;
-    }
+}
     
-    #noData p {
+#noData p {
     font-size: x-large;
     width: 350px;
     margin: 0 auto;
-    }
+}

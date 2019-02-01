@@ -56,7 +56,7 @@ export class StatisticsComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.tasksService.getAllTasks().subscribe(
+    this.tasksService.getAllRecordsCurrentUser().subscribe(
       (data: any[]) => {
         this.tasks = this.map(data);
         this.createInitialChart();
