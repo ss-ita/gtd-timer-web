@@ -93,4 +93,7 @@ export class TasksService implements OnInit {
         this.stopwatchService.isStopwatchRun = true;
     }
 
+    public getAllRecordsCurrentUser() {
+        return this.http.get(this.service.urlGetAllRecordsByUserId);
+    }
 }

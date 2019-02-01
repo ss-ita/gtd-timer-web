@@ -1,4 +1,3 @@
-
 import { Component, OnInit } from '@angular/core';
 import { Chart } from 'chart.js';
 import { ToasterService } from '../services/toaster.service';
@@ -33,22 +32,20 @@ export class StatisticsComponent implements OnInit {
   chartTypes = ChartTypes;
   tasksTypes = TaskTypes;
   public hasData = true;
-  public isActive = true;
+  public typeOfTasks;
   public typeOfChart = ChartTypes.Doughnut;
   public typeOfData = DataTypes.Tasks;
-  public typeOfTasks;
   public startDate: Date = null;
-  public toDate: Date = null;
-  dateFilterTo = (date: Date): boolean => {
-    if (this.startDate !== null) {
-      return this.startDate <= date;
+  public endDate: Date = null;
+  public startDateFilter = (date: Date): boolean => {
+    if (this.endDate !== null) {
+      return this.endDate >= date;
     }
     return true;
   }
-
-  dateFilterFrom = (date: Date): boolean => {
-    if (this.toDate !== null) {
-      return this.toDate >= date;
+  public endDateFilter = (date: Date): boolean => {
+    if (this.startDate !== null) {
+      return this.startDate <= date;
     }
     return true;
   }
@@ -59,7 +56,7 @@ export class StatisticsComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.tasksService.getAllTasks().subscribe(
+    this.tasksService.getAllRecordsCurrentUser().subscribe(
       (data: any[]) => {
         this.tasks = this.map(data);
         this.createInitialChart();
@@ -73,8 +70,13 @@ export class StatisticsComponent implements OnInit {
     const items = [];
     for (let i = 0; i < data.length; i++) {
       const task = {
-        name: data[i].name, time: parseInt(data[i].elapsedTime, 10),
-        type: data[i].watchType, date: this.dateTimetoDate(data[i].lastStartTime), hashtags: this.getHashtags(data[i].name)
+        taskId: data[i].taskId,
+        name: data[i].name,
+        time: parseInt(data[i].elapsedTime, 10),
+        type: data[i].watchType,
+        startDate: new Date(data[i].startTime),
+        stopDate: new Date(data[i].stopTime),
+        hashtags: this.getHashtags(data[i].name)
       };
       items.push(task);
     }
@@ -82,29 +84,46 @@ export class StatisticsComponent implements OnInit {
     return items;
   }
 
-  dateTimetoDate(data: any) {
-    var dateTime = new Date(data);
-    var date = dateTime.toLocaleDateString();
-
-    return date;
+  filterByDate(event: any) {
+    this.redraw();
   }
 
   filterTasks(tasks: any[], type?: any) {
     const items = [];
-    if (type !== undefined) {
-      for (let i = 0; i < tasks.length; i++) {
-        if (tasks[i].type == type && tasks[i].time > 0) {
-          items.push(tasks[i]);
-        }
-      }
-    } else {
-      for (let i = 0; i < tasks.length; i++) {
-        if (tasks[i].time > 0) {
-          items.push(tasks[i]);
-        }
+    for (let i = 0; i < tasks.length; i++) {
+      if ((type == undefined || tasks[i].type === type)
+        && tasks[i].time > 0
+        && (this.startDate == undefined || this.tasks[i].startDate >= this.startDate)
+        && (this.endDate == undefined || this.tasks[i].stopDate <= this.endDate)) {
+        items.push(tasks[i]);
       }
     }
+
     return items;
+  }
+
+  getTasksWithTotalTime(tasks: any) {
+    const listOfTasksWithTotalTime = [];
+    for (let i = 0; i < tasks.length; i++) {
+      const index = this.getIndex(listOfTasksWithTotalTime, tasks[i].taskId);
+      if (index !== -1) {
+        listOfTasksWithTotalTime[index].time += tasks[i].time;
+      } else {
+        listOfTasksWithTotalTime.push(Object.assign({}, tasks[i]));
+      }
+    }
+
+    return listOfTasksWithTotalTime;
+  }
+
+  getIndex(tasks: any, taskId: number) {
+    for (let i = 0; i < tasks.length; i++) {
+      if (tasks[i].taskId === taskId) {
+        return i;
+      }
+    }
+
+    return -1;
   }
 
   prepareDataForChart(tasks: any[]) {
@@ -155,7 +174,8 @@ export class StatisticsComponent implements OnInit {
             label: function (tooltipItem, data) {
               const time = self.millisecondsToElapsedTime(data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index]);
               const label = data.labels[tooltipItem.index] + ': ' + self.elepsedTimeToString(time);
-return label;
+
+              return label;
             }
           }
         }
@@ -165,7 +185,8 @@ return label;
 
   createInitialChart() {
     const tasks = this.filterTasks(this.tasks);
-    const data = this.prepareDataForChart(tasks);
+    const tasksWithTotalTime = this.getTasksWithTotalTime(tasks);
+    const data = this.prepareDataForChart(tasksWithTotalTime);
     this.hasData = (data.names.length != 0);
     this.initChart(data.names, data.durations);
   }
@@ -185,8 +206,9 @@ return label;
   }
 
   updateChart(type: any) {
-    const archiveTasks = this.filterTasks(this.tasks, type);
-    const data = this.prepareDataForChart(archiveTasks);
+    const tasks = this.filterTasks(this.tasks, type);
+    const tasksWithTotalTime = this.getTasksWithTotalTime(tasks);
+    const data = this.prepareDataForChart(tasksWithTotalTime);
     this.hasData = (data.names.length != 0);
     this.updateChartData(data);
   }
@@ -274,7 +296,6 @@ return label;
     }
   }
 
-
   changeTypeOfData(newTypeOfData: DataTypes) {
     this.typeOfData = newTypeOfData;
     this.redraw();
@@ -299,11 +320,12 @@ return label;
     const data = this.prepareHashtagsDataForChart(dictionary);
     this.updateChartData(data);
   }
-getHashtagsData(filterTasks: any) {
+
+  getHashtagsData(filterTasks: any) {
     const dictionary = [];
     for (let i = 0; i < filterTasks.length; i++) {
       for (let j = 0; j < filterTasks[i].hashtags.length; j++) {
-        const index = this.getHashtagsIndexInDictionary(dictionary, filterTasks[i].hashtags[j]);
+        const index = this.getIndexInDictionary(dictionary, filterTasks[i].hashtags[j]);
         if (index === -1) {
           dictionary.push({
             key: filterTasks[i].hashtags[j],
@@ -331,7 +353,7 @@ getHashtagsData(filterTasks: any) {
     return data;
   }
 
-  getHashtagsIndexInDictionary(dictionary: any, nameOfHashtag: string) {
+  getIndexInDictionary(dictionary: any, nameOfHashtag: string) {
     for (let i = 0; i < dictionary.length; i++) {
       if (dictionary[i].key === nameOfHashtag) {
         return i;
