@@ -15,7 +15,7 @@
           <i class="fa fa-bar-chart" aria-hidden="true"></i>
         </button>
         <mat-form-field>
-          <mat-select [(value)]="selected" placeholder="Type">
+          <mat-select placeholder="Type">
             <mat-option value="All" (click)="redraw()">All</mat-option>
             <mat-option value="Stopwatch" (click)="redraw(tasksTypes.Stopwatch)">Stopwatch</mat-option>
             <mat-option value="Timer" (click)="redraw(tasksTypes.Timer)">Timer</mat-option>

@@ -298,7 +298,7 @@ export class StatisticsComponent implements OnInit {
 
   changeTypeOfData(newTypeOfData: DataTypes) {
     this.typeOfData = newTypeOfData;
-    this.redraw();
+    this.redraw(this.typeOfTasks);
   }
 
   getHashtags(text: string) {
