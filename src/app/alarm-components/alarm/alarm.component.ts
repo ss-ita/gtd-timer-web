@@ -27,11 +27,11 @@ export class AlarmComponent implements OnInit {
   }
 
   @HostListener('window:resize', ['$event'])
-  onResize(event) {
+  onResize(_) {
     this.innerWidth = window.innerWidth;
   }
 
-  doubleClickFunction(alarmModel: AlarmModel) {
+  openEditWindow(alarmModel: AlarmModel) {
     if (!alarmModel.isOn) {
       this.dialog.open(AlarmDialogComponent, {
         hasBackdrop: true,
