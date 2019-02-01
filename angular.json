@@ -23,6 +23,7 @@
               "src/assets",
               "src/web.config",
               "src/delete.svg",
+              "src/donut-chart.png",
               "src/edit.svg"
             ],
             "styles": [
