@@ -4,77 +4,151 @@
     <div class="negative-margin">
       <mat-menu #appMenuForChangeView="matMenu">
         <button mat-menu-item (click)="styleService.changeStyle()">{{styleService.changeStyleString}}</button>
+        <ng-template [ngIf]="timerServise.task === ' ' && getIsLoggedIn()">
+          <button mat-menu-item (click)="addTaskFromTimer()">Add to List</button>
+        </ng-template>
       </mat-menu>
       <button mat-icon-button [matMenuTriggerFor]="appMenuForChangeView" class="view-change-menu">
         <mat-icon>more_vert</mat-icon>
       </button>
-      <span class="current-preset"><button class="presets-settings-button" (click)="openPresetFormDialog()">{{timerServise.currentPreset}}</button></span>
-      <button mat-icon-button class="view-preset-menu" (click)="toggle()" [ngClass]="{rotateIconLeft: isViewable && innerWidth < 1250, rotateIconRight: ((!isViewable && innerWidth < 1250) || innerWidth > 1250)}">
-        <mat-icon class="toggle" [inline]="true" >arrow_forward_ios</mat-icon>
-      </button>
+      <ng-template [ngIf]="timerServise.task === ' '">
+        <span class="current-preset"><button class="presets-settings-button" (click)="openPresetFormDialog()">{{timerServise.currentPreset}}</button></span>
+        <button mat-icon-button class="view-preset-menu" (click)="toggle()" [ngClass]="{rotateIconLeft: isViewable && innerWidth < 1250, rotateIconRight: ((!isViewable && innerWidth < 1250) || innerWidth > 1250)}">
+          <mat-icon class="toggle" [inline]="true">arrow_forward_ios</mat-icon>
+        </button>
+      </ng-template>
+      <ng-template [ngIf]="timerServise.task !== ' '">
+        <div class="current-preset">Currently running: {{timerServise.task}}</div>
+        <button mat-icon-button class="view-timer-menu" (click)="timerServise.timerClear()">
+          <mat-icon class="toggle" [inline]="true">clear</mat-icon>
+        </button>
+      </ng-template>
     </div>
     <div *ngIf="isViewable" class="preset-info">
-        <p class="preset-info-preset-name , font-preset-name">Preset: {{timerServise.currentPreset}}</p>
-        <div *ngFor="let timer of getTimersArray; let currentTimerIndex = index">
-            <div class="preset-info-timers , font-timer-name" [ngClass]="{'current-timer': currentTimerIndex === getTimerArrayIndex}">
-              {{currentTimerIndex + 1}}) {{timer.taskName}} - {{timer.hours}}:{{timer.minutes}}:{{timer.seconds}}
-            </div>
+      <p class="preset-info-preset-name , font-preset-name">Preset: {{timerServise.currentPreset}}</p>
+      <div *ngFor="let timer of getTimersArray; let currentTimerIndex = index">
+        <div class="preset-info-timers , font-timer-name" [ngClass]="{'current-timer': currentTimerIndex === getTimerArrayIndex}">
+          {{currentTimerIndex + 1}}) {{timer.taskName}} - {{timer.hours}}:{{timer.minutes}}:{{timer.seconds}}
         </div>
-        <div class="margin-bottom"></div>
+      </div>
+      <div class="margin-bottom"></div>
     </div>
     <mat-card-header>
-      <ng-template [ngIf]="!styleService.isLineStyle">
-        <app-round-progress class="round-progress" [max]="timerServise.maxValueOfHour" [value]="timerServise.hour"
-          [color]="timerServise.color" [text]="'h'"></app-round-progress>
-        <app-round-progress class="round-progress" [max]="timerServise.secondPerMinute" [value]="timerServise.minute"
-          [color]="timerServise.color" [text]="'m'"></app-round-progress>
-        <app-round-progress class="round-progress" [max]="timerServise.secondPerMinute" [value]="timerServise.second"
-          [color]="timerServise.color" [text]="'s'"></app-round-progress>
+      <ng-template [ngIf]="timerServise.task === ' '">
+        <ng-template [ngIf]="!styleService.isLineStyle">
+          <app-round-progress class="round-progress" [max]="timerServise.maxValueOfHour" [value]="timerServise.hour"
+            [color]="timerServise.color" [text]="'h'"></app-round-progress>
+          <app-round-progress class="round-progress" [max]="timerServise.secondPerMinute" [value]="timerServise.minute"
+            [color]="timerServise.color" [text]="'m'"></app-round-progress>
+          <app-round-progress class="round-progress" [max]="timerServise.secondPerMinute" [value]="timerServise.second"
+            [color]="timerServise.color" [text]="'s'"></app-round-progress>
+        </ng-template>
+        <ng-template [ngIf]="styleService.isLineStyle">
+          <div class="container-stopwatch" class="unselectable">
+            <app-line-progress class="text" [value]="timerServise.hour" [color]="timerServise.color"></app-line-progress>
+            <div class="semicolomn">:</div>
+            <app-line-progress class="text" [value]="timerServise.minute" [color]="timerServise.color"></app-line-progress>
+            <div class="semicolomn">:</div>
+            <app-line-progress class="text" [value]="timerServise.second" [color]="timerServise.color" [text]="''"></app-line-progress>
+          </div>
+        </ng-template>
       </ng-template>
-      <ng-template [ngIf]="styleService.isLineStyle">
-        <div class="container-stopwatch" class="unselectable">
-          <app-line-progress class="text" [value]="timerServise.hour" [color]="timerServise.color"></app-line-progress>
-          <div class="semicolomn" [style.color]="timerServise.color">:</div>
-          <app-line-progress class="text" [value]="timerServise.minute" [color]="timerServise.color"></app-line-progress>
-          <div class="semicolomn" [style.color]="timerServise.color">:</div>
-          <app-line-progress class="text" [value]="timerServise.second" [color]="timerServise.color" [text]="''"></app-line-progress>
-        </div>
+      <ng-template [ngIf]="timerServise.task !== ' '">
+        <ng-template [ngIf]="!styleService.isLineStyle">
+          <app-round-progress class="round-progress" [max]="timerServise.maxValueOfHour" [value]="timerServise.taskJson.hour"
+            [color]="timerServise.color" [text]="'h'"></app-round-progress>
+          <app-round-progress class="round-progress" [max]="timerServise.secondPerMinute" [value]="timerServise.taskJson.minutes"
+            [color]="timerServise.color" [text]="'m'"></app-round-progress>
+          <app-round-progress class="round-progress" [max]="timerServise.secondPerMinute" [value]="timerServise.taskJson.seconds"
+            [color]="timerServise.color" [text]="'s'"></app-round-progress>
+        </ng-template>
+        <ng-template [ngIf]="styleService.isLineStyle">
+          <div class="container-stopwatch" class="unselectable">
+            <app-line-progress class="text" [value]="timerServise.taskJson.hour" [color]="timerServise.color"></app-line-progress>
+            <div class="semicolomn">:</div>
+            <app-line-progress class="text" [value]="timerServise.taskJson.minutes" [color]="timerServise.color"></app-line-progress>
+            <div class="semicolomn">:</div>
+            <app-line-progress class="text" [value]="timerServise.taskJson.seconds" [color]="timerServise.color" [text]="''"></app-line-progress>
+          </div>
+        </ng-template>
       </ng-template>
     </mat-card-header>
     <mat-card-actions [formGroup]="timerForm" class="mat-action">
-      <mat-form-field class="timer-input">
-        <input matInput type="number" min="0" max="23" [(ngModel)]="timerServise.maxValueHour" placeholder="Set hour"
-          formControlName="hour">
-        <mat-error>{{getErrorMessageHour()}}</mat-error>
-      </mat-form-field>
-      <mat-form-field class="timer-input">
-        <input matInput type="number" min="0" max="59" [(ngModel)]="timerServise.maxValueMinute" placeholder="Set minute"
-          formControlName="minute">
-        <mat-error>{{getErrorMessageMinuteAndSecond()}}</mat-error>
-      </mat-form-field>
-      <mat-form-field class="timer-input">
-        <input matInput type="number" min="0" max="59" [(ngModel)]="timerServise.maxValueSecond" placeholder="Set second"
-          formControlName="second">
-        <mat-error>{{getErrorMessageMinuteAndSecond()}}</mat-error>
-      </mat-form-field>
-      <div class="button-area">
+      <ng-template [ngIf]="timerServise.task === ' '">
+        <mat-form-field class="timer-input">
+          <input matInput type="number" min="0" max="23" [(ngModel)]="timerServise.maxValueHour" placeholder="Set hour"
+            formControlName="hour">
+          <mat-error>{{getErrorMessageHour()}}</mat-error>
+        </mat-form-field>
+        <mat-form-field class="timer-input">
+          <input matInput type="number" min="0" max="59" [(ngModel)]="timerServise.maxValueMinute" placeholder="Set minute"
+            formControlName="minute">
+          <mat-error>{{getErrorMessageMinuteAndSecond()}}</mat-error>
+        </mat-form-field>
+        <mat-form-field class="timer-input">
+          <input matInput type="number" min="0" max="59" [(ngModel)]="timerServise.maxValueSecond" placeholder="Set second"
+            formControlName="second">
+          <mat-error>{{getErrorMessageMinuteAndSecond()}}</mat-error>
+        </mat-form-field>
+        <div class="button-area">
           <button mat-icon-button [disabled]="timerServise.isTimerRun === false" (click)="timerServise.previousTimer()">
-              <mat-icon>first_page</mat-icon>
+            <mat-icon>first_page</mat-icon>
           </button>
-          <button mat-icon-button (click)="timerServise.startTimer()" [disabled]="(timerServise.maxValueHour == null 
-            && timerServise.maxValueMinute == null && timerServise.maxValueSecond == null) || !timerForm.valid || timerServise.isTimerPause === false">
-            <mat-icon>arrow_right</mat-icon>
-          </button>
-          <button mat-icon-button [disabled]="timerServise.isTimerRun === false || timerServise.isTimerPause" (click)="timerServise.pauseTimer()">
-            <mat-icon>pause</mat-icon>
-          </button>
+          <ng-template [ngIf]="!(!timerForm.valid || timerServise.isTimerPause === false)">
+            <button mat-icon-button [disabled]="(timerServise.maxValueHour == null 
+          && timerServise.maxValueMinute == null && timerServise.maxValueSecond == null) || (timerServise.maxValueHour === 0 
+          && timerServise.maxValueMinute === 0 && timerServise.maxValueSecond === 0)"
+              (click)="timerServise.startTimer()">
+              <mat-icon>arrow_right</mat-icon>
+            </button>
+          </ng-template>
+          <ng-template [ngIf]="!(timerServise.isTimerRun === false || timerServise.isTimerPause)">
+            <button mat-icon-button (click)="timerServise.pauseTimer()">
+              <mat-icon>pause</mat-icon>
+            </button>
+          </ng-template>
           <button mat-icon-button [disabled]="timerServise.isTimerRun === false" (click)="timerServise.refreshTimer()">
             <mat-icon>refresh</mat-icon>
           </button>
           <button mat-icon-button [disabled]="timerServise.isTimerRun === false" (click)="timerServise.nextTimer()">
             <mat-icon>last_page</mat-icon>
           </button>
-      </div>
+        </div>
+      </ng-template>
+      <ng-template [ngIf]="timerServise.task !== ' '">
+        <mat-form-field class="timer-input">
+          <input matInput type="number" min="0" max="23" [(ngModel)]="timerServise.taskJson.maxValueHour" placeholder="Set hour"
+            formControlName="hour">
+          <mat-error>{{getErrorMessageHour()}}</mat-error>
+        </mat-form-field>
+        <mat-form-field class="timer-input">
+          <input matInput type="number" min="0" max="59" [(ngModel)]="timerServise.taskJson.maxValueMinute" placeholder="Set minute"
+            formControlName="minute">
+          <mat-error>{{getErrorMessageMinuteAndSecond()}}</mat-error>
+        </mat-form-field>
+        <mat-form-field class="timer-input">
+          <input matInput type="number" min="0" max="59" [(ngModel)]="timerServise.taskJson.maxValueSecond" placeholder="Set second"
+            formControlName="second">
+          <mat-error>{{getErrorMessageMinuteAndSecond()}}</mat-error>
+        </mat-form-field>
+        <div class="button-area">
+          <ng-template [ngIf]="!(!timerForm.valid || timerServise.isTimerPause === false)">
+            <button mat-icon-button [disabled]="(timerServise.taskJson.maxValueHour == null 
+                && timerServise.taskJson.maxValueMinute == null && timerServise.taskJson.maxValueSecond == null)"
+              (click)="startTask()">
+              <mat-icon>arrow_right</mat-icon>
+            </button>
+          </ng-template>
+          <ng-template [ngIf]="!(timerServise.isTimerRun === false || timerServise.isTimerPause)">
+            <button mat-icon-button (click)="pauseTask()">
+              <mat-icon>pause</mat-icon>
+            </button>
+          </ng-template>
+          <button mat-icon-button [disabled]="timerServise.isTimerRun === false" (click)="resetTask()">
+            <mat-icon>refresh</mat-icon>
+          </button>
+        </div>
+      </ng-template>
     </mat-card-actions>
   </mat-card>
 </div>

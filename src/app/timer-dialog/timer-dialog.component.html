@@ -1,0 +1,18 @@
+<mat-dialog-content>
+  <form [formGroup]="timerDialogForm" class="timer-dialog-form">
+    <mat-form-field class="input">
+      <input matInput formControlName="timerName" placeholder="Timer name" [(ngModel)]="timerName">
+      <mat-error>{{getErrorMessageNameAndTag()}}</mat-error>
+    </mat-form-field>
+    <mat-form-field class="input">
+      <input matInput formControlName="timerTag" placeholder="Tag" [(ngModel)]="timerTag">
+      <mat-error>{{getErrorMessageNameAndTag()}}</mat-error>
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-raised-button color="primary" [disabled]="!timerDialogForm.valid" (click)="onSave()">Save</button>
+  <span class="close-button">
+    <button mat-raised-button color="warn" (click)="onClose()">Close</button>
+  </span>
+</mat-dialog-actions>

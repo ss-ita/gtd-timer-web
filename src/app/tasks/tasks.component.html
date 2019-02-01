@@ -53,8 +53,8 @@
             <button class="but" [disabled]="task.isRunning === false" (click)="reset(task)"><i class="fa fa-refresh"></i></button>
             <button class="but"><i class="fa fa-bars"></i></button>
             <button class="but" (click)="deleteTask(task)"><i class="fa fa-times"></i></button>
-            <button class="but" [disabled]="task.isRunning === false" (click)="taskService.DisplayTaskOnStopwatchPage(task)"
-              [matTooltipShowDelay]="2000" matTooltip="Display on stopwatch page"><i class="fa fa-clock-o"></i></button>
+            <button class="but" (click)="taskService.DisplayTaskOnStopwatchPage(task)"
+              [matTooltipShowDelay]="2000" matTooltip="Display on stopwatch page"><i class="fa fa-stopwatch"></i></button>
           </div>
         </mat-list-item>
       </mat-list>
@@ -125,7 +125,7 @@
             <button class="but" [disabled]="task.isRunning === false" (click)="resetTimer(task)"><i class="fa fa-refresh"></i></button>
             <button class="but"><i class="fa fa-bars"></i></button>
             <button class="but" (click)="deleteTimer(task)"><i class="fa fa-times"></i></button>
-            <button class="but" [disabled]="task.isRunning === false" (click)="taskService.DisplayTaskOnStopwatchPage(task)"
+            <button class="but" (click)="taskService.DisplayTaskOnTimerPage(task)"
               [matTooltipShowDelay]="2000" matTooltip="Display on stopwatch page"><i class="fa fa-clock-o"></i></button>
           </div>
         </mat-list-item>
