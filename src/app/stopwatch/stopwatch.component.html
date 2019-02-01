@@ -34,9 +34,9 @@
         <ng-template [ngIf]="styleService.isLineStyle">
           <div class="container-stopwatch" class="unselectable">
             <app-line-progress class="textsize" [color]="stopwatchService.color" [value]="stopwatchService.hour"></app-line-progress>
-            <div class="semicolomn">:</div>
+            <div class="semicolomn" [style.color]="stopwatchService.color">:</div>
             <app-line-progress class="textsize" [color]="stopwatchService.color" [value]="stopwatchService.minute"></app-line-progress>
-            <div class="semicolomn">:</div>
+            <div class="semicolomn" [style.color]="stopwatchService.color">:</div>
             <app-line-progress class="textsize" [color]="stopwatchService.color" [value]="stopwatchService.second" [text]="''"></app-line-progress>
           </div>
         </ng-template>
@@ -59,9 +59,9 @@
               <ng-template [ngIf]="styleService.isLineStyle">
                 <div class="container-stopwatch" class="unselectable">
                   <app-line-progress class="textsize" [color]="stopwatchService.color" [value]="stopwatchService.taskJson.hour"></app-line-progress>
-                  <div class="semicolomn">:</div>
+                  <div class="semicolomn" [style.color]="stopwatchService.color">:</div>
                   <app-line-progress class="textsize" [color]="stopwatchService.color" [value]="stopwatchService.taskJson.minutes"></app-line-progress>
-                  <div class="semicolomn">:</div>
+                  <div class="semicolomn" [style.color]="stopwatchService.color">:</div>
                   <app-line-progress class="textsize" [color]="stopwatchService.color" [value]="stopwatchService.taskJson.seconds" [text]="''"></app-line-progress>
                 </div>
               </ng-template>
