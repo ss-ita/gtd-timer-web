@@ -26,6 +26,9 @@
 .buttons {
     margin-top: 5px;
     margin: 0 10%;
+    display: inline-flex;
+    justify-content: center;
+    align-items: baseline;
 }
 
 .buttons .mat-raised-button{
@@ -62,6 +65,7 @@
     margin-left: 80px;
     border-bottom-right-radius: 0px; 
     border-top-right-radius: 0px;
+    min-width: auto;
 }
 
 .buttons .mat-raised-button:nth-child(6){
@@ -70,11 +74,7 @@
 }
 
 ::ng-deep .buttons .mat-form-field {
-    margin-left: 40px;
-}
-
-::ng-deep .buttons .mat-form-field:nth-child(2) {
-    margin-left: 40px;
+    margin-left: 80px;
 }
 
 .datepicker{
@@ -91,6 +91,6 @@
     
 #noData p {
     font-size: x-large;
-    width: 350px;
+    width: 300px;
     margin: 0 auto;
 }
