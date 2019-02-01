@@ -148,7 +148,7 @@ export class UserService {
   verifyEmail(id, token) {
     this.confirmEmailService.verifyEmailToken(id, token).subscribe(_ => {
         this.router.navigateByUrl(this.redirectUrl);
-        this.toasterService.showToaster('Successfuly confirmed email!');
+        this.toasterService.showToaster('Your email address has been confirmed');
       },
       response => {
         this.toasterService.showToaster(response.error.Message);

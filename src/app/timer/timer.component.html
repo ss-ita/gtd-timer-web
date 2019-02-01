@@ -1,3 +1,5 @@
+
+
 <div [ngClass]="{'background-normal': timerServise.isTimerFinished === false, 
 'background-red': timerServise.isTimerFinished}">
   <mat-card>
@@ -91,9 +93,11 @@
           <mat-error>{{getErrorMessageMinuteAndSecond()}}</mat-error>
         </mat-form-field>
         <div class="button-area">
-          <button mat-icon-button [disabled]="timerServise.isTimerRun === false" (click)="timerServise.previousTimer()">
-            <mat-icon>first_page</mat-icon>
-          </button>
+          <ng-template [ngIf]="!timerServise.getIsChosenPreset()">
+            <button mat-icon-button  [disabled]="timerServise.isTimerRun === false" (click)="timerServise.previousTimer()">
+                <mat-icon>first_page</mat-icon>
+            </button>
+          </ng-template>
           <ng-template [ngIf]="!(!timerForm.valid || timerServise.isTimerPause === false)">
             <button mat-icon-button [disabled]="(timerServise.maxValueHour == null 
           && timerServise.maxValueMinute == null && timerServise.maxValueSecond == null) || (timerServise.maxValueHour === 0 
@@ -110,9 +114,11 @@
           <button mat-icon-button [disabled]="timerServise.isTimerRun === false" (click)="timerServise.refreshTimer()">
             <mat-icon>refresh</mat-icon>
           </button>
-          <button mat-icon-button [disabled]="timerServise.isTimerRun === false" (click)="timerServise.nextTimer()">
+          <ng-template [ngIf]="!timerServise.getIsChosenPreset()">
+          <button mat-icon-button [disabled]="timerServise.isTimerRun === false" (click)="timerServise.forceNextTimer()">
             <mat-icon>last_page</mat-icon>
           </button>
+         </ng-template>
         </div>
       </ng-template>
       <ng-template [ngIf]="timerServise.task !== ' '">

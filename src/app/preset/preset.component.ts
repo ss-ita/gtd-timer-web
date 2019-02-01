@@ -40,8 +40,8 @@ export class PresetComponent implements OnInit {
     iconRegistry: MatIconRegistry,
     sanitizer: DomSanitizer,
   ) {
-    iconRegistry.addSvgIcon('delete', sanitizer.bypassSecurityTrustResourceUrl('assets/img/delete.svg'));
-    iconRegistry.addSvgIcon('edit', sanitizer.bypassSecurityTrustResourceUrl('assets/img/edit.svg'));
+    iconRegistry.addSvgIcon('delete', sanitizer.bypassSecurityTrustResourceUrl('delete.svg'));
+    iconRegistry.addSvgIcon('edit', sanitizer.bypassSecurityTrustResourceUrl('edit.svg'));
     this.timersToDelete = [];
   }
 
@@ -120,7 +120,7 @@ export class PresetComponent implements OnInit {
       closeOnNavigation: true,
       disableClose: false
     });
-    confirmationDialogRef.componentInstance.title = 'Warning';
+    confirmationDialogRef.componentInstance.title = 'Confirm';
     confirmationDialogRef.componentInstance.message = 'Are you sure to delete preset?';
     confirmationDialogRef.componentInstance.btnCancelText = 'Cancel';
     confirmationDialogRef.componentInstance.btnOkText = 'Confirm';

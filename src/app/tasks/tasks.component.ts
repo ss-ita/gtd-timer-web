@@ -263,8 +263,8 @@ export class TasksComponent implements OnInit {
     this.taskService.importFile(event)
       .subscribe(
         data => {
-          this.taskService.stopwatches.unshift(...this.fillTimeAll(data).filter(task => task.watchType === 0));
-          this.taskService.timers.unshift(...this.fillTimeAll(data).filter(task => task.watchType === 1));
+          this.taskService.stopwatches.unshift(...this.fillTimeAll(data.reverse()).filter(task => task.watchType === 0));
+          this.taskService.timers.unshift(...this.fillTimeAll(data.reverse()).filter(task => task.watchType === 1));
         }
       );
   }
