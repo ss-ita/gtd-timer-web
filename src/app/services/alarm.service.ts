@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, NgZone } from '@angular/core';
 import { ConfigService } from './config.service';
 import { MatDialog } from '@angular/material';
 import { AlarmModel } from '../models/alarm.model';
@@ -48,7 +48,8 @@ export class AlarmService {
     private configService: ConfigService,
     private toasterService: ToasterService,
     private dialog: MatDialog,
-    private httpClient: HttpClient) {
+    private httpClient: HttpClient,
+    private zone: NgZone) {
     this.isLoggedIn();
 
     setInterval(() => {
@@ -129,9 +130,17 @@ export class AlarmService {
     } else {
       this.alarmSound.volume = 0;
     }
-
+    var playPromise
     alarm.isPlay = true;
-    this.alarmSound.play();
+    this.zone.run(() => {
+      playPromise = this.alarmSound.play();
+    });
+    if (playPromise !== undefined) {
+      playPromise.then(_ => {
+      })
+        .catch(_ => {
+        });
+    }
   }
 
   stopAlarmPlaying() {
@@ -356,12 +365,14 @@ export class AlarmService {
 
   switchAllAlarmsState() {
     if (this.alarmsToogle) {
+      this.showToaster = false;
       this.alarmsArray.forEach(value => {
         if (value.isOn == false) {
           value.isOn = true;
           this.switchAlarmState(value.id);
         }
       });
+      this.showToaster = true;
     } else {
       this.startedAlarmsArray.forEach(value => {
         const model = this.findAlarmById(value.id);
@@ -554,9 +565,18 @@ export class AlarmService {
     };
 
     if (!cronElementsArray.includes('*')) {
-      const startDate = new Date(Number(cronElementsArray[6]), (Number(cronElementsArray[4]) - 1), Number(cronElementsArray[3]));
-      const finishDate = new Date(startDate.getTime());
-      finishDate.setDate(startDate.getDate() + 1);
+      let startDate;
+      let finishDate;
+      if (cronElementsArray[1] == '0' && cronElementsArray[2] == '0') {
+        startDate = new Date(Number(cronElementsArray[6]), (Number(cronElementsArray[4]) - 1), Number(cronElementsArray[3]), 15);
+        startDate.setDate(startDate.getDate() - 1);
+        finishDate = new Date(startDate.getTime());
+        finishDate.setDate(startDate.getDate() + 1);
+      } else {
+        startDate = new Date(Number(cronElementsArray[6]), (Number(cronElementsArray[4]) - 1), Number(cronElementsArray[3]));
+        finishDate = new Date(startDate.getTime());
+        finishDate.setDate(startDate.getDate() + 1);
+      }
       options['currentDate'] = startDate;
       options['endDate'] = finishDate;
     }
@@ -564,7 +584,6 @@ export class AlarmService {
     const interval = parser.parseExpression(expression, options);
     const date = interval.next();
     const nextDate = new Date(date.value.toString());
-
     return nextDate;
   }
 

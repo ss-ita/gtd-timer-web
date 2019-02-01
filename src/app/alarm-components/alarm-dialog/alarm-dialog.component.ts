@@ -104,7 +104,7 @@ export class AlarmDialogComponent implements OnInit {
   substituteAlarmValue(model: any) {
     this.hour = model.date.getHours();
     this.minute = model.date.getMinutes();
-    this.isChecked = model.isSound;
+    this.isChecked = model.soundOn;
     this.message = model.message;
     this.repeat = this.alarmService.getRepeatOption(model.cronExpression);
   }
