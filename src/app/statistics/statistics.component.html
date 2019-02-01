@@ -1,36 +1,39 @@
 <div class="background">
-    <div class="buttons">
-      <button mat-raised-button [ngClass]="{'active': typeOfData === dataTypes.Tasks}" (click)="changeTypeOfData(dataTypes.Tasks)">
-        All
-      </button>
-      <button mat-raised-button [ngClass]="{'active': typeOfData === dataTypes.Hashtags}" (click)="changeTypeOfData(dataTypes.Hashtags)">
-        Tags
-      </button>
-      <button mat-raised-button [ngClass]="{'active': typeOfChart === chartTypes.Doughnut}" (click)="changeTypeOfChart(chartTypes.Doughnut)">
-        <img src="assets/img/donut-chart.png">
-      </button>
-      <button mat-raised-button [ngClass]="{'active': typeOfChart === chartTypes.Bar}" (click)="changeTypeOfChart(chartTypes.Bar)">
-        <i class="fa fa-bar-chart" aria-hidden="true"></i>
-      </button>
-      <button mat-raised-button [ngClass]="{'active': typeOfTasks === tasksTypes.Stopwatch}" (click)="redraw(tasksTypes.Stopwatch)">Stopwatch</button>
-      <button mat-raised-button [ngClass]="{'active': typeOfTasks === tasksTypes.Timer}" (click)="redraw(tasksTypes.Timer)">Timer</button>
-      <mat-form-field class="datepicker">
-        <input class="datepicker" matInput [matDatepicker]="pickerFrom" [matDatepickerFilter]="dateFilterFrom" placeholder="Choose from date"
-          [(ngModel)]="startDate">
-        <mat-datepicker-toggle class="datepicker" matSuffix [for]="pickerFrom"></mat-datepicker-toggle>
-        <mat-datepicker class="datepicker" #pickerFrom></mat-datepicker>
-      </mat-form-field>
-      <mat-form-field class="datepicker">
-        <input class="datepicker" matInput [matDatepicker]="pickerTo" [matDatepickerFilter]="dateFilterTo" placeholder="Choose to date"
-          [(ngModel)]="toDate">
-        <mat-datepicker-toggle class="datepicker" matSuffix [for]="pickerTo"></mat-datepicker-toggle>
-        <mat-datepicker class="datepicker" #pickerTo></mat-datepicker>
-      </mat-form-field>
+  <div class="container">
+    <div>
+      <div class="buttons">
+        <button mat-raised-button [ngClass]="{'active': typeOfData === dataTypes.Tasks}" (click)="changeTypeOfData(dataTypes.Tasks)">
+          All
+        </button>
+        <button mat-raised-button [ngClass]="{'active': typeOfData === dataTypes.Hashtags}" (click)="changeTypeOfData(dataTypes.Hashtags)">
+          Tags
+        </button>
+        <button mat-raised-button [ngClass]="{'active': typeOfChart === chartTypes.Doughnut}" (click)="changeTypeOfChart(chartTypes.Doughnut)">
+          <img src="assets/img/donut-chart.png">
+        </button>
+        <button mat-raised-button [ngClass]="{'active': typeOfChart === chartTypes.Bar}" (click)="changeTypeOfChart(chartTypes.Bar)">
+          <i class="fa fa-bar-chart" aria-hidden="true"></i>
+        </button>
+        <button mat-raised-button [ngClass]="{'active': typeOfTasks === tasksTypes.Stopwatch}" (click)="redraw(tasksTypes.Stopwatch)">Stopwatch</button>
+        <button mat-raised-button [ngClass]="{'active': typeOfTasks === tasksTypes.Timer}" (click)="redraw(tasksTypes.Timer)">Timer</button>
+        <mat-form-field class="datepicker">
+          <input matInput [matDatepicker]="pickerFrom" [matDatepickerFilter]="startDateFilter" placeholder="Start date"
+            (dateChange)="filterByDate($event)" [(ngModel)]="startDate">
+          <mat-datepicker-toggle matSuffix [for]="pickerFrom"></mat-datepicker-toggle>
+          <mat-datepicker #pickerFrom></mat-datepicker>
+        </mat-form-field>
+        <mat-form-field class="datepicker">
+          <input matInput [matDatepicker]="pickerTo" [matDatepickerFilter]="endDateFilter" placeholder="End date"
+            [(ngModel)]="endDate" (dateChange)="filterByDate($event)">
+          <mat-datepicker-toggle matSuffix [for]="pickerTo"></mat-datepicker-toggle>
+          <mat-datepicker #pickerTo></mat-datepicker>
+        </mat-form-field>
+      </div>
     </div>
     <div id="chart" [ngClass]="{'hidden': !hasData}">
       <canvas id="canvasChart"></canvas>
     </div>
     <div id="noData" [ngClass]="{'hidden': hasData}">
-      <p> No data available. Please, add tasks!</p>
+      <p> No data available</p>
     </div>
 </div>

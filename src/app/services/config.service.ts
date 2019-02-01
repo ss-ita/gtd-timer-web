@@ -30,6 +30,7 @@ export class ConfigService {
   public readonly urlGoogleIcon: string = 'https://img.icons8.com/color/48/000000/google-plus.png';
   public readonly urlUser: string = this.baseUrl + '/api/user';
   public readonly urlGetAllTasks: string = this.baseUrl + '/api/tasks/GetAllTasksByUserId';
+  public readonly urlGetAllRecordsByUserId: string = this.baseUrl + '/api/tasks/GetAllRecordsByUserId';
   public readonly delay: number = 3000;
 
   constructor() { }
