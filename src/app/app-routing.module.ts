@@ -17,9 +17,11 @@ import { AuthGuardFalse } from './auth/auth-guard-false.service';
 import { InfoComponent } from './info/info.component';
 import { AdminPageComponent } from './admin-page/admin-page.component';
 import { AuthAdminService } from './auth/auth-admin.service';
+import { ConfirmEmailComponent } from './confirm-email/confirm-email.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/stopwatch', pathMatch: 'full' },
+  { path: 'confirm-email/:id/:token', component: ConfirmEmailComponent },
   { path: 'stopwatch', component: StopwatchComponent },
   { path: 'timer', component: TimerComponent },
   { path: 'alarm', component: AlarmComponent },

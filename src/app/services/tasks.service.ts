@@ -5,6 +5,7 @@ import { Observable, throwError } from 'rxjs';
 import { TaskJson } from '../models/taskjson.model';
 import { TaskCreateJson } from '../models/taskCreateJson.model';
 import { StopwatchService } from './stopwatch.service';
+import { ToasterService } from './toaster.service';
 
 @Injectable({
     providedIn: 'root'
@@ -16,7 +17,8 @@ export class TasksService implements OnInit {
 
     constructor(private http: HttpClient,
         private service: ConfigService,
-        public stopwatchService: StopwatchService
+        public stopwatchService: StopwatchService,
+        private toasterService: ToasterService
         ) { }
     ngOnInit() { }
 
@@ -52,7 +54,6 @@ export class TasksService implements OnInit {
         return this.http.get<TaskJson[]>(this.service.urlGetAllTasks, {});
     }
 
-
     public importFile(event: any): Observable<any> {
         const fileList: FileList = event.target.files;
         if (fileList.length > 0) {
@@ -64,7 +65,8 @@ export class TasksService implements OnInit {
             } else if (file.name.split('.').pop() === 'csv') {
                 return this.http.post(this.service.urlImportTasksAsCsv, formData);
             } else {
-                return throwError(Error);
+                this.toasterService.showToaster("Unsupported file extension!");
+                return throwError("Unsupported file extension!");
             }
         }
     }
