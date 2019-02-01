@@ -24,7 +24,7 @@
         </mat-form-field>
         <mat-form-field class="datepicker">
           <input matInput [matDatepicker]="pickerTo" [matDatepickerFilter]="endDateFilter" placeholder="End date"
-            [(ngModel)]="toDate" (dateChange)="filterByDate($event)">
+            [(ngModel)]="endDate" (dateChange)="filterByDate($event)">
           <mat-datepicker-toggle matSuffix [for]="pickerTo"></mat-datepicker-toggle>
           <mat-datepicker #pickerTo></mat-datepicker>
         </mat-form-field>

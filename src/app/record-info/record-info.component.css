@@ -5,6 +5,15 @@
     width: 100%;
     background-image: linear-gradient(to top, #d9afd9 0%, #97d9e1 100%);
     min-width: 820px;
+    font-family: 'Times New Roman', Times, serif !important;
+}
+
+.mat-dialog-content p{
+    font-family: 'Times New Roman', Times, serif !important;
+}
+
+.mat-dialog-title{
+    font-family: 'Times New Roman', Times, serif !important;
 }
 
 .dialog-content{
@@ -19,8 +28,38 @@ width: 500px;
     width: 25%;;
 }
 
-.cotennt{
+.mat-dialog-title{
+    width: 50%;
+    margin-left: 0%;
+}
+
+.top div{
+display: inline-block;
+}
+
+.topTitle{
+width: 75%;
+}
+
+.exitButton{
+    width: 25%;
+    align-items: center;
+    justify-content: center;
+}
+
+.content{
     width: 75%;
 }
 
+.mat-raised-button{
+    width: 50px;
+    min-width: 1px;
+    padding: 0%;
+    background-color: #dededa;
+    margin-left: 50%;
+}
+
+button:hover{
+    background-color:  #f9f9f9;
+ }
 
