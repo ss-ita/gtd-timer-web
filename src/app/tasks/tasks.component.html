@@ -7,14 +7,15 @@
             <input class="input" placeholder="New Stopwatch Name" type="text" [(ngModel)]="taskName" name="Name">
             <button class="but" type="submit">Add</button>
             <mat-menu #shareStopwatch="matMenu">
-              <button type="button" mat-menu-item (click)="exportAllStopwatchesAsXml()">Download .XML</button>
-              <button type="button" mat-menu-item (click)="exportAllStopwatchesAsCsv()">Download .CSV</button>
+              <button type="button" mat-menu-item (click)="exportAllStopwatchesAsXml()">Export as .XML</button>
+              <button type="button" mat-menu-item (click)="exportAllStopwatchesAsCsv()">Export as .CSV</button>
               <button type="button" mat-menu-item (click)="importFile.click()">Import file...</button>
               <input type="file" (change)="browseFile($event)" name="uploadFile" accept=".csv,.xml" #importFile hidden> 
             </mat-menu>
             <button type="button" matTooltip="Import/Export" mat-icon-button [matMenuTriggerFor]="shareStopwatch">
-              <mat-icon>import_export</mat-icon>
+              <mat-icon>more_vert</mat-icon>
             </button>
+            <span>Export | Import</span>
           </form>
         </fieldset>
         <fieldset class="other">
@@ -52,8 +53,8 @@
             <button class="but" [disabled]="task.isRunning === false" (click)="reset(task)"><i class="fa fa-refresh"></i></button>
             <button class="but"><i class="fa fa-bars"></i></button>
             <button class="but" (click)="deleteTask(task)"><i class="fa fa-times"></i></button>
-            <button class="but" [disabled]="task.isRunning === false" (click)="taskService.DisplayTaskOnStopwatchPage(task)"
-              [matTooltipShowDelay]="2000" matTooltip="Display on stopwatch page"><i class="fa fa-clock-o"></i></button>
+            <button class="but" (click)="taskService.DisplayTaskOnStopwatchPage(task)"
+              [matTooltipShowDelay]="2000" matTooltip="Display on stopwatch page"><i class="fa fa-stopwatch"></i></button>
           </div>
         </mat-list-item>
       </mat-list>
@@ -120,7 +121,7 @@
             <button class="but" [disabled]="task.isRunning === false" (click)="resetTimer(task)"><i class="fa fa-refresh"></i></button>
             <button class="but"><i class="fa fa-bars"></i></button>
             <button class="but" (click)="deleteTimer(task)"><i class="fa fa-times"></i></button>
-            <button class="but" [disabled]="task.isRunning === false" (click)="taskService.DisplayTaskOnStopwatchPage(task)"
+            <button class="but" (click)="taskService.DisplayTaskOnTimerPage(task)"
               [matTooltipShowDelay]="2000" matTooltip="Display on stopwatch page"><i class="fa fa-clock-o"></i></button>
           </div>
         </mat-list-item>

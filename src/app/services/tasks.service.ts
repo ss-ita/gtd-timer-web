@@ -5,6 +5,7 @@ import { Observable, throwError } from 'rxjs';
 import { TaskJson } from '../models/taskjson.model';
 import { TaskCreateJson } from '../models/taskCreateJson.model';
 import { StopwatchService } from './stopwatch.service';
+import { TimerService } from './timer.service';
 import { ToasterService } from './toaster.service';
 
 @Injectable({
@@ -12,14 +13,18 @@ import { ToasterService } from './toaster.service';
 })
 export class TasksService implements OnInit {
 
-    public stopwatches: TaskCreateJson[] = [];
-    public timers: TaskCreateJson[] = [];
+    stopwatches: TaskCreateJson[] = [];
+    timers: TaskCreateJson[] = [];
+    milisecondPerSecond = 1000;
+    secondPerHour = 3600;
+    secondPerMinute = 60;
 
     constructor(private http: HttpClient,
         private service: ConfigService,
-        public stopwatchService: StopwatchService,
+        private stopwatchService: StopwatchService,
+        private timerService: TimerService,
         private toasterService: ToasterService
-        ) { }
+    ) { }
     ngOnInit() { }
 
     startTask(task: TaskCreateJson) {
@@ -85,12 +90,49 @@ export class TasksService implements OnInit {
             });
     }
 
-    public DisplayTaskOnStopwatchPage(task: TaskCreateJson) {
+    DisplayTaskOnStopwatchPage(task: TaskCreateJson) {
         this.stopwatchService.task = task.name;
-        this.stopwatchService.taskJson = task;
-        this.stopwatchService.color = '#609b9b';
-        this.stopwatchService.isStopwatchPause = false;
-        this.stopwatchService.isStopwatchRun = true;
+        if (task.isRunning === true) {
+            this.stopwatchService.taskJson = task;
+            this.stopwatchService.color = '#609b9b';
+            this.stopwatchService.isStopwatchPause = false;
+            this.stopwatchService.isStopwatchRun = true;
+            this.toasterService.showToaster('Displayed on stopwatch page');
+        }
+
+        if (task.isRunning === false) {
+            this.stopwatchService.taskJson = task;
+            this.stopwatchService.color = '#C23A33';
+            this.stopwatchService.isStopwatchPause = true;
+            this.stopwatchService.isStopwatchRun = false;
+            task.hour = Math.floor((task.elapsedTime / this.milisecondPerSecond) / this.secondPerHour);
+            task.minutes = Math.floor(((task.elapsedTime / this.milisecondPerSecond) % this.secondPerHour) / this.secondPerMinute);
+            task.seconds = Math.floor(((task.elapsedTime / this.milisecondPerSecond) % this.secondPerHour) % this.secondPerMinute);
+            this.toasterService.showToaster('Displayed on stopwatch page');
+        }
+    }
+
+    DisplayTaskOnTimerPage(task: TaskCreateJson) {
+        this.timerService.task = task.name;
+
+        if (task.isRunning === true) {
+            this.timerService.taskJson = task;
+            this.timerService.color = '#609b9b';
+            this.timerService.isTimerPause = false;
+            this.timerService.isTimerRun = true;
+            this.toasterService.showToaster('Displayed on timer page');
+        }
+
+        if (task.isRunning === false) {
+            this.timerService.taskJson = task;
+            this.timerService.color = '#C23A33';
+            this.timerService.isTimerPause = true;
+            this.timerService.isTimerRun = false;
+            task.hour = Math.floor((task.elapsedTime / this.milisecondPerSecond) / this.secondPerHour);
+            task.minutes = Math.floor(((task.elapsedTime / this.milisecondPerSecond) % this.secondPerHour) / this.secondPerMinute);
+            task.seconds = Math.floor(((task.elapsedTime / this.milisecondPerSecond) % this.secondPerHour) % this.secondPerMinute);
+            this.toasterService.showToaster('Displayed on timer page');
+        }
     }
 
     public getAllRecordsCurrentUser() {

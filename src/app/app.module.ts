@@ -56,6 +56,7 @@ import { RoleService } from './services/role.service';
 import { HttpTokenInterceptor } from './services/http-interceptor.service';
 import { TimeFilterPipe } from './pipes/time-filter.pipe';
 import { StopwatchDialogComponent } from './stopwatch-dialog/stopwatch-dialog.component';
+import { TimerDialogComponent } from './timer-dialog/timer-dialog.component';
 import { ConfirmEmailComponent } from './confirm-email/confirm-email.component';
 
 export function jwtTokenGetter() {
@@ -93,6 +94,7 @@ export function jwtTokenGetter() {
     RepeatAlarmDialogComponent,
     AlarmDialogNotificationComponent,
     AdminPageComponent,
+    TimerDialogComponent,
     TimeFilterPipe,
     StopwatchDialogComponent,
     ConfirmEmailComponent
@@ -157,7 +159,8 @@ export function jwtTokenGetter() {
     AlarmDialogComponent,
     AlarmDialogNotificationComponent,
     RepeatAlarmDialogComponent,
-    StopwatchDialogComponent
+    StopwatchDialogComponent,
+    TimerDialogComponent
   ]
 })
 export class AppModule { }

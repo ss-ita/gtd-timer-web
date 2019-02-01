@@ -156,6 +156,8 @@
 
 .current-preset {
     display: inline-block;
+    font-size: 22px !important;
+    color: black;
 }
 
 .mat-icon.toggle {
@@ -258,4 +260,10 @@
 
 .mat-card {
 	font-family: 'Times New Roman', Times, serif !important;
+}
+
+.view-timer-menu {
+    width: 40px;
+    height: 40px;
+    margin-top: 9px;
 }

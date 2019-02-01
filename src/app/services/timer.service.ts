@@ -2,6 +2,7 @@ import { ConfigService } from './config.service';
 import { Task } from '../models/preset.model';
 import { Injectable } from '@angular/core';
 import { timer, Subscription } from 'rxjs';
+import { TaskCreateJson } from '../models/taskCreateJson.model';
 
 @Injectable({ providedIn: 'root' })
 
@@ -37,6 +38,8 @@ export class TimerService {
     color = 'black';
     subscribe: Subscription;
     public currentPreset = 'Choose preset';
+    task: String = ' ';
+    taskJson: TaskCreateJson;
 
     initializeTimersArray(timerArray: Task[]) {
         this.clearTimersArrayAndIndex();
@@ -109,8 +112,7 @@ export class TimerService {
                 + (this.maxValueSecond * this.secondPerSecond))) {
                 this.refreshTimer();
                 this.startTimer();
-            } 
-            else {
+            } else {
                 this.isTimerPause = false;
                 this.isTimerRun = true;
                 this.color = '#609b9b';
@@ -170,8 +172,7 @@ export class TimerService {
 
         if (this.ticks > this.maxValueOfHour * this.secondPerHour) {
             this.pauseTimer();
-        } 
-        else {
+        } else {
             this.hour = Math.floor(this.ticks / this.secondPerHour);
             this.minute = Math.floor((this.ticks % this.secondPerHour) / this.secondPerMinute);
             this.second = Math.floor((this.ticks % this.secondPerHour) % this.secondPerMinute);
@@ -204,4 +205,9 @@ export class TimerService {
             this.timerIndex = this.timerIndex - 1;
         }
     }
+
+    timerClear() {
+        this.task = ' ';
+        this.refreshTimer();
+      }
 }

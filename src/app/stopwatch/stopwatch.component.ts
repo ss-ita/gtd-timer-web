@@ -46,13 +46,16 @@ export class StopwatchComponent implements OnInit {
   }
 
   addTaskFromStopwatch() {
-    const presetFormDialogRef = this.dialog.open(StopwatchDialogComponent, {
+    const stopwatchFormDialogRef = this.dialog.open(StopwatchDialogComponent, {
       hasBackdrop: true,
       closeOnNavigation: true,
       disableClose: true
     });
 
-    presetFormDialogRef.afterClosed().subscribe();
+    stopwatchFormDialogRef.afterClosed().subscribe();
   }
 
+  getIsLoggedIn() {
+    return localStorage.getItem('access_token') === null ? false : true;
+  }
 }

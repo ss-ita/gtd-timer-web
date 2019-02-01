@@ -223,6 +223,7 @@ export class TasksComponent implements OnInit {
   getTimers() {
     this.taskService.getTimers().subscribe(data => {
       this.taskService.timers = [];
+      let time: any;
       for (let i = data.length-1; i >= 0; --i) {
         const toPush: TaskCreateJson = {
           id: data[i].id,
@@ -230,12 +231,12 @@ export class TasksComponent implements OnInit {
           description: data[i].description,
           goal: data[i].goal,
           elapsedTime: data[i].elapsedTime,
-          lastStartTime: data[i].lastStartTime, 
+          lastStartTime: data[i].lastStartTime,
           isRunning: data[i].isRunning,
           watchType: data[i].watchType,
-          hour: 0,
-          minutes: 0,
-          seconds: 0,
+          hour: Math.floor((data[i].elapsedTime / 1000) / this.secondPerHour),
+          minutes: Math.floor(((data[i].elapsedTime / 1000) % this.secondPerHour) / this.secondPerMinute),
+          seconds: Math.floor(((data[i].elapsedTime / 1000) % this.secondPerHour) % this.secondPerMinute),
           isStoped: false,
           currentSecond: 0,
           isCollapsed: true,
@@ -246,6 +247,13 @@ export class TasksComponent implements OnInit {
           goals: 0,
           ticksi: 0
         };
+
+        if (toPush.goal != null) {
+          time = toPush.goal.split(':');
+          toPush.maxValueHour = Number(time[0]);
+          toPush.maxValueMinute = Number(time[1]);
+          toPush.maxValueSecond = Number(time[2]);
+        }
         this.taskService.timers.push(toPush);
       }
     });
@@ -341,7 +349,7 @@ export class TasksComponent implements OnInit {
       if (task.maxValueSecond == null) {
         task.maxValueSecond = 0;
       }
-      task.goal=task.maxValueHour.toString()+':'+task.maxValueMinute.toString()+':'+task.maxValueSecond.toString();
+      task.goal = task.maxValueHour.toString() + ':' + task.maxValueMinute.toString() + ':' + task.maxValueSecond.toString();
       task.hour = task.maxValueHour;
       task.minutes = task.maxValueMinute;
       task.seconds = task.maxValueSecond;
@@ -380,7 +388,7 @@ export class TasksComponent implements OnInit {
     if (task.isRunning) {
       if (task.minutes == 0 && task.seconds == 0 && task.hour == 0) {
         task.isStoped = true;
-      }else {
+      } else {
         task.hour = Math.floor(task.ticksi / this.secondPerHour);
         task.minutes = Math.floor((task.ticksi % this.secondPerHour) / this.secondPerMinute);
         task.seconds = Math.floor((task.ticksi % this.secondPerHour) % this.secondPerMinute);
