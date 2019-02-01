@@ -130,7 +130,7 @@ export class AlarmService {
     } else {
       this.alarmSound.volume = 0;
     }
-    var playPromise
+    let playPromise;
     alarm.isPlay = true;
     this.zone.run(() => {
       playPromise = this.alarmSound.play();
