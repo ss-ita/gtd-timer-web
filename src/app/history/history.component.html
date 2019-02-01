@@ -11,6 +11,36 @@
         <button mat-raised-button id='thirdTopButton' [ngClass]="{'active': isStopwatch === 2}" (click)="changeType(2)">
           <p>All</p>
         </button>
+        <ng-template [ngIf]="isStopwatch === 0">
+          <mat-menu #shareHistory="matMenu">
+            <button type="button" mat-menu-item (click)="exportAllTimerRecordsAsXml()">Export as .XML</button>
+            <button type="button" mat-menu-item (click)="exportAllTimerRecordsAsCsv()">Export as .CSV</button>
+          </mat-menu>
+          <button type="button" matTooltip="Export" mat-icon-button [matMenuTriggerFor]="shareHistory">
+            <mat-icon>get_app</mat-icon>
+          </button>
+          <span>Export</span>
+        </ng-template>
+        <ng-template [ngIf]="isStopwatch === 1">
+          <mat-menu #shareHistory="matMenu">
+            <button type="button" mat-menu-item (click)="exportAllStopwatchRecordsAsXml()">Export as .XML</button>
+            <button type="button" mat-menu-item (click)="exportAllStopwatchRecordsAsCsv()">Export as .CSV</button>
+          </mat-menu>
+          <button type="button" matTooltip="Export" mat-icon-button [matMenuTriggerFor]="shareHistory">
+            <mat-icon>get_app</mat-icon>
+          </button>
+          <span>Export</span>
+        </ng-template>
+        <ng-template [ngIf]="isStopwatch === 2">
+        <mat-menu #shareHistory="matMenu">
+          <button type="button" mat-menu-item (click)="exportAllRecordsAsXml()">Export as .XML</button>
+          <button type="button" mat-menu-item (click)="exportAllRecordsAsCsv()">Export as .CSV</button>
+        </mat-menu>
+        <button type="button" matTooltip="Export" mat-icon-button [matMenuTriggerFor]="shareHistory">
+          <mat-icon>get_app</mat-icon>
+        </button>
+        <span>Export</span>
+        </ng-template>
       </div>
       <div class="search">
           <input [(ngModel)]="searchText" placeholder="Filter" class="input">

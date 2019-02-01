@@ -158,3 +158,6 @@ width: 15%;
     font-family: 'Times New Roman', Times, serif !important;
 }
  
+.mat-icon {
+    transform: scale(1.1);
+}

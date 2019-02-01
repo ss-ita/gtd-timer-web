@@ -6,6 +6,8 @@ import { Record } from '../models/record.model';
 import {MatDialog } from '@angular/material';
 import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
 import {TimeFilterPipe} from '../pipes/time-filter.pipe';
+import { TasksService } from '../services/tasks.service';
+import { ConfigService } from '../services/config.service';
 
 @Component({
   selector: 'app-history',
@@ -24,7 +26,9 @@ export class HistoryComponent implements OnInit {
     private service: TaskInfoDialogService,
     private tosterService: ToasterService,
     private matDialog: MatDialog,
-    private timePipe: TimeFilterPipe ) { }
+    private timePipe: TimeFilterPipe,
+    private taskService: TasksService,
+    private configService: ConfigService ) { }
 
   ngOnInit() {
     this.getRecords();
@@ -34,6 +38,30 @@ export class HistoryComponent implements OnInit {
     console.log("WECJNDFLJDF");
   }
 
+
+  exportAllStopwatchRecordsAsXml() {
+    this.taskService.downloadFile('stopwatches_history.xml', this.configService.urlExportAllStopwatchesRecordsAsXml);
+  }
+
+  exportAllStopwatchRecordsAsCsv() {
+    this.taskService.downloadFile('stopwatches_history.csv', this.configService.urlExportAllStopwatchesRecordsAsCsv);
+  }
+
+  exportAllTimerRecordsAsXml() {
+    this.taskService.downloadFile('timers_history.xml', this.configService.urlExportAllTimersRecordsAsXml);
+  }
+
+  exportAllTimerRecordsAsCsv() {
+    this.taskService.downloadFile('timers_history.csv', this.configService.urlExportAllTimersRecordsAsCsv);
+  }
+
+  exportAllRecordsAsXml() {
+    this.taskService.downloadFile('all_history.xml', this.configService.urlExportAllRecordsAsXml);
+  }
+
+  exportAllRecordsAsCsv() {
+    this.taskService.downloadFile('all_history.csv', this.configService.urlExportAllRecordsAsCsv);
+  }
 
   changeType(num:number){
     this.isStopwatch = num;
