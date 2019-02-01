@@ -8,6 +8,15 @@
     font-family: 'Times New Roman', Times, serif !important;
 }
 
+.time-container {
+    display: block;
+    flex-direction: row;
+    align-items: center;
+    box-sizing: border-box;
+    position: relative;
+    height: inherit;
+}
+
 .fields{
     width: 100%;
     height: 50px;
@@ -76,11 +85,8 @@ select{
 }
 
 .name{
-    width: 30%;
-}
-
-.time{
-    width: 10%;
+    width: 20%;
+    min-width: 100px;
 }
 
 .goal{
@@ -88,8 +94,8 @@ select{
 }
 
 .actions{
-    width: 50%;
-    text-align: right;
+    width: 60%;
+    text-align: center;
 }
 
 mat-list-item{
@@ -112,6 +118,7 @@ mat-list-item{
     flex-direction: row;
     margin-top:50px;
     width: 100%;
+    padding-left: 16px;
 }
 
 .sth{
@@ -119,16 +126,18 @@ mat-list-item{
 }
 
 .name-title{
-    width: 32%;
+    width: 19%;
     cursor: pointer;
 }
 
 .time-title{
-    width: 10%;
+    width: 10%;   
+    text-align: center;
 }
 
 .goal-title{
     width: 10%;
+    text-align: center;
 }
 
 .progres-title{
@@ -137,7 +146,7 @@ mat-list-item{
 }
 
 .actions-title{
-    width: 45%;
+    width: 57%;
     text-align: center;
 }
 
@@ -147,7 +156,13 @@ app-progress{
 }
 
 .time{
-    font-size: 14px;
+    font-size: 16px;
+    display: inline-flex;
+    text-align: center;
+    justify-content: center;
+    width: 10%;
+    min-width: 70px;
+    align-items: baseline;
 }
 
 .btn-group button {

@@ -63,6 +63,33 @@
     text-align: center;
 }
 
+.current-stopwatch {
+    text-align: right;
+    width: 90%;
+    display: inline-block;
+    background-color: transparent;
+    border: none;
+    font-size: 18px;
+    margin-top: 10px;
+    margin-left: 25%;
+    outline: none;
+    font-family: Roboto,"Helvetica Neue",sans-serif;
+    transition-duration: 0.4s;
+    -webkit-transition-duration: 0.4s;
+    cursor: pointer;
+    }
+    
+    .toggle {
+    font-size: 22px !important;
+    color: black;
+    padding-bottom: 13px;
+    }
+    
+    .view-stopwatch-menu {
+    width: 40px;
+    height: 40px;
+    }
+
 .mat-card-actions{
     text-align: center;
 }
