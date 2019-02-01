@@ -185,8 +185,8 @@ export class StatisticsComponent implements OnInit {
 
   createInitialChart() {
     const tasks = this.filterTasks(this.tasks);
-    const listOfTasksWithTotalTime = this.getTasksWithTotalTime(tasks);
-    const data = this.prepareDataForChart(listOfTasksWithTotalTime);
+    const tasksWithTotalTime = this.getTasksWithTotalTime(tasks);
+    const data = this.prepareDataForChart(tasksWithTotalTime);
     this.hasData = (data.names.length != 0);
     this.initChart(data.names, data.durations);
   }
@@ -207,8 +207,8 @@ export class StatisticsComponent implements OnInit {
 
   updateChart(type: any) {
     const tasks = this.filterTasks(this.tasks, type);
-    const listOfTasksWithTotalTime = this.getTasksWithTotalTime(tasks);
-    const data = this.prepareDataForChart(listOfTasksWithTotalTime);
+    const tasksWithTotalTime = this.getTasksWithTotalTime(tasks);
+    const data = this.prepareDataForChart(tasksWithTotalTime);
     this.hasData = (data.names.length != 0);
     this.updateChartData(data);
   }
