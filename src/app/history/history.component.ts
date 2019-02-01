@@ -103,7 +103,7 @@ export class HistoryComponent implements OnInit {
       closeOnNavigation: true,
       disableClose: false
     });
-    warningDialogRef.componentInstance.title = 'Warning';
+    warningDialogRef.componentInstance.title = 'Confirmation';
       warningDialogRef.componentInstance.message = 'Are you sure to delete this record?';
       warningDialogRef.componentInstance.btnCancelText = 'Cancel';
       warningDialogRef.componentInstance.btnOkText = 'Confirm';
@@ -138,7 +138,7 @@ export class HistoryComponent implements OnInit {
       closeOnNavigation: true,
       disableClose: false
     });
-    warningDialogRef.componentInstance.title = 'Warning';
+    warningDialogRef.componentInstance.title = 'Confirmation';
     if (record.watchType == 1)
       warningDialogRef.componentInstance.message = 'This timer will be reset!';
     else

@@ -12,10 +12,9 @@
               <button type="button" mat-menu-item (click)="importFile.click()">Import file...</button>
               <input type="file" (change)="browseFile($event)" name="uploadFile" accept=".csv,.xml" #importFile hidden> 
             </mat-menu>
-            <button type="button" matTooltip="Import/Export" mat-icon-button [matMenuTriggerFor]="shareStopwatch">
-              <mat-icon>more_vert</mat-icon>
+            <button type="button" matTooltip="Import or Export" mat-button [matMenuTriggerFor]="shareStopwatch">
+              <mat-icon>import_export</mat-icon><span>Export/Import</span>
             </button>
-            <span>Export | Import</span>
           </form>
         </fieldset>
         <fieldset class="other">
@@ -71,8 +70,8 @@
               <button type="button" mat-menu-item (click)="importFile.click()">Import file...</button>
               <input type="file" (change)="browseFile($event)" name="uploadFile" accept=".csv,.xml" #importFile hidden> 
             </mat-menu>
-            <button type="button" matTooltip="Import/Export" mat-icon-button [matMenuTriggerFor]="shareTimer">
-              <mat-icon>import_export</mat-icon>
+            <button type="button" matTooltip="Import or Export" mat-button [matMenuTriggerFor]="shareTimer">
+              <mat-icon>import_export</mat-icon><span>Export/Import</span>
             </button>
           </form>
         </fieldset>
