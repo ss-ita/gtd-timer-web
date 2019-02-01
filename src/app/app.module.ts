@@ -55,6 +55,7 @@ import { AdminPageComponent } from './admin-page/admin-page.component';
 import { RoleService } from './services/role.service';
 import { HttpTokenInterceptor } from './services/http-interceptor.service';
 import { StopwatchDialogComponent } from './stopwatch-dialog/stopwatch-dialog.component';
+import { ConfirmEmailComponent } from './confirm-email/confirm-email.component';
 
 export function jwtTokenGetter() {
   return localStorage.getItem('access_token');
@@ -91,7 +92,8 @@ export function jwtTokenGetter() {
     RepeatAlarmDialogComponent,
     AlarmDialogNotificationComponent,
     AdminPageComponent,
-    StopwatchDialogComponent
+    StopwatchDialogComponent,
+    ConfirmEmailComponent
   ],
   imports: [
     BrowserModule,
