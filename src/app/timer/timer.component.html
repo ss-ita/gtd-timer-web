@@ -46,9 +46,9 @@
         <ng-template [ngIf]="styleService.isLineStyle">
           <div class="container-stopwatch" class="unselectable">
             <app-line-progress class="text" [value]="timerServise.hour" [color]="timerServise.color"></app-line-progress>
-            <div class="semicolomn">:</div>
+            <div class="semicolomn" [style.color]="timerServise.color">:</div>
             <app-line-progress class="text" [value]="timerServise.minute" [color]="timerServise.color"></app-line-progress>
-            <div class="semicolomn">:</div>
+            <div class="semicolomn" [style.color]="timerServise.color">:</div>
             <app-line-progress class="text" [value]="timerServise.second" [color]="timerServise.color" [text]="''"></app-line-progress>
           </div>
         </ng-template>
@@ -65,9 +65,9 @@
         <ng-template [ngIf]="styleService.isLineStyle">
           <div class="container-stopwatch" class="unselectable">
             <app-line-progress class="text" [value]="timerServise.taskJson.hour" [color]="timerServise.color"></app-line-progress>
-            <div class="semicolomn">:</div>
+            <div class="semicolomn" [style.color]="timerServise.color">:</div>
             <app-line-progress class="text" [value]="timerServise.taskJson.minutes" [color]="timerServise.color"></app-line-progress>
-            <div class="semicolomn">:</div>
+            <div class="semicolomn" [style.color]="timerServise.color">:</div>
             <app-line-progress class="text" [value]="timerServise.taskJson.seconds" [color]="timerServise.color" [text]="''"></app-line-progress>
           </div>
         </ng-template>
