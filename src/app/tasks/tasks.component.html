@@ -126,38 +126,26 @@
               <ng-template [ngIf]="task.maxValueHour < 10">
                   <span>0</span>
                 </ng-template>
-<<<<<<< HEAD
-            <p>{{task.maxValueHour}}</p>
-=======
             <p (click)="toggleCollapsed(task)">{{task.maxValueHour}}</p>
             <div *ngIf="task.isCollapsed===false">
               <input [(ngModel)]=task.maxValueHour />
               </div>
->>>>>>> 67a5b03b8d0c25cc1828009900b7b339d742fcfd
             <p>:</p>
             <ng-template [ngIf]="task.maxValueMinute < 10">
                 <span>0</span>
               </ng-template>
-<<<<<<< HEAD
-            <p>{{task.maxValueMinute}}</p>
-=======
               <p (click)="toggleCollapsed(task)">{{task.maxValueMinute}}</p>
               <div *ngIf="task.isCollapsed===false">
                 <input [(ngModel)]=task.maxValueMinute />
                 </div>
->>>>>>> 67a5b03b8d0c25cc1828009900b7b339d742fcfd
             <p>:</p>
             <ng-template [ngIf]="task.maxValueSecond < 10">
                 <span>0</span>
               </ng-template>
-<<<<<<< HEAD
-            <p>{{task.maxValueSecond}}</p>
-=======
               <p (click)="toggleCollapsed(task)">{{task.maxValueSecond}}</p>
               <div *ngIf="task.isCollapsed===false">
                 <input [(ngModel)]=task.maxValueSecond />
                 </div>
->>>>>>> 67a5b03b8d0c25cc1828009900b7b339d742fcfd
           </div>
           <div class="time">
             <app-line-progress class="textsize" [value]="task.hour" [text]="':'"></app-line-progress>
