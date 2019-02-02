@@ -1,4 +1,4 @@
-import { Component, OnInit,Input } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { Record } from '../models/record.model';
 import { MatDialogRef } from '@angular/material';
 
@@ -16,7 +16,7 @@ export class RecordInfoComponent implements OnInit {
   ngOnInit() {
   }
 
-  closeDialog(){
+  closeDialog() {
     this.dialogRef.close();
   }
 }

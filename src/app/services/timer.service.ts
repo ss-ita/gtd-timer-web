@@ -62,7 +62,7 @@ export class TimerService {
     }
 
     getIsChosenPreset() {
-        return this.currentPreset === "Choose preset" ? true : false; 
+        return this.currentPreset === 'Choose preset' ? true : false;
     }
 
     startTimersFromPreset() {
@@ -159,7 +159,7 @@ export class TimerService {
         }
     }
 
-  
+
     updateTime() {
 
         if (this.minute == 0 && this.second < 11 && this.hour == 0) {
@@ -172,7 +172,7 @@ export class TimerService {
             }
             this.nextTimer();
             this.refreshTimer();
-            if(this.isForce === false){
+            if (this.isForce === false) {
                 this.timerSound.src = this.configService.urlSoundTimer;
                 this.timerSound.play();
                 this.isTimerFinished = true;
@@ -195,12 +195,12 @@ export class TimerService {
         this.timerIndex = -1;
     }
 
-    forceNextTimer(){
+    forceNextTimer() {
         this.isForce = true;
         this.nextTimer();
     }
 
-    nextTimer() { 
+    nextTimer() {
         this.isForward = true;
         this.isTimerFinished = false;
         this.hour = 0;
@@ -226,5 +226,5 @@ export class TimerService {
     timerClear() {
         this.task = ' ';
         this.refreshTimer();
-      }
+    }
 }

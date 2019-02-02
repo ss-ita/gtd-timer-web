@@ -58,7 +58,7 @@ export class NavBarComponent implements OnInit {
           index: 2
         }, {
           label: 'List',
-          link: './tasks',
+          link: './list',
           icon: 'fa-tasks fa-lg',
           index: 3
         }, {

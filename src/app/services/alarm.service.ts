@@ -480,9 +480,7 @@ export class AlarmService {
   }
 
   calculateTimeStart(alarmModel: AlarmModel) {
-    if (alarmModel == null) {
-      return '';
-    }
+    let message;
 
     const currentDate = new Date();
     const startAlarmSecond = 60;
@@ -505,7 +503,7 @@ export class AlarmService {
       differentDay += 31;
     }
 
-    let message = `Alarm will go off in `;
+    message = `Alarm will go off in `;
 
     if (differentDay !== 0) {
       message += `${differentDay} days `;
@@ -518,6 +516,7 @@ export class AlarmService {
     }
 
     message += `${differentSecond} seconds `;
+
 
     return message;
   }

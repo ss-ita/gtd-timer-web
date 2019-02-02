@@ -25,7 +25,7 @@ const routes: Routes = [
   { path: 'stopwatch', component: StopwatchComponent },
   { path: 'timer', component: TimerComponent },
   { path: 'alarm', component: AlarmComponent },
-  { path: 'tasks', component: TasksComponent, canActivate: [AuthGuard] },
+  { path: 'list', component: TasksComponent, canActivate: [AuthGuard] },
   { path: 'statistics', component: StatisticsComponent, canActivate: [AuthGuard] },
   { path: 'settings', component: SettingsComponent, canActivate: [AuthGuard] },
   { path: 'history', component: HistoryComponent, canActivate: [AuthGuard] },

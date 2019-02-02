@@ -10,14 +10,14 @@ import { Component, OnInit } from '@angular/core';
 export class ConfirmEmailComponent implements OnInit {
 
   constructor(
-    private route: ActivatedRoute ,
+    private route: ActivatedRoute,
     private router: Router,
     private userService: UserService) { }
 
-  verifyEmail(){
+  verifyEmail() {
     const id = this.route.snapshot.paramMap.get('id');
     const token = this.route.snapshot.paramMap.get('token');
-    this.userService.verifyEmail(id,token);
+    this.userService.verifyEmail(id, token);
   }
 
   ngOnInit() {

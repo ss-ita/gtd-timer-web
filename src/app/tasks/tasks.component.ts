@@ -60,8 +60,8 @@ export class TasksComponent implements OnInit {
   }
 
   fillTimeAll(list) {
-    for (let task of list) {
-      this.fillTime(task)
+    for (const task of list) {
+      this.fillTime(task);
     }
     return list;
   }
@@ -191,7 +191,7 @@ export class TasksComponent implements OnInit {
   }
 
   getStopwatches() {
-    let observer = {
+    const observer = {
       next: data => {
         this.taskService.stopwatches = [];
         for (let i = data.length - 1; i >= 0; --i) {
@@ -221,23 +221,25 @@ export class TasksComponent implements OnInit {
         }
       },
       complete: () => { this.runAfterGet(); }
-    }
+    };
     this.taskService.getStopwatches().subscribe(observer);
   }
 
   runAfterGet() {
-    for (let i = 0; i < this.taskService.stopwatches.length; ++i)
+    for (let i = 0; i < this.taskService.stopwatches.length; ++i) {
       if (this.taskService.stopwatches[i].isRunning && this.taskService.stopwatches[i].elapsedTime == 0) {
         this.start1(this.taskService.stopwatches[i]);
       }
+    }
   }
 
   start1(task: TaskCreateJson) {
     task.isRunning = true;
     if (!task.isStoped) {
-      let timeStart = new Date(task.lastStartTime);
-      let timeNow = new Date();
-      let elapsedTimeMoq = ((timeNow.getHours() - timeStart.getHours()) * 3600000 + (timeNow.getMinutes() - timeStart.getMinutes()) * 60000 + (timeNow.getSeconds() - timeStart.getSeconds()) * 1000 + (timeNow.getMilliseconds() - timeStart.getMilliseconds()));
+      const timeStart = new Date(task.lastStartTime);
+      const timeNow = new Date();
+      const elapsedTimeMoq = ((timeNow.getHours() - timeStart.getHours()) * 3600000 + (timeNow.getMinutes() - timeStart.getMinutes()) *
+        60000 + (timeNow.getSeconds() - timeStart.getSeconds()) * 1000 + (timeNow.getMilliseconds() - timeStart.getMilliseconds()));
       this.ticks = elapsedTimeMoq;
       task.currentSecond = elapsedTimeMoq / 1000;
       this.subscribe = timer(0, this.milisecondPerSecond).subscribe((x) => {
@@ -292,8 +294,9 @@ export class TasksComponent implements OnInit {
     this.taskService.importFile(event)
       .subscribe(
         data => {
-          this.taskService.stopwatches.unshift(...this.fillTimeAll(data.reverse()).filter(task => task.watchType === 0));
-          this.taskService.timers.unshift(...this.fillTimeAll(data.reverse()).filter(task => task.watchType === 1));
+          data.reverse();
+          this.taskService.stopwatches.unshift(...this.fillTimeAll(data).filter(task => task.watchType === 0));
+          this.taskService.timers.unshift(...data.filter(task => task.watchType === 1));
         }
       );
   }
@@ -307,42 +310,42 @@ export class TasksComponent implements OnInit {
   }
 
   exportAllStopwatchesAsCsv() {
-    this.taskService.downloadFile("all_stopwatches.csv", this.configService.urlExportAllStopwatchesAsCsv);
+    this.taskService.downloadFile('all_stopwatches.csv', this.configService.urlExportAllStopwatchesAsCsv);
   }
 
   exportAllTimersAsCsv() {
-    this.taskService.downloadFile("all_timers.csv", this.configService.urlExportAllTimersAsCsv);
+    this.taskService.downloadFile('all_timers.csv', this.configService.urlExportAllTimersAsCsv);
   }
 
   exportAllStopwatchesAsXml() {
-    this.taskService.downloadFile("all_stopwatches.xml", this.configService.urlExportAllStopwatchesAsXml);
+    this.taskService.downloadFile('all_stopwatches.xml', this.configService.urlExportAllStopwatchesAsXml);
   }
 
   exportAllTimersAsXml() {
-    this.taskService.downloadFile("all_timers.xml", this.configService.urlExportAllTimersAsXml);
+    this.taskService.downloadFile('all_timers.xml', this.configService.urlExportAllTimersAsXml);
   }
-
 
   pauseTask(task: TaskCreateJson) {
     task.isRunning = false;
     task.isStoped = true;
     task.elapsedTime = task.currentSecond * 1000;
     this.taskService.pauseTask(task).subscribe();
-    let timeStart = new Date(task.lastStartTime);
-    let timeNow = new Date();
-    let tzoffset = (new Date()).getTimezoneOffset() * 60000; //offset in milliseconds
-    let stop = (new Date(Date.now() - tzoffset)).toISOString().slice(0, -1);
-    let recordToCreate: Record = {
+    const timeStart = new Date(task.lastStartTime);
+    const timeNow = new Date();
+    const tzoffset = (new Date()).getTimezoneOffset() * 60000; // offset in milliseconds
+    const stop = (new Date(Date.now() - tzoffset)).toISOString().slice(0, -1);
+    const recordToCreate: Record = {
       id: 0,
       name: task.name,
       description: task.description,
       startTime: task.lastStartTime,
       stopTime: stop,
-      elapsedTime: ((timeNow.getHours() - timeStart.getHours()) * 3600000 + (timeNow.getMinutes() - timeStart.getMinutes()) * 60000 + (timeNow.getSeconds() - timeStart.getSeconds()) * 1000 + (timeNow.getMilliseconds() - timeStart.getMilliseconds())),
+      elapsedTime: ((timeNow.getHours() - timeStart.getHours()) * 3600000 + (timeNow.getMinutes() - timeStart.getMinutes()) *
+        60000 + (timeNow.getSeconds() - timeStart.getSeconds()) * 1000 + (timeNow.getMilliseconds() - timeStart.getMilliseconds())),
       watchType: task.watchType,
       action: 'Pause',
       taskId: task.id
-    }
+    };
     this.historyService.createRecord(recordToCreate).subscribe();
 
   }
@@ -350,42 +353,44 @@ export class TasksComponent implements OnInit {
     task.isRunning = false;
     task.isStoped = true;
     this.taskService.pauseTask(task).subscribe();
-    let timeStart = new Date(task.lastStartTime);
-    let timeNow = new Date();
-    let tzoffset = (new Date()).getTimezoneOffset() * 60000; //offset in milliseconds
-    let stop = (new Date(Date.now() - tzoffset)).toISOString().slice(0, -1);
-    let recordToCreate: Record = {
+    const timeStart = new Date(task.lastStartTime);
+    const timeNow = new Date();
+    const tzoffset = (new Date()).getTimezoneOffset() * 60000; // offset in milliseconds
+    const stop = (new Date(Date.now() - tzoffset)).toISOString().slice(0, -1);
+    const recordToCreate: Record = {
       id: 0,
       name: task.name,
       description: task.description,
       startTime: task.lastStartTime,
       stopTime: stop,
-      elapsedTime: ((timeNow.getHours() - timeStart.getHours()) * 3600000 + (timeNow.getMinutes() - timeStart.getMinutes()) * 60000 + (timeNow.getSeconds() - timeStart.getSeconds()) * 1000 + (timeNow.getMilliseconds() - timeStart.getMilliseconds())),
+      elapsedTime: ((timeNow.getHours() - timeStart.getHours()) * 3600000 + (timeNow.getMinutes() - timeStart.getMinutes()) *
+        60000 + (timeNow.getSeconds() - timeStart.getSeconds()) * 1000 + (timeNow.getMilliseconds() - timeStart.getMilliseconds())),
       watchType: task.watchType,
       action: 'Pause',
       taskId: task.id
-    }
+    };
     this.historyService.createRecord(recordToCreate).subscribe();
   }
   resetTimer(task: TaskCreateJson) {
     task.hour = task.minutes = task.seconds = 0;
     task.isStoped = task.isRunning = false;
     this.taskService.resetTask(task).subscribe();
-    let timeStart = new Date(task.lastStartTime);
-    let timeNow = new Date();
-    let tzoffset = (new Date()).getTimezoneOffset() * 60000; //offset in milliseconds
-    let stop = (new Date(Date.now() - tzoffset)).toISOString().slice(0, -1);
-    let recordToCreate: Record = {
+    const timeStart = new Date(task.lastStartTime);
+    const timeNow = new Date();
+    const tzoffset = (new Date()).getTimezoneOffset() * 60000; // offset in milliseconds
+    const stop = (new Date(Date.now() - tzoffset)).toISOString().slice(0, -1);
+    const recordToCreate: Record = {
       id: 0,
       name: task.name,
       description: task.description,
       startTime: task.lastStartTime,
       stopTime: stop,
-      elapsedTime: ((timeNow.getHours() - timeStart.getHours()) * 3600000 + (timeNow.getMinutes() - timeStart.getMinutes()) * 60000 + (timeNow.getSeconds() - timeStart.getSeconds()) * 1000 + (timeNow.getMilliseconds() - timeStart.getMilliseconds())),
+      elapsedTime: ((timeNow.getHours() - timeStart.getHours()) * 3600000 + (timeNow.getMinutes() - timeStart.getMinutes()) *
+        60000 + (timeNow.getSeconds() - timeStart.getSeconds()) * 1000 + (timeNow.getMilliseconds() - timeStart.getMilliseconds())),
       watchType: task.watchType,
       action: 'Reset',
       taskId: task.id
-    }
+    };
     this.historyService.createRecord(recordToCreate).subscribe();
 
   }
@@ -395,21 +400,22 @@ export class TasksComponent implements OnInit {
     task.elapsedTime = 0;
     task.isStoped = task.isRunning = false;
     this.taskService.resetTask(task).subscribe();
-    let timeStart = new Date(task.lastStartTime);
-    let timeNow = new Date();
-    let tzoffset = (new Date()).getTimezoneOffset() * 60000; //offset in milliseconds
-    let stop = (new Date(Date.now() - tzoffset)).toISOString().slice(0, -1);
-    let recordToCreate: Record = {
+    const timeStart = new Date(task.lastStartTime);
+    const timeNow = new Date();
+    const tzoffset = (new Date()).getTimezoneOffset() * 60000; // offset in milliseconds
+    const stop = (new Date(Date.now() - tzoffset)).toISOString().slice(0, -1);
+    const recordToCreate: Record = {
       id: 0,
       name: task.name,
       description: task.description,
       startTime: task.lastStartTime,
       stopTime: stop,
-      elapsedTime: ((timeNow.getHours() - timeStart.getHours()) * 3600000 + (timeNow.getMinutes() - timeStart.getMinutes()) * 60000 + (timeNow.getSeconds() - timeStart.getSeconds()) * 1000 + (timeNow.getMilliseconds() - timeStart.getMilliseconds())),
+      elapsedTime: ((timeNow.getHours() - timeStart.getHours()) * 3600000 + (timeNow.getMinutes() - timeStart.getMinutes()) *
+        60000 + (timeNow.getSeconds() - timeStart.getSeconds()) * 1000 + (timeNow.getMilliseconds() - timeStart.getMilliseconds())),
       watchType: task.watchType,
       action: 'Reset',
       taskId: task.id
-    }
+    };
     this.historyService.createRecord(recordToCreate).subscribe();
 
 
@@ -417,14 +423,14 @@ export class TasksComponent implements OnInit {
 
   startTask(task: TaskCreateJson) {
     this.start(task);
-    var tzoffset = (new Date()).getTimezoneOffset() * 60000; //offset in milliseconds
+    const tzoffset = (new Date()).getTimezoneOffset() * 60000; // offset in milliseconds
     task.lastStartTime = (new Date(Date.now() - tzoffset)).toISOString().slice(0, -1);
     this.taskService.startTask(task).subscribe();
   }
 
   startTimer(task: TaskCreateJson) {
     this.startTimeTimer(task);
-    var tzoffset = (new Date()).getTimezoneOffset() * 60000; //offset in milliseconds
+    const tzoffset = (new Date()).getTimezoneOffset() * 60000; // offset in milliseconds
     task.lastStartTime = (new Date(Date.now() - tzoffset)).toISOString().slice(0, -1);
     this.taskService.startTask(task).subscribe();
   }
@@ -477,13 +483,13 @@ export class TasksComponent implements OnInit {
       task.seconds = Math.floor((task.currentSecond - (this.secondPerHour * task.hour)) % this.secondPerMinute);
     }
   }
-  
-  
+
+
   updateTimeTimer(task: TaskCreateJson) {
     if (task.isRunning) {
       if (task.minutes == 0 && task.seconds == 0 && task.hour == 0) {
         task.isStoped = true;
-    } else {
+      } else {
         task.hour = Math.floor(task.ticksi / this.secondPerHour);
         task.minutes = Math.floor((task.ticksi % this.secondPerHour) / this.secondPerMinute);
         task.seconds = Math.floor((task.ticksi % this.secondPerHour) % this.secondPerMinute);

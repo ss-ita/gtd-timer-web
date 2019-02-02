@@ -70,8 +70,8 @@ export class TasksService implements OnInit {
             } else if (file.name.split('.').pop() === 'csv') {
                 return this.http.post(this.service.urlImportTasksAsCsv, formData);
             } else {
-                this.toasterService.showToaster("Unsupported file extension!");
-                return throwError("Unsupported file extension!");
+                this.toasterService.showToaster('Unsupported file extension!');
+                return throwError('Unsupported file extension!');
             }
         }
     }

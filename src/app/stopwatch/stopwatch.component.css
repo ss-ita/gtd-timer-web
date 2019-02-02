@@ -36,6 +36,7 @@
     min-height: calc(100vh - 49px);
     width: 100%;
     background-image: linear-gradient(to top, #d9afd9 0%, #97d9e1 100%);
+    min-width: 820px;
 }
 
 .content-area {
@@ -62,6 +63,33 @@
     margin-left: -8px;
     text-align: center;
 }
+
+.current-stopwatch {
+    text-align: right;
+    width: 90%;
+    display: inline-block;
+    background-color: transparent;
+    border: none;
+    font-size: 18px;
+    margin-top: 10px;
+    margin-left: 25%;
+    outline: none;
+    font-family: Roboto,"Helvetica Neue",sans-serif;
+    transition-duration: 0.4s;
+    -webkit-transition-duration: 0.4s;
+    cursor: pointer;
+    }
+    
+    .toggle {
+    font-size: 22px !important;
+    color: black;
+    padding-bottom: 13px;
+    }
+    
+    .view-stopwatch-menu {
+    width: 40px;
+    height: 40px;
+    }
 
 .mat-card-actions{
     text-align: center;
@@ -107,7 +135,6 @@
 }
 
 .mat-card {
-	font-family: 'Times New Roman', Times, serif !important;
 }
 
 .current-stopwatch {
