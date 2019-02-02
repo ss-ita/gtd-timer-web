@@ -39,14 +39,17 @@
     height: 200px;
 }
 
+.mat-card-content > :last-child:not(.mat-card-footer){
+    margin-bottom: 23px;
+}
 .mat-card-header {
     height: 200px;
     text-align: center;
 }
 
 .mat-card-actions {
-    margin-top: 2%;
     text-align: center !important;
+    padding: 0;
 }
 
 .unselectable{
@@ -61,7 +64,7 @@
     justify-content: center;    
     width: 100%;   
     align-items: baseline;
-    margin-left: -32px;
+    margin-left: 6px;
 }
 
 .mat-card {
@@ -69,10 +72,6 @@
     height: 380px;
     margin: 5% auto;
     text-align: right;
-}
-
-.mat-action {
-    margin-top: 10px;
 }
 
 .timer-input {
@@ -83,7 +82,6 @@
 .button-area {
     width: 100%;
     text-align: center;
-    margin-left: 10px;
 }
 
 .label-margin {
@@ -262,4 +260,21 @@
     width: 40px;
     height: 40px;
     margin-top: 9px;
+}
+
+.progress-percentage-wrapper {
+	position: relative;
+	font-size: 50px;
+	width: 200px;
+	height: 200px;
+    display: inline-block;
+    margin: 0 0.5%;
+}
+
+.mat-card-content {
+	margin-top: 0.5px;
+    margin-left: -12px;
+    text-align: center;
+    margin-bottom: -4px;
+    min-height: 223px;
 }

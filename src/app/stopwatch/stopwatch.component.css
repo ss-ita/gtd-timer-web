@@ -54,7 +54,7 @@
    -moz-user-select: none; /* Firefox */
     -ms-user-select: none; /* Internet Explorer/Edge */
         user-select: none;
-        padding-top: 41px;
+        padding-top: 40px;
 }
 
 .mat-card-content {
@@ -132,9 +132,6 @@
 .semicolomn {
     display: inline-flex;
     font-size: 120px;
-}
-
-.mat-card {
 }
 
 .current-stopwatch {

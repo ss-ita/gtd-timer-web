@@ -35,15 +35,21 @@
       </div>
       <div class="margin-bottom"></div>
     </div>
-    <mat-card-header>
+    <mat-card-content>
       <ng-template [ngIf]="timerServise.task === ' '">
         <ng-template [ngIf]="!styleService.isLineStyle">
+            <div class="progress-percentage-wrapper">
           <app-round-progress class="round-progress" [max]="timerServise.maxValueOfHour" [value]="timerServise.hour"
             [color]="timerServise.color" [text]="'h'"></app-round-progress>
+            </div>
+            <div class="progress-percentage-wrapper">
           <app-round-progress class="round-progress" [max]="timerServise.secondPerMinute" [value]="timerServise.minute"
             [color]="timerServise.color" [text]="'m'"></app-round-progress>
+            </div>
+            <div class="progress-percentage-wrapper">
           <app-round-progress class="round-progress" [max]="timerServise.secondPerMinute" [value]="timerServise.second"
             [color]="timerServise.color" [text]="'s'"></app-round-progress>
+            </div>
         </ng-template>
         <ng-template [ngIf]="styleService.isLineStyle">
           <div class="container-stopwatch" class="unselectable">
@@ -57,12 +63,18 @@
       </ng-template>
       <ng-template [ngIf]="timerServise.task !== ' '">
         <ng-template [ngIf]="!styleService.isLineStyle">
+            <div class="progress-percentage-wrapper">
           <app-round-progress class="round-progress" [max]="timerServise.maxValueOfHour" [value]="timerServise.taskJson.hour"
             [color]="timerServise.color" [text]="'h'"></app-round-progress>
+            </div>
+            <div class="progress-percentage-wrapper">
           <app-round-progress class="round-progress" [max]="timerServise.secondPerMinute" [value]="timerServise.taskJson.minutes"
             [color]="timerServise.color" [text]="'m'"></app-round-progress>
+            </div>
+            <div class="progress-percentage-wrapper">
           <app-round-progress class="round-progress" [max]="timerServise.secondPerMinute" [value]="timerServise.taskJson.seconds"
             [color]="timerServise.color" [text]="'s'"></app-round-progress>
+          </div>
         </ng-template>
         <ng-template [ngIf]="styleService.isLineStyle">
           <div class="container-stopwatch" class="unselectable">
@@ -74,7 +86,7 @@
           </div>
         </ng-template>
       </ng-template>
-    </mat-card-header>
+    </mat-card-content>
     <mat-card-actions [formGroup]="timerForm" class="mat-action">
       <ng-template [ngIf]="timerServise.task === ' '">
         <mat-form-field class="timer-input">
