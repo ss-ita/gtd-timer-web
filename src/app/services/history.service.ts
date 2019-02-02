@@ -11,6 +11,10 @@ export class HistoryService {
 
   constructor(private configService: ConfigService,private httpClient: HttpClient) { }
 
+  createRecord(record:Record){
+    return this.httpClient.post(this.configService.urlTask + 'CreateRecord',record );
+  }
+
   getAllRecords():Observable<Record[]>{
     return this.httpClient.get<Record[]>(this.configService.urlTask+'GetAllRecordsByUserId');
   }

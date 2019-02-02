@@ -1,10 +1,10 @@
 export class TaskJson {
    id: number;
-   name: String;
-   description: String;
+   name: string;
+   description: string;
    elapsedTime: number;
-   lastStartTime: String;
-   goal: String;
+   lastStartTime: string;
+   goal: string;
    isActive: boolean;
    isRunning: boolean;
    userId: number;

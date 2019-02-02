@@ -62,7 +62,7 @@
     </div>
     <mat-divider></mat-divider>
     <mat-list>
-      <mat-list-item *ngFor='let record of recordsToDisplay | filter: searchText' (mouseenter)=mouseEnter(record)>
+      <mat-list-item *ngFor='let record of recordsToDisplay | filter: searchText'>
         <div class="name" >
           <i *ngIf='record.watchType == 0' class = "fas fa-stopwatch fa-lg"></i>
           <i *ngIf ='record.watchType == 1' class = "fas fa-clock fa-lg"></i>

@@ -17,9 +17,18 @@
             </button>
           </form>
         </fieldset>
-        <fieldset class="other">
+        <div class="other">
           <input [(ngModel)]="searchText" class="search" placeholder="Find Stopwatch By Name">
-        </fieldset>
+              <div class="display-buttons">
+                
+                  <div class="buttons">
+                    <button mat-raised-button id='firstTopButton'  [ngClass]="{'active': displayStopwatch}" (click)="displayStopwatches()">Stopwatches</button>
+                    <button mat-raised-button id='secondTopButton' [ngClass]="{'active': displayTimer}" (click)="displayTimers()">Timers</button>
+                  </div>
+                
+              </div>
+          
+           </div>
       </div>
       <div class="top-tittles">
         <div class="name-title" (click)="filterByProperty('name')">
@@ -47,8 +56,12 @@
             <app-line-progress class="textsize" [value]="task.seconds" [text]="''"></app-line-progress>
           </div>
           <div class="actions">
+            <ng-template [ngIf]="task.isRunning === false">
             <button class="but" (click)="startTask(task)"><i class="fa fa-play"></i></button>
+            </ng-template>
+            <ng-template [ngIf]="task.isRunning === true">
             <button class="but" [disabled]="task.isRunning === false" (click)="pauseTask(task)"><i class="fa fa-pause"></i></button>
+          </ng-template>
             <button class="but" [disabled]="task.isRunning === false" (click)="reset(task)"><i class="fa fa-refresh"></i></button>
             <button class="but"><i class="fa fa-bars"></i></button>
             <button class="but" (click)="deleteTask(task)"><i class="fa fa-times"></i></button>
@@ -62,8 +75,6 @@
       <div class="fields">
         <fieldset class="add_new">
           <form (submit)="addTimer()">
-            <input class="input" placeholder="New Timer Name" type="text" [(ngModel)]="taskName" name="Name">
-            <button class="but" type="submit">Add</button>
             <mat-menu #shareTimer="matMenu">
               <button type="button" mat-menu-item (click)="exportAllTimersAsXml()">Download .XML</button>
               <button type="button" mat-menu-item (click)="exportAllTimersAsCsv()">Download .CSV</button>
@@ -77,6 +88,15 @@
         </fieldset>
         <fieldset class="other">
           <input [(ngModel)]="searchText" class="search" placeholder="Find Timer By Name">
+            <div class="displaybuttons">
+                
+            <div class="button">
+              <button mat-raised-button id='firstTopButton'  [ngClass]="{'active': displayStopwatch}" (click)="displayStopwatches()">Stopwatches</button>
+              <button mat-raised-button id='secondTopButton' [ngClass]="{'active': displayTimer}" (click)="displayTimers()">Timers</button>
+            </div>
+          
+        </div>
+            
         </fieldset>
       </div>
       <div class="top-tittles">
@@ -89,14 +109,11 @@
         <div class="goal-title">
           Time
         </div>
-        <div class="progres-title">
-          Progress
-        </div>
         <div class="actions-title">
           Actions
         </div>
       </div>
-      <mat-list>
+      <mat-list class="time-container">
         <mat-list-item *ngFor='let task of taskService.timers | filter: searchText' class="grid-container">
           <div class="name">
             <p (click)="toggleCollapsed(task)">{{task.name}}</p>
@@ -106,21 +123,42 @@
             </div>
           </div>
           <div class="time">
-            <input matInput type="number" min="0" max="23" [(ngModel)]="task.maxValueHour">
-            <input matInput type="number" min="0" max="59" [(ngModel)]="task.maxValueMinute">
-            <input matInput type="number" min="0" max="59" [(ngModel)]="task.maxValueSecond">
+              <ng-template [ngIf]="task.maxValueHour < 10">
+                  <span>0</span>
+                </ng-template>
+            <p (click)="toggleCollapsed(task)">{{task.maxValueHour}}</p>
+            <div *ngIf="task.isCollapsed===false">
+              <input [(ngModel)]=task.maxValueHour />
+              </div>
+            <p>:</p>
+            <ng-template [ngIf]="task.maxValueMinute < 10">
+                <span>0</span>
+              </ng-template>
+              <p (click)="toggleCollapsed(task)">{{task.maxValueMinute}}</p>
+              <div *ngIf="task.isCollapsed===false">
+                <input [(ngModel)]=task.maxValueMinute />
+                </div>
+            <p>:</p>
+            <ng-template [ngIf]="task.maxValueSecond < 10">
+                <span>0</span>
+              </ng-template>
+              <p (click)="toggleCollapsed(task)">{{task.maxValueSecond}}</p>
+              <div *ngIf="task.isCollapsed===false">
+                <input [(ngModel)]=task.maxValueSecond />
+                </div>
           </div>
           <div class="time">
             <app-line-progress class="textsize" [value]="task.hour" [text]="':'"></app-line-progress>
             <app-line-progress class="textsize" [value]="task.minutes" [text]="':'"></app-line-progress>
-            <app-line-progress class="textsize" [value]="task.seconds" [text]="''"></app-line-progress>
-          </div>
-          <div class="right">
-            <app-progress [value]="progress | async"></app-progress>
-          </div>
+            <app-line-progress class="textsize" [value]="task.seconds" [text]="''"></app-line-progress>    
+          </div>                   
           <div class="actions">
+            <ng-template [ngIf]="task.isRunning === false">
             <button class="but" (click)="startTimer(task)"><i class="fa fa-play"></i></button>
+            </ng-template>
+            <ng-template [ngIf]="task.isRunning === true">
             <button class="but" [disabled]="task.isRunning === false" (click)="pauseTimer(task)"><i class="fa fa-pause"></i></button>
+            </ng-template>
             <button class="but" [disabled]="task.isRunning === false" (click)="resetTimer(task)"><i class="fa fa-refresh"></i></button>
             <button class="but"><i class="fa fa-bars"></i></button>
             <button class="but" (click)="deleteTimer(task)"><i class="fa fa-times"></i></button>
@@ -130,17 +168,5 @@
         </mat-list-item>
       </mat-list>
     </ng-template>
-    <mat-list>
-      <mat-list-item class="grid-container">
-        <div class="display-buttons">
-          <div>
-            <div class="buttons">
-              <button mat-raised-button [ngClass]="{'active': displayStopwatch}" (click)="displayStopwatches()">Stopwatches</button>
-              <button mat-raised-button [ngClass]="{'active': displayTimer}" (click)="displayTimers()">Timers</button>
-            </div>
-          </div>
-        </div>
-      </mat-list-item>
-    </mat-list>
   </div>
 </div>

@@ -95,6 +95,8 @@ export class HistoryComponent implements OnInit {
     this.historyService.deleteRecord(record.id).subscribe(observer);
     const indexTaskToDelete = this.records.indexOf(record, 0);
     this.records.splice(indexTaskToDelete, 1);
+    const indexTaskToDeleteD = this.recordsToDisplay.indexOf(record, 0);
+    this.recordsToDisplay.splice(indexTaskToDeleteD, 1);
   }
 
   onDeleteRecord(record:Record){
@@ -118,6 +120,7 @@ export class HistoryComponent implements OnInit {
       next: data => {
         if (data) {
           this.records.push(data);
+          this.recordsToDisplay.push(data);
         }
       },
 
