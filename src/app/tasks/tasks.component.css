@@ -4,7 +4,7 @@
     min-height: calc(100vh - 49px);
     width: 100%;
     background-image: linear-gradient(to top, #d9afd9 0%, #97d9e1 100%);
-    min-width: 820px;
+    min-width: 1000px;
 }
 
 .time-container {
@@ -44,12 +44,15 @@ fieldset {
 }
 
 .add_new {
-    min-width: 525px;
+    min-width: 50%;
     position: relative;
+    display: inline-block;
+    padding-left: 0px;
+    padding-right: 0px;
 }
 
 .input {
-    width: 320px;
+    width: 40%;
     height: 30px;
     border: 0,1px solid grey;
     margin-right: 10px;
@@ -57,9 +60,13 @@ fieldset {
 
 .other {
     position: relative;
-    display: flex;
-    margin-right: 2%;
+    display: inline-block;
     margin-left: -4%;
+    min-width: 48%;
+    text-align: right;
+    padding-left: 0px;
+    padding-right: 0px;
+    margin-right: 0px;
 }
 
 .buttons {
@@ -244,4 +251,8 @@ app-progress {
 
 .timer-list {
     min-width: 870px;
+}
+
+.displaybuttons {
+    display: inline-block;
 }

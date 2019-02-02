@@ -120,7 +120,7 @@ export class AlarmService {
   }
 
   playAlarm() {
-    this.colorTime = 'red';
+    this.colorTime = '#c23a33';
     this.isActive = true;
     const alarm = this.findAlarmById(this.alarmModel.id);
     this.showNotificationWindow(alarm.message);

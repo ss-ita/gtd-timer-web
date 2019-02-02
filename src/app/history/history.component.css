@@ -26,11 +26,11 @@ height: 90px;
 .topButtons .mat-raised-button{
     height: 40px;
     margin-right: 0px;
-    background-color: #dededa;
+    background-color: white;
 }
 
 .topButtons .active{
-     background-color: white;
+     background-color: #dededa;
 }
 
 #firstTopButton{
