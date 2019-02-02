@@ -104,10 +104,19 @@
             </div>
           </div>
           <div class="time">
+              <ng-template [ngIf]="task.maxValueHour < 10">
+                  <span>0</span>
+                </ng-template>
             <p>{{task.maxValueHour}}</p>
             <p>:</p>
+            <ng-template [ngIf]="task.maxValueMinute < 10">
+                <span>0</span>
+              </ng-template>
             <p>{{task.maxValueMinute}}</p>
             <p>:</p>
+            <ng-template [ngIf]="task.maxValueSecond < 10">
+                <span>0</span>
+              </ng-template>
             <p>{{task.maxValueSecond}}</p>
           </div>
           <div class="time">

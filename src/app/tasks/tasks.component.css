@@ -45,7 +45,7 @@ fieldset{
 
 .add_new{
     margin-right: 30%;
-    margin-left: 2%;
+    margin-left: -1.5%;
     position: absolute;
 }
 
@@ -53,11 +53,12 @@ fieldset{
     width: 320px;
     height: 30px;
     border: 0,1px solid grey;
+    margin-right: 10px;
 }
 .other{
     width: 30%;
     position: absolute;
-    left:75%;
+    left: 75%;
 }
 
 .search{
@@ -87,6 +88,7 @@ select{
 .name{
     width: 20%;
     min-width: 100px;
+    overflow: hidden;
 }
 
 .goal{
@@ -95,7 +97,7 @@ select{
 
 .actions{
     width: 60%;
-    text-align: center;
+    text-align: right;
 }
 
 mat-list-item{
@@ -146,8 +148,9 @@ mat-list-item{
 }
 
 .actions-title{
-    width: 57%;
-    text-align: center;
+    width: 39%;
+    text-align: right;
+    margin-right: 159px;
 }
 
 app-progress{
