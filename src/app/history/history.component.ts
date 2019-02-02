@@ -34,11 +34,6 @@ export class HistoryComponent implements OnInit {
     this.getRecords();
   }
 
-  mouseEnter() {
-    console.log('WECJNDFLJDF');
-  }
-
-
   exportAllStopwatchRecordsAsXml() {
     this.taskService.downloadFile('stopwatches_history.xml', this.configService.urlExportAllStopwatchesRecordsAsXml);
   }
@@ -155,26 +150,4 @@ export class HistoryComponent implements OnInit {
     };
 
   }
-  /*
-    getTasks() {
-  
-      this.tasks = [];
-      const observer = {
-        next: data => {
-          for (let i = 0; i < data.length; ++i) {
-            this.tasks.push(new Task());
-            this.tasks[i].convertFromTaskJson(data[i]);
-          }
-        },
-        error: err => {
-          if (err.error instanceof ErrorEvent) {
-            this.tosterService.showToaster(err.error.message);
-          } else {
-            this.tosterService.showToaster('Server error');
-          }
-        }
-      };
-  
-      this.historyService.getArchivedTasksFromServer().subscribe(observer);
-    }*/
 }
