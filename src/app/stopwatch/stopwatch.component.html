@@ -11,7 +11,7 @@
         <mat-icon>more_vert</mat-icon>
       </button>
       <ng-template [ngIf]="stopwatchService.task !== ' '">
-        <div class="current-stopwatch">You work with: {{stopwatchService.task}}</div>
+        <div class="current-stopwatch">Currently running: {{stopwatchService.task}}</div>
         <button mat-icon-button class="view-stopwatch-menu" (click)="stopwatchService.stopwatchClear()">
           <mat-icon class="toggle" [inline]="true">clear</mat-icon>
         </button>

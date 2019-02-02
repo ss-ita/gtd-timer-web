@@ -9,13 +9,18 @@
           Tags
         </button>
         <button mat-raised-button [ngClass]="{'active': typeOfChart === chartTypes.Doughnut}" (click)="changeTypeOfChart(chartTypes.Doughnut)">
-          <img src="assets/img/donut-chart.png">
+          <img src="donut-chart.png">
         </button>
         <button mat-raised-button [ngClass]="{'active': typeOfChart === chartTypes.Bar}" (click)="changeTypeOfChart(chartTypes.Bar)">
           <i class="fa fa-bar-chart" aria-hidden="true"></i>
         </button>
-        <button mat-raised-button [ngClass]="{'active': typeOfTasks === tasksTypes.Stopwatch}" (click)="redraw(tasksTypes.Stopwatch)">Stopwatch</button>
-        <button mat-raised-button [ngClass]="{'active': typeOfTasks === tasksTypes.Timer}" (click)="redraw(tasksTypes.Timer)">Timer</button>
+        <mat-form-field>
+          <mat-select placeholder="Type">
+            <mat-option value="All" (click)="redraw()">All</mat-option>
+            <mat-option value="Stopwatch" (click)="redraw(tasksTypes.Stopwatch)">Stopwatch</mat-option>
+            <mat-option value="Timer" (click)="redraw(tasksTypes.Timer)">Timer</mat-option>
+          </mat-select>
+        </mat-form-field>
         <mat-form-field class="datepicker">
           <input matInput [matDatepicker]="pickerFrom" [matDatepickerFilter]="startDateFilter" placeholder="Start date"
             (dateChange)="filterByDate($event)" [(ngModel)]="startDate">
@@ -36,4 +41,5 @@
     <div id="noData" [ngClass]="{'hidden': hasData}">
       <p> No data available</p>
     </div>
+  </div>
 </div>

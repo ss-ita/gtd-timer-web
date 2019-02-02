@@ -56,7 +56,7 @@
     -moz-user-select: none;   
     -ms-user-select: none;
     user-select: none;
-    padding-top: 41px;    
+    padding-top: 39.5px;    
     display: inline-flex;    
     justify-content: center;    
     width: 100%;   
@@ -102,7 +102,7 @@
 
 .round-progress {
     margin-left: 1% !important;
-    margin-top: 0.5px;
+    margin-top: -1.5px;
 }
 
 .text {

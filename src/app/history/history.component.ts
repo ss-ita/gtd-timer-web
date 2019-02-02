@@ -95,6 +95,8 @@ export class HistoryComponent implements OnInit {
     this.historyService.deleteRecord(record.id).subscribe(observer);
     const indexTaskToDelete = this.records.indexOf(record, 0);
     this.records.splice(indexTaskToDelete, 1);
+    const indexTaskToDeleteD = this.recordsToDisplay.indexOf(record, 0);
+    this.recordsToDisplay.splice(indexTaskToDeleteD, 1);
   }
 
   onDeleteRecord(record:Record){
@@ -103,7 +105,7 @@ export class HistoryComponent implements OnInit {
       closeOnNavigation: true,
       disableClose: false
     });
-    warningDialogRef.componentInstance.title = 'Warning';
+    warningDialogRef.componentInstance.title = 'Confirmation';
       warningDialogRef.componentInstance.message = 'Are you sure to delete this record?';
       warningDialogRef.componentInstance.btnCancelText = 'Cancel';
       warningDialogRef.componentInstance.btnOkText = 'Confirm';
@@ -118,6 +120,7 @@ export class HistoryComponent implements OnInit {
       next: data => {
         if (data) {
           this.records.push(data);
+          this.recordsToDisplay.push(data);
         }
       },
 
@@ -138,7 +141,7 @@ export class HistoryComponent implements OnInit {
       closeOnNavigation: true,
       disableClose: false
     });
-    warningDialogRef.componentInstance.title = 'Warning';
+    warningDialogRef.componentInstance.title = 'Confirmation';
     if (record.watchType == 1)
       warningDialogRef.componentInstance.message = 'This timer will be reset!';
     else

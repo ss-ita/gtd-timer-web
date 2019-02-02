@@ -57,10 +57,23 @@ fieldset{
 }
 .other{
     width: 30%;
+<<<<<<< HEAD
     position: absolute;
     left: 75%;
+=======
+    position: relative;
+    left: 60%;
+    display: flex;
 }
-
+.buttons{
+    display: flex;
+    position: relative;
+}
+.button{
+    display: flex;
+    position: relative;
+>>>>>>> 67a5b03b8d0c25cc1828009900b7b339d742fcfd
+}
 .search{
     margin-left: 4%;
     height: 30px;
@@ -184,10 +197,33 @@ app-progress{
     color: black;
 }
 
-.display-buttons {
+.buttons {
     position: relative;
 }
 
 .mat-icon {
     transform: scale(1.5);
+}
+.topButtons .mat-raised-button{
+    height: 40px;
+    margin-right: 0px;
+    background-color: #dededa;
+}
+.topButtons .active{
+    background-color: white;
+}
+#firstTopButton{
+    border-bottom-right-radius: 0px; 
+    border-top-right-radius: 0px;
+    padding-right: 10px;
+    padding-left:10px;
+}
+
+#secondTopButton{
+    border-bottom-left-radius: 0px; 
+    border-top-left-radius: 0px;
+    border-bottom-right-radius: 0px; 
+    border-top-right-radius: 0px;
+    padding-left: 10px;
+    padding-right: 10px;
 }

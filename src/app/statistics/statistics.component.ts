@@ -298,11 +298,11 @@ export class StatisticsComponent implements OnInit {
 
   changeTypeOfData(newTypeOfData: DataTypes) {
     this.typeOfData = newTypeOfData;
-    this.redraw();
+    this.redraw(this.typeOfTasks);
   }
 
   getHashtags(text: string) {
-    const regex = /(?:^|\s)(?:#)([a-zA-Z\d]+)/gm;
+    const regex = /\#([a-zA-Z0-9\.\-\&]+)/gm;
     const matches = [];
     let match;
 

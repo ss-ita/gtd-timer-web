@@ -16,30 +16,27 @@
             <button type="button" mat-menu-item (click)="exportAllTimerRecordsAsXml()">Export as .XML</button>
             <button type="button" mat-menu-item (click)="exportAllTimerRecordsAsCsv()">Export as .CSV</button>
           </mat-menu>
-          <button type="button" matTooltip="Export" mat-icon-button [matMenuTriggerFor]="shareHistory">
-            <mat-icon>get_app</mat-icon>
+          <button type="button" matTooltip="Export" mat-button [matMenuTriggerFor]="shareHistory">
+            <mat-icon>get_app</mat-icon><span>Export</span>
           </button>
-          <span>Export</span>
         </ng-template>
         <ng-template [ngIf]="isStopwatch === 1">
           <mat-menu #shareHistory="matMenu">
             <button type="button" mat-menu-item (click)="exportAllStopwatchRecordsAsXml()">Export as .XML</button>
             <button type="button" mat-menu-item (click)="exportAllStopwatchRecordsAsCsv()">Export as .CSV</button>
           </mat-menu>
-          <button type="button" matTooltip="Export" mat-icon-button [matMenuTriggerFor]="shareHistory">
-            <mat-icon>get_app</mat-icon>
+          <button type="button" matTooltip="Export" mat-button [matMenuTriggerFor]="shareHistory">
+            <mat-icon>get_app</mat-icon><span>Export</span>
           </button>
-          <span>Export</span>
         </ng-template>
         <ng-template [ngIf]="isStopwatch === 2">
         <mat-menu #shareHistory="matMenu">
           <button type="button" mat-menu-item (click)="exportAllRecordsAsXml()">Export as .XML</button>
           <button type="button" mat-menu-item (click)="exportAllRecordsAsCsv()">Export as .CSV</button>
         </mat-menu>
-        <button type="button" matTooltip="Export" mat-icon-button [matMenuTriggerFor]="shareHistory">
-          <mat-icon>get_app</mat-icon>
+        <button type="button" matTooltip="Export" mat-button [matMenuTriggerFor]="shareHistory">
+          <mat-icon>get_app</mat-icon><span>Export</span>
         </button>
-        <span>Export</span>
         </ng-template>
       </div>
       <div class="search">
@@ -65,7 +62,7 @@
     </div>
     <mat-divider></mat-divider>
     <mat-list>
-      <mat-list-item *ngFor='let record of recordsToDisplay | filter: searchText' (mouseenter)=mouseEnter(record)>
+      <mat-list-item *ngFor='let record of recordsToDisplay | filter: searchText'>
         <div class="name" >
           <i *ngIf='record.watchType == 0' class = "fas fa-stopwatch fa-lg"></i>
           <i *ngIf ='record.watchType == 1' class = "fas fa-clock fa-lg"></i>

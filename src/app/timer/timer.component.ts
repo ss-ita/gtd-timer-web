@@ -87,13 +87,13 @@ export class TimerComponent implements OnInit {
   }
 
   pauseTask() {
-    this.taskComponent.pauseTask(this.timerServise.taskJson);
+    this.taskComponent.pauseTimer(this.timerServise.taskJson);
     this.timerServise.isTimerPause = true;
     this.timerServise.color = '#c23a33';
   }
 
   startTask() {
-    this.taskComponent.startTask(this.timerServise.taskJson);
+    this.taskComponent.startTimer(this.timerServise.taskJson);
     this.timerServise.color = '#609b9b';
     this.timerServise.isTimerPause = false;
     this.timerServise.isTimerRun = true;
@@ -101,7 +101,7 @@ export class TimerComponent implements OnInit {
 
   resetTask() {
     this.pauseTask();
-    this.taskComponent.reset(this.timerServise.taskJson);
+    this.taskComponent.resetTimer(this.timerServise.taskJson);
     this.timerServise.isTimerRun = false;
     this.timerServise.isTimerPause = true;
     this.timerServise.color = 'black';

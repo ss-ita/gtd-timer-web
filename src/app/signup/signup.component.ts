@@ -39,7 +39,7 @@ export class SignupComponent implements OnInit {
       .subscribe(
         _ => {
           this.closeSignUpForm();
-          this.toasterService.showToaster('Registration successful, You can now Sign In ');
+          this.toasterService.showToaster('Registration successful, You can now Sign In');
           setTimeout(() => {
             this.toasterService.showToaster('Please confirm your email address');
           },
