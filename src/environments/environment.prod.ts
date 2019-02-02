@@ -8,5 +8,5 @@ export const environment = {
     storageBucket: 'gtd-timer.appspot.com',
     messagingSenderId: '43786259325'
   },
-  apiUrl:'https://localhost:44398'
+  apiUrl: 'https://localhost:44398'
 };

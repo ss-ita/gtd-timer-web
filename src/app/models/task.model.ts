@@ -33,12 +33,14 @@ export class Task {
         if (task.elapsedTime != null) {
             const hours = Math.floor(Number(task.elapsedTime) / milisecondsInHour);
             const minutes = Math.floor((Number(task.elapsedTime) - hours * milisecondsInHour) / milisecondsInMinute);
-            const seconds = Math.floor((Number(task.elapsedTime) - hours * milisecondsInHour - minutes * milisecondsInMinute) / milisecondsInSecond);
+            const seconds = Math.floor((Number(task.elapsedTime) - hours * milisecondsInHour - minutes * milisecondsInMinute)
+            / milisecondsInSecond);
             this.elapsedTime = {
                 hours: hours,
                 minutes: minutes,
                 seconds: seconds,
-                miliseconds: Number(task.elapsedTime) - (hours * milisecondsInHour + minutes * milisecondsInMinute + seconds * milisecondsInSecond)
+                miliseconds: Number(task.elapsedTime) -
+                (hours * milisecondsInHour + minutes * milisecondsInMinute + seconds * milisecondsInSecond)
             };
         }
 

@@ -5,7 +5,6 @@
     width: 100%;
     background-image: linear-gradient(to top, #d9afd9 0%, #97d9e1 100%);
     min-width: 820px;
-    font-family: 'Times New Roman', Times, serif !important;
 }
 
 mat-list-item{
@@ -58,7 +57,6 @@ height: 90px;
 
 .topButtons p{
     margin: 0%;
-    font-family: 'Times New Roman', Times, serif !important;
 }
 
 .topItems div{
@@ -80,13 +78,12 @@ height: 90px;
 .top-tittles{
     margin-top: 20px;
     margin-bottom: 2px;
-    
+    font-family: Roboto,"Helvetica Neue",sans-serif;
 }
 
 .top-tittles p{
     font-size:17px;
     font-weight: bold;
-    font-family: 'Times New Roman', Times, serif !important;
 }
 
 .top-tittles .start p{
@@ -152,10 +149,6 @@ width: 15%;
  .mat-raised-button{
      min-width: 1px;
      padding: 0%;
-}
- 
-.mat-list-item{
-    font-family: 'Times New Roman', Times, serif !important;
 }
  
 .mat-icon {

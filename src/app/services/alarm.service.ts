@@ -481,7 +481,7 @@ export class AlarmService {
 
   calculateTimeStart(alarmModel: AlarmModel) {
     let message;
-    
+
     const currentDate = new Date();
     const startAlarmSecond = 60;
     const differentSecond = startAlarmSecond - currentDate.getSeconds();

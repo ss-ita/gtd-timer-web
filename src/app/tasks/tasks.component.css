@@ -1,11 +1,10 @@
-.background{
+.background {
     position: absolute;
     top: auto;
     min-height: calc(100vh - 49px);
     width: 100%;
     background-image: linear-gradient(to top, #d9afd9 0%, #97d9e1 100%);
     min-width: 820px;
-    font-family: 'Times New Roman', Times, serif !important;
 }
 
 .time-container {
@@ -17,16 +16,17 @@
     height: inherit;
 }
 
-.fields{
+.fields {
     width: 100%;
     height: 50px;
     padding-top: 3px;
-    display: flex;
+    display: inline-flex;
     flex-direction: row;
     justify-content: space-between;
+    min-width: 870px;
 }
 
-fieldset{
+fieldset {
     border: none;
 }
 
@@ -39,85 +39,93 @@ fieldset{
     position: relative;
 }
 
-.but:hover{
+.but:hover {
    background-color: darkgrey;
 }
 
-.add_new{
-    margin-right: 30%;
-    margin-left: -1.5%;
-    position: absolute;
+.add_new {
+    min-width: 525px;
+    position: relative;
 }
 
-.input{
+.input {
     width: 320px;
     height: 30px;
     border: 0,1px solid grey;
     margin-right: 10px;
 }
-.other{
-    width: 30%;
+
+.other {
     position: relative;
-    left: 60%;
     display: flex;
-}
-.buttons{
-    display: flex;
-    position: relative;
-}
-.button{
-    display: flex;
-    position: relative;
-}
-.search{
-    margin-left: 4%;
-    height: 30px;
+    margin-right: 2%;
+    margin-left: -4%;
 }
 
-select{
+.buttons {
+    display: flex;
+    position: relative;
+}
+
+.button {
+    display: flex;
+    position: relative;
+}
+
+.search {
+    margin-left: 4%;
+    height: 30px;
+    margin-right: 5%;
+}
+
+select {
     height: 36px;
 }
 
-.taskName{
-    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+.taskName {
+    font-family: Roboto,"Helvetica Neue",sans-serif;
     font-size: 14px;
     color:#333;
     padding: 20px;
 }
 
-.right{
+.right {
     width: 1%;
 }
 
-.textSize{
+.textSize {
     font-size: 14px;
 }
 
-.name{
+.name {
     width: 20%;
     min-width: 100px;
     overflow: hidden;
 }
 
-.goal{
+.goal {
     width: 25%;
 }
 
-.actions{
+.actions {
     width: 60%;
     text-align: right;
 }
 
-mat-list-item{
+.actionsstopwatch {
+    width: 70%;
+    text-align: right;
+}
+
+mat-list-item {
     box-shadow:  0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
     margin-top: 6px;
     margin-bottom: 6px;
     background-color:  #f9f9f9;
     border-radius: 5px;
-
 }
 
-.my-container{
+.my-container {
     position: relative;
     margin-left: 10%;
     margin-right: 10%;
@@ -129,44 +137,55 @@ mat-list-item{
     margin-top:50px;
     width: 100%;
     padding-left: 16px;
+    min-width: 870px;
 }
 
-.sth{
+.sth {
     justify-content: space-between;
 }
 
-.name-title{
+.name-title {
     width: 19%;
     cursor: pointer;
 }
 
-.time-title{
+.button .active {
+    background-color: lightgray;
+}
+
+.time-title {
     width: 10%;   
     text-align: center;
 }
 
-.goal-title{
+.goal-title {
     width: 10%;
     text-align: center;
 }
 
-.progres-title{
+.progres-title {
     width: 10%;
     text-align: center !important;
 }
 
-.actions-title{
-    width: 39%;
+.actions-title {
+    width: 45%;
     text-align: right;
     margin-right: 159px;
 }
 
-app-progress{
+.actions-titlestopwatch {
+    width: 55%;
+    text-align: right;
+    margin-right: 159px;
+}
+
+app-progress {
     text-align: left !important;
     width: 10%;
 }
 
-.time{
+.time {
     font-size: 16px;
     display: inline-flex;
     text-align: center;
@@ -199,26 +218,30 @@ app-progress{
 .mat-icon {
     transform: scale(1.5);
 }
-.topButtons .mat-raised-button{
+.topButtons .mat-raised-button {
     height: 40px;
     margin-right: 0px;
     background-color: #dededa;
 }
-.topButtons .active{
+.topButtons .active {
     background-color: white;
 }
-#firstTopButton{
+#firstTopButton {
     border-bottom-right-radius: 0px; 
     border-top-right-radius: 0px;
     padding-right: 10px;
     padding-left:10px;
 }
 
-#secondTopButton{
+#secondTopButton {
     border-bottom-left-radius: 0px; 
     border-top-left-radius: 0px;
     border-bottom-right-radius: 0px; 
     border-top-right-radius: 0px;
     padding-left: 10px;
     padding-right: 10px;
+}
+
+.timer-list {
+    min-width: 870px;
 }
