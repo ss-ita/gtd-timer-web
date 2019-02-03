@@ -1,16 +1,16 @@
-.background{
+.background {
     position: absolute;
     top: auto;
     min-height: calc(100vh - 49px);
     width: 100%;
     background-image: linear-gradient(to top, #d9afd9 0%, #97d9e1 100%);
-    min-width: 820px;
+    min-width: 1200px;
 }
-
+    
 .container {
     position: relative;
 }
-
+    
 .container>div:first-child {
     width: 100%;
     height: 50px;
@@ -21,40 +21,63 @@
     margin: 0 25%;
     padding-top: 40px;
 }
-
+    
 .buttons {
     margin-top: 5px;
     margin: 0 10%;
+    display: inline-flex;
+    justify-content: center;
+    align-items: baseline;
 }
 
 .buttons .mat-raised-button{
-    background-color: #dededa;
-}
- 
-.buttons .active {
     background-color: white;
 }
 
-.buttons .mat-raised-button:first-child {
-    border-bottom-right-radius: 0px; 
+.buttons .active {
+    background-color: lightgray;
+}
+    
+.buttons .mat-raised-button:nth-child(1) {
+    margin-left: 5%;
+    border-bottom-right-radius: 0px;
     border-top-right-radius: 0px;
 }
 
 .buttons .mat-raised-button:nth-child(2){
+    border-bottom-left-radius: 0px;
+    border-top-left-radius: 0px;
+}
+
+.buttons .mat-raised-button:nth-child(3) {
+    margin-left: 80px;
+    border-bottom-right-radius: 0px; 
+    border-top-right-radius: 0px;
+}
+
+.buttons .mat-raised-button:nth-child(4){
     border-bottom-left-radius: 0px; 
     border-top-left-radius: 0px;
+}
+
+::ng-deep .buttons .mat-form-field {
+    margin-left: 80px;
+}
+
+.datepicker{
+    width: 100px;
 }
 
 #noData {
     padding-top: 50px;
 }
-
+    
 .hidden {
     display: none;
 }
-
+    
 #noData p {
     font-size: x-large;
-    width: 350px;
+    width: 300px;
     margin: 0 auto;
 }

@@ -1,7 +1,8 @@
 import { ConfigService } from './config.service';
-import { Timer } from '../models/preset.model';
+import { Task } from '../models/preset.model';
 import { Injectable } from '@angular/core';
 import { timer, Subscription } from 'rxjs';
+import { TaskCreateJson } from '../models/taskCreateJson.model';
 
 @Injectable({ providedIn: 'root' })
 
@@ -9,9 +10,10 @@ export class TimerService {
 
     constructor(private configService: ConfigService) { }
 
+    isForward: boolean;
     timerArrayLenght: number;
     timerIndex = -1;
-    timerArray: Timer[];
+    timerArray: Task[];
     maxValueHour: number;
     maxValueMinute: number;
     maxValueSecond: number;
@@ -24,30 +26,34 @@ export class TimerService {
     minute = 0;
     second = 0;
     ticks = 0;
+    maxTicks = 0;
 
     isTimerRun = false;
-    isTimerPause = false;
+    isTimerPause = true;
     isTimerFinished = false;
     isFromPreset = false;
     isArrayEmpty = true;
 
     timerSound = new Audio();
-    color = '#609b9b';
+    color = 'black';
     subscribe: Subscription;
-    public currentPreset = '#No chosen preset';
+    public currentPreset = 'Choose preset';
+    isForce = false;
+    task: String = ' ';
+    taskJson: TaskCreateJson;
 
-    initializeTimerArray(timerArray: Timer[]) {
-        this.clearTimerArrayAndIndex();
-        this.resetTimer();
+    initializeTimersArray(timerArray: Task[]) {
+        this.clearTimersArrayAndIndex();
+        this.nextTimer();
         this.timerIndex++;
         this.timerArray = timerArray;
         this.refreshTimer();
         this.timerArrayLenght = timerArray.length;
-        this.startTimerFromPreset();
-        this.getIsArrayEmpty();
+        this.startTimersFromPreset();
+        this.getIsTimerArrayEmpty();
     }
 
-    getIsArrayEmpty() {
+    getIsTimerArrayEmpty() {
         if (this.timerIndex === -1) {
             this.isArrayEmpty = true;
         } else {
@@ -55,17 +61,21 @@ export class TimerService {
         }
     }
 
-    startTimerFromPreset() {
+    getIsChosenPreset() {
+        return this.currentPreset === 'Choose preset' ? true : false;
+    }
+
+    startTimersFromPreset() {
         if (this.timerIndex === this.timerArrayLenght) {
             this.timerIndex = 0;
         }
         if (this.timerIndex <= this.timerArrayLenght - 1) {
-            this.startPresetTimer(
+            this.setPresetTimer(
                 this.timerArray[this.timerIndex].hours, this.timerArray[this.timerIndex].minutes, this.timerArray[this.timerIndex].seconds);
         }
     }
 
-    startPresetTimer(hours: number, minutes: number, seconds: number) {
+    setPresetTimer(hours: number, minutes: number, seconds: number) {
         this.hour = hours;
         this.minute = minutes;
         this.second = seconds;
@@ -80,24 +90,61 @@ export class TimerService {
             this.isTimerPause = false;
             this.isTimerRun = true;
             this.isTimerFinished = false;
+
+            if (this.maxValueHour == null) {
+                this.maxValueHour = 0;
+            }
+
+            if (this.maxValueMinute == null) {
+                this.maxValueMinute = 0;
+            }
+
+            if (this.maxValueSecond == null) {
+                this.maxValueSecond = 0;
+            }
+
             this.hour = this.maxValueHour;
             this.minute = this.maxValueMinute;
             this.second = this.maxValueSecond;
             this.ticks = (this.hour * this.secondPerHour) + (this.minute * this.secondPerMinute) + (this.second * this.secondPerSecond);
+            this.maxTicks = ((this.maxValueHour * this.secondPerHour) + (this.maxValueMinute * this.secondPerMinute)
+                + (this.maxValueSecond * this.secondPerSecond));
             this.subscribe = timer(0, this.milisecondPerSecond).subscribe(x => { this.ticks--; this.updateTime(); });
         }
 
         if (this.isTimerPause) {
-            this.isTimerPause = false;
-            this.isTimerRun = true;
-            this.subscribe = timer(0, this.milisecondPerSecond).subscribe(x => { this.ticks--; this.updateTime(); });
+            if (this.maxTicks != ((this.maxValueHour * this.secondPerHour) + (this.maxValueMinute * this.secondPerMinute)
+                + (this.maxValueSecond * this.secondPerSecond))) {
+                this.refreshTimer();
+                this.startTimer();
+            } else {
+                this.isTimerPause = false;
+                this.isTimerRun = true;
+                this.color = '#609b9b';
+                this.subscribe = timer(0, this.milisecondPerSecond).subscribe(x => { this.ticks--; this.updateTime(); });
+            }
         }
     }
 
     refreshTimer() {
-        this.startTimerFromPreset();
+        this.startTimersFromPreset();
         this.pauseTimer();
-        this.isTimerRun = this.isTimerPause = false;
+        this.color = 'black';
+        this.isTimerRun = false;
+        this.isTimerPause = true;
+
+        if (this.maxValueHour == null) {
+            this.maxValueHour = 0;
+        }
+
+        if (this.maxValueMinute == null) {
+            this.maxValueMinute = 0;
+        }
+
+        if (this.maxValueSecond == null) {
+            this.maxValueSecond = 0;
+        }
+
         this.hour = this.maxValueHour;
         this.minute = this.maxValueMinute;
         this.second = this.maxValueSecond;
@@ -107,22 +154,31 @@ export class TimerService {
     pauseTimer() {
         if (this.isTimerRun) {
             this.isTimerPause = true;
+            this.color = '#C23A33';
             this.subscribe.unsubscribe();
         }
     }
 
+
     updateTime() {
+
         if (this.minute == 0 && this.second < 11 && this.hour == 0) {
-            this.color = 'red';
+            this.color = '#C23A33';
         }
 
         if (this.minute == 0 && this.second == 0 && this.hour == 0) {
-            this.timerIndex++;
-            this.resetTimer();
+            if (this.isForward === true) {
+                this.timerIndex++;
+            }
+            this.nextTimer();
             this.refreshTimer();
-            this.timerSound.src = this.configService.urlSoundTimer;
-            this.timerSound.play();
-            this.isTimerFinished = true;
+            if (this.isForce === false) {
+                this.timerSound.src = this.configService.urlSoundTimer;
+                this.timerSound.play();
+                this.isTimerFinished = true;
+            } else {
+                this.isForce = false;
+            }
         }
 
         if (this.ticks > this.maxValueOfHour * this.secondPerHour) {
@@ -134,14 +190,41 @@ export class TimerService {
         }
     }
 
-    clearTimerArrayAndIndex() {
+    clearTimersArrayAndIndex() {
         this.timerArray = [];
         this.timerIndex = -1;
     }
 
-    resetTimer() {
+    forceNextTimer() {
+        this.isForce = true;
+        this.nextTimer();
+    }
+
+    nextTimer() {
+        this.isForward = true;
+        this.isTimerFinished = false;
         this.hour = 0;
         this.minute = 0;
         this.second = 0;
+        this.color = '#609b9b';
+    }
+    previousTimer() {
+        this.isForce = true;
+        this.isForward = false;
+        this.isTimerFinished = false;
+        this.hour = 0;
+        this.minute = 0;
+        this.second = 0;
+        this.color = '#609b9b';
+        if (this.timerIndex === 0) {
+            this.timerIndex = this.timerArray.length - 1;
+        } else {
+            this.timerIndex = this.timerIndex - 1;
+        }
+    }
+
+    timerClear() {
+        this.task = ' ';
+        this.refreshTimer();
     }
 }

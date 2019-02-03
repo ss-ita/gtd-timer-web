@@ -1,0 +1,156 @@
+.back{
+    position: absolute;
+    top: auto;
+    min-height: calc(100vh - 49px);
+    width: 100%;
+    background-image: linear-gradient(to top, #d9afd9 0%, #97d9e1 100%);
+    min-width: 820px;
+}
+
+mat-list-item{
+box-shadow:  0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
+margin-top: 6px;
+margin-bottom: 6px;
+background-color: #f9f9f9;
+border-radius: 5px;
+}
+
+.topItems{
+height: 90px;
+}
+
+.topButtons{
+    margin-top: 22px;
+}
+
+.topButtons .mat-raised-button{
+    height: 40px;
+    margin-right: 0px;
+    background-color: white;
+}
+
+.topButtons .active{
+     background-color: #dededa;
+}
+
+#firstTopButton{
+    border-bottom-right-radius: 0px; 
+    border-top-right-radius: 0px;
+    padding-right: 10px;
+    padding-left:10px;
+}
+
+#secondTopButton{
+    border-bottom-left-radius: 0px; 
+    border-top-left-radius: 0px;
+    border-bottom-right-radius: 0px; 
+    border-top-right-radius: 0px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+#thirdTopButton{
+    border-bottom-left-radius: 0px; 
+    border-top-left-radius: 0px;
+    width: 50px;
+}
+
+.topButtons p{
+    margin: 0%;
+}
+
+.topItems div{
+    display: inline-block;
+}
+
+.search {
+  position: absolute;
+  left:75%;
+  margin-top: 22px;
+}
+
+.search input{
+    border: none;
+    border-radius: 3px;
+    height: 30px;
+}
+
+.top-tittles{
+    margin-top: 20px;
+    margin-bottom: 2px;
+    font-family: Roboto,"Helvetica Neue",sans-serif;
+}
+
+.top-tittles p{
+    font-size:17px;
+    font-weight: bold;
+}
+
+.top-tittles .start p{
+    margin-left: 10%;
+}
+
+.my-container{
+    position: relative;
+    margin-left: 10%;
+    margin-right: 10%;
+}
+
+span{
+display: inline-block;
+}
+
+.name{
+    width: 25%;
+}
+
+.name p{
+    padding-left: 10px;
+    display: inline;
+}
+
+.name i{
+display: inline;
+}
+
+.start{
+    width: 25%;
+}
+
+.elapsed{
+    width: 15%;
+}
+
+.action{
+width: 15%;
+}
+
+#elseBlock{
+    width:20%;
+}
+
+.other{
+    width: 20%;
+}
+
+.other p{
+    padding-left: 20%;
+}
+
+.other button{
+    margin-left: 4px;
+    background-color: #dededa;
+    width: 20%;
+}
+ .other button:hover{
+    background-color:  #f9f9f9;
+ }
+
+ .mat-raised-button{
+     min-width: 1px;
+     padding: 0%;
+}
+ 
+.mat-icon {
+    transform: scale(1.1);
+}

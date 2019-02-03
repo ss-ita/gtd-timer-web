@@ -10,6 +10,7 @@
 }
 .add-timer-button {
     text-align: center;
+    margin-top: 10px;
 }
 .add-timer-icon {
     font-size: 36px;
@@ -18,11 +19,16 @@
 .delete-timer-icon {
     color: black;
 }
+.delete-preset {
+    float: right;
+}
 .add-new-preset-button {
     background-color: transparent;
     border: none;
     color: blue;
     font-size: 15px;
+    margin-left: -5px;
+    margin-right: -5px;
 }
 .auto-start-timers {
     margin-top: 20px;
@@ -36,8 +42,15 @@
     line-height: 23px;
 }
 .margin-top {
-    margin-top: 30px;
+    margin-top: 10px;
 }
-.isAuthenticate {
+.preset-selector {
+    margin-top: 10px;
+    margin-bottom: -20px;
+}
+.additional-message {
     font-size: 17px;
+}
+.close-button {
+    margin-left: 8px;
 }

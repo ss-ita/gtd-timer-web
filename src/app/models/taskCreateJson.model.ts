@@ -1,10 +1,23 @@
 export class TaskCreateJson {
     id: number;
-    name: String;
-    description: String;
+    name: string;
+    description: string;
     elapsedTime: number;
-    lastStartTime: String;
-    goal: String;
-    isActive: boolean;
+    lastStartTime: string;
+    goal: string;
+    watchType: number;
     isRunning: boolean;
+    isTimerFinished: boolean;
+    hour: number;
+    minutes: number;
+    seconds: number;
+    currentSecond: number;
+    isStoped: boolean;
+    isCollapsed: boolean;
+    maxValueHour: number;
+    maxValueMinute: number;
+    maxValueSecond: number;
+    goals: number;
+    ticksi: number;
 }
+

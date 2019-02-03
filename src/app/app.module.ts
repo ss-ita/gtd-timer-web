@@ -8,15 +8,16 @@ import { SigninComponent } from './signin/signin.component';
 import { NavBarComponent } from './nav-bar/nav-bar.component';
 import { AppRoutingModule } from './app-routing.module';
 import { TimerComponent } from './timer/timer.component';
-import { AlarmComponent } from './alarm/alarm.component';
+import { AlarmComponent } from './alarm-components/alarm/alarm.component';
 import { TaskManagementComponent } from './task-management/task-management.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CompareValidatorDirective } from './compare-validator/compare-validator.directive';
-import { MatDialogModule, MatDialog, MatDialogRef, MatSnackBarModule, MatSidenavModule, MatExpansionModule } from '@angular/material';
+import { MatDialogModule, MatDialog, MatDialogRef, MatSnackBarModule } from '@angular/material';
+import { MatSidenavModule, MatExpansionModule, MatNativeDateModule } from '@angular/material';
 import { MatMenuModule, MatButtonModule, MatIconModule, MatCardModule, MatRadioModule } from '@angular/material';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { UserService } from './services/user.service';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { CapslockDetectorDirective } from './capslock-detector/capslock-detector.directive';
 import { ToasterService } from './services/toaster.service';
 import { JwtModule } from '@auth0/angular-jwt';
@@ -25,7 +26,7 @@ import { AuthGuardService } from './auth/auth-guard.service';
 import { AuthService } from './auth/auth.service';
 import { StopwatchComponent } from './stopwatch/stopwatch.component';
 import { StatisticsComponent } from './statistics/statistics.component';
-import { ArchiveComponent } from './archive/archive.component';
+import { HistoryComponent } from './history/history.component';
 import { SettingsComponent } from './settings/settings.component';
 import { RoundProgressModule } from 'angular-svg-round-progressbar';
 import { RoundProgressComponent } from './round-progress/round-progress.component';
@@ -33,9 +34,9 @@ import { LineProgressComponent } from './line-progress/line-progress.component';
 import { AuthGuardFalse } from './auth/auth-guard-false.service';
 import { InfoComponent } from './info/info.component';
 import { PresetComponent } from './preset/preset.component';
-import { TaskInfoComponent } from './task-info/task-info.component';
-import { TaskInfoDialogComponent } from './task-info-dialog/task-info-dialog.component';
+import { RecordInfoComponent } from './record-info/record-info.component';
 import { FilterPipe } from './filter.pipe';
+import { FilterEmailPipe } from './filter-email.pipe';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { AngularFireModule } from 'angularfire2';
 import { AngularFirestoreModule } from 'angularfire2/firestore';
@@ -46,6 +47,17 @@ import { SignupDialogComponent } from './signup-dialog/signup-dialog.component';
 import { ProgressComponent } from './progress/progress.component';
 import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-dialog.component';
 import { PresetDialogComponent } from './preset-dialog/preset-dialog.component';
+import { AlarmDialogComponent } from './alarm-components/alarm-dialog/alarm-dialog.component';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import { RepeatAlarmDialogComponent } from './alarm-components/repeat-alarm-dialog/repeat-alarm-dialog.component';
+import { AlarmDialogNotificationComponent } from './alarm-components/alarm-dialog-notification/alarm-dialog-notification.component';
+import { AdminPageComponent } from './admin-page/admin-page.component';
+import { RoleService } from './services/role.service';
+import { HttpTokenInterceptor } from './services/http-interceptor.service';
+import { TimeFilterPipe } from './pipes/time-filter.pipe';
+import { StopwatchDialogComponent } from './stopwatch-dialog/stopwatch-dialog.component';
+import { TimerDialogComponent } from './timer-dialog/timer-dialog.component';
+import { ConfirmEmailComponent } from './confirm-email/confirm-email.component';
 
 export function jwtTokenGetter() {
   return localStorage.getItem('access_token');
@@ -64,20 +76,28 @@ export function jwtTokenGetter() {
     TasksComponent,
     StopwatchComponent,
     StatisticsComponent,
-    ArchiveComponent,
+    HistoryComponent,
     SettingsComponent,
     RoundProgressComponent,
     LineProgressComponent,
     InfoComponent,
     SignupDialogComponent,
-    TaskInfoDialogComponent,
     ProgressComponent,
     PresetComponent,
-    TaskInfoDialogComponent,
     FilterPipe,
+    FilterEmailPipe,
     ConfirmationDialogComponent,
     PresetDialogComponent,
-    TaskInfoComponent
+    RecordInfoComponent,
+    AlarmDialogComponent,
+    AlarmDialogNotificationComponent,
+    RepeatAlarmDialogComponent,
+    AlarmDialogNotificationComponent,
+    AdminPageComponent,
+    TimerDialogComponent,
+    TimeFilterPipe,
+    StopwatchDialogComponent,
+    ConfirmEmailComponent
   ],
   imports: [
     BrowserModule,
@@ -102,6 +122,8 @@ export function jwtTokenGetter() {
     AngularFirestoreModule,
     AngularFireAuthModule,
     MatRadioModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
     JwtModule.forRoot({
       config: {
         tokenGetter: jwtTokenGetter,
@@ -111,25 +133,36 @@ export function jwtTokenGetter() {
         ],
         blacklistedRoutes: []
       }
-    })
+    }),
+
   ],
   providers: [
     AuthGuardService,
     AuthGuardFalse,
     AuthService,
     MatDialog,
+    MatDatepickerModule,
     { provide: MatDialogRef, useValue: {} },
+    { provide: HTTP_INTERCEPTORS, useClass: HttpTokenInterceptor, multi: true },
     UserService,
     ToasterService,
-    SocialAuthService
+    SocialAuthService,
+    RoleService,
+    TimeFilterPipe
   ],
   bootstrap: [AppComponent],
   entryComponents: [
     SignupComponent,
-    TaskInfoComponent,
+    RecordInfoComponent,
     ConfirmationDialogComponent,
-    PresetComponent
+    PresetComponent,
+    AlarmDialogComponent,
+    AlarmDialogNotificationComponent,
+    RepeatAlarmDialogComponent,
+    StopwatchDialogComponent,
+    TimerDialogComponent
   ]
 })
 export class AppModule { }
+
 

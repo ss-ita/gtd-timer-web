@@ -22,9 +22,7 @@ export class PresetDialogComponent implements OnInit {
           disableClose: true
       });
 
-      presetFormDialogRef.afterClosed().subscribe(
-          message => console.log('Dialog output:', message)
-      );
+      presetFormDialogRef.afterClosed().subscribe();
   }
 
 }

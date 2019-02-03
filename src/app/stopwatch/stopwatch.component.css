@@ -21,11 +21,13 @@
     width: 32px !important;
 }
 
-.mat-card{
-    width: 700px;
-    height: 380px;
-    margin: 5% auto;
-    text-align: right;
+.show-time-area {
+	margin: 30px 0px 13px;
+	display: inline-block;
+	font-size: 120px;
+	padding: 5px 5px;
+	border-radius: 50%;
+	min-width: 133.5px;
 }
 
 .background{
@@ -37,20 +39,57 @@
     min-width: 820px;
 }
 
+.content-area {
+	width: 700px;
+	height: 380px;
+	margin: 5% auto;
+}
+
 .unselectable{
-    margin-top: 5% !important;
-    margin-left: 7%;
+    margin-top: -14px !important;
+    margin-left: 8px;
     -webkit-touch-callout: none; /* iOS Safari */
 -webkit-user-select: none; /* Safari */
  -khtml-user-select: none; /* Konqueror HTML */
    -moz-user-select: none; /* Firefox */
     -ms-user-select: none; /* Internet Explorer/Edge */
         user-select: none;
+        padding-top: 40px;
 }
 
-.mat-card-header {
-    height: 280px;
+.mat-card-content {
+	margin-bottom: 30px;
+    margin-top: 8.5px;
+    margin-left: -8px;
+    text-align: center;
 }
+
+.current-stopwatch {
+    text-align: right;
+    width: 90%;
+    display: inline-block;
+    background-color: transparent;
+    border: none;
+    font-size: 18px;
+    margin-top: 10px;
+    margin-left: 25%;
+    outline: none;
+    font-family: Roboto,"Helvetica Neue",sans-serif;
+    transition-duration: 0.4s;
+    -webkit-transition-duration: 0.4s;
+    cursor: pointer;
+    }
+    
+    .toggle {
+    font-size: 22px !important;
+    color: black;
+    padding-bottom: 13px;
+    }
+    
+    .view-stopwatch-menu {
+    width: 40px;
+    height: 40px;
+    }
 
 .mat-card-actions{
     text-align: center;
@@ -60,18 +99,64 @@
     width: 40px;
     height: 40px; 
 }
+
 .mat-card>:first-child.negative-margin{
     margin-top:-7px;
+    display: flex;
 }
-.round-progress{
-    margin-left: 1% !important;
-    margin-top: 5% !important;
+
+.progress-percentage-wrapper {
+	position: relative;
+	font-size: 50px;
+	width: 200px;
+	height: 200px;
+    display: inline-block;
+    margin: 0 0.5%;
 }
+
 .textsize{
-    
-    color: grey;
+    color: black;
     font-size: 120px;
-    margin: 5px;
+    display: inline-flex;
 }
 
+.positioning {
+    position: absolute;
+    margin-left: auto;
+    margin-right: auto;
+    left: 0;
+    right: 0;
+    bottom: 15px;
+}
 
+.semicolomn {
+    display: inline-flex;
+    font-size: 120px;
+}
+
+.current-stopwatch {
+    text-align: right;
+    width: 90%;
+    display: inline-block;
+    background-color: transparent;
+    border: none;
+    font-size: 18px;
+    margin-top: 10px;
+    margin-left: 25%;
+    outline: none;
+    font-family: Roboto,"Helvetica Neue",sans-serif;
+    transition-duration: 0.4s;
+    -webkit-transition-duration: 0.4s;
+    cursor: pointer;
+}
+
+.toggle {
+    font-size: 22px !important;
+    color: black;
+    padding-bottom: 13px;
+}
+
+.view-stopwatch-menu {
+    width: 40px;
+    height: 40px;
+}

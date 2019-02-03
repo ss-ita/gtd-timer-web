@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 
 import { timer, Subscription } from 'rxjs';
+import { TaskCreateJson } from '../models/taskCreateJson.model';
 
 @Injectable({
   providedIn: 'root'
@@ -18,15 +19,21 @@ export class StopwatchService {
   maxValueOfHour = 24;
 
   isStopwatchRun = false;
-  isStopwatchPause = false;
+  isStopwatchPause = true;
 
-  color = 'blue';
+  color = 'black';
+  task: String = ' ';
   subscribe: Subscription;
+  taskJson: TaskCreateJson;
+
+  constructor() { }
 
   reset() {
     this.pause();
     this.hour = this.minute = this.second = 0;
-    this.isStopwatchRun = this.isStopwatchPause = false;
+    this.isStopwatchRun = false;
+    this.isStopwatchPause = true;
+    this.color = 'black';
   }
 
   start() {
@@ -49,7 +56,7 @@ export class StopwatchService {
   pause() {
     if (this.isStopwatchRun) {
       this.isStopwatchPause = true;
-      this.color = 'red';
+      this.color = '#c23a33';
       this.subscribe.unsubscribe();
     }
   }
@@ -74,5 +81,8 @@ export class StopwatchService {
     }
   }
 
-  constructor() { }
+  stopwatchClear() {
+    this.task = ' ';
+    this.reset();
+  }
 }

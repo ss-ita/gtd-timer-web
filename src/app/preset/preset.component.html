@@ -1,29 +1,43 @@
-<p class="presets-header">Presets Setting</p>
 <mat-dialog-content>
   <form [formGroup]="presetForm" (ngSubmit)="onCreate()" class="presets-form">
-    <mat-form-field class="presets-full-width" *ngIf="!isViewable">
-      <mat-select placeholder="Scheme" [(ngModel)]="selectedPreset" [ngModelOptions]="{standalone: true}">
-        <mat-option *ngFor="let preset of returnPresetArray" [value]="preset.presetName">{{preset.presetName}}</mat-option>
+    <mat-form-field class="presets-full-width , preset-selector" *ngIf="!isViewable">
+      <mat-select placeholder="Preset" [(ngModel)]="selectedPreset" [ngModelOptions]="{standalone: true}">
+        <mat-option *ngFor="let preset of returnPresetsArray let presetIndex = index" [value]="preset.presetName">
+          <span>
+            {{preset.presetName}} 
+          </span>
+          <span *ngIf="isPresetStandard(preset)" class="delete-preset">
+            <button mat-icon-button type="button" (click)="openConfirmationDialog(presetIndex)">
+              <mat-icon class="delete-timer-icon" svgIcon="delete"></mat-icon>
+            </button>
+          </span>
+          <span *ngIf="isPresetStandard(preset)" class="delete-preset">
+            <button mat-icon-button type="button" (click)="onUpdateIcon(presetIndex)">
+              <mat-icon class="delete-timer-icon" svgIcon="edit"></mat-icon>
+            </button>
+          </span>
+        </mat-option>
       </mat-select>
     </mat-form-field>
     <div *ngIf="isLoggedIn; else loggedOut">
-      <p *ngIf="!isViewable" class="isAuthenticate">Choose the schema from default list or create your own. Just click<button
-          class="add-new-preset-button" (click)="toggle()">Here.</button></p>
+      <p *ngIf="!isViewable" class="additional-message">Choose preset from default list or <button
+          class="add-new-preset-button" type="button" (click)="toggle()">create</button> your own.</p>
     </div>
     <ng-template #loggedOut>
-      <p *ngIf="!isViewable" class="isAuthenticate">Choose the schema from default list.<button class="add-new-preset-button"
-          (click)="openSinUpDialogComponent()"> Register </button>to create your own.</p>
+      <p *ngIf="!isViewable" class="additional-message">Choose preset from default list.
+        <button class="add-new-preset-button" type="button" (click)="onSignIn()"> Sign in
+        </button> to create your own.
+      </p>
     </ng-template>
     <div *ngIf="isViewable">
-      <mat-form-field class="presets-full-width">
+      <mat-form-field class="presets-full-width , margin-top">
         <input matInput formControlName="presetName" placeholder="Preset name">
         <mat-error>{{getErrorMessagePresetName()}}</mat-error>
       </mat-form-field>
-      <mat-card-title class="presets-header , margin-top">Preset timers</mat-card-title>
-      <div formArrayName="timers">
-        <div *ngFor="let item of returnTimerFormGroupArray.controls; let timerIndex = index" [formGroupName]="timerIndex">
+      <div formArrayName="tasks">
+        <div *ngFor="let item of returnTimersFormGroupArray.controls; let timerIndex = index" [formGroupName]="timerIndex">
           <mat-form-field>
-            <input matInput formControlName="timerName" placeholder="Timer name">
+            <input matInput formControlName="taskName" placeholder="Timer name">
             <mat-error>{{getErrorMessageTimerName(item)}}</mat-error>
           </mat-form-field>
           <mat-form-field class="timer-element-width">
@@ -38,26 +52,31 @@
             <input matInput type="number" min="0" max="59" formControlName="seconds" placeholder="Seconds">
             <mat-error>{{getErrorMessageMinutesAndSeconds()}}</mat-error>
           </mat-form-field>          
-          <button mat-icon-button [disabled]="!isValidate" type="button" (click)="deleteTimerGroupRow(timerIndex)">
-            <mat-icon class="delete-timer-icon" >delete</mat-icon>
+          <button mat-icon-button [disabled]="!isValid" type="button" (click)="onDeleteTimer(timerIndex)">
+            <mat-icon class="delete-timer-icon">delete</mat-icon>
           </button>
         </div>
         <div class="add-timer-button">
-          <button mat-icon-button [disabled]="!isValidate" type="button" (click)="addTimerGroupRow()">
-            <mat-icon class="add-timer-icon" [inline]="true" >control_point</mat-icon>
+          <button mat-icon-button [disabled]="!isValid" type="button" (click)="addTimerGroupRow()">
+            <mat-icon class="add-timer-icon" [inline]="true">control_point</mat-icon>
           </button>
         </div>
       </div>
       <section class="auto-start-timers" *ngIf="!isViewable">
         <mat-checkbox>Auto start timers</mat-checkbox>
       </section>
-      <mat-dialog-actions>
-        <button mat-raised-button color="primary" (click)="onCreate" [disabled]="!presetForm.valid">Create</button>
-      </mat-dialog-actions>
     </div>
   </form>
 </mat-dialog-content>
 <mat-dialog-actions align="end">
-  <button mat-raised-button color="primary" (click)="onSave()">Save</button>
-  <button mat-raised-button color="warn" (click)="onClose()">Close</button>
+  <span [matTooltipDisabled] = "presetForm.valid" matTooltip = "There must be no empty fields!">
+    <button mat-raised-button color="primary" (click)="onUpdate()" [disabled]="!presetForm.valid" *ngIf="isUpdateState">Update</button>
+  </span>
+  <span [matTooltipDisabled] = "presetForm.valid" matTooltip = "There must be no empty fields!">
+    <button mat-raised-button color="primary" type="button" (click)="onCreate()" [disabled]="!presetForm.valid" *ngIf="isCreateState">Create</button>
+  </span>
+  <button mat-raised-button color="primary" (click)="onSave()" *ngIf="!isViewable">Save</button>
+  <span class = "close-button">
+    <button mat-raised-button color="warn" (click)="onClose()">Close</button>
+  </span> 
 </mat-dialog-actions>

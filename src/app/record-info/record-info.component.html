@@ -1,0 +1,60 @@
+<div class="top">
+<div class="topTitle">
+<h1 mat-dialog-title>{{record.name}}</h1>
+</div>
+<div class="exitButton">
+  <button mat-raised-button (click)="closeDialog()">
+    <i class="fas fa-times"></i>
+  </button>
+</div>
+</div>
+<div mat-dialog-content class="dialog-content">
+  <div class="dialog-content-div">
+    <div class="title">
+      <p>Description</p>
+    </div>
+    <div class="content">
+      <p>{{record.description}}</p>
+    </div>
+  </div>
+  <div class="dialog-content-div">
+    <div class="title">
+      <p>Last start time</p>
+    </div>
+    <div *ngIf=(record.startTime) class="content">
+      <p>{{record.startTime | date:'medium'}}</p>
+    </div>
+    <div *ngIf=(!record.startTime) class="content">
+    </div>
+  </div>
+  <div class="dialog-content-div">
+    <div class="title">
+      <p>Stop time</p>
+    </div>
+    <div *ngIf=(record.stopTime) class="content">
+      <p>{{record.stopTime | date:'medium'}}</p>
+    </div>
+    <div *ngIf=(!record.stopTime) class="content">
+    </div>
+  </div>
+  <div class="dialog-content-div">
+    <div class="title">
+      <p>Elapsed time</p>
+    </div>
+    <div *ngIf=(record.elapsedTime) class="content">
+     <p>{{record.elapsedTime | timeFilter}}</p>
+    </div>
+    <div *ngIf=(!record.elapsedTime) class="content">
+    </div>
+  </div>
+  <div class="dialog-content-div">
+    <div class="title">
+      <p>Action</p>
+    </div>
+    <div *ngIf=(record.action) class="content">
+      <p>{{record.action}}</p>
+    </div>
+    <div *ngIf=(!record.action) class="content">
+    </div>
+  </div>
+</div>

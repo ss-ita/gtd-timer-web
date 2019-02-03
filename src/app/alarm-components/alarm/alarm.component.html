@@ -1,0 +1,159 @@
+<div class="main-area">
+  <mat-card class="content-area">
+    <div class="negative-margin">
+      <mat-menu #appMenuForChangeView="matMenu">
+        <button mat-menu-item (click)="styleService.changeStyle()">{{styleService.changeStyleString}}</button>
+      </mat-menu>
+      <button mat-icon-button [matMenuTriggerFor]="appMenuForChangeView" class="view-change-menu">
+        <mat-icon>more_vert</mat-icon>
+      </button>
+      <button mat-icon-button class="view-alarm-menu" (click)="toggle()" [ngClass]="{rotateIconLeft: isViewable && innerWidth < 1250, rotateIconRight: ((!isViewable && innerWidth < 1250) || innerWidth > 1250)}">
+        <mat-icon class="toggle">arrow_forward_ios</mat-icon>
+      </button>
+    </div>
+    <div class="alarm-info" *ngIf="isViewable">
+      <ng-template [ngIf]="alarmService.alarmsArray.length==0" class="currentTimeColor">
+        <p class="no-set-alarm">Alarm: No set alarm</p>
+      </ng-template>
+      <div class="alarmList">
+        <div class="alarmItem" [ngClass]="{noScrollArea: alarmService.alarmsArray.length<=5}" *ngFor="let alarmModel of alarmService.alarmsArray; let i = index"
+          [attr.data-index]="i">
+          <div class="time" (dblclick)="openEditWindow(alarmModel)">
+            <ng-template [ngIf]="alarmModel.date.getHours() < 10">
+              <span>0</span>
+            </ng-template>
+            <span>{{alarmModel.date.getHours()}}</span>
+            <span>:</span>
+            <ng-template [ngIf]="alarmModel.date.getMinutes() < 10">
+              <span>0</span>
+            </ng-template>
+            <span>{{alarmModel.date.getMinutes()}}<br></span>
+            <span class="repeatOption">{{alarmModel.repeat}}</span>
+          </div>
+          <div class="toogle">
+            <mat-slide-toggle [ngModelOptions]="{standalone: true}" [(ngModel)]="alarmModel.isOn" [color]="alarmService.colorToggle"
+              (change)="alarmService.switchAlarmState(alarmModel.id)"></mat-slide-toggle>
+          </div>
+          <div class="deleteButton"><button mat-button (click)="openConfirmationDialog(i)" [disabled]="alarmModel.isOn">
+              <mat-icon>delete</mat-icon>
+            </button></div>
+        </div>
+      </div>
+      <ng-template [ngIf]="alarmService.alarmsArray.length != 0 && alarmService.isAuthorized">
+      <div class="alarmBottomOptions">
+          <div class="toogle">
+              <mat-slide-toggle [ngModelOptions]="{standalone: true}" [(ngModel)]="alarmService.alarmsToogle" [color]="alarmService.colorToggle"
+                (change)="alarmService.switchAllAlarmsState()"></mat-slide-toggle>
+            </div>
+        <div class="deleteButton"><button mat-button (click)="openDialogDeleteAllAlarm()" >
+          <mat-icon>delete</mat-icon>
+        </button></div>
+      </div>
+    </ng-template>
+    </div>
+    <mat-card-content class="show-time-area" [ngClass]="{turnOffAlarm: alarmService.startedAlarmsArray.length==0, turnOnAlarm: alarmService.startedAlarmsArray.length!=0}">
+      <ng-template [ngIf]="styleService.isLineStyle">
+        <ng-template [ngIf]="alarmService.startedAlarmsArray.length!=0">
+          <div class="time-element" [ngClass]="{'turnOn-alarm': (alarmService.startedAlarmsArray.length!=0&&(!alarmService.isActive)), 'turnOnPlay-alarm': alarmService.isActive}">
+            <ng-template [ngIf]="alarmService.alarmModel.date.getHours() < 10">
+              <span class="text">0</span>
+            </ng-template>
+            <span class="text">{{alarmService.alarmModel.date.getHours()}}</span>
+          </div>
+          <div class="time-span" [ngClass]="{'turnOn-alarm': (alarmService.startedAlarmsArray.length!=0&&(!alarmService.isActive)), 'turnOnPlay-alarm': alarmService.isActive}">:</div>
+          <div class="time-element" [ngClass]="{'turnOn-alarm': (alarmService.startedAlarmsArray.length!=0&&(!alarmService.isActive)), 'turnOnPlay-alarm': alarmService.isActive}">
+            <ng-template [ngIf]="alarmService.alarmModel.date.getMinutes() < 10">
+              <span class="text">0</span>
+            </ng-template>
+            <span class="text">{{alarmService.alarmModel.date.getMinutes()}}</span>
+          </div>
+          <div class="time-span" [ngClass]="{'turnOn-alarm': (alarmService.startedAlarmsArray.length!=0&&(!alarmService.isActive)), 'turnOnPlay-alarm': alarmService.isActive}">:</div>
+          <div class="time-element" [ngClass]="{'turnOn-alarm': (alarmService.startedAlarmsArray.length!=0&&(!alarmService.isActive)), 'turnOnPlay-alarm': alarmService.isActive}">
+            <span class="text">0</span>
+            <span class="text">0</span>
+          </div>
+        </ng-template>
+        <ng-template [ngIf]="alarmService.startedAlarmsArray.length==0" class="currentTimeColor">
+          <div class="time-element" [ngClass]="{'turnOn-alarm': (alarmService.alarmOn&&(!alarmService.isActive)), 'turnOnPlay-alarm': (alarmService.alarmOn && alarmService.isActive), 'turnOff-alarm': !alarmService.alarmOn}">
+            <ng-template [ngIf]="alarmService.currentTime.getHours() < 10">
+              <span class="text">0</span>
+            </ng-template>
+            <span class="text">{{alarmService.currentTime.getHours()}}</span>
+          </div>
+          <div class="time-span">
+            <span class="text">:</span>
+          </div>
+          <div class="time-element">
+            <ng-template [ngIf]="alarmService.currentTime.getMinutes() < 10">
+              <span class="text">0</span>
+            </ng-template>
+            <span class="text">{{alarmService.currentTime.getMinutes()}}</span>
+          </div>
+          <div class="time-span">
+            <span class="text">:</span>
+          </div>
+          <div class="time-element">
+            <ng-template [ngIf]="alarmService.currentTime.getSeconds() < 10">
+              <span class="text">0</span>
+            </ng-template>
+            <span class="text">{{alarmService.currentTime.getSeconds()}}</span>
+          </div>
+        </ng-template>
+      </ng-template>
+      <ng-template [ngIf]="!styleService.isLineStyle">
+        <ng-template [ngIf]="alarmService.startedAlarmsArray.length!=0">
+          <div class="progress-percentage-wrapper">
+            <div class="progress-percentage " [ngClass]="{'turnOn-alarm': (alarmService.startedAlarmsArray.length!=0&&(!alarmService.isActive)), 'turnOnPlay-alarm': alarmService.isActive}">{{alarmService.alarmModel.date.getHours()}}h</div>
+            <round-progress [color]="alarmService.colorTime" [max]="23" [current]="alarmService.alarmModel.date.getHours()"
+              [radius]="100" [stroke]="25">
+            </round-progress>
+          </div>
+          <div class="progress-percentage-wrapper">
+            <div class="progress-percentage " [ngClass]="{'turnOn-alarm': (alarmService.startedAlarmsArray.length!=0&&(!alarmService.isActive)), 'turnOnPlay-alarm': alarmService.isActive}">{{alarmService.alarmModel.date.getMinutes()}}m</div>
+            <round-progress [color]="alarmService.colorTime" [max]="59" [current]="alarmService.alarmModel.date.getMinutes()"
+              [radius]="100" [stroke]="25">
+            </round-progress>
+          </div>
+          <div class="progress-percentage-wrapper">
+            <div class="progress-percentage " [ngClass]="{'turnOn-alarm': (alarmService.startedAlarmsArray.length!=0&&(!alarmService.isActive)), 'turnOnPlay-alarm': alarmService.isActive}">0s</div>
+            <round-progress [color]="alarmService.colorTime" [max]="59" [current]="0" [radius]="100" [stroke]="25">
+            </round-progress>
+          </div>
+        </ng-template>
+        <ng-template [ngIf]="alarmService.startedAlarmsArray.length==0">
+          <div class="progress-percentage-wrapper">
+            <div class="progress-percentage ">{{alarmService.currentTime.getHours()}}h</div>
+            <round-progress [color]="alarmService.currentTimeColor" [max]="23" [current]="alarmService.currentTime.getHours()"
+              [radius]="100" [stroke]="25">
+            </round-progress>
+          </div>
+          <div class="progress-percentage-wrapper">
+            <div class="progress-percentage ">{{alarmService.currentTime.getMinutes()}}m</div>
+            <round-progress [color]="alarmService.currentTimeColor" [max]="59" [current]="alarmService.currentTime.getMinutes()"
+              [radius]="100" [stroke]="25">
+            </round-progress>
+          </div>
+          <div class="progress-percentage-wrapper">
+            <div class="progress-percentage ">{{alarmService.currentTime.getSeconds()}}s</div>
+            <round-progress [color]="alarmService.currentTimeColor" [max]="59" [current]="alarmService.currentTime.getSeconds()"
+              [radius]="100" [stroke]="25">
+            </round-progress>
+          </div>
+        </ng-template>
+      </ng-template>
+    </mat-card-content>
+    <ng-template [ngIf]="alarmService.startedAlarmsArray.length!=0">
+        <div class="showTimeStart">
+          <div>{{alarmService.calculateTimeStart(alarmService.alarmModel)}}</div></div>
+      </ng-template>
+      <ng-template [ngIf]="alarmService.startedAlarmsArray.length==0">
+        <div class="showTimeStart">
+          <div>Today is {{alarmService.currentTime | date:'EEEE'}}, {{alarmService.currentTime | date:'d'}} {{alarmService.currentTime | date:'MMMM'}} {{alarmService.currentTime | date:'yyyy'}}</div></div>
+      </ng-template>
+    <div class="button-area">
+      <button mat-button class="addAlarmButton" (click)="openSetAlarmPage()">
+        <mat-icon>add</mat-icon>
+      </button>
+    </div>
+  </mat-card>
+</div>
