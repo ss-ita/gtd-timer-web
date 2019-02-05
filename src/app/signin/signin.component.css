@@ -1,11 +1,3 @@
-.back {
-    position: absolute;
-    top: auto;
-    min-height: calc(100vh - 49px);
-    width: 100%;
-    background-image: linear-gradient(to top, #d9afd9 0%, #97d9e1 100%);
-    min-width: 820px;
-}
 
 .signin-header {
     display: flex;
@@ -14,10 +6,16 @@
 }
 
 .signin-card {
-    width: 300px;
-    margin: 10% auto;
+    width: 288px;
+    margin: 5% auto;
     box-shadow: none;
     background-color: rgba(255, 255, 255, 0.6);
+}
+
+@media(max-width:320px){
+    .signin-card {
+        background-color: rgba(255, 255, 255, 0);
+    }
 }
 
 .signin-form {
@@ -101,7 +99,4 @@
 
 .signup {
     text-align: center;
-}
-
-.mat-card {
 }
