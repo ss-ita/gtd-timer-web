@@ -8,8 +8,6 @@
     font-weight: bold;
 }
 .mat-tab-nav-bar{
-    white-space: nowrap;
-    overflow: auto;
     height:48px;
 }
 

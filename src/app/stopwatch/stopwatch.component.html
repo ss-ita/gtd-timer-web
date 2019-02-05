@@ -17,8 +17,8 @@
         </button>
       </ng-template>
     </div>
-    <mat-card-content (click)="stopwatchService.clickOnStopWatch()">
-      <ng-template [ngIf]="stopwatchService.task === ' '">
+    <ng-template [ngIf]="stopwatchService.task === ' '">
+      <mat-card-content (click)="stopwatchService.clickOnStopWatch()">
         <ng-template [ngIf]="!styleService.isLineStyle">
           <div class="progress-percentage-wrapper">
             <app-round-progress [max]="stopwatchService.maxValueOfHour" [value]="stopwatchService.hour" [color]="stopwatchService.color"
@@ -43,8 +43,10 @@
               [text]="''"></app-line-progress>
           </div>
         </ng-template>
-      </ng-template>
-      <ng-template [ngIf]="stopwatchService.task !== ' '">
+      </mat-card-content>
+    </ng-template>
+    <ng-template [ngIf]="stopwatchService.task !== ' '">
+      <mat-card-content (click)="stopwatchService.clickOnStopWatch()">
         <ng-template [ngIf]="!styleService.isLineStyle">
           <div class="progress-percentage-wrapper">
             <app-round-progress [max]="stopwatchService.maxValueOfHour" [value]="stopwatchService.taskJson.hour"
@@ -69,8 +71,8 @@
               [text]="''"></app-line-progress>
           </div>
         </ng-template>
-      </ng-template>
-    </mat-card-content>
+      </mat-card-content>
+    </ng-template>
     <mat-card-actions class="positioning">
       <ng-template [ngIf]="stopwatchService.task === ' '">
         <ng-template [ngIf]="stopwatchService.isStopwatchRun === false || stopwatchService.isStopwatchPause">

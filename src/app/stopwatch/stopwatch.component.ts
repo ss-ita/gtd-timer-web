@@ -55,6 +55,14 @@ export class StopwatchComponent implements OnInit {
     stopwatchFormDialogRef.afterClosed().subscribe();
   }
 
+  clickOnStopWatch() {
+    if (this.stopwatchService.isStopwatchPause || this.stopwatchService.isStopwatchRun === false) {
+      this.startTask();
+    } else {
+      this.pauseTask();
+    }
+  }
+
   getIsLoggedIn() {
     return localStorage.getItem('access_token') === null ? false : true;
   }

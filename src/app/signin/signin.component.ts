@@ -8,6 +8,7 @@ import { UserService } from '../services/user.service';
 import { SocialAuthService } from '../services/social-auth.service';
 import { ConfigService } from '../services/config.service';
 import { NavbarService } from '../services/navbar.service';
+import { RoleService } from '../services/role.service';
 
 @Component({
     selector: 'app-signin',
@@ -35,7 +36,8 @@ export class SigninComponent implements OnInit {
         private service: SignupDialogComponent,
         private userService: UserService,
         private socialAuth: SocialAuthService,
-        private config: ConfigService
+        private config: ConfigService,
+        private roleService: RoleService
     ) { }
 
     openSignUpDialog() {
