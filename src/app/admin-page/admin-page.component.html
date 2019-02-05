@@ -44,4 +44,51 @@
       </ng-template>
     </mat-list>
   </div>
+
+  <div class="mobile">
+    <mat-form-field>
+      <mat-select [(value)]="selected">
+        <mat-option value="Users" (click)="roleService.displayUsers()">Users</mat-option>
+        <mat-option value="Admins" (click)="roleService.displayAdmins()">Admins</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <div>
+      <input [(ngModel)]="searchText" class="search" placeholder="Find by email">
+    </div>
+    <mat-divider></mat-divider>
+    <mat-list>
+      <ng-template [ngIf]="roleService.isDisplayUsers">
+        <mat-list-item *ngFor='let email of roleService.emailOfUsers | filterEmail : searchText'>
+          <div class="name">
+            <p>{{email}}</p>
+          </div>
+          <div class="actions">
+            <mat-menu #appMenuForChangeView="matMenu">
+              <button mat-menu-item (click)="roleService.AddRole(email, 'Admin')">Make an admin</button>
+              <button mat-menu-item [disabled]="true">Read message</button>
+              <button mat-menu-item (click)="roleService.openConfirmationDialogUser(email)">Delete user</button>
+            </mat-menu>
+            <button mat-raised-button [matMenuTriggerFor]="appMenuForChangeView" class="view-change-menu">
+              <mat-icon>more_vert</mat-icon>
+            </button>
+          </div>
+        </mat-list-item>
+      </ng-template>
+      <ng-template [ngIf]="roleService.isDisplayAdmins">
+        <mat-list-item *ngFor='let email of roleService.emailOfAdmins | filterEmail : searchText'>
+          <div class="name">
+            <p>{{email}}</p>
+          </div>
+          <div class="actions">
+            <mat-menu #appMenuForChangeView="matMenu">
+              <button mat-menu-item (click)="roleService.openConfirmationDialogRole(email, 'Admin')">Remove from admins</button>
+            </mat-menu>
+            <button mat-raised-button [matMenuTriggerFor]="appMenuForChangeView" class="view-change-menu">
+              <mat-icon>more_vert</mat-icon>
+            </button>
+          </div>
+        </mat-list-item>
+      </ng-template>
+    </mat-list>
+  </div>
 </div>
