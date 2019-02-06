@@ -4,3 +4,13 @@
     width: 100%;
     background-image: linear-gradient(to top, #d9afd9 0%, #97d9e1 100%);
 }
+
+@media(max-width:480px)
+{
+    .background{
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    background-image: none;
+    }
+}
