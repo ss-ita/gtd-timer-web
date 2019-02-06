@@ -11,7 +11,7 @@ export class AdminPageComponent implements OnInit {
   searchText: string;
   selected = 'Users';
 
-  constructor(private roleService: RoleService,
+  constructor(public roleService: RoleService,
     private router: Router) {
    }
 

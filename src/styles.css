@@ -26,5 +26,8 @@ body {
     .custom-dialog-container .mat-dialog-container {
         border-radius: 0px;
         font-size: 14.25px;
+        position: absolute;
+        top:0;
+        left:0;
     }
 }
