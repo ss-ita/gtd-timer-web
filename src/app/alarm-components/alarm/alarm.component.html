@@ -1,4 +1,3 @@
-<div class="main-area">
   <mat-card class="content-area">
     <div class="negative-margin">
       <mat-menu #appMenuForChangeView="matMenu">
@@ -116,7 +115,7 @@
           </div>
           <div class="progress-percentage-wrapper">
             <div class="progress-percentage " [ngClass]="{'turnOn-alarm': (alarmService.startedAlarmsArray.length!=0&&(!alarmService.isActive)), 'turnOnPlay-alarm': alarmService.isActive}">0s</div>
-            <round-progress [color]="alarmService.colorTime" [max]="59" [current]="0" [radius]="100" [stroke]="25">
+            <round-progress [color]="alarmService.colorTime" [max]="59" [current]="0" [stroke]="25" [radius]="100">
             </round-progress>
           </div>
         </ng-template>
@@ -124,19 +123,19 @@
           <div class="progress-percentage-wrapper">
             <div class="progress-percentage ">{{alarmService.currentTime.getHours()}}h</div>
             <round-progress [color]="alarmService.currentTimeColor" [max]="23" [current]="alarmService.currentTime.getHours()"
-              [radius]="100" [stroke]="25">
+            [radius]="100" [stroke]="25">
             </round-progress>
           </div>
           <div class="progress-percentage-wrapper">
             <div class="progress-percentage ">{{alarmService.currentTime.getMinutes()}}m</div>
             <round-progress [color]="alarmService.currentTimeColor" [max]="59" [current]="alarmService.currentTime.getMinutes()"
-              [radius]="100" [stroke]="25">
+            [radius]="100" [stroke]="25">
             </round-progress>
           </div>
           <div class="progress-percentage-wrapper">
             <div class="progress-percentage ">{{alarmService.currentTime.getSeconds()}}s</div>
             <round-progress [color]="alarmService.currentTimeColor" [max]="59" [current]="alarmService.currentTime.getSeconds()"
-              [radius]="100" [stroke]="25">
+            [radius]="100" [stroke]="25">
             </round-progress>
           </div>
         </ng-template>
@@ -156,4 +155,3 @@
       </button>
     </div>
   </mat-card>
-</div>

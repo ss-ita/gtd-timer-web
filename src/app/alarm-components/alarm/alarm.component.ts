@@ -34,6 +34,7 @@ export class AlarmComponent implements OnInit {
   openEditWindow(alarmModel: AlarmModel) {
     if (!alarmModel.isOn) {
       this.dialog.open(AlarmDialogComponent, {
+        panelClass: 'custom-dialog-container',
         hasBackdrop: true,
         closeOnNavigation: true,
         disableClose: true,
@@ -54,6 +55,7 @@ export class AlarmComponent implements OnInit {
 
   openAlarmForm() {
     this.dialog.open(AlarmDialogComponent, {
+      panelClass: 'custom-dialog-container',
       hasBackdrop: true,
       closeOnNavigation: true,
       disableClose: true

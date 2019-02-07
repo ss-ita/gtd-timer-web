@@ -48,12 +48,11 @@
 
 .show-time-area .time-element {
 	margin: 30px 0px 13px;
-    display: inline-flex;
-    font-size: 120px;
-    border-radius: 50%;
-    padding: 5px 0;
-    justify-content: center;
-    min-width: 120px;
+	display: inline-flex;
+	font-size: 120px;
+	border-radius: 50%;
+	padding: 5px 0;
+	justify-content: center;
 }
 
 .show-time-area .time-span {
@@ -206,7 +205,7 @@
 	height: 40px;
 	position: absolute;
 	right: 16px;
-    top: 12px;
+	top: 8px;
 }
 
 .mat-icon.toggle {
@@ -340,4 +339,249 @@
 
 ::ng-deep .mat-tooltip {
 	max-width: 150px !important;
+}
+
+::ng-deep round-progress {
+	width: 200px !important;
+	height: 200px !important;
+}
+
+@media(max-width: 735px) {
+	.main-area {
+		min-width: auto;
+	}
+	.content-area {
+		width: auto;
+		height: 350px;
+		margin: 5% 0;
+		border-radius: 0%;
+	}
+	.showTimeStart {
+		font-size: 18px;
+	}
+	::ng-deep round-progress {
+		width: 175px !important;
+		height: 175px !important;
+	}
+	.progress-percentage-wrapper {
+		position: relative;
+		font-size: 40px;
+		margin: 0 0.5%;
+		width: 175px;
+		height: 175px;
+		display: inline-block;
+	}
+	.show-time-area .time-element {
+		margin: 30px 0px 13px;
+		font-size: 120px;
+		border-radius: 50%;
+		padding: 5px 0;
+	}
+}
+
+@media(max-width: 640px) {
+	.main-area {
+		min-width: auto;
+	}
+	.content-area {
+		width: auto;
+		height: 330px;
+		margin: 5% 0;
+	}
+	.showTimeStart {
+		font-size: 20px;
+		bottom: 70px;
+	}
+	::ng-deep round-progress {
+		width: 160px !important;
+		height: 160px !important;
+	}
+	.progress-percentage-wrapper {
+		position: relative;
+		font-size: 45px;
+		margin: 0 0.5%;
+		width: 160px;
+		height: 160px;
+		display: inline-block;
+	}
+	.show-time-area .time-element {
+		margin: 30px 0px 13px;
+		font-size: 100px;
+		border-radius: 50%;
+		padding: 5px 0;
+	}
+	.show-time-area .time-span {
+		font-size: 100px;
+	}
+}
+
+@media(max-width: 550px) {
+	.main-area {
+		min-width: auto;
+	}
+	.content-area {
+		width: auto;
+		height: 310px;
+		margin: 5% 0;
+	}
+	.showTimeStart {
+		font-size: 18px;
+	}
+	::ng-deep round-progress {
+		width: 140px !important;
+		height: 140px !important;
+	}
+	.progress-percentage-wrapper {
+		position: relative;
+		font-size: 40px;
+		margin: 0 0.5%;
+		width: 140px;
+		height: 140px;
+		display: inline-block;
+	}
+	.show-time-area .time-element {
+		margin: 27px 0px 13px;
+		font-size: 90px;
+		border-radius: 50%;
+		padding: 5px 0;
+	}
+	.show-time-area .time-span {
+		font-size: 90px;
+	}
+}
+
+@media(max-width: 480px) {
+	.main-area {
+		min-width: auto;
+	}
+	.content-area {
+		width: auto;
+		height: 290px;
+		margin: 5% 0;
+		border: none;
+		box-shadow: none;
+	}
+	.showTimeStart {
+		font-size: 16px;
+	}
+	::ng-deep round-progress {
+		width: 125px !important;
+		height: 125px !important;
+	}
+	.progress-percentage-wrapper {
+		position: relative;
+		font-size: 30px;
+		margin: 0 0.5%;
+		width: 125px;
+		height: 125px;
+		display: inline-block;
+	}
+	.show-time-area .time-element {
+		margin: 27px 0px 13px;
+		font-size: 80px;
+		border-radius: 50%;
+		padding: 5px 0;
+	}
+	.show-time-area .time-span {
+		display: inline-flex;
+		font-size: 80px;
+	}
+	.button-area .mat-button.addAlarmButton {
+		border-radius: 50%;
+		width: 45px;
+		height: 45px;
+		border: none;
+		text-decoration: underline;
+		display: inline-block;
+		position: absolute;
+		right: 20px;
+		bottom: 25px;
+		background-color: #b797ff24;
+		min-width: auto;
+		text-align: left;
+	}
+	.button-area .mat-button.addAlarmButton .mat-icon {
+		font-size: 30px !important;
+		height: 32px !important;
+		width: 32px !important;
+		position: absolute;
+		top: 9px;
+		left: 8px;
+	}
+}
+
+@media(max-width: 420px) {
+	.main-area {
+		min-width: auto;
+	}
+	.content-area {
+		width: auto;
+		height: 270px;
+		margin: 5% 0;
+	}
+	.showTimeStart {
+		font-size: 16px;
+	}
+	::ng-deep round-progress {
+		width: 100px !important;
+		height: 100px !important;
+	}
+	.progress-percentage-wrapper {
+		position: relative;
+		font-size: 30px;
+		margin: 0 0.5%;
+		width: 100px;
+		height: 100px;
+		display: inline-block;
+	}
+	.show-time-area .time-element {
+		margin: 27px 0px 13px;
+		font-size: 70px;
+		border-radius: 50%;
+		padding: 5px 0;
+	}
+	.show-time-area .time-span {
+		display: inline-flex;
+		font-size: 70px;
+	}
+	.show-time-area .time-span {
+		font-size: 70px;
+	}
+}
+
+@media(max-width: 360px) {
+	.main-area {
+		min-width: auto;
+	}
+	.content-area {
+		width: auto;
+		height: 250px;
+		margin: 5% 0;
+	}
+	.showTimeStart {
+		font-size: 12px;
+		bottom: 70px;
+	}
+	::ng-deep round-progress {
+		width: 90px !important;
+		height: 90px !important;
+	}
+	.progress-percentage-wrapper {
+		position: relative;
+		font-size: 25px;
+		margin: 0 0.5%;
+		width: 90px;
+		height: 90px;
+		display: inline-block;
+	}
+	.show-time-area .time-element {
+		margin: 27px 0px 13px;
+		font-size: 60px;
+		border-radius: 50%;
+		padding: 5px 0;
+	}
+	.show-time-area .time-span {
+		display: inline-flex;
+		font-size: 60px;
+	}
 }

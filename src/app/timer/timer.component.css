@@ -29,9 +29,10 @@
     height: 200px;
 }
 
-.mat-card-content > :last-child:not(.mat-card-footer){
+.mat-card-content> :last-child:not(.mat-card-footer) {
     margin-bottom: 23px;
 }
+
 .mat-card-header {
     height: 200px;
     text-align: center;
@@ -42,17 +43,17 @@
     padding: 0;
 }
 
-.unselectable{
+.unselectable {
     margin-top: -14px !important;
-    -webkit-touch-callout: none;   
-    -webkit-user-select: none;   
-    -moz-user-select: none;   
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
-    padding-top: 39.5px;    
-    display: inline-flex;    
-    justify-content: center;    
-    width: 100%;   
+    padding-top: 39.5px;
+    display: inline-flex;
+    justify-content: center;
+    width: 100%;
     align-items: baseline;
     margin-left: 6px;
 }
@@ -241,7 +242,7 @@
     outline: none;
 }
 
-.semicolomn{
+.semicolomn {
     display: inline;
     font-size: 120px;
 }
@@ -253,16 +254,16 @@
 }
 
 .progress-percentage-wrapper {
-	position: relative;
-	font-size: 50px;
-	width: 200px;
-	height: 200px;
+    position: relative;
+    font-size: 50px;
+    width: 200px;
+    height: 200px;
     display: inline-block;
     margin: 0 0.5%;
 }
 
 .mat-card-content {
-	margin-top: 0.5px;
+    margin-top: 0.5px;
     margin-left: -12px;
     text-align: center;
     margin-bottom: -4px;
@@ -270,21 +271,18 @@
 }
 
 @media(max-width: 735px) {
-    
-    .timer-input{
+    .timer-input {
         margin-bottom: -1.9%;
     }
-
-    .mat-card-content{
+    .mat-card-content {
         min-height: auto;
     }
-
-    .mat-card{
+    .mat-card {
         width: auto;
         height: 350px;
+        border-radius: 0%;
     }
-
-    .progress-percentage-wrapper{
+    .progress-percentage-wrapper {
         font-size: 40px;
         margin-left: 1%;
         width: 175px;
@@ -293,166 +291,134 @@
 }
 
 @media(max-width: 640px) {
-
-    .text{
+    .text {
         font-size: 100px;
     }
-
-    .semicolomn{
+    .semicolomn {
         font-size: 100px;
     }
-
-    .mat-card{
+    .mat-card {
         width: auto;
         height: 330px;
     }
-
-    .progress-percentage-wrapper{
+    .progress-percentage-wrapper {
         font-size: 40px;
         margin-left: 1%;
         width: 160px;
         height: 160px;
     }
-
-    .mat-card-content{
+    .mat-card-content {
         min-height: auto;
     }
-
-    .timer-input{
+    .timer-input {
         margin-bottom: -2%;
     }
 }
 
 @media(max-width: 550px) {
-
-    .text{
+    .text {
         font-size: 90px;
     }
-
-    .semicolomn{
+    .semicolomn {
         font-size: 90px;
-    }   
-
-    .mat-card{
+    }
+    .mat-card {
         width: auto;
         height: 310px;
     }
-
-    .progress-percentage-wrapper{
+    .progress-percentage-wrapper {
         font-size: 40px;
         margin-left: 1%;
         width: 140px;
         height: 140px;
     }
-
-    .mat-card-content{
+    .mat-card-content {
         min-height: auto;
     }
-
-    .timer-input{
+    .timer-input {
         margin-bottom: -3%;
     }
 }
 
 @media(max-width: 480px) {
-
-    .background-red{
+    .background-red {
         background-image: none;
     }
-
-    ::ng-deep mat-card{
+    ::ng-deep mat-card {
         border: none !important;
         box-shadow: none !important;
     }
-
-    .text{
+    .text {
         font-size: 80px;
     }
-
-    .semicolomn{
+    .semicolomn {
         font-size: 80px;
     }
-
-    .mat-card{
+    .mat-card {
         width: auto;
         height: 290px;
         margin: 0;
     }
-
-    .progress-percentage-wrapper{
+    .progress-percentage-wrapper {
         font-size: 30px;
         margin-left: 1%;
         width: 125px;
         height: 125px;
     }
-
-    .mat-card-content{
+    .mat-card-content {
         min-height: auto;
     }
-
-    .timer-input{
+    .timer-input {
         margin-bottom: -3%;
     }
 }
 
 @media(max-width: 420px) {
-
-    .text{
+    .text {
         font-size: 70px;
     }
-
-    .semicolomn{
+    .semicolomn {
         font-size: 70px;
     }
-
-    .mat-card{
+    .mat-card {
         width: auto;
         height: 270px;
     }
-
-    .progress-percentage-wrapper{
+    .progress-percentage-wrapper {
         font-size: 30px;
         margin-left: 1%;
         width: 100px;
         height: 100px;
     }
-
-    .mat-card-content{
+    .mat-card-content {
         min-height: auto;
     }
-
-    .timer-input{
+    .timer-input {
         margin-bottom: -4%;
     }
 }
 
 @media(max-width: 360px) {
-
-    .text{
+    .text {
         font-size: 60px;
     }
-
-    .semicolomn{
+    .semicolomn {
         font-size: 60px;
     }
-
-    .mat-card{
+    .mat-card {
         width: auto;
         height: 250px;
     }
-
-    .progress-percentage-wrapper{
+    .progress-percentage-wrapper {
         font-size: 30px;
         margin-left: 1%;
         width: 90px;
         height: 90px;
     }
-
-    .mat-card-content{
+    .mat-card-content {
         min-height: auto;
     }
-
-    .timer-input{
+    .timer-input {
         margin-bottom: -5%;
     }
 }

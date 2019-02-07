@@ -70,3 +70,189 @@
 ::ng-deep .mat-select-panel {
     max-width: 150px !important;
 }
+
+@media(max-width: 550px) {
+    ::ng-deep .input-time-area .mat-form-field-infix {
+        width: 135px;
+    }
+    ::ng-deep .dateArea .mat-form-field-infix {
+        width: 135px;
+    }
+    ::ng-deep .dateArea .datePicker .mat-form-field-infix {
+        width: 130px;
+    }
+    ::ng-deep .messageArea .mat-form-field-infix {
+        width: 300px;
+    }
+    ::ng-deep .messageArea .mat-form-field-infix textarea {
+        height: 50px;
+    }
+    ::ng-deep .mat-button:hover .mat-button-focus-overlay {
+        opacity: 0;
+    }
+    .cancelButton:hover {
+        text-decoration: underline;
+    }
+    ::ng-deep .mat-select-panel {
+        max-width: 135px !important;
+    }
+    .buttonArea button {
+        margin: 0px 25px;
+        padding: 1px 22px;
+        font-size: 16px;
+    }
+}
+
+@media(max-width: 480px) {
+    .mat-dialog-title {
+        text-align: center;
+    }
+    ::ng-deep .input-time-area .mat-form-field-infix {
+        width: 140px;
+    }
+    .input-time-area {
+        text-align: center;
+    }
+    .dateArea {
+        text-align: center;
+    }
+    .messageArea {
+        text-align: center;
+    }
+    .checkboxArea {
+        padding-right: 28px;
+    }
+    ::ng-deep .dateArea .mat-form-field-infix {
+        width: 140px;
+    }
+    ::ng-deep .messageArea .mat-form-field-infix {
+        width: 290px;
+    }
+    ::ng-deep .messageArea .mat-form-field-infix textarea {
+        height: 50px;
+    }
+    ::ng-deep .mat-button:hover .mat-button-focus-overlay {
+        opacity: 0;
+    }
+    .cancelButton:hover {
+        text-decoration: underline;
+    }
+    ::ng-deep .mat-select-panel {
+        max-width: 150px !important;
+    }
+    .buttonArea button {
+        margin: 0px 25px;
+        padding: 1px 22px;
+        font-size: 16px;
+    }
+    .mat-form-field:first-child {
+        margin: 10px 60px 0px 0;
+    }
+    ::ng-deep .mat-dialog-container {
+        padding: 20px 15px 25px 20px;
+    }
+    ::ng-deep .mat-dialog-content {
+        margin: 0 -15px;
+    }
+}
+
+@media(max-width: 420px) {
+    ::ng-deep .input-time-area .mat-form-field-infix {
+        width: 130px;
+    }
+    .input-time-area {
+        text-align: center;
+    }
+    .dateArea {
+        text-align: center;
+    }
+    .messageArea {
+        text-align: center;
+    }
+    .checkboxArea {
+        padding-right: 15px;
+    }
+    ::ng-deep .dateArea .mat-form-field-infix {
+        width: 130px;
+    }
+    ::ng-deep .messageArea .mat-form-field-infix {
+        width: 270px;
+    }
+    ::ng-deep .messageArea .mat-form-field-infix textarea {
+        height: 50px;
+    }
+    ::ng-deep .mat-button:hover .mat-button-focus-overlay {
+        opacity: 0;
+    }
+    .cancelButton:hover {
+        text-decoration: underline;
+    }
+    ::ng-deep .mat-select-panel {
+        max-width: 150px !important;
+    }
+    .buttonArea button {
+        margin: 0px 25px;
+        padding: 1px 22px;
+        font-size: 16px;
+    }
+    .mat-form-field:first-child {
+        margin: 10px 40px 0px 0;
+    }
+    ::ng-deep .mat-dialog-container {
+        padding: 20px 15px 25px 20px;
+    }
+    ::ng-deep .mat-dialog-content {
+        margin: 0 -15px;
+    }
+}
+
+@media(max-width: 380px) {
+    ::ng-deep .input-time-area .mat-form-field-infix {
+        width: 100px;
+    }
+    .input-time-area {
+        text-align: center;
+    }
+    .dateArea {
+        text-align: center;
+    }
+    .messageArea {
+        text-align: center;
+    }
+    .checkboxArea {
+        padding-right: 0;
+        font-size: 15px;
+    }
+    ::ng-deep .dateArea .mat-form-field-infix {
+        width: 100px;
+    }
+    ::ng-deep .messageArea .mat-form-field-infix {
+        width: 205px;
+    }
+    ::ng-deep .messageArea .mat-form-field-infix textarea {
+        height: 50px;
+    }
+    ::ng-deep .mat-button:hover .mat-button-focus-overlay {
+        opacity: 0;
+    }
+    .cancelButton:hover {
+        text-decoration: underline;
+    }
+    ::ng-deep .mat-select-panel {
+        max-width: 120px !important;
+    }
+    .buttonArea button {
+        margin: 0px 10px;
+        padding: 1px 14px;
+        font-size: 16px;
+    }
+    .mat-form-field:first-child {
+        margin: 10px 40px 0px 0;
+    }
+    ::ng-deep .mat-dialog-container {
+        padding: 20px 15px 25px 20px;
+    }
+    ::ng-deep .mat-dialog-content {
+        margin: 0 -15px;
+    }
+}

@@ -42,13 +42,32 @@
     font-size: 16px;
 }
 
-.buttonArea button.saveButton{
+.buttonArea button.saveButton {
     padding: 1px 40px;
 }
+
 ::ng-deep .mat-button:hover .mat-button-focus-overlay {
     opacity: 0;
 }
 
 .cancelButton:hover {
     text-decoration: underline;
+}
+
+@media(max-width: 480px) {
+    .repeatDaysList {
+        padding: 10px 40px;
+    }
+}
+
+@media(max-width: 420px) {
+    .repeatDaysList {
+        padding: 10px 25px;
+    }
+}
+
+@media(max-width: 380px) {
+    .repeatDaysList {
+        padding: 10px 10px;
+    }
 }

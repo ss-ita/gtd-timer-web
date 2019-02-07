@@ -111,6 +111,7 @@ export class AlarmDialogComponent implements OnInit {
 
   customOptionRepeat() {
     const alarmRepeatFormDialog = this.dialog.open(RepeatAlarmDialogComponent, {
+      panelClass: 'custom-dialog-container',
       hasBackdrop: true,
       closeOnNavigation: true,
       disableClose: true
