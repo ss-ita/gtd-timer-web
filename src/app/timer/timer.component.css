@@ -1,19 +1,9 @@
-.background-normal {
-    position: absolute;
-    top: auto;
-    min-height: calc(100vh - 49px);
-    width: 100%;
-    background-image: linear-gradient(to top, #d9afd9 0%, #97d9e1 100%);
-    min-width: 820px;
-}
-
 .background-red {
     position: absolute;
     top: auto;
     min-height: calc(100vh - 49px);
     width: 100%;
     background-image: linear-gradient(45deg, #874da2 0%, #c43a30 100%);
-    min-width: 820px;
 }
 
 .mat-icon-button {
@@ -277,4 +267,192 @@
     text-align: center;
     margin-bottom: -4px;
     min-height: 223px;
+}
+
+@media(max-width: 735px) {
+    
+    .timer-input{
+        margin-bottom: -1.9%;
+    }
+
+    .mat-card-content{
+        min-height: auto;
+    }
+
+    .mat-card{
+        width: auto;
+        height: 350px;
+    }
+
+    .progress-percentage-wrapper{
+        font-size: 40px;
+        margin-left: 1%;
+        width: 175px;
+        height: 175px;
+    }
+}
+
+@media(max-width: 640px) {
+
+    .text{
+        font-size: 100px;
+    }
+
+    .semicolomn{
+        font-size: 100px;
+    }
+
+    .mat-card{
+        width: auto;
+        height: 330px;
+    }
+
+    .progress-percentage-wrapper{
+        font-size: 40px;
+        margin-left: 1%;
+        width: 160px;
+        height: 160px;
+    }
+
+    .mat-card-content{
+        min-height: auto;
+    }
+
+    .timer-input{
+        margin-bottom: -2%;
+    }
+}
+
+@media(max-width: 550px) {
+
+    .text{
+        font-size: 90px;
+    }
+
+    .semicolomn{
+        font-size: 90px;
+    }   
+
+    .mat-card{
+        width: auto;
+        height: 310px;
+    }
+
+    .progress-percentage-wrapper{
+        font-size: 40px;
+        margin-left: 1%;
+        width: 140px;
+        height: 140px;
+    }
+
+    .mat-card-content{
+        min-height: auto;
+    }
+
+    .timer-input{
+        margin-bottom: -3%;
+    }
+}
+
+@media(max-width: 480px) {
+
+    .background-red{
+        background-image: none;
+    }
+
+    ::ng-deep mat-card{
+        border: none !important;
+        box-shadow: none !important;
+    }
+
+    .text{
+        font-size: 80px;
+    }
+
+    .semicolomn{
+        font-size: 80px;
+    }
+
+    .mat-card{
+        width: auto;
+        height: 290px;
+        margin: 0;
+    }
+
+    .progress-percentage-wrapper{
+        font-size: 30px;
+        margin-left: 1%;
+        width: 125px;
+        height: 125px;
+    }
+
+    .mat-card-content{
+        min-height: auto;
+    }
+
+    .timer-input{
+        margin-bottom: -3%;
+    }
+}
+
+@media(max-width: 420px) {
+
+    .text{
+        font-size: 70px;
+    }
+
+    .semicolomn{
+        font-size: 70px;
+    }
+
+    .mat-card{
+        width: auto;
+        height: 270px;
+    }
+
+    .progress-percentage-wrapper{
+        font-size: 30px;
+        margin-left: 1%;
+        width: 100px;
+        height: 100px;
+    }
+
+    .mat-card-content{
+        min-height: auto;
+    }
+
+    .timer-input{
+        margin-bottom: -4%;
+    }
+}
+
+@media(max-width: 360px) {
+
+    .text{
+        font-size: 60px;
+    }
+
+    .semicolomn{
+        font-size: 60px;
+    }
+
+    .mat-card{
+        width: auto;
+        height: 250px;
+    }
+
+    .progress-percentage-wrapper{
+        font-size: 30px;
+        margin-left: 1%;
+        width: 90px;
+        height: 90px;
+    }
+
+    .mat-card-content{
+        min-height: auto;
+    }
+
+    .timer-input{
+        margin-bottom: -5%;
+    }
 }

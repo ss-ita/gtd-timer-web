@@ -108,8 +108,8 @@
                 <mat-icon>first_page</mat-icon>
             </button>
           </ng-template>
-          <ng-template [ngIf]="!(!timerForm.valid || timerServise.isTimerPause === false)">
-            <button mat-icon-button [disabled]="(timerServise.maxValueHour == null 
+          <ng-template [ngIf]="!(timerServise.isTimerPause === false)">
+            <button mat-icon-button [disabled]="(!timerForm.valid || timerServise.maxValueHour == null 
           && timerServise.maxValueMinute == null && timerServise.maxValueSecond == null) || (timerServise.maxValueHour === 0 
           && timerServise.maxValueMinute === 0 && timerServise.maxValueSecond === 0)"
               (click)="timerServise.startTimer()">
