@@ -30,15 +30,6 @@
 	min-width: 133.5px;
 }
 
-.background{
-    position: absolute;
-    top: auto;
-    min-height: calc(100vh - 49px);
-    width: 100%;
-    background-image: linear-gradient(to top, #d9afd9 0%, #97d9e1 100%);
-    min-width: 820px;
-}
-
 .content-area {
 	width: 700px;
 	height: 380px;
@@ -159,4 +150,139 @@
 .view-stopwatch-menu {
     width: 40px;
     height: 40px;
+}
+
+@media(max-width: 735px) {
+
+    .content-area{
+        width: auto;
+        height: 350px;
+    }
+
+    .progress-percentage-wrapper{
+        font-size: 40px;
+        margin-left: 1%;
+        width: 175px;
+        height: 175px;
+    }
+}
+
+@media(max-width: 640px) {
+
+    .textsize{
+        font-size: 100px;
+    }
+
+    .semicolomn{
+        font-size: 100px;
+    }
+
+    .content-area{
+        width: auto;
+        height: 330px;
+    }
+
+    .progress-percentage-wrapper{
+        font-size: 40px;
+        margin-left: 1%;
+        width: 160px;
+        height: 160px;
+    }
+}
+
+@media(max-width: 550px) {
+
+    .textsize{
+        font-size: 90px;
+    }
+
+    .semicolomn{
+        font-size: 90px;
+    }
+
+    .content-area{
+        width: auto;
+        height: 310px;
+    }
+
+    .progress-percentage-wrapper{
+        font-size: 40px;
+        margin-left: 1%;
+        width: 140px;
+        height: 140px;
+    }
+}
+
+@media(max-width: 480px) {
+
+    ::ng-deep mat-card{
+        border: none !important;
+        box-shadow: none !important;
+    }
+
+    .textsize{
+        font-size: 80px;
+    }
+
+    .semicolomn{
+        font-size: 80px;
+    }
+
+    .content-area{
+        width: auto;
+        height: 290px;
+    }
+
+    .progress-percentage-wrapper{
+        font-size: 30px;
+        margin-left: 1%;
+        width: 125px;
+        height: 125px;
+    }
+}
+
+@media(max-width: 420px) {
+
+    .textsize{
+        font-size: 70px;
+    }
+
+    .semicolomn{
+        font-size: 70px;
+    }
+
+    .content-area{
+        width: auto;
+        height: 270px;
+    }
+
+    .progress-percentage-wrapper{
+        font-size: 30px;
+        margin-left: 1%;
+        width: 100px;
+        height: 100px;
+    }
+}
+
+@media(max-width: 360px) {
+
+    .textsize{
+        font-size: 60px;
+    }
+
+    .semicolomn{
+        font-size: 60px;
+    }
+
+    .content-area{
+        width: auto;
+        height: 250px;
+    }
+
+    .progress-percentage-wrapper{
+        font-size: 30px;
+        margin-left: 1%;
+        width: 90px;
+        height: 90px;
+    }
 }
