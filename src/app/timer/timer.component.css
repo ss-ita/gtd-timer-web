@@ -271,17 +271,25 @@
 }
 
 @media(max-width: 735px) {
+
+    .unselectable{
+        padding-top: 32px !important;
+    }
+
     .timer-input {
         margin-bottom: -1.9%;
     }
+
     .mat-card-content {
         min-height: auto;
     }
+
     .mat-card {
         width: auto;
         height: 350px;
         border-radius: 0%;
     }
+
     .progress-percentage-wrapper {
         font-size: 40px;
         margin-left: 1%;
@@ -291,31 +299,44 @@
 }
 
 @media(max-width: 640px) {
+
+    .unselectable{
+        padding-top: 44px !important;
+    }
+
     .text {
         font-size: 100px;
     }
+
     .semicolomn {
         font-size: 100px;
     }
+
     .mat-card {
         width: auto;
         height: 330px;
     }
+
     .progress-percentage-wrapper {
         font-size: 40px;
         margin-left: 1%;
         width: 160px;
         height: 160px;
     }
+
     .mat-card-content {
         min-height: auto;
     }
+
     .timer-input {
         margin-bottom: -2%;
     }
 }
 
 @media(max-width: 550px) {
+    .unselectable{
+        padding-top: 36px !important;
+    }
     .text {
         font-size: 90px;
     }
@@ -341,9 +362,15 @@
 }
 
 @media(max-width: 480px) {
+
+    .unselectable{
+        padding-top: 34.5px !important;
+    }
+
     .background-red {
         background-image: none;
     }
+
     ::ng-deep mat-card {
         border: none !important;
         box-shadow: none !important;
@@ -374,6 +401,9 @@
 }
 
 @media(max-width: 420px) {
+    .unselectable{
+        padding-top: 22.3px !important;
+    }
     .text {
         font-size: 70px;
     }
@@ -399,6 +429,9 @@
 }
 
 @media(max-width: 360px) {
+    .unselectable{
+        padding-top: 25.7px !important;
+    }
     .text {
         font-size: 60px;
     }
