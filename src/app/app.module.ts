@@ -58,6 +58,7 @@ import { TimeFilterPipe } from './pipes/time-filter.pipe';
 import { StopwatchDialogComponent } from './stopwatch-dialog/stopwatch-dialog.component';
 import { TimerDialogComponent } from './timer-dialog/timer-dialog.component';
 import { ConfirmEmailComponent } from './confirm-email/confirm-email.component';
+import { PagerService } from './services/pager.service';
 
 export function jwtTokenGetter() {
   return localStorage.getItem('access_token');
@@ -148,7 +149,8 @@ export function jwtTokenGetter() {
     ToasterService,
     SocialAuthService,
     RoleService,
-    TimeFilterPipe
+    TimeFilterPipe,
+    PagerService
   ],
   bootstrap: [AppComponent],
   entryComponents: [

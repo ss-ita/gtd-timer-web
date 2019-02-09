@@ -39,7 +39,7 @@
         </div>
       </div>
       <mat-list class="timer-list">
-        <mat-list-item *ngFor='let task of taskService.stopwatches | filter: searchText' class="grid-container">
+        <mat-list-item *ngFor='let task of pagedStopwatches | filter: searchText' class="grid-container">
           <div class="name">
             <p (click)="toggleCollapsed(task)">{{task.name}}</p>
             <div *ngIf="task.isCollapsed===false">
@@ -67,6 +67,37 @@
           </div>
         </mat-list-item>
       </mat-list>
+      <div class="flex-container">
+        <div *ngIf="stopwatchPager.pages && stopwatchPager.pages.length" class="pagination">
+          <button mat-raised-button [disabled]="stopwatchPager.currentPage === 1" (click)="setStopwatchesPage(1)">
+            <i class="fas fa-angle-double-left"></i>
+          </button>
+          <button mat-raised-button [disabled]="stopwatchPager.currentPage === 1"
+            (click)="setStopwatchesPage(stopwatchPager.currentPage - 1)">
+            <i class="fas fa-angle-left"></i>
+          </button>
+          <button mat-raised-button *ngFor="let page of stopwatchPager.pages"
+            [ngClass]="{active:stopwatchPager.currentPage === page}" (click)="setStopwatchesPage(page)">
+            {{page}}
+          </button>
+          <button mat-raised-button [disabled]="stopwatchPager.currentPage === stopwatchPager.totalPages"
+            (click)="setStopwatchesPage(stopwatchPager.currentPage + 1)">
+            <i class="fas fa-angle-right"></i>
+          </button>
+          <button mat-raised-button [disabled]="stopwatchPager.currentPage === stopwatchPager.totalPages"
+            (click)="setStopwatchesPage(stopwatchPager.totalPages)">
+            <i class="fas fa-angle-double-right"></i>
+          </button>
+        </div>
+        <mat-form-field>
+          <mat-select placeholder="Items per page" [(ngModel)]="pageSizeStopwatches" name="size"
+            (selectionChange)="setStopwatchesPage(1)">
+            <mat-option *ngFor="let size of pageSizes" [value]="size.value">
+              {{size.id}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
     </ng-template>
     <ng-template [ngIf]="displayTimer">
       <div class="fields">
@@ -112,7 +143,7 @@
         </div>
       </div>
       <mat-list class="timer-list">
-        <mat-list-item *ngFor='let task of taskService.timers | filter: searchText' class="grid-container">
+        <mat-list-item *ngFor='let task of pagedTimers | filter: searchText' class="grid-container">
           <div class="name">
             <p (click)="toggleCollapsed(task)">{{task.name}}</p>
             <div *ngIf="task.isCollapsed===false">
@@ -165,6 +196,37 @@
           </div>
         </mat-list-item>
       </mat-list>
+      <div class="flex-container">
+        <div *ngIf="timerPager.pages && timerPager.pages.length" class="pagination">
+          <button mat-raised-button [disabled]="timerPager.currentPage === 1" (click)="setTimersPage(1)">
+            <i class="fas fa-angle-double-left"></i>
+          </button>
+          <button mat-raised-button [disabled]="timerPager.currentPage === 1"
+            (click)="setTimersPage(timerPager.currentPage - 1)">
+            <i class="fas fa-angle-left"></i>
+          </button>
+          <button mat-raised-button *ngFor="let page of timerPager.pages" [ngClass]="{active:timerPager.currentPage === page}"
+            (click)="setTimersPage(page)">
+            {{page}}
+          </button>
+          <button mat-raised-button [disabled]="timerPager.currentPage === timerPager.totalPages"
+            (click)="setTimersPage(timerPager.currentPage + 1)">
+            <i class="fas fa-angle-right"></i>
+          </button>
+          <button mat-raised-button [disabled]="timerPager.currentPage === timerPager.totalPages"
+            (click)="setTimersPage(timerPager.totalPages)">
+            <i class="fas fa-angle-double-right"></i>
+          </button>
+        </div>
+        <mat-form-field>
+          <mat-select placeholder="Items per page" [(ngModel)]="pageSizeTimers" name="size"
+            (selectionChange)="setTimersPage(1)">
+            <mat-option *ngFor="let size of pageSizes" [value]="size.value">
+              {{size.id}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
     </ng-template>
   </div>
 </div>
