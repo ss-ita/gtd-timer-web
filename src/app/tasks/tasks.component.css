@@ -302,10 +302,6 @@ app-progress {
     text-align-last: center;
 }
 
-mat-list-option[aria-selected="true"] {
-    background: rgba(0, 139, 139, 0.7);
-}
-
 .pagination button { 
     padding: 0 5px; 
 }
