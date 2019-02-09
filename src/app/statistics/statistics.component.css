@@ -1,31 +1,29 @@
-.background {
-    position: absolute;
-    top: auto;
-    min-height: calc(100vh - 49px);
-    width: 100%;
-    background-image: linear-gradient(to top, #d9afd9 0%, #97d9e1 100%);
-    min-width: 1200px;
+.button {
+    display: inline-flex;
+    justify-content: center;
+    margin-left: 5%;
 }
-    
+  
 .container {
     position: relative;
 }
     
 .container>div:first-child {
     width: 100%;
-    height: 50px;
     padding-top: 10px;
 }
 
 #chart {
     margin: 0 25%;
-    padding-top: 40px;
+    min-width: 250px;
+    min-height: 150px;
+    max-width: 700px;
+    display: flex;
 }
     
 .buttons {
     margin-top: 5px;
-    margin: 0 10%;
-    display: inline-flex;
+    display: block;
     justify-content: center;
     align-items: baseline;
 }
@@ -66,6 +64,21 @@
 
 .datepicker{
     width: 100px;
+}
+
+@media(max-width:480px) {
+    .mat-form-field {
+        margin-left: 20px;
+        width: 270px;
+    }
+
+    #chart {
+        margin: 0 0;
+    }
+
+    .datepicker {
+        width: 125px;
+    }
 }
 
 #noData {

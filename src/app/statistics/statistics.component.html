@@ -1,19 +1,21 @@
-<div class="background">
   <div class="container">
-    <div>
       <div class="buttons">
+        <div class="button">
         <button mat-raised-button [ngClass]="{'active': typeOfData === dataTypes.Tasks}" (click)="changeTypeOfData(dataTypes.Tasks)">
           All
         </button>
         <button mat-raised-button [ngClass]="{'active': typeOfData === dataTypes.Hashtags}" (click)="changeTypeOfData(dataTypes.Hashtags)">
           Tags
         </button>
+      </div>
+      <div class="button">
         <button mat-raised-button [ngClass]="{'active': typeOfChart === chartTypes.Doughnut}" (click)="changeTypeOfChart(chartTypes.Doughnut)">
           <img src="donut-chart.png">
         </button>
         <button mat-raised-button [ngClass]="{'active': typeOfChart === chartTypes.Bar}" (click)="changeTypeOfChart(chartTypes.Bar)">
           <i class="fa fa-bar-chart" aria-hidden="true"></i>
         </button>
+      </div>
         <mat-form-field>
           <mat-select placeholder="Type">
             <mat-option value="All" (click)="redraw()">All</mat-option>
@@ -34,7 +36,6 @@
           <mat-datepicker #pickerTo></mat-datepicker>
         </mat-form-field>
       </div>
-    </div>
     <div id="chart" [ngClass]="{'hidden': !hasData}">
       <canvas id="canvasChart"></canvas>
     </div>
@@ -42,4 +43,3 @@
       <p> No data available</p>
     </div>
   </div>
-</div>

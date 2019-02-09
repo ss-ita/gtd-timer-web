@@ -22,8 +22,8 @@ export class AdminPageComponent implements OnInit {
     this.roleService.getEmails('Admin');
   }
 
-  isAdmin(){
-    if(!this.roleService.isAdmin){
+  isAdmin() {
+    if (!this.roleService.isAdmin) {
       this.router.navigate(['stopwatch']);
     }
   }
