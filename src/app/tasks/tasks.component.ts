@@ -6,6 +6,7 @@ import { timer, Subscription } from 'rxjs';
 import { ConfigService } from '../services/config.service';
 import { HistoryService } from '../services/history.service';
 import { Record } from '../models/record.model';
+import { PagerService } from '../services/pager.service';
 
 @Component({
   selector: 'app-tasks',
@@ -20,7 +21,8 @@ export class TasksComponent implements OnInit {
   constructor(
     public taskService: TasksService,
     private configService: ConfigService,
-    private historyService: HistoryService
+    private historyService: HistoryService,
+    private pagerService: PagerService
   ) {
     this.progress = this.emulateProgress();
   }
@@ -36,6 +38,18 @@ export class TasksComponent implements OnInit {
   secondPerHour = 3600;
   secondPerMinute = 60;
   secondPerSecond = 1;
+  pagedStopwatches: TaskCreateJson[];
+  pagedTimers: TaskCreateJson[];
+  stopwatchPager: any = {};
+  timerPager: any = {};
+  pageSizeTimers: number = 10;
+  pageSizeStopwatches: number = 10;
+  public pageSizes: any = [
+    {"id": 5, "value": 5},
+    {"id": 10, "value": 10},
+    {"id": 25, "value": 25},
+    {"id": "Display all", "value": Number.MAX_VALUE}
+  ];
 
   displayStopwatches() {
     this.displayStopwatch = true;
@@ -45,6 +59,24 @@ export class TasksComponent implements OnInit {
   displayTimers() {
     this.displayStopwatch = false;
     this.displayTimer = true;
+  }
+
+  setStopwatchesPage(page: number) {
+    if (page < 1 || page > this.stopwatchPager.totalPages) {
+      return;
+    }
+
+    this.stopwatchPager = this.pagerService.getPager(this.taskService.stopwatches.length, page, this.pageSizeStopwatches);
+    this.pagedStopwatches = this.taskService.stopwatches.slice(this.stopwatchPager.startIndex, this.stopwatchPager.endIndex + 1);
+  }
+
+  setTimersPage(page: number) {
+    if (page < 1 || page > this.timerPager.totalPages) {
+      return;
+    }
+
+    this.timerPager = this.pagerService.getPager(this.taskService.timers.length, page, this.pageSizeTimers);
+    this.pagedTimers = this.taskService.timers.slice(this.timerPager.startIndex, this.timerPager.endIndex + 1);
   }
 
   toggleCollapsed(task: TaskCreateJson) {
@@ -130,6 +162,7 @@ export class TasksComponent implements OnInit {
     const myObserver = {
       next: task => {
         this.taskService.stopwatches.unshift(task);
+        this.setStopwatchesPage(1);
       },
       error: err => { },
       complete: () => { }
@@ -166,6 +199,7 @@ export class TasksComponent implements OnInit {
     const myObserver = {
       next: task => {
         this.taskService.timers.unshift(task);
+        this.setTimersPage(1);
       },
       error: err => { },
       complete: () => { }
@@ -179,11 +213,23 @@ export class TasksComponent implements OnInit {
     this.taskService.deleteTask(task.id).subscribe();
     const indexTaskToDelete = this.taskService.stopwatches.indexOf(task, 0);
     this.taskService.stopwatches.splice(indexTaskToDelete, 1);
+    if(this.pagedStopwatches.length > 1) {
+      this.setStopwatchesPage(this.stopwatchPager.currentPage);
+    }
+    else {
+      this.setStopwatchesPage(this.stopwatchPager.currentPage - 1);
+    }
   }
   deleteTimer(task: TaskCreateJson) {
     this.taskService.deleteTask(task.id).subscribe();
     const indexTaskToDelete = this.taskService.timers.indexOf(task, 0);
     this.taskService.timers.splice(indexTaskToDelete, 1);
+    if(this.pagedTimers.length > 1) {
+      this.setTimersPage(this.timerPager.currentPage);
+    }
+    else {
+      this.setTimersPage(this.timerPager.currentPage - 1);
+    }
   }
 
   updateTask(task: TaskCreateJson) {
@@ -219,6 +265,7 @@ export class TasksComponent implements OnInit {
           };
           this.taskService.stopwatches.push(toPush);
         }
+        this.setStopwatchesPage(1);
       },
       complete: () => { this.runAfterGet(); }
     };
@@ -287,6 +334,7 @@ export class TasksComponent implements OnInit {
         }
         this.taskService.timers.push(toPush);
       }
+      this.setTimersPage(1);
     });
   }
 
@@ -297,6 +345,8 @@ export class TasksComponent implements OnInit {
           data.reverse();
           this.taskService.stopwatches.unshift(...this.fillTimeAll(data).filter(task => task.watchType === 0));
           this.taskService.timers.unshift(...data.filter(task => task.watchType === 1));
+          this.setStopwatchesPage(1);
+          this.setTimersPage(1);  
         }
       );
   }
