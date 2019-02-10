@@ -154,3 +154,52 @@ width: 15%;
 .mat-icon {
     transform: scale(1.1);
 }
+
+.flex-container {
+    display: flex;
+    margin-top: 25px;
+    align-items: center;
+}
+
+.pagination button {
+    border-radius: 0;
+}
+
+.pagination button:first-child {
+    border-radius: 5px 0 0 5px;
+}
+
+.pagination button:last-child {
+    border-radius: 0 5px 5px 0;
+}
+
+.pagination button.active {
+    background: #97d9e1;
+    cursor: pointer;
+}
+
+.pagination button[disabled] i {
+    color: #dededa;
+}
+
+.pagination button[disabled] {
+    background: #f9f9f9;
+}
+
+.pagination button[disabled]:hover {
+    cursor: not-allowed;
+}
+
+.pagination {
+    flex-grow: 1;
+    text-align: center;
+}
+
+.mat-select {
+    text-align: center;
+    text-align-last: center;
+}
+
+.pagination .mat-raised-button {
+    padding: 0 16px;
+}

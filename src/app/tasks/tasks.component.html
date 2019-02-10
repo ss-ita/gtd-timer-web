@@ -89,8 +89,8 @@
             <i class="fas fa-angle-double-right"></i>
           </button>
         </div>
-        <mat-form-field>
-          <mat-select placeholder="Items per page" [(ngModel)]="pageSizeStopwatches" name="size"
+        <mat-form-field *ngIf="stopwatchPager.pages && stopwatchPager.pages.length">
+          <mat-select placeholder="Items per page" [(ngModel)]="pageSizeList" name="size"
             (selectionChange)="setStopwatchesPage(1)">
             <mat-option *ngFor="let size of pageSizes" [value]="size.value">
               {{size.id}}
@@ -218,8 +218,8 @@
             <i class="fas fa-angle-double-right"></i>
           </button>
         </div>
-        <mat-form-field>
-          <mat-select placeholder="Items per page" [(ngModel)]="pageSizeTimers" name="size"
+        <mat-form-field *ngIf="timerPager.pages && timerPager.pages.length">
+          <mat-select placeholder="Items per page" [(ngModel)]="pageSizeList" name="size"
             (selectionChange)="setTimersPage(1)">
             <mat-option *ngFor="let size of pageSizes" [value]="size.value">
               {{size.id}}

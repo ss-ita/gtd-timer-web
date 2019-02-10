@@ -42,8 +42,7 @@ export class TasksComponent implements OnInit {
   pagedTimers: TaskCreateJson[];
   stopwatchPager: any = {};
   timerPager: any = {};
-  pageSizeTimers: number = 10;
-  pageSizeStopwatches: number = 10;
+  pageSizeList: number = 10;
   public pageSizes: any = [
     {"id": 5, "value": 5},
     {"id": 10, "value": 10},
@@ -54,28 +53,22 @@ export class TasksComponent implements OnInit {
   displayStopwatches() {
     this.displayStopwatch = true;
     this.displayTimer = false;
+    this.setStopwatchesPage(1);
   }
 
   displayTimers() {
     this.displayStopwatch = false;
     this.displayTimer = true;
+    this.setTimersPage(1);
   }
 
   setStopwatchesPage(page: number) {
-    if (page < 1 || page > this.stopwatchPager.totalPages) {
-      return;
-    }
-
-    this.stopwatchPager = this.pagerService.getPager(this.taskService.stopwatches.length, page, this.pageSizeStopwatches);
+    this.stopwatchPager = this.pagerService.getPager(this.taskService.stopwatches.length, page, this.pageSizeList);
     this.pagedStopwatches = this.taskService.stopwatches.slice(this.stopwatchPager.startIndex, this.stopwatchPager.endIndex + 1);
   }
 
   setTimersPage(page: number) {
-    if (page < 1 || page > this.timerPager.totalPages) {
-      return;
-    }
-
-    this.timerPager = this.pagerService.getPager(this.taskService.timers.length, page, this.pageSizeTimers);
+    this.timerPager = this.pagerService.getPager(this.taskService.timers.length, page, this.pageSizeList);
     this.pagedTimers = this.taskService.timers.slice(this.timerPager.startIndex, this.timerPager.endIndex + 1);
   }
 

@@ -62,7 +62,7 @@
     </div>
     <mat-divider></mat-divider>
     <mat-list>
-      <mat-list-item *ngFor='let record of recordsToDisplay | filter: searchText'>
+      <mat-list-item *ngFor='let record of pagedRecords | filter: searchText'>
         <div class="name" >
           <i *ngIf='record.watchType == 0' class = "fas fa-stopwatch fa-lg"></i>
           <i *ngIf ='record.watchType == 1' class = "fas fa-clock fa-lg"></i>
@@ -92,5 +92,36 @@
         </div>
       </mat-list-item>
     </mat-list>
+    <div class="flex-container">
+      <div *ngIf="recordsToDisplayPager.pages && recordsToDisplayPager.pages.length" class="pagination">
+        <button mat-raised-button [disabled]="recordsToDisplayPager.currentPage === 1" (click)="setRecordsPage(1)">
+          <i class="fas fa-angle-double-left"></i>
+        </button>
+        <button mat-raised-button [disabled]="recordsToDisplayPager.currentPage === 1"
+          (click)="setRecordsPage(recordsToDisplayPager.currentPage - 1)">
+          <i class="fas fa-angle-left"></i>
+        </button>
+        <button mat-raised-button *ngFor="let page of recordsToDisplayPager.pages" [ngClass]="{active:recordsToDisplayPager.currentPage === page}"
+          (click)="setRecordsPage(page)">
+          {{page}}
+        </button>
+        <button mat-raised-button [disabled]="recordsToDisplayPager.currentPage === recordsToDisplayPager.totalPages"
+          (click)="setRecordsPage(recordsToDisplayPager.currentPage + 1)">
+          <i class="fas fa-angle-right"></i>
+        </button>
+        <button mat-raised-button [disabled]="recordsToDisplayPager.currentPage === recordsToDisplayPager.totalPages"
+          (click)="setRecordsPage(recordsToDisplayPager.totalPages)">
+          <i class="fas fa-angle-double-right"></i>
+        </button>
+      </div>
+      <mat-form-field *ngIf="recordsToDisplayPager.pages && recordsToDisplayPager.pages.length">
+        <mat-select placeholder="Items per page" [(ngModel)]="pageSizeRecords" name="size"
+          (selectionChange)="setRecordsPage(1)">
+          <mat-option *ngFor="let size of pageSizes" [value]="size.value">
+            {{size.id}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
   </div>
 </div>

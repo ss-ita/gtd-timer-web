@@ -8,6 +8,7 @@ import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation
 import { TimeFilterPipe } from '../pipes/time-filter.pipe';
 import { TasksService } from '../services/tasks.service';
 import { ConfigService } from '../services/config.service';
+import { PagerService } from '../services/pager.service';
 
 @Component({
   selector: 'app-history',
@@ -21,6 +22,15 @@ export class HistoryComponent implements OnInit {
   records: Record[];
   recordsToDisplay: Record[];
   isStopwatch = 2;
+  pagedRecords: Record[];
+  recordsToDisplayPager: any = {};
+  pageSizeRecords: number = 10;
+  public pageSizes: any = [
+    {"id": 5, "value": 5},
+    {"id": 10, "value": 10},
+    {"id": 25, "value": 25},
+    {"id": "Display all", "value": Number.MAX_VALUE}
+  ];
 
   constructor(private historyService: HistoryService,
     private service: TaskInfoDialogService,
@@ -28,10 +38,16 @@ export class HistoryComponent implements OnInit {
     private matDialog: MatDialog,
     private timePipe: TimeFilterPipe,
     private taskService: TasksService,
-    private configService: ConfigService) { }
+    private configService: ConfigService,
+    private pagerService: PagerService) { }
 
   ngOnInit() {
     this.getRecords();
+  }
+
+  setRecordsPage(page: number) {
+    this.recordsToDisplayPager = this.pagerService.getPager(this.recordsToDisplay.length, page, this.pageSizeRecords);
+    this.pagedRecords = this.recordsToDisplay.slice(this.recordsToDisplayPager.startIndex, this.recordsToDisplayPager.endIndex + 1);
   }
 
   exportAllStopwatchRecordsAsXml() {
@@ -65,12 +81,14 @@ export class HistoryComponent implements OnInit {
     } else if (this.isStopwatch === 0) {
       this.recordsToDisplay = [... this.records.filter(it => it.watchType === 1)];
     } else {
-      this.recordsToDisplay = this.records;
+      this.recordsToDisplay = [...this.records];
     }
+
+    this.setRecordsPage(1);
   }
 
   getRecords() {
-    this.historyService.getAllRecords().subscribe(data => { this.records = data; this.recordsToDisplay = [...this.records]; });
+    this.historyService.getAllRecords().subscribe(data => { this.records = data; this.recordsToDisplay = [...this.records]; this.setRecordsPage(1);});
   }
 
   onInfo(record: Record) {
@@ -93,6 +111,13 @@ export class HistoryComponent implements OnInit {
     this.records.splice(indexTaskToDelete, 1);
     const indexTaskToDeleteD = this.recordsToDisplay.indexOf(record, 0);
     this.recordsToDisplay.splice(indexTaskToDeleteD, 1);
+
+    if(this.pagedRecords.length > 1 ) {
+      this.setRecordsPage(this.recordsToDisplayPager.currentPage);
+    }
+    else {
+      this.setRecordsPage(this.recordsToDisplayPager.currentPage - 1);
+    }
   }
 
   onDeleteRecord(record: Record) {
@@ -117,6 +142,7 @@ export class HistoryComponent implements OnInit {
         if (data) {
           this.records.push(data);
           this.recordsToDisplay.push(data);
+          this.setRecordsPage(Math.ceil(this.recordsToDisplay.length/this.pageSizeRecords));
         }
       },
 
@@ -128,6 +154,7 @@ export class HistoryComponent implements OnInit {
         }
       }
     };
+
     this.historyService.resetAndStartTask(record.taskId).subscribe(observer);
   }
 
