@@ -377,6 +377,12 @@
 		border-radius: 50%;
 		padding: 5px 0;
 	}
+	.alarmItem {
+		padding: 10px 5px 0px;
+		margin: 0px 28px 0 10px;
+		border-bottom: 1px solid grey;
+		position: relative;
+	}
 }
 
 @media(max-width: 640px) {
@@ -398,14 +404,14 @@
 	}
 	.progress-percentage-wrapper {
 		position: relative;
-		font-size: 45px;
+		font-size: 40px;
 		margin: 0 0.5%;
 		width: 160px;
 		height: 160px;
 		display: inline-block;
 	}
 	.show-time-area .time-element {
-		margin: 30px 0px 13px;
+		margin: 29px 0px 13px;
 		font-size: 100px;
 		border-radius: 50%;
 		padding: 5px 0;
@@ -440,13 +446,18 @@
 		display: inline-block;
 	}
 	.show-time-area .time-element {
-		margin: 27px 0px 13px;
+		margin: 28px 0px 13px;
 		font-size: 90px;
 		border-radius: 50%;
 		padding: 5px 0;
 	}
 	.show-time-area .time-span {
 		font-size: 90px;
+	}
+	.alarmList {
+		margin: 5px;
+		overflow-y: auto;
+		max-height: 255px;
 	}
 }
 
@@ -508,6 +519,11 @@
 		top: 9px;
 		left: 8px;
 	}
+	.alarmList {
+		margin: 5px;
+		overflow-y: auto;
+		max-height: 208px;
+	}
 }
 
 @media(max-width: 420px) {
@@ -535,7 +551,7 @@
 		display: inline-block;
 	}
 	.show-time-area .time-element {
-		margin: 27px 0px 13px;
+		margin: 26px 0px 13px;
 		font-size: 70px;
 		border-radius: 50%;
 		padding: 5px 0;
@@ -575,7 +591,7 @@
 		display: inline-block;
 	}
 	.show-time-area .time-element {
-		margin: 27px 0px 13px;
+		margin: 25px 0px 13px;
 		font-size: 60px;
 		border-radius: 50%;
 		padding: 5px 0;
