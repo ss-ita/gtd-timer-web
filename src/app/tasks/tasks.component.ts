@@ -139,8 +139,8 @@ export class TasksComponent implements OnInit {
     this.taskService.startTaskAction = (task) => {
       this.start(task);
     };
-    this.taskService.pauseTaskAction = (task) => {
-      this.pauseTaskListener(task);
+    this.taskService.pauseTaskAction = (task, data) => {
+      this.pauseTaskListener(task, data);
     };
     this.taskService.resetTaskAction = (task) => {
       this.resetTaskListener(task);
@@ -468,7 +468,9 @@ export class TasksComponent implements OnInit {
     this.historyService.createRecord(recordToCreate).subscribe();
   }
 
-  pauseTaskListener(task: any) {
+  pauseTaskListener(task: any, data: any) {
+    task.elapsedTime = data.elapsedTime;
+    task.currentSecond = data.elapsedTime / this.milisecondPerSecond;
     task.isRunning = false;
     task.isStoped = true;
     task.hour = Math.floor((task.elapsedTime / this.milisecondPerSecond) / this.secondPerHour);

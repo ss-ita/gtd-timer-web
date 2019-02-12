@@ -228,9 +228,7 @@ export class TasksService implements OnInit {
             const index = self.getIndexOfStopwatches(data);
             if (index !== -1) {
                 if (self.pauseTaskAction !== undefined) {
-                    self.stopwatches[index].elapsedTime = data.elapsedTime;
-                    self.stopwatches[index].currentSecond = data.elapsedTime / 1000;
-                    self.pauseTaskAction(self.stopwatches[index]);
+                    self.pauseTaskAction(self.stopwatches[index], data);
                 }
             }
         });
