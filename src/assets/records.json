@@ -1,0 +1,16 @@
+[{
+    "id": 1, "name" : "FirstJsonData", "description": "It's first mock data from json file", "elapsedTime": 3600000,
+    "startTime": "2019-05-01T18:45:45", "stopTime": "2019-05-01T19:45:45", "action": "pause","taskId":77,"watchType":0
+},
+{
+    "id": 1, "name" : "FirstJsonData", "description": "It's first mock data from json file", "elapsedTime": 3600000,
+    "startTime": "2019-05-01T18:45:45", "stopTime": "2019-05-01T19:45:45", "action": "pause","taskId":77,"watchType":0
+},
+{
+    "id": 1, "name" : "FirstJsonData", "description": "It's first mock data from json file", "elapsedTime": 3600000,
+    "startTime": "2019-05-01T18:45:45", "stopTime": "2019-05-01T19:45:45", "action": "pause","taskId":77,"watchType":0
+},
+{
+    "id": 1, "name" : "FirstJsonData", "description": "It's first mock data from json file", "elapsedTime": 3600000,
+    "startTime": "2019-05-01T18:45:45", "stopTime": "2019-05-01T19:45:45", "action": "pause","taskId":77,"watchType":0
+}]

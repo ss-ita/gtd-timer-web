@@ -3,14 +3,6 @@
     top: auto;
     min-height: calc(100vh - 49px);
     width: 100%;
-    background-image: linear-gradient(to top, #d9afd9 0%, #97d9e1 100%);
-    min-width: 820px;
-}
-
-.mat-dialog-content p{
-}
-
-.mat-dialog-title{
 }
 
 .dialog-content{
@@ -40,8 +32,7 @@ width: 75%;
 
 .exitButton{
     width: 25%;
-    align-items: center;
-    justify-content: center;
+    text-align: right;
 }
 
 .content{
@@ -53,10 +44,35 @@ width: 75%;
     min-width: 1px;
     padding: 0%;
     background-color: #dededa;
-    margin-left: 50%;
 }
 
 button:hover{
     background-color:  #f9f9f9;
  }
 
+@media(max-width:480px){
+    ::ng-deep .cdk-overlay-pane {
+       max-width: 100% !important;
+       max-height: 100% !important;
+       width: 100%;
+       height: 100%;
+    }
+
+     .dialog-content{
+        width: 100%;
+        min-width: 262px;
+    }
+
+    ::ng-deep .mat-dialog-container{
+        border-radius: 0px;
+    }
+
+    .title{
+        width: 80px;
+    }
+
+    .content{
+        width: 70%;
+    }
+
+}

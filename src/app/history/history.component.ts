@@ -5,7 +5,6 @@ import { ToasterService } from '../services/toaster.service';
 import { Record } from '../models/record.model';
 import { MatDialog } from '@angular/material';
 import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
-import { TimeFilterPipe } from '../pipes/time-filter.pipe';
 import { TasksService } from '../services/tasks.service';
 import { ConfigService } from '../services/config.service';
 import { PagerService } from '../services/pager.service';
@@ -19,6 +18,7 @@ import { PagerService } from '../services/pager.service';
 export class HistoryComponent implements OnInit {
 
   searchText: string;
+  selected = "All";
   records: Record[];
   recordsToDisplay: Record[];
   isStopwatch = 2;
@@ -36,7 +36,6 @@ export class HistoryComponent implements OnInit {
     private service: TaskInfoDialogService,
     private tosterService: ToasterService,
     private matDialog: MatDialog,
-    private timePipe: TimeFilterPipe,
     private taskService: TasksService,
     private configService: ConfigService,
     private pagerService: PagerService) { }
@@ -78,10 +77,13 @@ export class HistoryComponent implements OnInit {
     this.isStopwatch = num;
     if (this.isStopwatch === 1) {
       this.recordsToDisplay = [... this.records.filter(it => it.watchType === 0)];
+      this.selected = "Stopwatches";
     } else if (this.isStopwatch === 0) {
       this.recordsToDisplay = [... this.records.filter(it => it.watchType === 1)];
+      this.selected = "Timers";
     } else {
       this.recordsToDisplay = [...this.records];
+      this.selected = "All";
     }
 
     this.setRecordsPage(1);
