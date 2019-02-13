@@ -136,32 +136,32 @@ export class TasksComponent implements OnInit {
     this.taskService.addDeleteTaskListener();
     this.taskService.addUpdateTaskListener();
     this.taskService.addResetTaskListener();
-    this.taskService.startTaskAction = (task) => {
+    this.taskService.startStopwatchAction = (task) => {
       this.start(task);
     };
-    this.taskService.pauseTaskAction = (task, data) => {
-      this.pauseTaskListener(task, data);
+    this.taskService.pauseStopwatchAction = (task, data) => {
+      this.pauseStopwatchListener(task, data);
     };
-    this.taskService.resetTaskAction = (task) => {
-      this.resetTaskListener(task);
+    this.taskService.resetStopwatchAction = (task) => {
+      this.resetStopwatchListener(task);
     };
     this.taskService.resetTimerAction = (task) => {
       this.resetTimerListener(task);
     };
-    this.taskService.createTaskAction = (task) => {
+    this.taskService.createStopwatchAction = (task) => {
       this.addStopwatchListener(task);
     };
     this.taskService.createTimerAction = (task) => {
       this.addTimerListener(task);
     };
-    this.taskService.deleteTaskAction = (index) => {
-      this.deleteTaskListener(index);
+    this.taskService.deleteStopwatchAction = (index) => {
+      this.deleteStopwatchListener(index);
     };
     this.taskService.deleteTimerAction = (index) => {
       this.deleteTimerListener(index);
     };
-    this.taskService.updateTaskAction = (index, task) => {
-      this.updateTaskListener(index, task);
+    this.taskService.updateStopwatchAction = (index, task) => {
+      this.updateStopwatchListener(index, task);
     };
     this.taskService.updateTimerAction = (index, task) => {
       this.updateTimerListener(index, task);
@@ -254,7 +254,7 @@ export class TasksComponent implements OnInit {
     this.refreshStopwatchesPage();
   }
 
-  deleteTaskListener(index: number) {
+  deleteStopwatchListener(index: number) {
     this.taskService.stopwatches.splice(index, 1);
     this.refreshStopwatchesPage();
   }
@@ -275,7 +275,7 @@ export class TasksComponent implements OnInit {
     this.taskService.broadcastUpdateTask(task);
   }
 
-  updateTaskListener(index: number, task: any) {
+  updateStopwatchListener(index: number, task: any) {
     this.taskService.stopwatches[index].name = task.name;
   }
 
@@ -445,6 +445,7 @@ export class TasksComponent implements OnInit {
     };
     this.historyService.createRecord(recordToCreate).subscribe();
   }
+
   pauseTimer(task: TaskCreateJson) {
     task.isRunning = false;
     task.isStoped = true;
@@ -468,7 +469,7 @@ export class TasksComponent implements OnInit {
     this.historyService.createRecord(recordToCreate).subscribe();
   }
 
-  pauseTaskListener(task: any, data: any) {
+  pauseStopwatchListener(task: any, data: any) {
     task.elapsedTime = data.elapsedTime;
     task.currentSecond = data.elapsedTime / this.milisecondPerSecond;
     task.isRunning = false;
@@ -566,7 +567,7 @@ export class TasksComponent implements OnInit {
     return task.ticksi;
   }
 
-  resetTaskListener(task: any) {
+  resetStopwatchListener(task: any) {
     task.hour = task.minutes = task.seconds = 0;
     task.elapsedTime = 0;
     task.isStoped = task.isRunning = false;

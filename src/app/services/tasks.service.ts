@@ -19,15 +19,15 @@ export class TasksService implements OnInit {
     milisecondPerSecond = 1000;
     secondPerHour = 3600;
     secondPerMinute = 60;
-    @Input() startTaskAction: Function;
-    @Input() pauseTaskAction: Function;
-    @Input() resetTaskAction: Function;
+    @Input() startStopwatchAction: Function;
+    @Input() pauseStopwatchAction: Function;
+    @Input() resetStopwatchAction: Function;
     @Input() resetTimerAction: Function;
-    @Input() createTaskAction: Function;
+    @Input() createStopwatchAction: Function;
     @Input() createTimerAction: Function;
-    @Input() deleteTaskAction: Function;
+    @Input() deleteStopwatchAction: Function;
     @Input() deleteTimerAction: Function;
-    @Input() updateTaskAction: Function;
+    @Input() updateStopwatchAction: Function;
     @Input() updateTimerAction: Function;
     private hubConnection: signalR.HubConnection;
 
@@ -153,7 +153,7 @@ export class TasksService implements OnInit {
 
     public startConnection = () => {
         this.hubConnection = new signalR.HubConnectionBuilder()
-            .withUrl(this.service.urlHub, {
+            .withUrl(this.service.urlTaskHub, {
                 accessTokenFactory: () => localStorage.getItem('access_token'),
                 transport: signalR.HttpTransportType.LongPolling
             })
@@ -199,8 +199,8 @@ export class TasksService implements OnInit {
         const self = this;
         this.hubConnection.on('CreateTask', (data) => {
             if (data.watchType === 0) {
-                if (self.createTaskAction !== undefined) {
-                    self.createTaskAction(data);
+                if (self.createStopwatchAction !== undefined) {
+                    self.createStopwatchAction(data);
                 }
             } else {
                 if (self.createTimerAction !== undefined) {
@@ -215,8 +215,8 @@ export class TasksService implements OnInit {
         this.hubConnection.on('StartTask', (data) => {
             const index = this.getIndexOfStopwatches(data);
             if (index !== -1) {
-                if (self.startTaskAction !== undefined) {
-                    self.startTaskAction(self.stopwatches[index]);
+                if (self.startStopwatchAction !== undefined) {
+                    self.startStopwatchAction(self.stopwatches[index]);
                 }
             }
         });
@@ -227,8 +227,8 @@ export class TasksService implements OnInit {
         this.hubConnection.on('PauseTask', (data) => {
             const index = self.getIndexOfStopwatches(data);
             if (index !== -1) {
-                if (self.pauseTaskAction !== undefined) {
-                    self.pauseTaskAction(self.stopwatches[index], data);
+                if (self.pauseStopwatchAction !== undefined) {
+                    self.pauseStopwatchAction(self.stopwatches[index], data);
                 }
             }
         });
@@ -239,8 +239,8 @@ export class TasksService implements OnInit {
         this.hubConnection.on('DeleteTask', (data) => {
             let index = this.getIndexOfStopwatchesByTaskId(data);
             if (index !== -1) {
-                if (self.deleteTaskAction != undefined) {
-                    self.deleteTaskAction(index);
+                if (self.deleteStopwatchAction != undefined) {
+                    self.deleteStopwatchAction(index);
                 }
             } else {
                 index = self.getIndexOfTimersByTaskId(data);
@@ -259,8 +259,8 @@ export class TasksService implements OnInit {
             if (data.watchType === 0) {
                 const index = selt.getIndexOfStopwatches(data);
                 if (index !== -1) {
-                    if (selt.updateTaskAction !== undefined) {
-                        selt.updateTaskAction(index, data);
+                    if (selt.updateStopwatchAction !== undefined) {
+                        selt.updateStopwatchAction(index, data);
                     }
                 }
             } else {
@@ -280,8 +280,8 @@ export class TasksService implements OnInit {
             if (data.watchType === 0) {
                 const index = self.getIndexOfStopwatches(data);
                 if (index !== -1) {
-                    if (self.resetTaskAction !== undefined) {
-                        self.resetTaskAction(self.stopwatches[index]);
+                    if (self.resetStopwatchAction !== undefined) {
+                        self.resetStopwatchAction(self.stopwatches[index]);
                     }
                 }
             } else {
@@ -296,18 +296,20 @@ export class TasksService implements OnInit {
     }
 
     private getIndexOfStopwatches(data: any) {
-        for (let i = 0; i < this.stopwatches.length; i++) {
-            if (this.stopwatches[i].id === data.id) {
-                return i;
-            }
-        }
+        const index = this.getIndex(this.stopwatches, data);
 
-        return -1;
+        return index;
     }
 
     private getIndexOfTimers(data: any) {
-        for (let i = 0; i < this.stopwatches.length; i++) {
-            if (this.timers[i].id === data.id) {
+        const index = this.getIndex(this.timers, data);
+
+        return index;
+    }
+
+    private getIndex(array: any, task: any) {
+        for (let i = 0; i < array.length; i++) {
+            if (array[i].id === task.id) {
                 return i;
             }
         }
@@ -316,18 +318,20 @@ export class TasksService implements OnInit {
     }
 
     private getIndexOfStopwatchesByTaskId(taskId: number) {
-        for (let i = 0; i < this.stopwatches.length; i++) {
-            if (this.stopwatches[i].id === taskId) {
-                return i;
-            }
-        }
+        const index = this.getIndexByTaskId(this.stopwatches, taskId);
 
-        return -1;
+        return index;
     }
 
     private getIndexOfTimersByTaskId(taskId: number) {
-        for (let i = 0; i < this.stopwatches.length; i++) {
-            if (this.timers[i].id === taskId) {
+        const index =  this.getIndexByTaskId(this.timers, taskId);
+
+        return index;
+    }
+
+    private getIndexByTaskId(array: any, taskId: number) {
+        for (let i = 0; i < array.length; i++) {
+            if (array[i].id === taskId) {
                 return i;
             }
         }
