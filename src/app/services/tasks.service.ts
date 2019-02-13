@@ -1,4 +1,4 @@
-import { Injectable, OnInit } from '@angular/core';
+import { Injectable, OnInit, Input } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ConfigService } from './config.service';
 import { Observable, throwError } from 'rxjs';
@@ -7,6 +7,7 @@ import { TaskCreateJson } from '../models/taskCreateJson.model';
 import { StopwatchService } from './stopwatch.service';
 import { TimerService } from './timer.service';
 import { ToasterService } from './toaster.service';
+import * as signalR from '@aspnet/signalr';
 
 @Injectable({
     providedIn: 'root'
@@ -18,6 +19,17 @@ export class TasksService implements OnInit {
     milisecondPerSecond = 1000;
     secondPerHour = 3600;
     secondPerMinute = 60;
+    @Input() startStopwatchAction: Function;
+    @Input() pauseStopwatchAction: Function;
+    @Input() resetStopwatchAction: Function;
+    @Input() resetTimerAction: Function;
+    @Input() createStopwatchAction: Function;
+    @Input() createTimerAction: Function;
+    @Input() deleteStopwatchAction: Function;
+    @Input() deleteTimerAction: Function;
+    @Input() updateStopwatchAction: Function;
+    @Input() updateTimerAction: Function;
+    private hubConnection: signalR.HubConnection;
 
     constructor(private http: HttpClient,
         private service: ConfigService,
@@ -137,5 +149,193 @@ export class TasksService implements OnInit {
 
     public getAllRecordsCurrentUser() {
         return this.http.get(this.service.urlGetAllRecordsByUserId);
+    }
+
+    public startConnection = () => {
+        this.hubConnection = new signalR.HubConnectionBuilder()
+            .withUrl(this.service.urlTaskHub, {
+                accessTokenFactory: () => localStorage.getItem('access_token'),
+                transport: signalR.HttpTransportType.LongPolling
+            })
+            .build();
+
+        this.hubConnection
+            .start()
+            .then()
+            .catch(err => console.log('Error while starting connection: ' + err));
+    }
+
+    public broadcastCreateTask = (data) => {
+        this.hubConnection.invoke('CreateTask', data)
+            .catch(err => console.error(err));
+    }
+
+    public broadcastStartTask = (data) => {
+        this.hubConnection.invoke('StartTask', data)
+            .catch(err => console.error(err));
+    }
+
+    public broadcastPauseTask = (data) => {
+        this.hubConnection.invoke('PauseTask', data)
+            .catch(err => console.error(err));
+    }
+
+    public broadcastDeleteTask = (data) => {
+        this.hubConnection.invoke('DeleteTask', data)
+            .catch(err => console.error(err));
+    }
+
+    public broadcastUpdateTask = (data) => {
+        this.hubConnection.invoke('UpdateTask', data)
+            .catch(err => console.error(err));
+    }
+
+    public broadcastResetTask = (data) => {
+        this.hubConnection.invoke('ResetTask', data)
+            .catch(err => console.error(err));
+    }
+
+    public addCreateTaskListener = () => {
+        const self = this;
+        this.hubConnection.on('CreateTask', (data) => {
+            if (data.watchType === 0) {
+                if (self.createStopwatchAction) {
+                    self.createStopwatchAction(data);
+                }
+            } else {
+                if (self.createTimerAction) {
+                    self.createTimerAction(data);
+                }
+            }
+        });
+    }
+
+    public addStartTaskListener = () => {
+        const self = this;
+        this.hubConnection.on('StartTask', (data) => {
+            const index = this.getIndexOfStopwatches(data);
+            if (index !== -1) {
+                if (self.startStopwatchAction) {
+                    self.startStopwatchAction(self.stopwatches[index]);
+                }
+            }
+        });
+    }
+
+    public addPauseTaskListener = () => {
+        const self = this;
+        this.hubConnection.on('PauseTask', (data) => {
+            const index = self.getIndexOfStopwatches(data);
+            if (index !== -1) {
+                if (self.pauseStopwatchAction) {
+                    self.pauseStopwatchAction(self.stopwatches[index], data);
+                }
+            }
+        });
+    }
+
+    public addDeleteTaskListener = () => {
+        const self = this;
+        this.hubConnection.on('DeleteTask', (data) => {
+            let index = this.getIndexOfStopwatchesByTaskId(data);
+            if (index !== -1) {
+                if (self.deleteStopwatchAction) {
+                    self.deleteStopwatchAction(index);
+                }
+            } else {
+                index = self.getIndexOfTimersByTaskId(data);
+                if (index !== -1) {
+                    if (self.deleteTimerAction) {
+                        self.deleteTimerAction(index);
+                    }
+                }
+            }
+        });
+    }
+
+    public addUpdateTaskListener = () => {
+        const selt = this;
+        this.hubConnection.on('UpdateTask', (data) => {
+            if (data.watchType === 0) {
+                const index = selt.getIndexOfStopwatches(data);
+                if (index !== -1) {
+                    if (selt.updateStopwatchAction) {
+                        selt.updateStopwatchAction(index, data);
+                    }
+                }
+            } else {
+                const index = selt.getIndexOfTimers(data);
+                if (index !== -1) {
+                    if (selt.updateTimerAction) {
+                        selt.updateTimerAction(index, data);
+                    }
+                }
+            }
+        });
+    }
+
+    public addResetTaskListener = () => {
+        const self = this;
+        this.hubConnection.on('ResetTask', (data) => {
+            if (data.watchType === 0) {
+                const index = self.getIndexOfStopwatches(data);
+                if (index !== -1) {
+                    if (self.resetStopwatchAction) {
+                        self.resetStopwatchAction(self.stopwatches[index]);
+                    }
+                }
+            } else {
+                const index = self.getIndexOfTimers(data);
+                if (index !== -1) {
+                    if (self.resetTimerAction) {
+                        self.resetTimerAction(self.timers[index]);
+                    }
+                }
+            }
+        });
+    }
+
+    private getIndexOfStopwatches(data: any) {
+        const index = this.getIndex(this.stopwatches, data);
+
+        return index;
+    }
+
+    private getIndexOfTimers(data: any) {
+        const index = this.getIndex(this.timers, data);
+
+        return index;
+    }
+
+    private getIndex(array: any, task: any) {
+        for (let i = 0; i < array.length; i++) {
+            if (array[i].id === task.id) {
+                return i;
+            }
+        }
+
+        return -1;
+    }
+
+    private getIndexOfStopwatchesByTaskId(taskId: number) {
+        const index = this.getIndexByTaskId(this.stopwatches, taskId);
+
+        return index;
+    }
+
+    private getIndexOfTimersByTaskId(taskId: number) {
+        const index =  this.getIndexByTaskId(this.timers, taskId);
+
+        return index;
+    }
+
+    private getIndexByTaskId(array: any, taskId: number) {
+        for (let i = 0; i < array.length; i++) {
+            if (array[i].id === taskId) {
+                return i;
+            }
+        }
+
+        return -1;
     }
 }

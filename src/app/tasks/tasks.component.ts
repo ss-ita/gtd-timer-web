@@ -44,10 +44,10 @@ export class TasksComponent implements OnInit {
   timerPager: any = {};
   pageSizeList: number = 10;
   public pageSizes: any = [
-    {"id": 5, "value": 5},
-    {"id": 10, "value": 10},
-    {"id": 25, "value": 25},
-    {"id": "Display all", "value": Number.MAX_VALUE}
+    { "id": 5, "value": 5 },
+    { "id": 10, "value": 10 },
+    { "id": 25, "value": 25 },
+    { "id": "Display all", "value": Number.MAX_VALUE }
   ];
 
   displayStopwatches() {
@@ -70,6 +70,22 @@ export class TasksComponent implements OnInit {
   setTimersPage(page: number) {
     this.timerPager = this.pagerService.getPager(this.taskService.timers.length, page, this.pageSizeList);
     this.pagedTimers = this.taskService.timers.slice(this.timerPager.startIndex, this.timerPager.endIndex + 1);
+  }
+
+  refreshStopwatchesPage() {
+    if (this.pagedStopwatches.length > 1) {
+      this.setStopwatchesPage(this.stopwatchPager.currentPage);
+    } else {
+      this.setStopwatchesPage(this.stopwatchPager.currentPage - 1);
+    }
+  }
+
+  refreshTimersPage() {
+    if (this.pagedTimers.length > 1) {
+      this.setTimersPage(this.timerPager.currentPage);
+    } else {
+      this.setTimersPage(this.timerPager.currentPage - 1);
+    }
   }
 
   toggleCollapsed(task: TaskCreateJson) {
@@ -113,8 +129,44 @@ export class TasksComponent implements OnInit {
   ngOnInit() {
     this.getStopwatches();
     this.getTimers();
+    this.taskService.startConnection();
+    this.taskService.addCreateTaskListener();
+    this.taskService.addStartTaskListener();
+    this.taskService.addPauseTaskListener();
+    this.taskService.addDeleteTaskListener();
+    this.taskService.addUpdateTaskListener();
+    this.taskService.addResetTaskListener();
+    this.taskService.startStopwatchAction = (task) => {
+      this.start(task);
+    };
+    this.taskService.pauseStopwatchAction = (task, data) => {
+      this.pauseStopwatchListener(task, data);
+    };
+    this.taskService.resetStopwatchAction = (task) => {
+      this.resetStopwatchListener(task);
+    };
+    this.taskService.resetTimerAction = (task) => {
+      this.resetTimerListener(task);
+    };
+    this.taskService.createStopwatchAction = (task) => {
+      this.addStopwatchListener(task);
+    };
+    this.taskService.createTimerAction = (task) => {
+      this.addTimerListener(task);
+    };
+    this.taskService.deleteStopwatchAction = (index) => {
+      this.deleteStopwatchListener(index);
+    };
+    this.taskService.deleteTimerAction = (index) => {
+      this.deleteTimerListener(index);
+    };
+    this.taskService.updateStopwatchAction = (index, task) => {
+      this.updateStopwatchListener(index, task);
+    };
+    this.taskService.updateTimerAction = (index, task) => {
+      this.updateTimerListener(index, task);
+    };
   }
-
 
   filterByProperty(propertyName: string) {
     this.taskService.stopwatches = this.taskService.stopwatches.sort((a, b) => {
@@ -151,18 +203,15 @@ export class TasksComponent implements OnInit {
       goals: 0,
       ticksi: 0
     };
+    this.taskService.broadcastCreateTask(taskToPass);
+  }
 
-    const myObserver = {
-      next: task => {
-        this.taskService.stopwatches.unshift(task);
-        this.setStopwatchesPage(1);
-      },
-      error: err => { },
-      complete: () => { }
-    };
-
-    this.taskService.createTask(taskToPass).subscribe(myObserver);
-
+  addStopwatchListener(task: any) {
+    task.hour = 0;
+    task.minutes = 0;
+    task.seconds = 0;
+    this.taskService.stopwatches.unshift(task);
+    this.setStopwatchesPage(1);
   }
 
   addTimer() {
@@ -188,45 +237,50 @@ export class TasksComponent implements OnInit {
       goals: 0,
       ticksi: 0
     };
+    this.taskService.timers.unshift(taskToPass);
+    this.setTimersPage(1);
+    this.taskService.broadcastCreateTask(taskToPass);
+  }
 
-    const myObserver = {
-      next: task => {
-        this.taskService.timers.unshift(task);
-        this.setTimersPage(1);
-      },
-      error: err => { },
-      complete: () => { }
-    };
-
-    this.taskService.createTask(taskToPass).subscribe(myObserver);
-
+  addTimerListener(task: any) {
+    this.taskService.timers.unshift(task);
+    this.setTimersPage(1);
   }
 
   deleteTask(task: TaskCreateJson) {
-    this.taskService.deleteTask(task.id).subscribe();
+    this.taskService.broadcastDeleteTask(task.id);
     const indexTaskToDelete = this.taskService.stopwatches.indexOf(task, 0);
     this.taskService.stopwatches.splice(indexTaskToDelete, 1);
-    if(this.pagedStopwatches.length > 1) {
-      this.setStopwatchesPage(this.stopwatchPager.currentPage);
-    }
-    else {
-      this.setStopwatchesPage(this.stopwatchPager.currentPage - 1);
-    }
+    this.refreshStopwatchesPage();
   }
+
+  deleteStopwatchListener(index: number) {
+    this.taskService.stopwatches.splice(index, 1);
+    this.refreshStopwatchesPage();
+  }
+
   deleteTimer(task: TaskCreateJson) {
-    this.taskService.deleteTask(task.id).subscribe();
+    this.taskService.broadcastDeleteTask(task.id);
     const indexTaskToDelete = this.taskService.timers.indexOf(task, 0);
     this.taskService.timers.splice(indexTaskToDelete, 1);
-    if(this.pagedTimers.length > 1) {
-      this.setTimersPage(this.timerPager.currentPage);
-    }
-    else {
-      this.setTimersPage(this.timerPager.currentPage - 1);
-    }
+    this.refreshTimersPage();
+  }
+
+  deleteTimerListener(index: number) {
+    this.taskService.timers.splice(index, 1);
+    this.refreshTimersPage();
   }
 
   updateTask(task: TaskCreateJson) {
-    this.taskService.updateTask(task).subscribe();
+    this.taskService.broadcastUpdateTask(task);
+  }
+
+  updateStopwatchListener(index: number, task: any) {
+    this.taskService.stopwatches[index].name = task.name;
+  }
+
+  updateTimerListener(index: number, task: any) {
+    this.taskService.timers[index].name = task.name;
   }
 
   getStopwatches() {
@@ -339,7 +393,7 @@ export class TasksComponent implements OnInit {
           this.taskService.stopwatches.unshift(...this.fillTimeAll(data).filter(task => task.watchType === 0));
           this.taskService.timers.unshift(...data.filter(task => task.watchType === 1));
           this.setStopwatchesPage(1);
-          this.setTimersPage(1);  
+          this.setTimersPage(1);
         }
       );
   }
@@ -372,7 +426,7 @@ export class TasksComponent implements OnInit {
     task.isRunning = false;
     task.isStoped = true;
     task.elapsedTime = task.currentSecond * 1000;
-    this.taskService.pauseTask(task).subscribe();
+    this.taskService.broadcastPauseTask(task);
     const timeStart = new Date(task.lastStartTime);
     const timeNow = new Date();
     const tzoffset = (new Date()).getTimezoneOffset() * 60000; // offset in milliseconds
@@ -390,8 +444,8 @@ export class TasksComponent implements OnInit {
       taskId: task.id
     };
     this.historyService.createRecord(recordToCreate).subscribe();
-
   }
+
   pauseTimer(task: TaskCreateJson) {
     task.isRunning = false;
     task.isStoped = true;
@@ -414,10 +468,21 @@ export class TasksComponent implements OnInit {
     };
     this.historyService.createRecord(recordToCreate).subscribe();
   }
+
+  pauseStopwatchListener(task: any, data: any) {
+    task.elapsedTime = data.elapsedTime;
+    task.currentSecond = data.elapsedTime / this.milisecondPerSecond;
+    task.isRunning = false;
+    task.isStoped = true;
+    task.hour = Math.floor((task.elapsedTime / this.milisecondPerSecond) / this.secondPerHour);
+    task.minutes = Math.floor(((task.elapsedTime / this.milisecondPerSecond) % this.secondPerHour) / this.secondPerMinute);
+    task.seconds = Math.floor(((task.elapsedTime / this.milisecondPerSecond) % this.secondPerHour) % this.secondPerMinute);
+  }
+
   resetTimer(task: TaskCreateJson) {
-    task.hour = task.minutes = task.seconds = 0;
+    task.hour = task.minutes = task.seconds = task.elapsedTime = 0;
     task.isStoped = task.isRunning = false;
-    this.taskService.resetTask(task).subscribe();
+    this.taskService.broadcastResetTask(task);
     const timeStart = new Date(task.lastStartTime);
     const timeNow = new Date();
     const tzoffset = (new Date()).getTimezoneOffset() * 60000; // offset in milliseconds
@@ -442,7 +507,7 @@ export class TasksComponent implements OnInit {
     task.hour = task.minutes = task.seconds = 0;
     task.elapsedTime = 0;
     task.isStoped = task.isRunning = false;
-    this.taskService.resetTask(task).subscribe();
+    this.taskService.broadcastResetTask(task);
     const timeStart = new Date(task.lastStartTime);
     const timeNow = new Date();
     const tzoffset = (new Date()).getTimezoneOffset() * 60000; // offset in milliseconds
@@ -460,15 +525,13 @@ export class TasksComponent implements OnInit {
       taskId: task.id
     };
     this.historyService.createRecord(recordToCreate).subscribe();
-
-
   }
 
   startTask(task: TaskCreateJson) {
     this.start(task);
     const tzoffset = (new Date()).getTimezoneOffset() * 60000; // offset in milliseconds
     task.lastStartTime = (new Date(Date.now() - tzoffset)).toISOString().slice(0, -1);
-    this.taskService.startTask(task).subscribe();
+    this.taskService.broadcastStartTask(task);
   }
 
   startTimer(task: TaskCreateJson) {
@@ -502,6 +565,17 @@ export class TasksComponent implements OnInit {
       });
     }
     return task.ticksi;
+  }
+
+  resetStopwatchListener(task: any) {
+    task.hour = task.minutes = task.seconds = 0;
+    task.elapsedTime = 0;
+    task.isStoped = task.isRunning = false;
+  }
+
+  resetTimerListener(task: any) {
+    task.hour = task.minutes = task.seconds = task.elapsedTime = 0;
+    task.isStoped = task.isRunning = false;
   }
 
   start(task: TaskCreateJson) {
