@@ -1,6 +1,7 @@
-.presets-form {
-    width: 500px;
+.font {
+    font-family: Roboto,"Helvetica Neue",sans-serif;
 }
+
 .presets-header {
     margin-bottom: 30px;
     font-size: 25px;
@@ -37,6 +38,22 @@
 .timer-element-width {
     margin-left: 10px;
     width: 83px;
+}
+@media(max-width:550px) {
+    .timer-element-width {
+        margin-left: 1%;
+        min-width: 48px;
+        width: 22%;
+    }
+
+    .small-screen {
+        min-width: 56px;
+        width:20%;
+    }
+
+    .small-screen-icon {
+        width: 10%;
+    }
 }
 .mat-icon-button .mat-icon, .mat-icon-button i {
     line-height: 23px;

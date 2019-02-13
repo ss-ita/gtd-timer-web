@@ -8,7 +8,7 @@
           Tags
         </button>
       </div>
-      <div class="button">
+      <div class="button-margin">
         <button mat-raised-button [ngClass]="{'active': typeOfChart === chartTypes.Doughnut}" (click)="changeTypeOfChart(chartTypes.Doughnut)">
           <img src="donut-chart.png">
         </button>
@@ -23,6 +23,7 @@
             <mat-option value="Timer" (click)="redraw(tasksTypes.Timer)">Timer</mat-option>
           </mat-select>
         </mat-form-field>
+        <div class="datechoose">
         <mat-form-field class="datepicker">
           <input matInput [matDatepicker]="pickerFrom" [matDatepickerFilter]="startDateFilter" placeholder="Start date"
             (dateChange)="filterByDate($event)" [(ngModel)]="startDate">
@@ -35,6 +36,7 @@
           <mat-datepicker-toggle matSuffix [for]="pickerTo"></mat-datepicker-toggle>
           <mat-datepicker #pickerTo></mat-datepicker>
         </mat-form-field>
+      </div>
       </div>
     <div id="chart" [ngClass]="{'hidden': !hasData}">
       <canvas id="canvasChart"></canvas>

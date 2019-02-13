@@ -15,6 +15,10 @@
     font-size: 25px;
 }
 
+.font {
+    font-family: Roboto,"Helvetica Neue",sans-serif;
+}
+
 .mat-dialog-actions {
     float: right;
 }

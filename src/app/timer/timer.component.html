@@ -88,17 +88,17 @@
     <mat-card-actions [formGroup]="timerForm" class="mat-action">
       <ng-template [ngIf]="timerServise.task === ' '">
         <mat-form-field class="timer-input">
-          <input matInput type="number" min="0" max="23" [(ngModel)]="timerServise.maxValueHour" placeholder="Set hour"
+          <input matInput type="number" min="0" max="23" [(ngModel)]="timerServise.maxValueHour" placeholder="Hours"
             formControlName="hour">
           <mat-error>{{getErrorMessageHour()}}</mat-error>
         </mat-form-field>
         <mat-form-field class="timer-input">
-          <input matInput type="number" min="0" max="59" [(ngModel)]="timerServise.maxValueMinute" placeholder="Set minute"
+          <input matInput type="number" min="0" max="59" [(ngModel)]="timerServise.maxValueMinute" placeholder="Minutes"
             formControlName="minute">
           <mat-error>{{getErrorMessageMinuteAndSecond()}}</mat-error>
         </mat-form-field>
         <mat-form-field class="timer-input">
-          <input matInput type="number" min="0" max="59" [(ngModel)]="timerServise.maxValueSecond" placeholder="Set second"
+          <input matInput type="number" min="0" max="59" [(ngModel)]="timerServise.maxValueSecond" placeholder="Seconds"
             formControlName="second">
           <mat-error>{{getErrorMessageMinuteAndSecond()}}</mat-error>
         </mat-form-field>

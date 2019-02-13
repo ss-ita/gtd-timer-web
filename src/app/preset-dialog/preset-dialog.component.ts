@@ -17,6 +17,7 @@ export class PresetDialogComponent implements OnInit {
 
   openPresetForm() {
       const presetFormDialogRef = this.dialog.open(PresetComponent, {
+          panelClass: 'custom-dialog-container',
           hasBackdrop: true,
           closeOnNavigation: true,
           disableClose: true

@@ -116,6 +116,7 @@ export class PresetComponent implements OnInit {
 
   openConfirmationDialog(presetIndex) {
     const confirmationDialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      panelClass: 'custom-dialog-container',
       hasBackdrop: true,
       closeOnNavigation: true,
       disableClose: false

@@ -1,9 +1,18 @@
-.button {
+.button-margin {
     display: inline-flex;
     justify-content: center;
     margin-left: 5%;
 }
   
+.button {
+    display: inline-flex;
+    justify-content: center;
+}
+
+.datechoose {
+    display: inline-flex;
+}
+
 .container {
     position: relative;
 }
@@ -14,7 +23,7 @@
 }
 
 #chart {
-    margin: 0 25%;
+    margin: 0 auto;
     min-width: 250px;
     min-height: 150px;
     max-width: 700px;
@@ -26,6 +35,7 @@
     display: block;
     justify-content: center;
     align-items: baseline;
+    text-align: center;
 }
 
 .buttons .mat-raised-button{
@@ -66,10 +76,10 @@
     width: 100px;
 }
 
-@media(max-width:480px) {
+@media(max-width:930px) {
     .mat-form-field {
-        margin-left: 20px;
         width: 270px;
+        margin-left: 20px;
     }
 
     #chart {
@@ -78,13 +88,41 @@
 
     .datepicker {
         width: 125px;
+        margin-left: 20px;
+    }
+
+    .button:first-of-type {
+        display: inline-flex;
+        justify-content: center;
+        margin-left: 20px;
+    }
+}
+
+@media(max-width:320px) {
+    .datepicker {
+        width: 125px;
+        margin-left: 0;
+    }
+
+    .datepicker:last-of-type {
+        margin-left: 20px;
+    }
+
+    .mat-form-field {
+        margin-left: 0;
+    }
+
+    .button:first-of-type {
+        display: inline-flex;
+        justify-content: center;
+        margin-left: -10px;
     }
 }
 
 #noData {
     padding-top: 50px;
 }
-    
+
 .hidden {
     display: none;
 }
