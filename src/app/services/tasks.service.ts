@@ -199,11 +199,11 @@ export class TasksService implements OnInit {
         const self = this;
         this.hubConnection.on('CreateTask', (data) => {
             if (data.watchType === 0) {
-                if (self.createStopwatchAction !== undefined) {
+                if (self.createStopwatchAction) {
                     self.createStopwatchAction(data);
                 }
             } else {
-                if (self.createTimerAction !== undefined) {
+                if (self.createTimerAction) {
                     self.createTimerAction(data);
                 }
             }
@@ -215,7 +215,7 @@ export class TasksService implements OnInit {
         this.hubConnection.on('StartTask', (data) => {
             const index = this.getIndexOfStopwatches(data);
             if (index !== -1) {
-                if (self.startStopwatchAction !== undefined) {
+                if (self.startStopwatchAction) {
                     self.startStopwatchAction(self.stopwatches[index]);
                 }
             }
@@ -227,7 +227,7 @@ export class TasksService implements OnInit {
         this.hubConnection.on('PauseTask', (data) => {
             const index = self.getIndexOfStopwatches(data);
             if (index !== -1) {
-                if (self.pauseStopwatchAction !== undefined) {
+                if (self.pauseStopwatchAction) {
                     self.pauseStopwatchAction(self.stopwatches[index], data);
                 }
             }
@@ -239,13 +239,13 @@ export class TasksService implements OnInit {
         this.hubConnection.on('DeleteTask', (data) => {
             let index = this.getIndexOfStopwatchesByTaskId(data);
             if (index !== -1) {
-                if (self.deleteStopwatchAction != undefined) {
+                if (self.deleteStopwatchAction) {
                     self.deleteStopwatchAction(index);
                 }
             } else {
                 index = self.getIndexOfTimersByTaskId(data);
                 if (index !== -1) {
-                    if (self.deleteTimerAction != undefined) {
+                    if (self.deleteTimerAction) {
                         self.deleteTimerAction(index);
                     }
                 }
@@ -259,14 +259,14 @@ export class TasksService implements OnInit {
             if (data.watchType === 0) {
                 const index = selt.getIndexOfStopwatches(data);
                 if (index !== -1) {
-                    if (selt.updateStopwatchAction !== undefined) {
+                    if (selt.updateStopwatchAction) {
                         selt.updateStopwatchAction(index, data);
                     }
                 }
             } else {
                 const index = selt.getIndexOfTimers(data);
                 if (index !== -1) {
-                    if (selt.updateTimerAction !== undefined) {
+                    if (selt.updateTimerAction) {
                         selt.updateTimerAction(index, data);
                     }
                 }
@@ -280,14 +280,14 @@ export class TasksService implements OnInit {
             if (data.watchType === 0) {
                 const index = self.getIndexOfStopwatches(data);
                 if (index !== -1) {
-                    if (self.resetStopwatchAction !== undefined) {
+                    if (self.resetStopwatchAction) {
                         self.resetStopwatchAction(self.stopwatches[index]);
                     }
                 }
             } else {
                 const index = self.getIndexOfTimers(data);
                 if (index !== -1) {
-                    if (self.resetTimerAction !== undefined) {
+                    if (self.resetTimerAction) {
                         self.resetTimerAction(self.timers[index]);
                     }
                 }
