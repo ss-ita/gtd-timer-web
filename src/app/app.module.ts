@@ -59,6 +59,7 @@ import { StopwatchDialogComponent } from './stopwatch-dialog/stopwatch-dialog.co
 import { TimerDialogComponent } from './timer-dialog/timer-dialog.component';
 import { ConfirmEmailComponent } from './confirm-email/confirm-email.component';
 import { PagerService } from './services/pager.service';
+import { UtcPipePipe } from './pipes/utc-pipe.pipe';
 
 export function jwtTokenGetter() {
   return localStorage.getItem('access_token');
@@ -98,7 +99,8 @@ export function jwtTokenGetter() {
     TimerDialogComponent,
     TimeFilterPipe,
     StopwatchDialogComponent,
-    ConfirmEmailComponent
+    ConfirmEmailComponent,
+    UtcPipePipe
   ],
   imports: [
     BrowserModule,

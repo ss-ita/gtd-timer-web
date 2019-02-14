@@ -83,7 +83,7 @@
             </div>
           </div>
           <div class="start">
-            <p>{{record.startTime | date:'short'}}</p>
+            <p>{{record.startTime | utcPipe}}</p>
           </div>
           <div class="elapsed">
             <p>{{ record.elapsedTime | timeFilter }}</p>

@@ -10,7 +10,7 @@
     "e2e": "ng e2e",
     "staging": "ng build --configuration=staging",
     "azure": "ng build --configuration=azure",
-    "generatepipe": "ng generate pipe pipes/timeFilter --module app"
+    "generatepipe": "ng generate pipe pipes/utcPipe --module app"
   },
   "private": true,
   "dependencies": {
