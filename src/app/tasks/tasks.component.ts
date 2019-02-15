@@ -237,12 +237,14 @@ export class TasksComponent implements OnInit {
       goals: 0,
       ticksi: 0
     };
-    this.taskService.timers.unshift(taskToPass);
-    this.setTimersPage(1);
     this.taskService.broadcastCreateTask(taskToPass);
   }
 
   addTimerListener(task: any) {
+    task.hour = 0;
+    task.minutes = 0;
+    task.seconds = 0;
+    task.goals = 0;
     this.taskService.timers.unshift(task);
     this.setTimersPage(1);
   }
