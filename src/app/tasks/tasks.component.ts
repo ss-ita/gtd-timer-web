@@ -442,7 +442,8 @@ export class TasksComponent implements OnInit {
         60000 + (timeNow.getSeconds() - timeStart.getSeconds()) * 1000 + (timeNow.getMilliseconds() - timeStart.getMilliseconds())),
       watchType: task.watchType,
       action: 'Pause',
-      taskId: task.id
+      taskId: task.id,
+      userId: 0
     };
     this.historyService.createRecord(recordToCreate).subscribe();
   }
@@ -464,7 +465,8 @@ export class TasksComponent implements OnInit {
         60000 + (timeNow.getSeconds() - timeStart.getSeconds()) * 1000 + (timeNow.getMilliseconds() - timeStart.getMilliseconds())),
       watchType: task.watchType,
       action: 'Pause',
-      taskId: task.id
+      taskId: task.id,
+      userId: 0
     };
     this.historyService.createRecord(recordToCreate).subscribe();
   }
@@ -496,7 +498,8 @@ export class TasksComponent implements OnInit {
         60000 + (timeNow.getSeconds() - timeStart.getSeconds()) * 1000 + (timeNow.getMilliseconds() - timeStart.getMilliseconds())),
       watchType: task.watchType,
       action: 'Reset',
-      taskId: task.id
+      taskId: task.id,
+      userId:0
     };
     this.historyService.createRecord(recordToCreate).subscribe();
 
@@ -520,7 +523,8 @@ export class TasksComponent implements OnInit {
         60000 + (timeNow.getSeconds() - timeStart.getSeconds()) * 1000 + (timeNow.getMilliseconds() - timeStart.getMilliseconds())),
       watchType: task.watchType,
       action: 'Reset',
-      taskId: task.id
+      taskId: task.id,
+      userId:0
     };
     this.historyService.createRecord(recordToCreate).subscribe();
   }
