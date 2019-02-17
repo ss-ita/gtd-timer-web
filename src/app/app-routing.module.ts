@@ -21,7 +21,7 @@ import { ConfirmEmailComponent } from './confirm-email/confirm-email.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/stopwatch', pathMatch: 'full' },
-  { path: 'confirm-email/:id/:token', component: ConfirmEmailComponent },
+  { path: 'confirm-email/:email/:token', component: ConfirmEmailComponent },
   { path: 'stopwatch', component: StopwatchComponent },
   { path: 'timer', component: TimerComponent },
   { path: 'alarm', component: AlarmComponent },
