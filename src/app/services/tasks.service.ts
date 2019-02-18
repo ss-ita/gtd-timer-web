@@ -61,12 +61,170 @@ export class TasksService implements OnInit {
     updateTask(task: TaskCreateJson) {
         return this.http.put<TaskCreateJson>(this.service.urlTask + 'UpdateTask', task);
     }
-    getTimers(): Observable<TaskJson[]> {
-        return this.http.get<TaskJson[]>(this.service.urlTask + 'GetAllTimersByUserId');
+    
+    getTimers(start: number = 0, length: number = Number.MAX_SAFE_INTEGER): Observable<TaskJson[]> {
+        return this.http.get<TaskJson[]>(this.service.urlTask + 'GetAllTimersByUserId',
+        {
+            params: {
+              start: start.toString(),
+              length: length.toString()
+            }
+        });
     }
-    getStopwatches(): Observable<TaskJson[]> {
-        return this.http.get<TaskJson[]>(this.service.urlTask + 'GetAllStopwathesByUserId');
+
+    getStopwatches(start: number = 0, length: number = Number.MAX_SAFE_INTEGER): Observable<TaskJson[]> {
+        return this.http.get<TaskJson[]>(this.service.urlTask + 'GetAllStopwatchesByUserId', 
+        {
+            params: {
+              start: start.toString(),
+              length: length.toString()
+            }
+        });
     }
+
+    initTimers(): Observable<any> {
+        return new Observable(observer => {
+            const request = this.http.get(this.service.urlGetTimersCount);
+            request.subscribe((res: number) => {
+                this.timers = Array<TaskCreateJson>(res).fill(undefined);
+                observer.next();
+            });	
+        });
+    }
+
+    initStopwatches(): Observable<any> {
+        return new Observable(observer => {
+            const request = this.http.get(this.service.urlGetStopwatchesCount);
+            request.subscribe((res: number) => {
+                this.stopwatches = Array<TaskCreateJson>(res).fill(undefined);
+                observer.next();
+            });
+        })
+    }
+
+    getTimersForPage(pager: any): Observable<TaskCreateJson[]> {
+        return new Observable<TaskCreateJson[]>(observer => {
+            let request = undefined;
+            const paged = this.timers.slice(pager.startIndex, pager.endIndex + 1);
+            if (paged.indexOf(undefined) === -1) {
+                observer.next(paged);
+            } else {
+                const start = pager.startIndex + paged.indexOf(undefined);
+                const end = pager.startIndex + paged.lastIndexOf(undefined);
+                const length = end - start + 1;
+                const revStart = this.timers.length - end - 1;
+                request = this.getTimers(revStart, length);
+                request.subscribe(data => {
+                    let i = end;
+                    for(let task of data) {
+                        this.timers[i] = this.timerToTaskCreateJson(task);
+                        --i;
+                    }
+                    const paged = this.timers.slice(pager.startIndex, pager.endIndex + 1);
+                    observer.next(paged);
+                });
+            }
+            
+            return {unsubscribe() {
+                if (request !== undefined) {
+                    request.unsubscribe();
+                }
+            }};
+        });
+    }
+
+    getStopwatchesForPage(pager: any): Observable<TaskCreateJson[]> {
+        return new Observable<TaskCreateJson[]>(observer => {
+            let request = undefined;
+            const paged = this.stopwatches.slice(pager.startIndex, pager.endIndex + 1);
+            if (paged.indexOf(undefined) === -1) {
+                observer.next(paged);
+            } else {
+                const start = pager.startIndex + paged.indexOf(undefined);
+                const end = pager.startIndex + paged.lastIndexOf(undefined);
+                const length = end - start + 1;
+                const revStart = this.stopwatches.length - end - 1;
+                request = this.getStopwatches(revStart, length);
+                request.subscribe(data => {
+                    let i = end;
+                    for(let task of data) {
+                        this.stopwatches[i] = this.stopwatchToTaskCreateJson(task);
+                        --i;
+                    }
+                    const paged = this.stopwatches.slice(pager.startIndex, pager.endIndex + 1);
+                    observer.next(paged);
+                });
+            }
+            
+            return {unsubscribe() {
+                if (request !== undefined) {
+                    request.unsubscribe();
+                }
+            }};
+        });
+    }
+
+    stopwatchToTaskCreateJson(task: TaskJson): TaskCreateJson {
+        let taskCreateJson: TaskCreateJson = {
+            id: task.id,
+            name: task.name,
+            description: task.description,
+            goal: task.goal,
+            elapsedTime: task.elapsedTime,
+            lastStartTime: task.lastStartTime,
+            isRunning: task.isRunning,
+            watchType: task.watchType,
+            hour: Math.floor((task.elapsedTime / 1000) / this.secondPerHour),
+            minutes: Math.floor(((task.elapsedTime / 1000) % this.secondPerHour) / this.secondPerMinute),
+            seconds: Math.floor(((task.elapsedTime / 1000) % this.secondPerHour) % this.secondPerMinute),
+            isStoped: false,
+            currentSecond: 0,
+            isCollapsed: true,
+            maxValueHour: 0,
+            maxValueMinute: 0,
+            maxValueSecond: 0,
+            isTimerFinished: false,
+            goals: 0,
+            ticksi: 0
+          };
+
+          return taskCreateJson;
+    }
+
+    timerToTaskCreateJson(task: TaskJson): TaskCreateJson {
+        let taskCreateJson: TaskCreateJson = {
+            id: task.id,
+            name: task.name,
+            description: task.description,
+            goal: task.goal,
+            elapsedTime: task.elapsedTime,
+            lastStartTime: task.lastStartTime,
+            isRunning: task.isRunning,
+            watchType: task.watchType,
+            hour: Math.floor((task.elapsedTime / 1000) / this.secondPerHour),
+            minutes: Math.floor(((task.elapsedTime / 1000) % this.secondPerHour) / this.secondPerMinute),
+            seconds: Math.floor(((task.elapsedTime / 1000) % this.secondPerHour) % this.secondPerMinute),
+            isStoped: false,
+            currentSecond: 0,
+            isCollapsed: true,
+            maxValueHour: 0,
+            maxValueMinute: 0,
+            maxValueSecond: 0,
+            isTimerFinished: false,
+            goals: 0,
+            ticksi: 0
+          };
+  
+          if (taskCreateJson.goal != null) {
+            const time = taskCreateJson.goal.split(':');
+            taskCreateJson.maxValueHour = Number(time[0]);
+            taskCreateJson.maxValueMinute = Number(time[1]);
+            taskCreateJson.maxValueSecond = Number(time[2]);
+          }
+
+          return taskCreateJson;
+    }
+
     public getAllTasks(): Observable<TaskJson[]> {
         return this.http.get<TaskJson[]>(this.service.urlGetAllTasks, {});
     }
