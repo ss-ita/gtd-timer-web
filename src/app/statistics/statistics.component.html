@@ -38,10 +38,10 @@
         </mat-form-field>
       </div>
       </div>
+      <div id="noData" [ngClass]="{'hidden': hasData}">
+        <p> No data available</p>
+      </div>
     <div id="chart" [ngClass]="{'hidden': !hasData}">
       <canvas id="canvasChart"></canvas>
-    </div>
-    <div id="noData" [ngClass]="{'hidden': hasData}">
-      <p> No data available</p>
     </div>
   </div>

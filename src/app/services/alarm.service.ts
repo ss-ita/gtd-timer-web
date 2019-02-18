@@ -187,12 +187,12 @@ export class AlarmService {
       this.updateAlarm(cronModel).subscribe(date => {
         const editedAlarmModel = this.findAlarmById(date.id);
         editedAlarmModel.timestamp = date.timestamp;
-        if(date.isUpdated) {
+        if (date.isUpdated) {
         } else {
           const newAlarmModel = this.convertToAlarmModelFronCronModel(date);
-          if(!this.compareAlarmModels(newAlarmModel, editedAlarmModel)){
+          if (!this.compareAlarmModels(newAlarmModel, editedAlarmModel)) {
             this.openUpdateConfirmationWindow(newAlarmModel, editedAlarmModel);
-            }
+          }
         }
         this.findFirstTurnOnAlarm();
       });
@@ -350,15 +350,15 @@ export class AlarmService {
           } else {
             this.alarmsArray[index].isOn = false;
             const cronModel = this.convertToCronModelFromAlarmModel(this.alarmsArray[index]);
-            this.updateAlarm(cronModel).subscribe(date => {
-              const editedAlarmModel = this.findAlarmById(date.id);
-              editedAlarmModel.timestamp = date.timestamp;
-              if(date.isUpdated) {
+            this.updateAlarm(cronModel).subscribe(data => {
+              const editedAlarmModel = this.findAlarmById(data.id);
+              editedAlarmModel.timestamp = data.timestamp;
+              if (data.isUpdated) {
               } else {
-                const newAlarmModel = this.convertToAlarmModelFronCronModel(date);
-                if(!this.compareAlarmModels(newAlarmModel, editedAlarmModel)){
+                const newAlarmModel = this.convertToAlarmModelFronCronModel(data);
+                if (!this.compareAlarmModels(newAlarmModel, editedAlarmModel)) {
                   this.openUpdateConfirmationWindow(newAlarmModel, editedAlarmModel);
-                  }
+                }
               }
               this.findFirstTurnOnAlarm();
             });
@@ -382,12 +382,12 @@ export class AlarmService {
         this.updateAlarm(cronModel).subscribe(date => {
           const editedAlarmModel = this.findAlarmById(date.id);
           editedAlarmModel.timestamp = date.timestamp;
-          if(date.isUpdated) {
+          if (date.isUpdated) {
           } else {
             const newAlarmModel = this.convertToAlarmModelFronCronModel(date);
-            if(!this.compareAlarmModels(newAlarmModel, editedAlarmModel)){
+            if (!this.compareAlarmModels(newAlarmModel, editedAlarmModel)) {
               this.openUpdateConfirmationWindow(newAlarmModel, editedAlarmModel);
-              }
+            }
           }
           this.findFirstTurnOnAlarm();
         });
@@ -452,11 +452,11 @@ export class AlarmService {
         this.updateAlarm(cronModel).subscribe(date => {
           const editedAlarmModel = this.findAlarmById(date.id);
           editedAlarmModel.timestamp = date.timestamp;
-          if(date.isUpdated) {
+          if (date.isUpdated) {
           } else {
             const newAlarmModel = this.convertToAlarmModelFronCronModel(date);
-            if(!this.compareAlarmModels(newAlarmModel, editedAlarmModel)){
-            this.openUpdateConfirmationWindow(newAlarmModel, editedAlarmModel);
+            if (!this.compareAlarmModels(newAlarmModel, editedAlarmModel)) {
+              this.openUpdateConfirmationWindow(newAlarmModel, editedAlarmModel);
             }
           }
           this.findFirstTurnOnAlarm();
@@ -483,7 +483,8 @@ export class AlarmService {
   }
 
   compareAlarmModels(newModel: AlarmModel, editedModel: AlarmModel): boolean {
-    if (newModel.cronExpression == editedModel.cronExpression && newModel.soundOn == editedModel.soundOn && newModel.message == editedModel.message && newModel.isOn == editedModel.isOn) {
+    if (newModel.cronExpression == editedModel.cronExpression && newModel.soundOn == editedModel.soundOn
+                      && newModel.message == editedModel.message && newModel.isOn == editedModel.isOn) {
       return true;
     } else {
       return false;
@@ -492,29 +493,27 @@ export class AlarmService {
 
 
   openUpdateConfirmationWindow(newAlarmModel: AlarmModel, editedAlarmModel: AlarmModel) {
-    let updatingDialogRef =  this.dialog.open(AlarmDialogUpdatingComponent, {
-        panelClass: 'custom-dialog-container',
-        hasBackdrop: true,
-        closeOnNavigation: true,
-        disableClose: true 
-      });
-      updatingDialogRef.componentInstance.newAlarmModel = newAlarmModel;
-      updatingDialogRef.componentInstance.editedAlarmModel = editedAlarmModel;
+    const updatingDialogRef = this.dialog.open(AlarmDialogUpdatingComponent, {
+      panelClass: 'custom-dialog-container',
+      hasBackdrop: true,
+      closeOnNavigation: true,
+      disableClose: true
+    });
+    updatingDialogRef.componentInstance.newAlarmModel = newAlarmModel;
+    updatingDialogRef.componentInstance.editedAlarmModel = editedAlarmModel;
 
 
-      updatingDialogRef.afterClosed()
+    updatingDialogRef.afterClosed()
       .subscribe(response => {
-        if(response.data == 'newModel') {
-          //this.dismissAlarm(editedAlarmModel.id);
-          if(editedAlarmModel.isOn){
-          clearTimeout(editedAlarmModel.timeoutIndex)
+        if (response.data == 'newModel') {
+          if (editedAlarmModel.isOn) {
+            clearTimeout(editedAlarmModel.timeoutIndex);
           }
           this.chooseAlarmAction(newAlarmModel);
         } else {
           this.chooseAlarmAction(editedAlarmModel);
-        };
+        }
       });
-
   }
 
   copyAlarmModel(alarmModel: AlarmModel): AlarmModel {

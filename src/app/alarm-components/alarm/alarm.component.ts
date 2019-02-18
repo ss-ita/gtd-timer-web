@@ -91,21 +91,4 @@ export class AlarmComponent implements OnInit {
       this.alarmService.deleteAllAlarms();
     };
   }
-
-  updateDialog(){
-    let newAlarmModel = new AlarmModel();
-    newAlarmModel.isOn = true;
-    newAlarmModel.soundOn = true; 
-    newAlarmModel.message = "";
-    newAlarmModel.repeat="Daily";
-    newAlarmModel.date = new Date();
-
-    let editedAlarmModel = new AlarmModel();
-    editedAlarmModel.isOn = true;
-    editedAlarmModel.soundOn = true; 
-    editedAlarmModel.message = "";
-    editedAlarmModel.repeat="Once";
-    editedAlarmModel.date = new Date();
-    this.alarmService.openUpdateConfirmationWindow(newAlarmModel, editedAlarmModel);
-  }
 }

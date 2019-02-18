@@ -117,7 +117,7 @@ export class AlarmDialogComponent implements OnInit {
     alarm.timeoutIndex = -1;
     alarm.isUpdated = false;
     this.data !== null ? alarm.id = this.data.model.id : alarm.id = -10;
-    this.data !== null ? alarm.timestamp = this.data.model.timestamp : alarm.timestamp = "";
+    this.data !== null ? alarm.timestamp = this.data.model.timestamp : alarm.timestamp = '';
     return alarm;
   }
 
