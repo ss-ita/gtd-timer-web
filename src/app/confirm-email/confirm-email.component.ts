@@ -15,9 +15,16 @@ export class ConfirmEmailComponent implements OnInit {
     private userService: UserService) { }
 
   verifyEmail() {
-    const id = this.route.snapshot.paramMap.get('id');
+    const email = this.route.snapshot.paramMap.get('email');
     const token = this.route.snapshot.paramMap.get('token');
-    this.userService.verifyEmail(id, token);
+    if (!this.isLoggedIn()) {
+      this.userService.signInWithEmail(email);
+    }
+    this.userService.verifyEmail(email, token);
+  }
+
+  isLoggedIn() {
+    return localStorage.getItem('access_token') === null ? false : true;
   }
 
   ngOnInit() {

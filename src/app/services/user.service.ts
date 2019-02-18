@@ -145,8 +145,8 @@ export class UserService {
         });
   }
 
-  verifyEmail(id, token) {
-    this.confirmEmailService.verifyEmailToken(id, token).subscribe(_ => {
+  verifyEmail(email, token) {
+    this.confirmEmailService.verifyEmailToken(email, token).subscribe(_ => {
         this.router.navigateByUrl(this.redirectUrl);
         this.toasterService.showToaster('Your email address has been confirmed');
       },
@@ -155,4 +155,18 @@ export class UserService {
       });
   }
 
+  signInWithEmail(email) {
+    this.jwtservice.signInWithEmail(email)
+      .pipe(first())
+      .subscribe(
+        _ => {
+          this.navbarsubscribe();
+          this.router.navigateByUrl(this.redirectUrl);
+          this.roleService.getRoles();
+          this.alarmService.loadAlarmsFromDatabase();
+        },
+        response => {
+          this.toasterService.showToaster(response.error.Message);
+        });
+  }
 }
