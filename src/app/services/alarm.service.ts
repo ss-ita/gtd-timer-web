@@ -8,6 +8,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { AlarmDialogNotificationComponent } from '../alarm-components/alarm-dialog-notification/alarm-dialog-notification.component';
 import { RepeatAlarmModel } from '../models/repeat-alarm.model';
+import { AlarmDialogUpdatingComponent } from '../alarm-components/alarm-dialog-updating/alarm-dialog-updating.component';
 
 declare let require: any;
 
@@ -60,11 +61,11 @@ export class AlarmService {
   }
 
   createAlarm(alarmModel: AlarmCronModel) {
-    return this.httpClient.post<number>(this.configService.urlAlarm + 'CreateAlarm', alarmModel);
+    return this.httpClient.post<AlarmCronModel>(this.configService.urlAlarm + 'CreateAlarm', alarmModel);
   }
 
   updateAlarm(alarmModel: AlarmCronModel) {
-    return this.httpClient.put(this.configService.urlAlarm + 'UpdateAlarm', alarmModel);
+    return this.httpClient.put<AlarmCronModel>(this.configService.urlAlarm + 'UpdateAlarm', alarmModel);
   }
 
   removeAlarm(id: number) {
@@ -184,6 +185,16 @@ export class AlarmService {
     if (alarm.isOn == false && this.isAuthorized) {
       const cronModel = this.convertToCronModelFromAlarmModel(alarm);
       this.updateAlarm(cronModel).subscribe(date => {
+        const editedAlarmModel = this.findAlarmById(date.id);
+        editedAlarmModel.timestamp = date.timestamp;
+        if (date.isUpdated) {
+        } else {
+          const newAlarmModel = this.convertToAlarmModelFronCronModel(date);
+          if (!this.compareAlarmModels(newAlarmModel, editedAlarmModel)) {
+            this.openUpdateConfirmationWindow(newAlarmModel, editedAlarmModel);
+          }
+        }
+        this.findFirstTurnOnAlarm();
       });
     }
 
@@ -211,6 +222,8 @@ export class AlarmService {
         this.alarmsArray.push(alarmModel);
       });
       this.startLoadedAlarms();
+      this.alarmsArray.forEach(value => {
+      });
     });
   }
 
@@ -337,7 +350,18 @@ export class AlarmService {
           } else {
             this.alarmsArray[index].isOn = false;
             const cronModel = this.convertToCronModelFromAlarmModel(this.alarmsArray[index]);
-            this.updateAlarm(cronModel).subscribe();
+            this.updateAlarm(cronModel).subscribe(data => {
+              const editedAlarmModel = this.findAlarmById(data.id);
+              editedAlarmModel.timestamp = data.timestamp;
+              if (data.isUpdated) {
+              } else {
+                const newAlarmModel = this.convertToAlarmModelFronCronModel(data);
+                if (!this.compareAlarmModels(newAlarmModel, editedAlarmModel)) {
+                  this.openUpdateConfirmationWindow(newAlarmModel, editedAlarmModel);
+                }
+              }
+              this.findFirstTurnOnAlarm();
+            });
             this.findFirstTurnOnAlarm();
           }
         }
@@ -355,7 +379,18 @@ export class AlarmService {
       cronModel.cronExpression = this.refreshCronExpression(cronModel.cronExpression);
       model.cronExpression = cronModel.cronExpression;
       if (this.isAuthorized) {
-        this.updateAlarm(cronModel).subscribe();
+        this.updateAlarm(cronModel).subscribe(date => {
+          const editedAlarmModel = this.findAlarmById(date.id);
+          editedAlarmModel.timestamp = date.timestamp;
+          if (date.isUpdated) {
+          } else {
+            const newAlarmModel = this.convertToAlarmModelFronCronModel(date);
+            if (!this.compareAlarmModels(newAlarmModel, editedAlarmModel)) {
+              this.openUpdateConfirmationWindow(newAlarmModel, editedAlarmModel);
+            }
+          }
+          this.findFirstTurnOnAlarm();
+        });
       }
       this.startAlarm(id);
     } else {
@@ -409,11 +444,23 @@ export class AlarmService {
         this.alarmsArray.push(alarm);
         this.createAlarm(cronModel).subscribe(date => {
           const alarmModel = this.findAlarmById(-10);
-          alarmModel.id = date;
+          alarmModel.id = date.id;
+          alarmModel.timestamp = date.timestamp;
           this.findFirstTurnOnAlarm();
         });
       } else {
-        this.updateAlarm(cronModel).subscribe();
+        this.updateAlarm(cronModel).subscribe(date => {
+          const editedAlarmModel = this.findAlarmById(date.id);
+          editedAlarmModel.timestamp = date.timestamp;
+          if (date.isUpdated) {
+          } else {
+            const newAlarmModel = this.convertToAlarmModelFronCronModel(date);
+            if (!this.compareAlarmModels(newAlarmModel, editedAlarmModel)) {
+              this.openUpdateConfirmationWindow(newAlarmModel, editedAlarmModel);
+            }
+          }
+          this.findFirstTurnOnAlarm();
+        });
         const index = this.alarmsArray.findIndex(value => {
           return value.id == alarm.id;
         });
@@ -435,6 +482,40 @@ export class AlarmService {
     this.startAlarm(alarm.id);
   }
 
+  compareAlarmModels(newModel: AlarmModel, editedModel: AlarmModel): boolean {
+    if (newModel.cronExpression == editedModel.cronExpression && newModel.soundOn == editedModel.soundOn
+                      && newModel.message == editedModel.message && newModel.isOn == editedModel.isOn) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+
+  openUpdateConfirmationWindow(newAlarmModel: AlarmModel, editedAlarmModel: AlarmModel) {
+    const updatingDialogRef = this.dialog.open(AlarmDialogUpdatingComponent, {
+      panelClass: 'custom-dialog-container',
+      hasBackdrop: true,
+      closeOnNavigation: true,
+      disableClose: true
+    });
+    updatingDialogRef.componentInstance.newAlarmModel = newAlarmModel;
+    updatingDialogRef.componentInstance.editedAlarmModel = editedAlarmModel;
+
+
+    updatingDialogRef.afterClosed()
+      .subscribe(response => {
+        if (response.data == 'newModel') {
+          if (editedAlarmModel.isOn) {
+            clearTimeout(editedAlarmModel.timeoutIndex);
+          }
+          this.chooseAlarmAction(newAlarmModel);
+        } else {
+          this.chooseAlarmAction(editedAlarmModel);
+        }
+      });
+  }
+
   copyAlarmModel(alarmModel: AlarmModel): AlarmModel {
     const alarm = new AlarmModel();
     const nextDate = this.getNextDate(alarmModel.cronExpression);
@@ -446,6 +527,8 @@ export class AlarmService {
     alarm.timeoutIndex = alarmModel.timeoutIndex;
     alarm.id = alarmModel.id;
     alarm.date = nextDate;
+    alarm.timestamp = alarmModel.timestamp;
+    alarm.isUpdated = alarmModel.isUpdated;
     alarm.cronExpression = alarmModel.cronExpression;
     return alarm;
   }
@@ -462,6 +545,8 @@ export class AlarmService {
     alarm.id = cronModel.id;
     alarm.date = new Date(nextDate.getTime());
     alarm.cronExpression = cronModel.cronExpression;
+    alarm.timestamp = cronModel.timestamp;
+    alarm.isUpdated = cronModel.isUpdated;
     return alarm;
   }
 
@@ -476,6 +561,8 @@ export class AlarmService {
     alarm.soundOn = alarmModel.soundOn;
     alarm.isOn = alarmModel.isOn;
     alarm.message = alarmModel.message;
+    alarm.timestamp = alarmModel.timestamp;
+    alarm.isUpdated = alarm.isUpdated;
     return alarm;
   }
 
