@@ -60,6 +60,7 @@ import { TimerDialogComponent } from './timer-dialog/timer-dialog.component';
 import { ConfirmEmailComponent } from './confirm-email/confirm-email.component';
 import { PagerService } from './services/pager.service';
 import { UtcPipePipe } from './pipes/utc-pipe.pipe';
+import { AlarmDialogUpdatingComponent } from './alarm-components/alarm-dialog-updating/alarm-dialog-updating.component';
 
 export function jwtTokenGetter() {
   return localStorage.getItem('access_token');
@@ -100,7 +101,8 @@ export function jwtTokenGetter() {
     TimeFilterPipe,
     StopwatchDialogComponent,
     ConfirmEmailComponent,
-    UtcPipePipe
+    UtcPipePipe,
+    AlarmDialogUpdatingComponent
   ],
   imports: [
     BrowserModule,
@@ -164,7 +166,8 @@ export function jwtTokenGetter() {
     AlarmDialogNotificationComponent,
     RepeatAlarmDialogComponent,
     StopwatchDialogComponent,
-    TimerDialogComponent
+    TimerDialogComponent,
+    AlarmDialogUpdatingComponent
   ]
 })
 export class AppModule { }

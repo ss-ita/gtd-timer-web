@@ -59,9 +59,27 @@ export class AlarmDialogComponent implements OnInit {
     const alarm = this.convertToAlarmModel();
     const timeOptions = this.convertTimeToDate();
     alarm.cronExpression = this.alarmService.convertToCronExpression(timeOptions, this.repeat);
-    this.alarmService.chooseAlarmAction(alarm);
+    /*if(this.data === null){
+      console.log("created");
+      this.alarmService.chooseAlarmAction(alarm);
     this.alarmService.resetData();
     this.alarmFormDialogRef.close();
+    } else {
+    this.alarmService.updateAlarm(alarm).subscribe(data =>{
+      alarm.timestamp = data.timestamp;
+      if(data.isUpdated) {
+        console.log("updated");
+        this.alarmService.chooseAlarmAction(alarm);
+    this.alarmService.resetData();
+    this.alarmFormDialogRef.close();
+      } else {
+        console.log("Don`t updated");
+      }
+    });
+    }*/
+  this.alarmService.chooseAlarmAction(alarm);
+  this.alarmService.resetData();
+  this.alarmFormDialogRef.close();
   }
 
   checkRepeatOption() {
@@ -97,7 +115,9 @@ export class AlarmDialogComponent implements OnInit {
     alarm.repeat = this.repeat;
     alarm.message = this.message;
     alarm.timeoutIndex = -1;
+    alarm.isUpdated = false;
     this.data !== null ? alarm.id = this.data.model.id : alarm.id = -10;
+    this.data !== null ? alarm.timestamp = this.data.model.timestamp : alarm.timestamp = "";
     return alarm;
   }
 
