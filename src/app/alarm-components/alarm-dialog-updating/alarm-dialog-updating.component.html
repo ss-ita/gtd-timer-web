@@ -1,0 +1,79 @@
+<h1 mat-dialog-title>Warning</h1>
+<mat-dialog-content>
+  <div>Seems like this alarm data has been updated another user.</div>
+  <div>
+    <div class="clickElement" *ngIf="!isViewable" (click)="toggle()">Show details</div>
+    <div class="clickElement" *ngIf="isViewable" (click)="toggle()">Hide details</div>
+  </div>
+  <div *ngIf="isViewable">
+    <div class="list">
+      <div class="element">Alarm option</div>
+      <div class="element">Edited value</div>
+      <div class="element">Previous value</div>
+    </div>
+    <div class="list"
+      [ngClass]="{difference: editedAlarmModel.date.getHours() != newAlarmModel.date.getHours() || editedAlarmModel.date.getMinutes() != newAlarmModel.date.getMinutes()}">
+      <div class="element">Time</div>
+      <div class="element">
+        <ng-template [ngIf]="editedAlarmModel.date.getHours() < 10">
+          <span>0</span>
+        </ng-template>
+        <span>{{editedAlarmModel.date.getHours()}}</span>
+        <span>:</span>
+        <ng-template [ngIf]="editedAlarmModel.date.getMinutes() < 10">
+          <span>0</span>
+        </ng-template>
+        <span>{{editedAlarmModel.date.getMinutes()}}<br></span>
+      </div>
+      <div class="element">
+        <ng-template [ngIf]="newAlarmModel.date.getHours() < 10">
+          <span>0</span>
+        </ng-template>
+        <span>{{newAlarmModel.date.getHours()}}</span>
+        <span>:</span>
+        <ng-template [ngIf]="newAlarmModel.date.getMinutes() < 10">
+          <span>0</span>
+        </ng-template>
+        <span>{{newAlarmModel.date.getMinutes()}}<br></span>
+      </div>
+    </div>
+    <div class="list" [ngClass]="{difference: editedAlarmModel.repeat != newAlarmModel.repeat}">
+      <div class="element">Repeat</div>
+      <div class="element">{{editedAlarmModel.repeat}}</div>
+      <div class="element">{{newAlarmModel.repeat}}</div>
+    </div>
+    <div class="list" [ngClass]="{difference: editedAlarmModel.isOn != newAlarmModel.isOn}">
+      <div class="element">Turn on</div>
+      <div class="element">
+        <ng-template [ngIf]="editedAlarmModel.isOn">Yes</ng-template>
+        <ng-template [ngIf]="!editedAlarmModel.isOn">No</ng-template>
+      </div>
+      <div class="element">
+        <ng-template [ngIf]="newAlarmModel.isOn">Yes</ng-template>
+        <ng-template [ngIf]="!newAlarmModel.isOn">No</ng-template>
+      </div>
+    </div>
+    <div class="list" [ngClass]="{difference: editedAlarmModel.soundOn != newAlarmModel.soundOn}">
+      <div class="element">Sound on</div>
+      <div class="element">
+        <ng-template [ngIf]="editedAlarmModel.soundOn">Yes</ng-template>
+        <ng-template [ngIf]="!editedAlarmModel.soundOn">No</ng-template>
+      </div>
+      <div class="element">
+        <ng-template [ngIf]="newAlarmModel.soundOn">Yes</ng-template>
+        <ng-template [ngIf]="!newAlarmModel.soundOn">No</ng-template>
+      </div>
+    </div>
+    <div class="list" [ngClass]="{difference: editedAlarmModel.message != newAlarmModel.message}">
+      <div class="element">Message</div>
+      <div class="element">{{editedAlarmModel.message}}</div>
+      <div class="element">{{newAlarmModel.message}}</div>
+    </div>
+  </div>
+  <div class="comfirmation">Are you sure you still want to save it? Press OK to save your changes, or Cancel to stay
+    previous data.</div>
+  <div class="buttonArea">
+    <button mat-raised-button color="primary" class="saveButton" (click)="onSave()">OK</button>
+    <button mat-raised-button color="warn" (click)="onClose()">Cancel</button>
+  </div>
+</mat-dialog-content>

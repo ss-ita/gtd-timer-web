@@ -3,5 +3,7 @@ export class AlarmCronModel {
     cronExpression: string;
     isOn: boolean;
     soundOn: boolean;
+    timestamp: string;
+    isUpdated: boolean;
     message: string;
 }

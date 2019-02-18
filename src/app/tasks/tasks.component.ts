@@ -43,6 +43,7 @@ export class TasksComponent implements OnInit {
   stopwatchPager: any = {};
   timerPager: any = {};
   pageSizeList: number = 10;
+  stopwatchSubscriptions: Subscription[] = [];
   public pageSizes: any = [
     { "id": 5, "value": 5 },
     { "id": 10, "value": 10 },
@@ -64,12 +65,12 @@ export class TasksComponent implements OnInit {
 
   setStopwatchesPage(page: number) {
     this.stopwatchPager = this.pagerService.getPager(this.taskService.stopwatches.length, page, this.pageSizeList);
-    this.pagedStopwatches = this.taskService.stopwatches.slice(this.stopwatchPager.startIndex, this.stopwatchPager.endIndex + 1);
+    this.taskService.getStopwatchesForPage(this.stopwatchPager).subscribe(data => { this.pagedStopwatches = data; this.runAfterGet();});
   }
 
   setTimersPage(page: number) {
     this.timerPager = this.pagerService.getPager(this.taskService.timers.length, page, this.pageSizeList);
-    this.pagedTimers = this.taskService.timers.slice(this.timerPager.startIndex, this.timerPager.endIndex + 1);
+    this.taskService.getTimersForPage(this.timerPager).subscribe(data => { this.pagedTimers = data; });
   }
 
   refreshStopwatchesPage() {
@@ -127,8 +128,8 @@ export class TasksComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getStopwatches();
-    this.getTimers();
+    this.taskService.initStopwatches().subscribe(() => { this.setStopwatchesPage(1) });
+    this.taskService.initTimers().subscribe(() => { this.setTimersPage(1) });
     this.taskService.startConnection();
     this.taskService.addCreateTaskListener();
     this.taskService.addStartTaskListener();
@@ -210,7 +211,7 @@ export class TasksComponent implements OnInit {
     task.hour = 0;
     task.minutes = 0;
     task.seconds = 0;
-    this.taskService.stopwatches.unshift(task);
+    this.taskService.stopwatches.unshift(this.taskService.stopwatchToTaskCreateJson(task));
     this.setStopwatchesPage(1);
   }
 
@@ -245,7 +246,7 @@ export class TasksComponent implements OnInit {
     task.minutes = 0;
     task.seconds = 0;
     task.goals = 0;
-    this.taskService.timers.unshift(task);
+    this.taskService.timers.unshift(this.taskService.timerToTaskCreateJson(task));
     this.setTimersPage(1);
   }
 
@@ -322,9 +323,11 @@ export class TasksComponent implements OnInit {
   }
 
   runAfterGet() {
-    for (let i = 0; i < this.taskService.stopwatches.length; ++i) {
-      if (this.taskService.stopwatches[i].isRunning && this.taskService.stopwatches[i].elapsedTime == 0) {
-        this.start1(this.taskService.stopwatches[i]);
+    this.stopwatchSubscriptions.forEach(s => s.unsubscribe());
+    this.stopwatchSubscriptions = [];
+    for (let i = 0; i < this.pagedStopwatches.length; ++i) {
+      if (this.pagedStopwatches[i] && this.pagedStopwatches[i].isRunning) {
+        this.start1(this.pagedStopwatches[i]);
       }
     }
   }
@@ -337,12 +340,12 @@ export class TasksComponent implements OnInit {
       const elapsedTimeMoq = ((timeNow.getHours() - timeStart.getHours()) * 3600000 + (timeNow.getMinutes() - timeStart.getMinutes()) *
         60000 + (timeNow.getSeconds() - timeStart.getSeconds()) * 1000 + (timeNow.getMilliseconds() - timeStart.getMilliseconds()));
       this.ticks = elapsedTimeMoq;
-      task.currentSecond = elapsedTimeMoq / 1000;
-      this.subscribe = timer(0, this.milisecondPerSecond).subscribe((x) => {
+      task.currentSecond = (elapsedTimeMoq  + task.elapsedTime) / 1000;
+      this.stopwatchSubscriptions.push(timer(0, this.milisecondPerSecond).subscribe((x) => {
         if (task.isRunning) {
           this.updateTime(task);
         }
-      });
+      }));
     }
     return this.ticks;
   }
@@ -442,9 +445,11 @@ export class TasksComponent implements OnInit {
         60000 + (timeNow.getSeconds() - timeStart.getSeconds()) * 1000 + (timeNow.getMilliseconds() - timeStart.getMilliseconds())),
       watchType: task.watchType,
       action: 'Pause',
-      taskId: task.id
+      taskId: task.id,
+      userId: 0
     };
     this.historyService.createRecord(recordToCreate).subscribe();
+    this.runAfterGet();
   }
 
   pauseTimer(task: TaskCreateJson) {
@@ -464,7 +469,8 @@ export class TasksComponent implements OnInit {
         60000 + (timeNow.getSeconds() - timeStart.getSeconds()) * 1000 + (timeNow.getMilliseconds() - timeStart.getMilliseconds())),
       watchType: task.watchType,
       action: 'Pause',
-      taskId: task.id
+      taskId: task.id,
+      userId: 0
     };
     this.historyService.createRecord(recordToCreate).subscribe();
   }
@@ -477,6 +483,7 @@ export class TasksComponent implements OnInit {
     task.hour = Math.floor((task.elapsedTime / this.milisecondPerSecond) / this.secondPerHour);
     task.minutes = Math.floor(((task.elapsedTime / this.milisecondPerSecond) % this.secondPerHour) / this.secondPerMinute);
     task.seconds = Math.floor(((task.elapsedTime / this.milisecondPerSecond) % this.secondPerHour) % this.secondPerMinute);
+    this.runAfterGet();
   }
 
   resetTimer(task: TaskCreateJson) {
@@ -496,7 +503,8 @@ export class TasksComponent implements OnInit {
         60000 + (timeNow.getSeconds() - timeStart.getSeconds()) * 1000 + (timeNow.getMilliseconds() - timeStart.getMilliseconds())),
       watchType: task.watchType,
       action: 'Reset',
-      taskId: task.id
+      taskId: task.id,
+      userId:0
     };
     this.historyService.createRecord(recordToCreate).subscribe();
 
@@ -520,7 +528,8 @@ export class TasksComponent implements OnInit {
         60000 + (timeNow.getSeconds() - timeStart.getSeconds()) * 1000 + (timeNow.getMilliseconds() - timeStart.getMilliseconds())),
       watchType: task.watchType,
       action: 'Reset',
-      taskId: task.id
+      taskId: task.id,
+      userId:0
     };
     this.historyService.createRecord(recordToCreate).subscribe();
   }
@@ -576,14 +585,15 @@ export class TasksComponent implements OnInit {
 
   start(task: TaskCreateJson) {
     task.isRunning = true;
+    task.isStoped = false;
     if (!task.isStoped) {
       this.ticks = task.elapsedTime;
       task.currentSecond = task.elapsedTime / 1000;
-      this.subscribe = timer(0, this.milisecondPerSecond).subscribe((x) => {
+      this.stopwatchSubscriptions.push(timer(0, this.milisecondPerSecond).subscribe((x) => {
         if (task.isRunning) {
           this.updateTime(task);
         }
-      });
+      }));
     }
     return this.ticks;
   }
