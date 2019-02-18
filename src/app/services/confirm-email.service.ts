@@ -14,4 +14,8 @@ export class ConfirmEmailService {
   verifyEmailToken(id, emailToken): Observable<any> {
     return this.httpClient.get<any>(this.configService.urlUser + '/Verify/' + id.toString() + '/' + emailToken);
   }
+
+  resendVerificationEmail(email): Observable<any> {
+    return this.httpClient.get<any>(this.configService.urlUser + '/ResendVerificationEmail' + '/' + email);
+  }
 }
