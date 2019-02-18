@@ -20,6 +20,14 @@ export class JwtService {
       }));
   }
 
+  signInWithEmail(email: string) {
+    localStorage.setItem('email', email);
+    return this.httpClient.get<{ access_token: string }>(this.config.urlLogIn + '/' + email)
+      .pipe(map(value => {
+        localStorage.setItem('access_token', value.access_token);
+    }));
+  }
+
   signout() {
     localStorage.removeItem('access_token');
     localStorage.removeItem('email');

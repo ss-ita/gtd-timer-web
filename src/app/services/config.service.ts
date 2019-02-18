@@ -28,6 +28,8 @@ export class ConfigService {
   public readonly urlExportAllStopwatchesRecordsAsXml: string = this.baseUrl + '/api/Tasks/ExportAllStopwatchesRecordsAsXmlByUserId';
   public readonly urlExportAllTimersRecordsAsCsv: string = this.baseUrl + '/api/Tasks/ExportAllTimersRecordsAsCsvByUserId';
   public readonly urlExportAllTimersRecordsAsXml: string = this.baseUrl + '/api/Tasks/ExportAllTimersRecordsAsXmlByUserId';
+  public readonly urlGetStopwatchesCount: string = this.baseUrl + '/api/Tasks/GetAllStopwatchesByUserIdCount';
+  public readonly urlGetTimersCount: string = this.baseUrl + '/api/Tasks/GetAllTimersByUserIdCount';
   public readonly urlImportTasksAsCsv: string = this.baseUrl + '/api/Tasks/ImportTasksAsCsv';
   public readonly urlImportTasksAsXml: string = this.baseUrl + '/api/Tasks/ImportTasksAsXml';
   public readonly urlSoundAlarm: string = 'https://www.freespecialeffects.co.uk/soundfx/animals/cuckoo.wav';
