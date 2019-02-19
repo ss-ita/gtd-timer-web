@@ -349,6 +349,7 @@ text-align: center;
         box-shadow:  0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
         min-width: 50px;
         width: 100%;
+        padding-left: 10px;
     }
     .notMobile{
     display: none;
@@ -412,10 +413,22 @@ text-align: center;
     .topButtons .active{
         background-color: #dededa !important;
     }
+    .flex-container {
+        display: block;
+    }
    .paginationSelect{
-       display: none;
+       width: 100%;
+       text-align: center;
+       margin-top: 20px;
+    }
+    .mat-form-field{
+        width: 50%;
     }
     .pagination{
         text-align: center;
+    }
+    .mat-button{
+        min-width: 40px;
+        padding: 0%;
     }
 }

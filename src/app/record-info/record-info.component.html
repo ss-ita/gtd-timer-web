@@ -1,12 +1,12 @@
 <div class="top">
-<div class="topTitle">
-<h1 mat-dialog-title>{{record.name}}</h1>
-</div>
-<div class="exitButton">
-  <button mat-raised-button (click)="closeDialog()">
-    <i class="fas fa-times"></i>
-  </button>
-</div>
+  <div class="topTitle">
+    <h1 mat-dialog-title>{{record.name}}</h1>
+  </div>
+  <div class="exitButton">
+    <button mat-raised-button (click)="closeDialog()">
+      <i class="fas fa-times"></i>
+    </button>
+  </div>
 </div>
 <div mat-dialog-content class="dialog-content">
   <div class="dialog-content-div">
@@ -42,7 +42,7 @@
       <p>Elapsed time</p>
     </div>
     <div *ngIf=(record.elapsedTime) class="content">
-     <p>{{record.elapsedTime | timeFilter}}</p>
+      <p>{{record.elapsedTime | timeFilter}}</p>
     </div>
     <div *ngIf=(!record.elapsedTime) class="content">
     </div>
