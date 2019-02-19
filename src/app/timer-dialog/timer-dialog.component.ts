@@ -48,6 +48,7 @@ export class TimerDialogComponent implements OnInit {
       seconds: this.timerService.second,
       currentSecond: this.timerService.ticks,
       isCollapsed: true,
+      isShowed: true,
       isStoped: true,
       watchType: 1,
       maxValueHour: this.timerService.maxValueHour,
