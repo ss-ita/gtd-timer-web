@@ -18,6 +18,7 @@ import { ConfirmEmailService } from './confirm-email.service';
 export class UserService {
 
   redirectUrl = '/';
+  confirmEmailErrorMessage = 'Token has expired , resend verification email?';
 
   constructor(private http: HttpClient,
     private config: ConfigService,
@@ -105,7 +106,6 @@ export class UserService {
   }
 
   deleteAccount() {
-
     return this.http.delete(this.config.urlUser);
   }
 
@@ -151,8 +151,25 @@ export class UserService {
         this.toasterService.showToaster('Your email address has been confirmed');
       },
       response => {
-        this.toasterService.showToaster(response.error.Message);
-      });
+        if (response.error.Message === this.confirmEmailErrorMessage) {
+          let result = confirm('Token has expired! Resend verification email?');
+          if (result) {
+            this.resendVerificationEmail(email);
+          }
+        } else {
+          this.toasterService.showToaster(response.error.Message);
+        }
+    });
+  }
+
+  resendVerificationEmail(email) { 
+    this.confirmEmailService.resendVerificationEmail(email).subscribe(_ => {
+      this.router.navigateByUrl(this.redirectUrl);
+      this.toasterService.showToaster('We have sent you a verification email');
+    },
+    response => {
+      this.toasterService.showToaster(response.error.Message);
+    });
   }
 
   signInWithEmail(email) {
