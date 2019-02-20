@@ -61,6 +61,10 @@ import { ConfirmEmailComponent } from './confirm-email/confirm-email.component';
 import { PagerService } from './services/pager.service';
 import { UtcPipePipe } from './pipes/utc-pipe.pipe';
 import { AlarmDialogUpdatingComponent } from './alarm-components/alarm-dialog-updating/alarm-dialog-updating.component';
+import { PasswordResetDialogComponent } from './password-reset-dialog/password-reset-dialog.component';
+import { PasswordResetComponent } from './password-reset/password-reset.component';
+import { PasswordRecoveryDialogComponent } from './password-recovery-dialog/password-recovery-dialog.component';
+import { PasswordRecoveryComponent } from './password-recovery/password-recovery.component';
 
 export function jwtTokenGetter() {
   return localStorage.getItem('access_token');
@@ -102,7 +106,11 @@ export function jwtTokenGetter() {
     StopwatchDialogComponent,
     ConfirmEmailComponent,
     UtcPipePipe,
-    AlarmDialogUpdatingComponent
+    AlarmDialogUpdatingComponent,
+    PasswordResetDialogComponent,
+    PasswordResetComponent,
+    PasswordRecoveryDialogComponent,
+    PasswordRecoveryComponent
   ],
   imports: [
     BrowserModule,
@@ -167,7 +175,9 @@ export function jwtTokenGetter() {
     RepeatAlarmDialogComponent,
     StopwatchDialogComponent,
     TimerDialogComponent,
-    AlarmDialogUpdatingComponent
+    AlarmDialogUpdatingComponent,
+    PasswordResetComponent,
+    PasswordRecoveryComponent
   ]
 })
 export class AppModule { }

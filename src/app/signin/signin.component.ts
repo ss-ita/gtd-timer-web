@@ -9,12 +9,13 @@ import { SocialAuthService } from '../services/social-auth.service';
 import { ConfigService } from '../services/config.service';
 import { NavbarService } from '../services/navbar.service';
 import { RoleService } from '../services/role.service';
+import { PasswordResetDialogComponent } from '../password-reset-dialog/password-reset-dialog.component';
 
 @Component({
     selector: 'app-signin',
     templateUrl: './signin.component.html',
     styleUrls: ['./signin.component.css'],
-    providers: [SignupDialogComponent]
+    providers: [SignupDialogComponent, PasswordResetDialogComponent]
 })
 
 export class SigninComponent implements OnInit {
@@ -37,11 +38,16 @@ export class SigninComponent implements OnInit {
         private userService: UserService,
         private socialAuth: SocialAuthService,
         private config: ConfigService,
-        private roleService: RoleService
+        private roleService: RoleService,
+        private passwordResetService: PasswordResetDialogComponent
     ) { }
 
     openSignUpDialog() {
         this.service.openSignUpForm();
+    }
+
+    openResetPasswordDialog() {
+        this.passwordResetService.openPasswordResetForm();
     }
 
     ngOnInit() {

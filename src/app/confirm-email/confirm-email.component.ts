@@ -10,9 +10,9 @@ import { Component, OnInit } from '@angular/core';
 export class ConfirmEmailComponent implements OnInit {
 
   constructor(
+    private userService: UserService,
     private route: ActivatedRoute,
-    private router: Router,
-    private userService: UserService) { }
+    private router: Router) { }
 
   verifyEmail() {
     const email = this.route.snapshot.paramMap.get('email');
