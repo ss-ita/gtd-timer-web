@@ -41,15 +41,15 @@
             <mat-error>{{getErrorMessageTimerName(item)}}</mat-error>
           </mat-form-field>
           <mat-form-field class="timer-element-width">
-            <input matInput type="number" min="0" max="23" formControlName="hours" placeholder="Hours">
+            <input matInput (keypress)="numberOnly($event)" min="0" max="23" formControlName="hours" placeholder="Hours">
             <mat-error>{{getErrorMessageHours()}}</mat-error>
           </mat-form-field>
           <mat-form-field class="timer-element-width">
-            <input matInput type="number" min="0" max="59" formControlName="minutes" placeholder="Minutes">
+            <input matInput (keypress)="numberOnly($event)" min="0" max="59" formControlName="minutes" placeholder="Minutes">
             <mat-error>{{getErrorMessageMinutesAndSeconds()}}</mat-error>
           </mat-form-field>
           <mat-form-field class="timer-element-width">
-            <input matInput type="number" min="0" max="59" formControlName="seconds" placeholder="Seconds">
+            <input matInput (keypress)="numberOnly($event)" min="0" max="59" formControlName="seconds" placeholder="Seconds">
             <mat-error>{{getErrorMessageMinutesAndSeconds()}}</mat-error>
           </mat-form-field>          
           <button mat-icon-button class="small-screen-icon" [disabled]="!isValid" type="button" (click)="onDeleteTimer(timerIndex)">

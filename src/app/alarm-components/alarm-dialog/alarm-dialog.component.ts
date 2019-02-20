@@ -22,6 +22,7 @@ export class AlarmDialogComponent implements OnInit {
   message = '';
   cronExpression = '';
   repeat = this.alarmService.repeatOptions[0];
+  textareaLength = 75;
 
   constructor(
     private alarmFormDialogRef: MatDialogRef<AlarmDialogComponent>,
@@ -30,6 +31,7 @@ export class AlarmDialogComponent implements OnInit {
     private dialog: MatDialog,
     @Inject(MAT_DIALOG_DATA)
     public data: any) { }
+    
 
   ngOnInit() {
     if (this.data !== null) {
@@ -59,27 +61,17 @@ export class AlarmDialogComponent implements OnInit {
     const alarm = this.convertToAlarmModel();
     const timeOptions = this.convertTimeToDate();
     alarm.cronExpression = this.alarmService.convertToCronExpression(timeOptions, this.repeat);
-    /*if(this.data === null){
-      console.log("created");
-      this.alarmService.chooseAlarmAction(alarm);
+    this.alarmService.chooseAlarmAction(alarm);
     this.alarmService.resetData();
     this.alarmFormDialogRef.close();
-    } else {
-    this.alarmService.updateAlarm(alarm).subscribe(data =>{
-      alarm.timestamp = data.timestamp;
-      if(data.isUpdated) {
-        console.log("updated");
-        this.alarmService.chooseAlarmAction(alarm);
-    this.alarmService.resetData();
-    this.alarmFormDialogRef.close();
-      } else {
-        console.log("Don`t updated");
-      }
-    });
-    }*/
-  this.alarmService.chooseAlarmAction(alarm);
-  this.alarmService.resetData();
-  this.alarmFormDialogRef.close();
+  }
+
+  numberOnly(event): boolean {
+    const charCode = (event.which) ? event.which : event.keyCode;
+    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+      return false;
+    }
+    return true;
   }
 
   checkRepeatOption() {

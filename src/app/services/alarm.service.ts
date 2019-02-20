@@ -76,6 +76,71 @@ export class AlarmService {
     return this.httpClient.get<AlarmCronModel[]>(this.configService.urlAlarm + 'GetAllAlarmsByUserId');
   }
 
+  getNextDate(expression: string): Date {
+    const parser = require('cron-parser');
+    const cronElementsArray = expression.split(' ');
+    const options = {
+      iterator: true
+    };
+
+    if (!cronElementsArray.includes('*')) {
+      let startDate;
+      let finishDate;
+      if (cronElementsArray[1] == '0' && cronElementsArray[2] == '0') {
+        startDate = new Date(Number(cronElementsArray[6]), (Number(cronElementsArray[4]) - 1), Number(cronElementsArray[3]), 15);
+        startDate.setDate(startDate.getDate() - 1);
+        finishDate = new Date(startDate.getTime());
+        finishDate.setDate(startDate.getDate() + 1);
+      } else {
+        startDate = new Date(Number(cronElementsArray[6]), (Number(cronElementsArray[4]) - 1), Number(cronElementsArray[3]));
+        finishDate = new Date(startDate.getTime());
+        finishDate.setDate(startDate.getDate() + 1);
+      }
+      options['currentDate'] = startDate;
+      options['endDate'] = finishDate;
+    }
+
+    const interval = parser.parseExpression(expression, options);
+    const date = interval.next();
+    const nextDate = new Date(date.value.toString());
+    return nextDate;
+  }
+
+  convertToCronExpression(date: Date, repeat: string): string {
+    const seconds = 0;
+    const minutes = date.getMinutes();
+    const hours = date.getHours();
+    let dayOfMonth = '*';
+    let month = '*';
+    let dayOfWeek = '?';
+    let year = '*';
+    const daysArray = repeat.split(' ');
+
+    if (repeat === this.repeatOptions[0]) {
+      dayOfMonth = (date.getDate()).toString();
+      month = (date.getMonth() + 1).toString();
+      year = date.getFullYear().toString();
+    } else if ((repeat === this.repeatOptions[1]) || (daysArray.length == 7)) {
+
+    } else if (repeat == this.repeatOptions[2]) {
+      let chosenDays = '';
+      this.repeatOptionsDay.forEach((value, index) => {
+        if (index < 5) {
+          chosenDays += this.repeatOptionsDay[index].value;
+          chosenDays += ',';
+        }
+      });
+      chosenDays = chosenDays.replace(/,\s*$/, '');
+      dayOfWeek = chosenDays;
+    } else {
+      dayOfWeek = daysArray.join(',');
+    }
+
+    const cronExpression: string = seconds + ' ' + minutes + ' ' + hours + ' ' + dayOfMonth + ' ' + month + ' ' + dayOfWeek + ' ' + year;
+
+    return cronExpression;
+  }
+
   getAlarmsFromDatabase() {
     if (this.isAuthorized && this.alarmsArray.length === 0) {
       if (!this.alreadyExecuted) {
@@ -93,13 +158,11 @@ export class AlarmService {
     const deadlineTime = new Date();
     deadlineTime.setDate(deadlineTime.getDate() + 21);
     const differenceInMs = (new Date(ms)).getTime() - (currentTime.getTime());
-
-    if (differenceInMs < (deadlineTime.getTime() - currentTime.getTime())) {
-      alarm.timeoutIndex = setTimeout(this.playAlarm.bind(this), differenceInMs);
-    }
+    alarm.timeoutIndex = setTimeout(this.playAlarm.bind(this), differenceInMs);
+ 
     if (this.showToaster) {
       this.toasterService.showToaster(this.calculateTimeStart(alarm));
-    }
+    } 
     this.setToogleStage();
     this.setTimeColor();
     this.findFirstTurnOnAlarm();
@@ -491,7 +554,6 @@ export class AlarmService {
     }
   }
 
-
   openUpdateConfirmationWindow(newAlarmModel: AlarmModel, editedAlarmModel: AlarmModel) {
     const updatingDialogRef = this.dialog.open(AlarmDialogUpdatingComponent, {
       panelClass: 'custom-dialog-container',
@@ -502,16 +564,27 @@ export class AlarmService {
     updatingDialogRef.componentInstance.newAlarmModel = newAlarmModel;
     updatingDialogRef.componentInstance.editedAlarmModel = editedAlarmModel;
 
-
     updatingDialogRef.afterClosed()
       .subscribe(response => {
         if (response.data == 'newModel') {
           if (editedAlarmModel.isOn) {
             clearTimeout(editedAlarmModel.timeoutIndex);
           }
-          this.chooseAlarmAction(newAlarmModel);
+          if (!newAlarmModel.isOn) {
+            this.showToaster = false;
+            this.chooseAlarmAction(newAlarmModel);
+            this.showToaster = true;
+          } else {
+            this.chooseAlarmAction(newAlarmModel);
+          }
         } else {
-          this.chooseAlarmAction(editedAlarmModel);
+          if (!editedAlarmModel.isOn) {
+            this.showToaster = false;
+            this.chooseAlarmAction(editedAlarmModel);
+            this.showToaster = true;
+          } else {
+            this.chooseAlarmAction(editedAlarmModel);
+          }
         }
       });
   }
@@ -568,7 +641,6 @@ export class AlarmService {
 
   calculateTimeStart(alarmModel: AlarmModel) {
     let message;
-
     const currentDate = new Date();
     const startAlarmSecond = 60;
     const differentSecond = startAlarmSecond - currentDate.getSeconds();
@@ -606,71 +678,6 @@ export class AlarmService {
 
 
     return message;
-  }
-
-  convertToCronExpression(date: Date, repeat: string): string {
-    const seconds = 0;
-    const minutes = date.getMinutes();
-    const hours = date.getHours();
-    let dayOfMonth = '*';
-    let month = '*';
-    let dayOfWeek = '?';
-    let year = '*';
-    const daysArray = repeat.split(' ');
-
-    if (repeat === this.repeatOptions[0]) {
-      dayOfMonth = (date.getDate()).toString();
-      month = (date.getMonth() + 1).toString();
-      year = date.getFullYear().toString();
-    } else if ((repeat === this.repeatOptions[1]) || (daysArray.length == 7)) {
-
-    } else if (repeat == this.repeatOptions[2]) {
-      let chosenDays = '';
-      this.repeatOptionsDay.forEach((value, index) => {
-        if (index < 5) {
-          chosenDays += this.repeatOptionsDay[index].value;
-          chosenDays += ',';
-        }
-      });
-      chosenDays = chosenDays.replace(/,\s*$/, '');
-      dayOfWeek = chosenDays;
-    } else {
-      dayOfWeek = daysArray.join(',');
-    }
-
-    const cronExpression: string = seconds + ' ' + minutes + ' ' + hours + ' ' + dayOfMonth + ' ' + month + ' ' + dayOfWeek + ' ' + year;
-
-    return cronExpression;
-  }
-
-  getNextDate(expression: string): Date {
-    const parser = require('cron-parser');
-    const cronElementsArray = expression.split(' ');
-    const options = {
-      iterator: true
-    };
-
-    if (!cronElementsArray.includes('*')) {
-      let startDate;
-      let finishDate;
-      if (cronElementsArray[1] == '0' && cronElementsArray[2] == '0') {
-        startDate = new Date(Number(cronElementsArray[6]), (Number(cronElementsArray[4]) - 1), Number(cronElementsArray[3]), 15);
-        startDate.setDate(startDate.getDate() - 1);
-        finishDate = new Date(startDate.getTime());
-        finishDate.setDate(startDate.getDate() + 1);
-      } else {
-        startDate = new Date(Number(cronElementsArray[6]), (Number(cronElementsArray[4]) - 1), Number(cronElementsArray[3]));
-        finishDate = new Date(startDate.getTime());
-        finishDate.setDate(startDate.getDate() + 1);
-      }
-      options['currentDate'] = startDate;
-      options['endDate'] = finishDate;
-    }
-
-    const interval = parser.parseExpression(expression, options);
-    const date = interval.next();
-    const nextDate = new Date(date.value.toString());
-    return nextDate;
   }
 
   getRepeatOption(cronExpression: string): string {

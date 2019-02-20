@@ -109,6 +109,14 @@ export class PresetComponent implements OnInit {
     this.isUpdateState = !this.isUpdateState;
   }
 
+  numberOnly(event): boolean {
+    const charCode = (event.which) ? event.which : event.keyCode;
+    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+      return false;
+    }
+    return true;
+  }
+
   onSignIn() {
     this.router.navigateByUrl('/signin');
     this.onClose();

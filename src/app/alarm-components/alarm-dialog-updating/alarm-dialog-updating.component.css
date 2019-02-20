@@ -9,14 +9,15 @@
 }
 
 .list {
-    width: 350px;
+    width: auto;
     border-bottom: 1px solid darkgrey;
     padding: 10px 0px 2px 10px;
 }
 
 .element {
     display: inline-block;
-    width: 33%;
+    width: 30%;
+    padding-right: 3%;
 }
 
 .difference {
@@ -25,6 +26,7 @@
 
 .clickElement {
     color: blue;
+    padding-top: 5px;
 }
 
 .clickElement:hover {
@@ -63,19 +65,13 @@
 }
 
 @media(max-width: 480px) {
-    .repeatDaysList {
-        padding: 10px 40px;
-    }
-}
-
-@media(max-width: 420px) {
-    .repeatDaysList {
-        padding: 10px 25px;
+    .mat-dialog-content {
+        width: auto;
     }
 }
 
 @media(max-width: 380px) {
-    .repeatDaysList {
-        padding: 10px 10px;
-    }
+.comfirmation, .mat-dialog-content{
+    font-size: 14px;
+}
 }
