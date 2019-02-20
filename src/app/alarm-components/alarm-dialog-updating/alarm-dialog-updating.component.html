@@ -1,6 +1,6 @@
-<h1 mat-dialog-title>Warning</h1>
+<h1 mat-dialog-title>Confirmation</h1>
 <mat-dialog-content>
-  <div>Seems like this alarm data has been updated another user.</div>
+  <div>This alarm data has already been updated.</div>
   <div>
     <div class="clickElement" *ngIf="!isViewable" (click)="toggle()">Show details</div>
     <div class="clickElement" *ngIf="isViewable" (click)="toggle()">Hide details</div>
@@ -39,8 +39,8 @@
     </div>
     <div class="list" [ngClass]="{difference: editedAlarmModel.repeat != newAlarmModel.repeat}">
       <div class="element">Repeat</div>
-      <div class="element">{{editedAlarmModel.repeat}}</div>
-      <div class="element">{{newAlarmModel.repeat}}</div>
+      <div class="element">{{addSpace(editedAlarmModel.repeat)}}</div>
+      <div class="element">{{addSpace(newAlarmModel.repeat)}}</div>
     </div>
     <div class="list" [ngClass]="{difference: editedAlarmModel.isOn != newAlarmModel.isOn}">
       <div class="element">Turn on</div>
@@ -70,10 +70,10 @@
       <div class="element">{{newAlarmModel.message}}</div>
     </div>
   </div>
-  <div class="comfirmation">Are you sure you still want to save it? Press OK to save your changes, or Cancel to stay
+  <div class="comfirmation">Are you sure you still want to save it? Press Confirm to save your changes, or Cancel to stay
     previous data.</div>
   <div class="buttonArea">
-    <button mat-raised-button color="primary" class="saveButton" (click)="onSave()">OK</button>
+    <button mat-raised-button color="primary" class="saveButton" (click)="onSave()">Confirm</button>
     <button mat-raised-button color="warn" (click)="onClose()">Cancel</button>
   </div>
 </mat-dialog-content>

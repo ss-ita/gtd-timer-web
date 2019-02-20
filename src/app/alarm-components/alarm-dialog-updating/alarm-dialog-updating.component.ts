@@ -31,4 +31,13 @@ export class AlarmDialogUpdatingComponent implements OnInit {
   onSave() {
     this.alarmFormDialogRef.close({ data: 'editedModel' });
   }
+
+  addSpace(str: string) : string {
+    if (str.includes(',')) {
+      const daysArray = str.split(',');
+      return daysArray.join(', ');
+    } else {
+    return str;
+    }
+  }
 }
