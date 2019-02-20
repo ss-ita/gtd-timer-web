@@ -4,8 +4,8 @@
       <div class="notMobile">
         <div class="fields">
           <fieldset class="add_new">
-            <form (submit)="addStopwatch()">
-              <input class="input" placeholder="New stopwatch" type="text" [(ngModel)]="taskName" name="Name">
+            <form (submit)="taskService.addStopwatch()">
+              <input class="input" placeholder="New stopwatch" type="text" [(ngModel)]="taskService.taskName" name="Name">
               <button class="but" type="submit">Add</button>
               <mat-menu #shareStopwatch="matMenu">
                 <button type="button" mat-menu-item (click)="exportAllStopwatchesAsXml()">Export as .XML</button>
@@ -44,7 +44,7 @@
           </div>
         </div>
         <mat-list class="timer-list">
-          <mat-list-item *ngFor='let task of pagedStopwatches | filter: searchText' class="grid-container">
+          <mat-list-item *ngFor='let task of taskService.pagedStopwatches | filter: searchText' class="grid-container">
             <div class="name">
               <p (click)="toggleCollapsed(task)">{{task.name}}</p>
               <div *ngIf="task.isCollapsed===false">
@@ -60,12 +60,12 @@
 
             <div class="actionsstopwatch">
               <ng-template [ngIf]="task.isRunning === false">
-                <button class="but" (click)="startTask(task)"><i class="fa fa-play"></i></button>
+                <button class="but" (click)="taskService.startStopwatch(task)"><i class="fa fa-play"></i></button>
               </ng-template>
               <ng-template [ngIf]="task.isRunning === true">
-                <button class="but" (click)="pauseTask(task)"><i class="fa fa-pause"></i></button>
+                <button class="but" (click)="taskService.pauseStopwatch(task)"><i class="fa fa-pause"></i></button>
               </ng-template>
-              <button class="but" (click)="reset(task)"><i class="fa fa-refresh"></i></button>
+              <button class="but" (click)="taskService.resetStopwatch(task)"><i class="fa fa-refresh"></i></button>
               <button class="but"><i class="fa fa-bars"></i></button>
               <button class="but" (click)="deleteTask(task)"><i class="fa fa-times"></i></button>
               <button class="but" (click)="taskService.DisplayTaskOnStopwatchPage(task)" [matTooltipShowDelay]="2000"
@@ -74,31 +74,31 @@
           </mat-list-item>
         </mat-list>
         <div class="flex-container">
-          <div *ngIf="stopwatchPager.pages && stopwatchPager.pages.length" class="pagination">
-            <button mat-raised-button [disabled]="stopwatchPager.currentPage === 1" (click)="setStopwatchesPage(1)">
+          <div *ngIf="taskService.stopwatchPager.pages && taskService.stopwatchPager.pages.length" class="pagination">
+            <button mat-raised-button [disabled]="taskService.stopwatchPager.currentPage === 1" (click)="taskService.setStopwatchesPage(1)">
               <i class="fas fa-angle-double-left"></i>
             </button>
-            <button mat-raised-button [disabled]="stopwatchPager.currentPage === 1"
-              (click)="setStopwatchesPage(stopwatchPager.currentPage - 1)">
+            <button mat-raised-button [disabled]="taskService.stopwatchPager.currentPage === 1"
+              (click)="taskService.setStopwatchesPage(taskService.stopwatchPager.currentPage - 1)">
               <i class="fas fa-angle-left"></i>
             </button>
-            <button mat-raised-button *ngFor="let page of stopwatchPager.pages"
-              [ngClass]="{active:stopwatchPager.currentPage === page}" (click)="setStopwatchesPage(page)">
+            <button mat-raised-button *ngFor="let page of taskService.stopwatchPager.pages"
+              [ngClass]="{active:taskService.stopwatchPager.currentPage === page}" (click)="taskService.setStopwatchesPage(page)">
               {{page}}
             </button>
-            <button mat-raised-button [disabled]="stopwatchPager.currentPage === stopwatchPager.totalPages"
-              (click)="setStopwatchesPage(stopwatchPager.currentPage + 1)">
+            <button mat-raised-button [disabled]="taskService.stopwatchPager.currentPage === taskService.stopwatchPager.totalPages"
+              (click)="taskService.setStopwatchesPage(taskService.stopwatchPager.currentPage + 1)">
               <i class="fas fa-angle-right"></i>
             </button>
-            <button mat-raised-button [disabled]="stopwatchPager.currentPage === stopwatchPager.totalPages"
-              (click)="setStopwatchesPage(stopwatchPager.totalPages)">
+            <button mat-raised-button [disabled]="taskService.stopwatchPager.currentPage === taskService.stopwatchPager.totalPages"
+              (click)="taskService.setStopwatchesPage(taskService.stopwatchPager.totalPages)">
               <i class="fas fa-angle-double-right"></i>
             </button>
           </div>
           <div class="paginationSelect">
-          <mat-form-field *ngIf="stopwatchPager.pages && stopwatchPager.pages.length">
-            <mat-select placeholder="Items per page" [(ngModel)]="pageSizeList" name="size"
-              (selectionChange)="setStopwatchesPage(1)">
+          <mat-form-field *ngIf="taskService.stopwatchPager.pages && taskService.stopwatchPager.pages.length">
+            <mat-select placeholder="Items per page" [(ngModel)]="taskService.pageSizeList" name="size"
+              (selectionChange)="taskService.setStopwatchesPage(1)">
               <mat-option *ngFor="let size of pageSizes" [value]="size.value">
                 {{size.id}}
               </mat-option>
@@ -112,8 +112,8 @@
       <div class="mobile">
         <div class="fields">
           <div class="add_new">
-            <form (submit)="addStopwatch()">
-              <input class="input" placeholder="New stopwatch" type="text" [(ngModel)]="taskName" name="Name">
+            <form (submit)="taskService.addStopwatch()">
+              <input class="input" placeholder="New stopwatch" type="text" [(ngModel)]="taskService.taskName" name="Name">
               <button class="but" type="submit">Add</button>
             </form>
           </div>
@@ -164,16 +164,16 @@
             </div>
             <mat-menu #otherActions="matMenu">
               <ng-template [ngIf]="task.isRunning === false">
-                <button type="button" matTooltip="Start stopwatch" (click)="startTask(task)" id="startMobileButton">
+                <button type="button" matTooltip="Start stopwatch" (click)="taskService.startStopwatch(task)" id="startMobileButton">
                   <p>Start stopwatch</p>
                 </button>
               </ng-template>
               <ng-template [ngIf]="task.isRunning === true">
-                <button type="button" matTooltip="Pause stopwatch" (click)="pauseTask(task)" id="pauseMobileButton">
+                <button type="button" matTooltip="Pause stopwatch" (click)="taskService.pauseStopwatch(task)" id="pauseMobileButton">
                   <p>Pause stopwatch</p>
                 </button>
               </ng-template>
-              <button type="button" matTooltip="Reset stopwatch" (click)="reset(task)" id="resetMobileButton">
+              <button type="button" matTooltip="Reset stopwatch" (click)="taskService.resetStopwatch(task)" id="resetMobileButton">
                 <p>Reset stopwatch</p>
               </button>
               <button type="button" matTooltip="Delete stopwatch" (click)="deleteTask(task)" id="deleteMobileButton">
@@ -193,31 +193,31 @@
           </mat-list-item>
         </mat-list>
         <div class="flex-container">
-          <div *ngIf="stopwatchPager.pages && stopwatchPager.pages.length" class="pagination">
-            <button mat-raised-button [disabled]="stopwatchPager.currentPage === 1" (click)="setStopwatchesPage(1)">
+          <div *ngIf="taskService.stopwatchPager.pages && taskService.stopwatchPager.pages.length" class="pagination">
+            <button mat-raised-button [disabled]="taskService.stopwatchPager.currentPage === 1" (click)="taskService.setStopwatchesPage(1)">
               <i class="fas fa-angle-double-left"></i>
             </button>
-            <button mat-raised-button [disabled]="stopwatchPager.currentPage === 1"
-              (click)="setStopwatchesPage(stopwatchPager.currentPage - 1)">
+            <button mat-raised-button [disabled]="taskService.stopwatchPager.currentPage === 1"
+              (click)="taskService.setStopwatchesPage(taskService.stopwatchPager.currentPage - 1)">
               <i class="fas fa-angle-left"></i>
             </button>
-            <button mat-raised-button *ngFor="let page of stopwatchPager.pages"
-              [ngClass]="{active:stopwatchPager.currentPage === page}" (click)="setStopwatchesPage(page)">
+            <button mat-raised-button *ngFor="let page of taskService.stopwatchPager.pages"
+              [ngClass]="{active:taskService.stopwatchPager.currentPage === page}" (click)="taskService.setStopwatchesPage(page)">
               {{page}}
             </button>
-            <button mat-raised-button [disabled]="stopwatchPager.currentPage === stopwatchPager.totalPages"
-              (click)="setStopwatchesPage(stopwatchPager.currentPage + 1)">
+            <button mat-raised-button [disabled]="taskService.stopwatchPager.currentPage === taskService.stopwatchPager.totalPages"
+              (click)="taskService.setStopwatchesPage(taskService.stopwatchPager.currentPage + 1)">
               <i class="fas fa-angle-right"></i>
             </button>
-            <button mat-raised-button [disabled]="stopwatchPager.currentPage === stopwatchPager.totalPages"
-              (click)="setStopwatchesPage(stopwatchPager.totalPages)">
+            <button mat-raised-button [disabled]="taskService.stopwatchPager.currentPage === taskService.stopwatchPager.totalPages"
+              (click)="taskService.setStopwatchesPage(taskService.stopwatchPager.totalPages)">
               <i class="fas fa-angle-double-right"></i>
             </button>
           </div>
           <div class="paginationSelect">
-          <mat-form-field *ngIf="stopwatchPager.pages && stopwatchPager.pages.length">
+          <mat-form-field *ngIf="taskService.stopwatchPager.pages && taskService.stopwatchPager.pages.length">
             <mat-select placeholder="Items per page" [(ngModel)]="pageSizeList" name="size"
-              (selectionChange)="setStopwatchesPage(1)">
+              (selectionChange)="taskService.setStopwatchesPage(1)">
               <mat-option *ngFor="let size of pageSizes" [value]="size.value">
                 {{size.id}}
               </mat-option>
@@ -233,7 +233,7 @@
         <div class="fields">
           <fieldset class="add_new">
             <form (submit)="addTimer()">
-              <input class="input" placeholder="New timer" type="text" [(ngModel)]="taskName" name="Name">
+              <input class="input" placeholder="New timer" type="text" [(ngModel)]="taskService.taskName" name="Name">
               <button class="but" type="submit">Add</button>
               <mat-menu #shareTimer="matMenu">
                 <button type="button" mat-menu-item (click)="exportAllTimersAsXml()">Download .XML</button>
@@ -385,7 +385,7 @@
         <div class="fields">
           <fieldset class="add_new">
             <form (submit)="addTimer()">
-              <input class="input" placeholder="New timer name" type="text" [(ngModel)]="taskName" name="Name">
+              <input class="input" placeholder="New timer name" type="text" [(ngModel)]="taskService.taskName" name="Name">
               <button class="but" type="submit">Add</button>
               <mat-menu #shareTimer="matMenu">
                 <button type="button" mat-menu-item (click)="exportAllTimersAsXml()">Download .XML</button>
