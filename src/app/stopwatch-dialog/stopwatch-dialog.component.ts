@@ -49,6 +49,7 @@ export class StopwatchDialogComponent implements OnInit {
       currentSecond: this.stopwatchService.ticks,
       isStoped: true,
       isCollapsed: true,
+      isShowed: true,
       watchType: 0,
       maxValueHour: 0,
       maxValueMinute: 0,

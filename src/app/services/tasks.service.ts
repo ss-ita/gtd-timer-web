@@ -185,7 +185,8 @@ export class TasksService implements OnInit {
             maxValueSecond: 0,
             isTimerFinished: false,
             goals: 0,
-            ticksi: 0
+            ticksi: 0,
+            isShowed: true
           };
 
           return taskCreateJson;
@@ -212,7 +213,8 @@ export class TasksService implements OnInit {
             maxValueSecond: 0,
             isTimerFinished: false,
             goals: 0,
-            ticksi: 0
+            ticksi: 0,
+            isShowed: true
           };
   
           if (taskCreateJson.goal != null) {

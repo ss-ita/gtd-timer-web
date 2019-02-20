@@ -66,10 +66,10 @@
           <p>Elapsed</p>
         </span>
         <span class="action">
-          <p>Action</p>
+          <p>Status</p>
         </span>
         <span class="other">
-          <p>Other</p>
+          <p>Action</p>
         </span>
       </div>
       <mat-divider></mat-divider>
@@ -209,7 +209,7 @@
           <p>Name</p>
         </span>
         <span class="otherActions">
-          <p>Other</p>
+          <p>Action</p>
         </span>
       </div>
       <mat-list>
@@ -221,7 +221,7 @@
               <p>{{record.name}}</p>
             </div>
           </div>
-          <mat-menu #otherActions="matMenu" yPosition="below">
+          <mat-menu #otherActions="matMenu" yPosition="below" >
             <button type="button" matTooltip="Resume record" [matTooltipShowDelay]="1000"
               (click)="openWarningDialog(record)" id="resumeMobileButton">
               <p *ngIf='record.watchType == 0'>Reset stopwatch</p>
@@ -238,7 +238,7 @@
           </mat-menu>
           <div class="otherActionsButton">
             <button type="button" mat-button [matMenuTriggerFor]="otherActions">
-              <span>Other</span>
+              <span><i class="fas fa-ellipsis-v"></i></span>
             </button>
           </div>
         </mat-list-item>

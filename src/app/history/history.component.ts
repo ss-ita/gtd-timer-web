@@ -142,19 +142,29 @@ export class HistoryComponent implements OnInit {
     const observer = {
       next: data => {
         if (data) {
-          let r = data;
+
+          for(let i = 0;i<data.length;++i){
+          let r = data[i];
           let toDelete = this.recordsToDisplay.filter((rec) => { return rec.id == r.id });
           let indexToDelete = this.recordsToDisplay.indexOf(toDelete[0]);
           if (indexToDelete > -1)
             this.recordsToDisplay.splice(indexToDelete, 1);
-          this.recordsToDisplay.push(data);
+          }
+          for(let i = 0;i<data.length;++i){
+          this.recordsToDisplay.push(data[i]);
+          }
 
-          r = data;
-          toDelete = this.records.filter((rec) => { return rec.id == r.id });
-          indexToDelete = this.records.indexOf(toDelete[0]);
+          for(let i = 0;i<data.length;++i){
+          let r = data[i];
+          let toDelete = this.records.filter((rec) => { return rec.id == r.id });
+          let indexToDelete = this.records.indexOf(toDelete[0]);
           if (indexToDelete > -1)
             this.records.splice(indexToDelete, 1);
-          this.records.push(data);
+          }
+
+          for(let i = 0;i<data.length;++i){
+          this.records.push(data[i]);
+          }
 
           this.setRecordsPage(Math.ceil(this.recordsToDisplay.length / this.pageSizeRecords));
         }

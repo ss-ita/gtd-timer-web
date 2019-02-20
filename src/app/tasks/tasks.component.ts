@@ -6,7 +6,10 @@ import { timer, Subscription } from 'rxjs';
 import { ConfigService } from '../services/config.service';
 import { HistoryService } from '../services/history.service';
 import { Record } from '../models/record.model';
+import { MatDialog } from '@angular/material';
+import { ToasterService } from '../services/toaster.service';
 import { PagerService } from '../services/pager.service';
+
 
 @Component({
   selector: 'app-tasks',
@@ -22,10 +25,10 @@ export class TasksComponent implements OnInit {
     public taskService: TasksService,
     private configService: ConfigService,
     private historyService: HistoryService,
+    private tosterService: ToasterService,
+    private matDialog: MatDialog,
     private pagerService: PagerService
-  ) {
-    this.progress = this.emulateProgress();
-  }
+  ) {}
 
   readonly progress: Observable<number>;
   public searchText: string;
@@ -35,6 +38,8 @@ export class TasksComponent implements OnInit {
   displayTimer = false;
   ticks = 0;
   milisecondPerSecond = 1000;
+  milisecondPerMinute=60000;
+  milisecondPerHour=3600000;
   secondPerHour = 3600;
   secondPerMinute = 60;
   secondPerSecond = 1;
@@ -92,7 +97,9 @@ export class TasksComponent implements OnInit {
   toggleCollapsed(task: TaskCreateJson) {
     task.isCollapsed = !task.isCollapsed;
   }
-
+  inputShowed(task:TaskCreateJson){
+    task.isShowed=!task.isShowed;
+  }
   fillTime(task) {
     task.currentSecond = task.elapsedTime / this.milisecondPerSecond;
     task.hour = Math.floor(task.currentSecond / this.secondPerHour);
@@ -108,24 +115,6 @@ export class TasksComponent implements OnInit {
     return list;
   }
 
-  emulateProgress() {
-    return new Observable<number>(observer => {
-      let val = 0;
-      const interval = setInterval(() => {
-        if (val < 100) {
-          val++;
-        } else {
-          val = 0;
-        }
-
-        observer.next(val);
-      }, 100);
-
-      return () => {
-        clearInterval(interval);
-      };
-    });
-  }
 
   ngOnInit() {
     this.taskService.initStopwatches().subscribe(() => { this.setStopwatchesPage(1) });
@@ -195,6 +184,7 @@ export class TasksComponent implements OnInit {
       seconds: 0,
       currentSecond: 0,
       isCollapsed: true,
+      isShowed: true,
       isStoped: false,
       watchType: 0,
       maxValueHour: 0,
@@ -229,6 +219,7 @@ export class TasksComponent implements OnInit {
       seconds: 0,
       currentSecond: 0,
       isCollapsed: true,
+      isShowed: true,
       isStoped: false,
       watchType: 1,
       maxValueHour: 0,
@@ -275,6 +266,7 @@ export class TasksComponent implements OnInit {
   }
 
   updateTask(task: TaskCreateJson) {
+    task.isCollapsed=true;
     this.taskService.broadcastUpdateTask(task);
   }
 
@@ -300,12 +292,13 @@ export class TasksComponent implements OnInit {
             lastStartTime: data[i].lastStartTime,
             isRunning: data[i].isRunning,
             watchType: data[i].watchType,
-            hour: Math.floor((data[i].elapsedTime / 1000) / this.secondPerHour),
-            minutes: Math.floor(((data[i].elapsedTime / 1000) % this.secondPerHour) / this.secondPerMinute),
-            seconds: Math.floor(((data[i].elapsedTime / 1000) % this.secondPerHour) % this.secondPerMinute),
+            hour: Math.floor((data[i].elapsedTime / this.milisecondPerSecond) / this.secondPerHour),
+            minutes: Math.floor(((data[i].elapsedTime / this.milisecondPerSecond) % this.secondPerHour) / this.secondPerMinute),
+            seconds: Math.floor(((data[i].elapsedTime / this.milisecondPerSecond) % this.secondPerHour) % this.secondPerMinute),
             isStoped: false,
             currentSecond: 0,
             isCollapsed: true,
+            isShowed:true,
             maxValueHour: 0,
             maxValueMinute: 0,
             maxValueSecond: 0,
@@ -364,12 +357,13 @@ export class TasksComponent implements OnInit {
           lastStartTime: data[i].lastStartTime,
           isRunning: data[i].isRunning,
           watchType: data[i].watchType,
-          hour: Math.floor((data[i].elapsedTime / 1000) / this.secondPerHour),
-          minutes: Math.floor(((data[i].elapsedTime / 1000) % this.secondPerHour) / this.secondPerMinute),
-          seconds: Math.floor(((data[i].elapsedTime / 1000) % this.secondPerHour) % this.secondPerMinute),
+          hour: Math.floor((data[i].elapsedTime / this.milisecondPerSecond) / this.secondPerHour),
+          minutes: Math.floor(((data[i].elapsedTime / this.milisecondPerSecond) % this.secondPerHour) / this.secondPerMinute),
+          seconds: Math.floor(((data[i].elapsedTime / this.milisecondPerSecond) % this.secondPerHour) % this.secondPerMinute),
           isStoped: false,
           currentSecond: 0,
           isCollapsed: true,
+          isShowed:true,
           maxValueHour: 0,
           maxValueMinute: 0,
           maxValueSecond: 0,
@@ -441,8 +435,8 @@ export class TasksComponent implements OnInit {
       description: task.description,
       startTime: task.lastStartTime,
       stopTime: stop,
-      elapsedTime: ((timeNow.getHours() - timeStart.getHours()) * 3600000 + (timeNow.getMinutes() - timeStart.getMinutes()) *
-        60000 + (timeNow.getSeconds() - timeStart.getSeconds()) * 1000 + (timeNow.getMilliseconds() - timeStart.getMilliseconds())),
+      elapsedTime: ((timeNow.getHours() - timeStart.getHours()) * this.milisecondPerHour + (timeNow.getMinutes() - timeStart.getMinutes()) *
+        this.milisecondPerMinute + (timeNow.getSeconds() - timeStart.getSeconds()) * this.milisecondPerSecond + (timeNow.getMilliseconds() - timeStart.getMilliseconds())),
       watchType: task.watchType,
       action: 'Pause',
       taskId: task.id,
@@ -456,6 +450,7 @@ export class TasksComponent implements OnInit {
     task.isRunning = false;
     task.isStoped = true;
     this.taskService.pauseTask(task).subscribe();
+    task.elapsedTime=task.ticksi;
     const timeStart = new Date(task.lastStartTime);
     const timeNow = new Date(new Date(Date.now()).toISOString().slice(0, -1));
     const stop = (new Date(Date.now())).toISOString().slice(0, -1);
@@ -466,7 +461,7 @@ export class TasksComponent implements OnInit {
       startTime: task.lastStartTime,
       stopTime: stop,
       elapsedTime: ((timeNow.getHours() - timeStart.getHours()) * 3600000 + (timeNow.getMinutes() - timeStart.getMinutes()) *
-        60000 + (timeNow.getSeconds() - timeStart.getSeconds()) * 1000 + (timeNow.getMilliseconds() - timeStart.getMilliseconds())),
+        this.milisecondPerMinute + (timeNow.getSeconds() - timeStart.getSeconds()) * this.milisecondPerSecond + (timeNow.getMilliseconds() - timeStart.getMilliseconds())),
       watchType: task.watchType,
       action: 'Pause',
       taskId: task.id,
@@ -474,7 +469,6 @@ export class TasksComponent implements OnInit {
     };
     this.historyService.createRecord(recordToCreate).subscribe();
   }
-
   pauseStopwatchListener(task: any, data: any) {
     task.elapsedTime = data.elapsedTime;
     task.currentSecond = data.elapsedTime / this.milisecondPerSecond;
@@ -486,7 +480,7 @@ export class TasksComponent implements OnInit {
     this.runAfterGet();
   }
 
-  resetTimer(task: TaskCreateJson) {
+  resetTimer(task:TaskCreateJson) {
     task.hour = task.minutes = task.seconds = task.elapsedTime = 0;
     task.isStoped = task.isRunning = false;
     this.taskService.broadcastResetTask(task);
@@ -500,7 +494,7 @@ export class TasksComponent implements OnInit {
       startTime: task.lastStartTime,
       stopTime: stop,
       elapsedTime: ((timeNow.getHours() - timeStart.getHours()) * 3600000 + (timeNow.getMinutes() - timeStart.getMinutes()) *
-        60000 + (timeNow.getSeconds() - timeStart.getSeconds()) * 1000 + (timeNow.getMilliseconds() - timeStart.getMilliseconds())),
+        this.milisecondPerMinute + (timeNow.getSeconds() - timeStart.getSeconds()) * this.milisecondPerSecond + (timeNow.getMilliseconds() - timeStart.getMilliseconds())),
       watchType: task.watchType,
       action: 'Reset',
       taskId: task.id,
@@ -511,8 +505,12 @@ export class TasksComponent implements OnInit {
   }
 
   reset(task: TaskCreateJson) {
-    task.hour = task.minutes = task.seconds = 0;
-    task.elapsedTime = 0;
+    if(task.isRunning===false){
+      task.hour = task.minutes = task.seconds = 0;      
+    }
+    if(task.isRunning===true){
+      task.hour = task.minutes = task.seconds = 0;
+    }  
     task.isStoped = task.isRunning = false;
     this.taskService.broadcastResetTask(task);
     const timeStart = new Date(task.lastStartTime);
@@ -524,8 +522,8 @@ export class TasksComponent implements OnInit {
       description: task.description,
       startTime: task.lastStartTime,
       stopTime: stop,
-      elapsedTime: ((timeNow.getHours() - timeStart.getHours()) * 3600000 + (timeNow.getMinutes() - timeStart.getMinutes()) *
-        60000 + (timeNow.getSeconds() - timeStart.getSeconds()) * 1000 + (timeNow.getMilliseconds() - timeStart.getMilliseconds())),
+      elapsedTime: ((timeNow.getHours() - timeStart.getHours()) * this.milisecondPerHour + (timeNow.getMinutes() - timeStart.getMinutes()) *
+        this.milisecondPerMinute + (timeNow.getSeconds() - timeStart.getSeconds()) * this.milisecondPerSecond + (timeNow.getMilliseconds() - timeStart.getMilliseconds())),
       watchType: task.watchType,
       action: 'Reset',
       taskId: task.id,
@@ -597,7 +595,6 @@ export class TasksComponent implements OnInit {
     }
     return this.ticks;
   }
-
   updateTime(task: TaskCreateJson) {
     if (task.isRunning) {
       task.currentSecond++;
@@ -607,17 +604,21 @@ export class TasksComponent implements OnInit {
     }
   }
 
-
-  updateTimeTimer(task: TaskCreateJson) {
-    if (task.isRunning) {
-      if (task.minutes == 0 && task.seconds == 0 && task.hour == 0) {
-        task.isStoped = true;
-      } else {
-        task.hour = Math.floor(task.ticksi / this.secondPerHour);
-        task.minutes = Math.floor((task.ticksi % this.secondPerHour) / this.secondPerMinute);
-        task.seconds = Math.floor((task.ticksi % this.secondPerHour) % this.secondPerMinute);
-      }
-
+finishTimer(task:TaskCreateJson){
+  if(task.isRunning===true){
+    if(task.minutes==0 && task.seconds==0&&task.hour==0){
+      task.isRunning=false;
+      task.isTimerFinished=true;
     }
   }
 }
+ updateTimeTimer(task: TaskCreateJson) {
+    if (task.isRunning) {
+        task.hour = Math.floor(task.ticksi / this.secondPerHour);
+        task.minutes = Math.floor((task.ticksi % this.secondPerHour) / this.secondPerMinute);
+        task.seconds = Math.floor((task.ticksi % this.secondPerHour) % this.secondPerMinute);
+    }
+    //this.finishTimer(task);
+  }
+}
+
