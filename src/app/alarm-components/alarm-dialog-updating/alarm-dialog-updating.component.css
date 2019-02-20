@@ -38,6 +38,7 @@
     margin: 0 0 15px;
     display: block;
     text-align: center;
+    font-size: 27px;
     font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 
@@ -50,10 +51,6 @@
     margin: 0px 10px;
     padding: 1px 20px;
     font-size: 16px;
-}
-
-.buttonArea button.saveButton {
-    padding: 1px 40px;
 }
 
 ::ng-deep .mat-button:hover .mat-button-focus-overlay {

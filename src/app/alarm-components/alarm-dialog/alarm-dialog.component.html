@@ -4,11 +4,11 @@
     <div class="input-time-area">
       <mat-form-field class="example-full-width">
         <input matInput (keypress)="numberOnly($event)" placeholder="Set hours" [(ngModel)]="hour" name="Hour" formControlName="hour">
-        <mat-error>Please, input hours between 0 and 23</mat-error>
+        <mat-error>Please, input a hours between 0 and 23</mat-error>
       </mat-form-field>
       <mat-form-field class="example-full-width">
         <input matInput (keypress)="numberOnly($event)" placeholder="Set minutes" [(ngModel)]="minute" name="Minute" formControlName="minute">
-        <mat-error>Please, input minutes between 0 and 59</mat-error>
+        <mat-error>Please, input a minutes between 0 and 59</mat-error>
       </mat-form-field>
     </div>
     <div class="dateArea">

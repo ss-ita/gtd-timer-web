@@ -5,6 +5,23 @@
     text-decoration: underline;
 }
 
+.mat-button.addStopwatch {
+	border-radius: 50%;
+	width: 4rem;
+	height: 4rem;
+	border: none;
+	text-decoration: underline;
+	display: inline-block;
+	position: absolute;
+	right: 22px;
+    bottom: 23px;
+	background-color: #b797ff24;
+}
+
+.mat-button.addStopwatch:hover {
+	background-color: #b757ff24;
+}
+
 .mat-icon-button:hover {
     background-color: rgb(172, 205, 255);
 }
@@ -212,6 +229,31 @@
 }
 
 @media(max-width: 480px) {
+
+    .mat-button.addStopwatch {
+		border-radius: 50%;
+		width: 45px;
+		height: 45px;
+		border: none;
+		text-decoration: underline;
+		display: inline-block;
+		position: absolute;
+        right: 12px;
+        bottom: 18px;
+		background-color: #b797ff24;
+		min-width: auto;
+		text-align: left;
+    }
+    
+    .mat-button.addStopwatch .mat-icon {
+		font-size: 30px !important;
+		height: 32px !important;
+		width: 32px !important;
+		position: absolute;
+		top: 9px;
+		left: 8px;
+	}
+
     ::ng-deep mat-card {
         border: none !important;
         box-shadow: none !important;

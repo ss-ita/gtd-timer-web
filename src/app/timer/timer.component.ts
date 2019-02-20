@@ -1,5 +1,5 @@
 import { Component, OnInit, HostListener } from '@angular/core';
-import { FormBuilder, FormGroup, AbstractControl } from '@angular/forms';
+import { FormBuilder, FormGroup, AbstractControl, Validators } from '@angular/forms';
 import { TimerService } from '../services/timer.service';
 import { PresetDialogComponent } from '../preset-dialog/preset-dialog.component';
 import { StyleService } from '../services/style.service';
@@ -21,6 +21,8 @@ export class TimerComponent implements OnInit {
   timerForm: FormGroup;
   isViewable: boolean;
   innerWidth: any;
+  hourPattern = /^(2[0-3]|1[0-9]|[0-9]|0)$/;
+  minuteSecondPattern = /^([1-5]?[0-9]|0)$/;
 
   constructor(private formBuilder: FormBuilder,
     private presetComponent: PresetComponent,
@@ -63,9 +65,9 @@ export class TimerComponent implements OnInit {
   ngOnInit() {
     this.presetComponent.isLoggedIn = this.presetComponent.getIsLoggedIn();
     this.timerForm = this.formBuilder.group({
-      'hour': [this.timerServise.maxValueHour, [this.hourRangeValidator]],
-      'minute': [this.timerServise.maxValueMinute, [this.minuteAndSecondRangeValidator]],
-      'second': [this.timerServise.maxValueSecond, [this.minuteAndSecondRangeValidator]]
+     'hour': [this.timerServise.maxValueHour, [Validators.min(0), Validators.max(23), Validators.maxLength(2), Validators.pattern(this.hourPattern)]],
+     'minute': [this.timerServise.maxValueMinute, [Validators.min(0), Validators.maxLength(2), Validators.max(59), Validators.pattern(this.minuteSecondPattern)]],
+     'second': [this.timerServise.maxValueSecond, [Validators.min(0), Validators.maxLength(2), Validators.max(59), Validators.pattern(this.minuteSecondPattern)]]
     });
     this.presetComponent.getAllStandardAndCustomPresets();
     this.timerServise.getIsTimerArrayEmpty();
@@ -79,13 +81,16 @@ export class TimerComponent implements OnInit {
   }
 
   getErrorMessageHour() {
-    return 'please enter a number from 0 to 23';
+    return 'Please, input a hours between 0 and 23';
   }
 
-  getErrorMessageMinuteAndSecond() {
-    return 'please enter a number from 0 to 59';
+  getErrorMessageMinute() {
+    return 'Please, input a minutes between 0 and 23';
   }
 
+  getErrorMessageSecond() {
+    return 'Please, input a seconds between 0 and 59';
+  }
   pauseTask() {
     this.taskComponent.pauseTimer(this.timerServise.taskJson);
     this.timerServise.isTimerPause = true;

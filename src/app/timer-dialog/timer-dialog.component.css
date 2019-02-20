@@ -2,6 +2,10 @@
     width: 500px;
 }
 
+.timer-dialog-form {
+    height: 100px;
+}
+
 .close-button {
     margin-left: 8px;
 }
