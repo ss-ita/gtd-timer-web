@@ -19,6 +19,7 @@
         <button mat-flat-button [disabled]="!signinform.valid" color="primary" class="emailAuth">Sign In</button>
       </mat-card-actions>
     </form>
+    <div class="passwordRecovery"> <small class="title"><button class="tempButton" (click)="openResetPasswordDialog()">Forgot password?</button></small></div>
     <div class="socialAuth">
       <button mat-flat-button type="submit" (click)="LoginWithGoogle()" class="btn googleAuth">
         <img alt="Google" src={{urlGooglePath}} />Sign in with Google</button>

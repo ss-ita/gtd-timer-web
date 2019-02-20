@@ -18,10 +18,12 @@ import { InfoComponent } from './info/info.component';
 import { AdminPageComponent } from './admin-page/admin-page.component';
 import { AuthAdminService } from './auth/auth-admin.service';
 import { ConfirmEmailComponent } from './confirm-email/confirm-email.component';
+import { PasswordRecoveryDialogComponent } from './password-recovery-dialog/password-recovery-dialog.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/stopwatch', pathMatch: 'full' },
   { path: 'confirm-email/:email/:token', component: ConfirmEmailComponent },
+  { path: 'password-recovery/:email/:token', component: PasswordRecoveryDialogComponent},
   { path: 'stopwatch', component: StopwatchComponent },
   { path: 'timer', component: TimerComponent },
   { path: 'alarm', component: AlarmComponent },

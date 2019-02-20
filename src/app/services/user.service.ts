@@ -11,6 +11,7 @@ import { NavbarService } from './navbar.service';
 import { RoleService } from './role.service';
 import { AlarmService } from './alarm.service';
 import { ConfirmEmailService } from './confirm-email.service';
+import { PasswordRecoveryService } from './password-recovery.service';
 
 @Injectable({
   providedIn: 'root'
@@ -29,7 +30,8 @@ export class UserService {
     private zone: NgZone,
     private roleService: RoleService,
     private alarmService: AlarmService,
-    private confirmEmailService: ConfirmEmailService) { }
+    private confirmEmailService: ConfirmEmailService,
+    private passwordRecoveryService: PasswordRecoveryService) { }
 
   registerUser(user: SignupModel) {
     const body: SignupModel = {
@@ -152,7 +154,7 @@ export class UserService {
       },
       response => {
         if (response.error.Message === this.confirmEmailErrorMessage) {
-          let result = confirm('Token has expired! Resend verification email?');
+          const result = confirm('Token has expired! Resend verification email?');
           if (result) {
             this.resendVerificationEmail(email);
           }
@@ -162,7 +164,7 @@ export class UserService {
     });
   }
 
-  resendVerificationEmail(email) { 
+  resendVerificationEmail(email) {
     this.confirmEmailService.resendVerificationEmail(email).subscribe(_ => {
       this.router.navigateByUrl(this.redirectUrl);
       this.toasterService.showToaster('We have sent you a verification email');

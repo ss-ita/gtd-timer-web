@@ -55,6 +55,13 @@
     border: none;
     text-decoration: underline;
     color: blue;
+    cursor: pointer;
+}
+
+.passwordRecovery {
+    text-align: center;
+    margin-top: -20px;
+    margin-bottom: 25px;
 }
 
 .emailAuth {
