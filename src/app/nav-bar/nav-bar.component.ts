@@ -24,6 +24,7 @@ export class NavBarComponent implements OnInit {
   email = localStorage.getItem('email');
   hours = 24;
   milisecinhours = 3600000;
+  passwordRecovery = 'password-recovery';
   signinLink = '/signin';
 
   constructor(private router: Router,
@@ -104,7 +105,11 @@ export class NavBarComponent implements OnInit {
     this.router.events.subscribe((res) => {
       this.activeLinkIndex = this.navLinks.indexOf(this.navLinks.find(tab => tab.link === '.' + this.router.url));
       if (this.router.url != this.signinLink) {
+        if (this.router.url.includes(this.passwordRecovery)) {
+          this.userService.redirectUrl = '/stopwatch';
+        } else {
         this.userService.redirectUrl = this.router.url;
+        }
       }
     });
     this.alarmService.getAlarmsFromDatabase();
