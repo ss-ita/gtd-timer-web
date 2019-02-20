@@ -2,6 +2,10 @@
     width: 500px;
 }
 
+.stopwatch-dialog-form {
+    height: 100px;
+}
+
 .close-button {
     margin-left: 8px;
 }

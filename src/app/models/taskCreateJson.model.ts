@@ -14,6 +14,7 @@ export class TaskCreateJson {
     currentSecond: number;
     isStoped: boolean;
     isCollapsed: boolean;
+    isShowed: boolean;
     maxValueHour: number;
     maxValueMinute: number;
     maxValueSecond: number;

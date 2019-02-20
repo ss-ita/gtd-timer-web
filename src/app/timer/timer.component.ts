@@ -117,6 +117,14 @@ export class TimerComponent implements OnInit {
     timerFormDialogRef.afterClosed().subscribe();
   }
 
+  numberOnly(event): boolean {
+    const charCode = (event.which) ? event.which : event.keyCode;
+    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+      return false;
+    }
+    return true;
+  }
+
   getIsLoggedIn() {
     return localStorage.getItem('access_token') === null ? false : true;
   }

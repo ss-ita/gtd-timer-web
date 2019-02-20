@@ -78,12 +78,12 @@ export class SigninComponent implements OnInit {
         this.userService.signinuser(this.controlElements.email.value, this.controlElements.password.value);
     }
 
-    LoginWithGoogle() {
+    loginWithGoogle() {
         this.socialAuth.loginWithGoogle();
         this.isActive = true;
     }
 
-    doFacebookLogin() {
+    loginWithFacebook() {
         this.socialAuth.loginWithFacebook();
         this.isActive = true;
     }

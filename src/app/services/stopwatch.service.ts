@@ -20,13 +20,16 @@ export class StopwatchService {
 
   isStopwatchRun = false;
   isStopwatchPause = true;
+  isCreate = false;
 
   color = 'black';
-  task: String = ' ';
   subscribe: Subscription;
   taskJson: TaskCreateJson;
 
-  constructor() { }
+  constructor() {
+    this.taskJson = new TaskCreateJson();
+    this.taskJson.name = 'null@Stopwatch'
+  }
 
   reset() {
     this.pause();
@@ -79,10 +82,5 @@ export class StopwatchService {
     } else {
       this.pause();
     }
-  }
-
-  stopwatchClear() {
-    this.task = ' ';
-    this.reset();
   }
 }

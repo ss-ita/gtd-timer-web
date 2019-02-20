@@ -1,24 +1,36 @@
 import { Injectable, OnInit, Input } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ConfigService } from './config.service';
-import { Observable, throwError } from 'rxjs';
+import { timer, Observable, throwError, Subscription } from 'rxjs';
 import { TaskJson } from '../models/taskjson.model';
 import { TaskCreateJson } from '../models/taskCreateJson.model';
 import { StopwatchService } from './stopwatch.service';
 import { TimerService } from './timer.service';
 import { ToasterService } from './toaster.service';
 import * as signalR from '@aspnet/signalr';
+import { Record } from '../models/record.model';
+import { HistoryService } from './history.service';
+import { PagerService } from './pager.service';
 
 @Injectable({
     providedIn: 'root'
 })
 export class TasksService implements OnInit {
 
+    public taskName: string;
     stopwatches: TaskCreateJson[] = [];
     timers: TaskCreateJson[] = [];
+    milisecondPerMinute = 60000;
+    milisecondPerHour = 3600000;
     milisecondPerSecond = 1000;
     secondPerHour = 3600;
     secondPerMinute = 60;
+    ticks = 0;
+    stopwatchSubscriptions: Subscription[] = [];
+    pagedStopwatches: TaskCreateJson[];
+    stopwatchPager: any = {};
+    pageSizeList = 10;
+
     @Input() startStopwatchAction: Function;
     @Input() pauseStopwatchAction: Function;
     @Input() resetStopwatchAction: Function;
@@ -35,13 +47,95 @@ export class TasksService implements OnInit {
         private service: ConfigService,
         private stopwatchService: StopwatchService,
         private timerService: TimerService,
-        private toasterService: ToasterService
-    ) { }
-    ngOnInit() { }
+        private toasterService: ToasterService,
+        private historyService: HistoryService,
+        private pagerService: PagerService
+    ) {
+        this.initStopwatches().subscribe(() => { this.setStopwatchesPage(1); });
+    }
+    ngOnInit() {
+    }
+
+    updateStopwatchListener(index: number, task: any) {
+        this.stopwatches[index].name = task.name;
+    }
+
+    addStopwatchListener(task: any) {
+        task.hour = 0;
+        task.minutes = 0;
+        task.seconds = 0;
+        this.stopwatches.unshift(this.stopwatchToTaskCreateJson(task));
+        this.setStopwatchesPage(1);
+    }
+
+    pauseStopwatchListener(task: any, data: any) {
+        task.elapsedTime = data.elapsedTime;
+        task.currentSecond = data.elapsedTime / this.milisecondPerSecond;
+        task.isRunning = false;
+        task.isStoped = true;
+        task.hour = Math.floor((task.elapsedTime / this.milisecondPerSecond) / this.secondPerHour);
+        task.minutes = Math.floor(((task.elapsedTime / this.milisecondPerSecond) % this.secondPerHour) / this.secondPerMinute);
+        task.seconds = Math.floor(((task.elapsedTime / this.milisecondPerSecond) % this.secondPerHour) % this.secondPerMinute);
+        this.runAfterGet();
+    }
+
+    resetStopwatchListener(task: any) {
+        task.hour = task.minutes = task.seconds = 0;
+        task.elapsedTime = 0;
+        task.isStoped = task.isRunning = false;
+    }
+
+    updateStopwatch(task: TaskCreateJson) {
+        task.isCollapsed = true;
+        this.broadcastUpdateTask(task);
+    }
+
+    setStopwatchesPage(page: number) {
+        this.stopwatchPager = this.pagerService.getPager(this.stopwatches.length, page, this.pageSizeList);
+        this.getStopwatchesForPage(this.stopwatchPager).subscribe(data => { this.pagedStopwatches = data; this.runAfterGet(); });
+    }
 
     startTask(task: TaskCreateJson) {
         return this.http.put<TaskCreateJson>(this.service.urlTask + 'StartTask', task);
     }
+
+    startStopwatch(task: TaskCreateJson) {
+
+        if (this.stopwatchService.isCreate) {
+            this.stopwatchService.taskJson = this.stopwatches[0];
+            this.stopwatchService.isCreate = false;
+        }
+
+        this.start(task);
+        task.lastStartTime = (new Date(Date.now())).toISOString().slice(0, -1);
+        this.broadcastStartTask(task);
+    }
+
+    start(task: TaskCreateJson) {
+        task.isRunning = true;
+        task.isStoped = false;
+
+        if (!task.isStoped) {
+            this.ticks = task.elapsedTime;
+            task.currentSecond = task.elapsedTime / 1000;
+            this.stopwatchSubscriptions.push(timer(0, this.milisecondPerSecond).subscribe((x) => {
+                if (task.isRunning) {
+                    this.updateTime(task);
+                }
+            }));
+        }
+        return this.ticks;
+    }
+
+    updateTime(task: TaskCreateJson) {
+        if (task.isRunning) {
+            task.currentSecond++;
+            task.hour = Math.floor(task.currentSecond / this.secondPerHour);
+            task.minutes = Math.floor((task.currentSecond - (this.secondPerHour * task.hour)) / this.secondPerMinute);
+            task.seconds = Math.floor((task.currentSecond - (this.secondPerHour * task.hour)) % this.secondPerMinute);
+        }
+    }
+
     deleteTask(id: Number) {
         return this.http.delete(this.service.urlTask + 'DeleteTask/' + id.toString(), {});
     }
@@ -50,36 +144,185 @@ export class TasksService implements OnInit {
         return this.http.put<TaskCreateJson>(this.service.urlTask + 'PauseTask', task);
     }
 
+    pauseStopwatch(task: TaskCreateJson) {
+
+        if (this.stopwatchService.isCreate) {
+            this.stopwatchService.taskJson = this.stopwatches[0];
+            this.stopwatchService.isCreate = false;
+        }
+
+        task.isRunning = false;
+        task.isStoped = true;
+        task.elapsedTime = task.currentSecond * 1000;
+        this.broadcastPauseTask(task);
+        const timeStart = new Date(task.lastStartTime);
+        const timeNow = new Date(new Date(Date.now()).toISOString().slice(0, -1));
+        const stop = (new Date(Date.now())).toISOString().slice(0, -1);
+        const recordToCreate: Record = {
+            id: 0,
+            name: task.name,
+            description: task.description,
+            startTime: task.lastStartTime,
+            stopTime: stop,
+            elapsedTime: ((timeNow.getHours() - timeStart.getHours()) * this.milisecondPerHour +
+                (timeNow.getMinutes() - timeStart.getMinutes()) * this.milisecondPerMinute + (timeNow.getSeconds() -
+                    timeStart.getSeconds()) * this.milisecondPerSecond + (timeNow.getMilliseconds() - timeStart.getMilliseconds())),
+            watchType: task.watchType,
+            action: 'Pause',
+            taskId: task.id,
+            userId: 0
+        };
+        this.historyService.createRecord(recordToCreate).subscribe();
+        this.runAfterGet();
+    }
+
     resetTask(task: TaskCreateJson) {
         return this.http.put<TaskCreateJson>(this.service.urlTask + 'ResetTask/', task);
+    }
+
+    resetStopwatch(task: TaskCreateJson) {
+        this.pauseStopwatch(task);
+        task.hour = task.minutes = task.seconds = 0;
+        task.elapsedTime = 0;
+        task.isStoped = task.isRunning = false;
+        this.broadcastResetTask(task);
+        const timeStart = new Date(task.lastStartTime);
+        const timeNow = new Date(new Date(Date.now()).toISOString().slice(0, -1));
+        const stop = new Date(Date.now()).toISOString().slice(0, -1);
+        const recordToCreate: Record = {
+            id: 0,
+            name: task.name,
+            description: task.description,
+            startTime: task.lastStartTime,
+            stopTime: stop,
+            elapsedTime: ((timeNow.getHours() - timeStart.getHours()) * this.milisecondPerHour + (timeNow.getMinutes() - timeStart.getMinutes()) *
+                this.milisecondPerMinute + (timeNow.getSeconds() - timeStart.getSeconds()) * this.milisecondPerSecond + (timeNow.getMilliseconds() - timeStart.getMilliseconds())),
+            watchType: task.watchType,
+            action: 'Reset',
+            taskId: task.id,
+            userId: 0
+        };
+        this.historyService.createRecord(recordToCreate).subscribe();
     }
 
     createTask(task: TaskCreateJson) {
         return this.http.post<TaskCreateJson>(this.service.urlTask + 'CreateTask', task);
     }
 
+    addStopwatch() {
+        const taskToPass: TaskCreateJson = {
+            id: 0,
+            name: this.taskName,
+            description: '',
+            elapsedTime: 0,
+            goal: '',
+            lastStartTime: '0001-01-01T00:00:00Z',
+            isRunning: false,
+            hour: 0,
+            minutes: 0,
+            seconds: 0,
+            currentSecond: 0,
+            isCollapsed: true,
+            isShowed: true,
+            isStoped: false,
+            watchType: 0,
+            maxValueHour: 0,
+            maxValueMinute: 0,
+            maxValueSecond: 0,
+            isTimerFinished: false,
+            goals: 0,
+            ticksi: 0
+        };
+        this.broadcastCreateTask(taskToPass);
+    }
+
     updateTask(task: TaskCreateJson) {
         return this.http.put<TaskCreateJson>(this.service.urlTask + 'UpdateTask', task);
     }
-    
+
     getTimers(start: number = 0, length: number = Number.MAX_SAFE_INTEGER): Observable<TaskJson[]> {
         return this.http.get<TaskJson[]>(this.service.urlTask + 'GetAllTimersByUserId',
-        {
-            params: {
-              start: start.toString(),
-              length: length.toString()
-            }
-        });
+            {
+                params: {
+                    start: start.toString(),
+                    length: length.toString()
+                }
+            });
     }
 
     getStopwatches(start: number = 0, length: number = Number.MAX_SAFE_INTEGER): Observable<TaskJson[]> {
-        return this.http.get<TaskJson[]>(this.service.urlTask + 'GetAllStopwatchesByUserId', 
-        {
-            params: {
-              start: start.toString(),
-              length: length.toString()
+        return this.http.get<TaskJson[]>(this.service.urlTask + 'GetAllStopwatchesByUserId',
+            {
+                params: {
+                    start: start.toString(),
+                    length: length.toString()
+                }
+            });
+    }
+
+    getStopwatchesMass() {
+        const observer = {
+            next: data => {
+                this.stopwatches = [];
+                for (let i = data.length - 1; i >= 0; --i) {
+                    const toPush: TaskCreateJson = {
+                        id: data[i].id,
+                        name: data[i].name,
+                        description: data[i].description,
+                        goal: data[i].goal,
+                        elapsedTime: data[i].elapsedTime,
+                        lastStartTime: data[i].lastStartTime,
+                        isRunning: data[i].isRunning,
+                        watchType: data[i].watchType,
+                        hour: Math.floor((data[i].elapsedTime / this.milisecondPerSecond) / this.secondPerHour),
+                        minutes: Math.floor(((data[i].elapsedTime / this.milisecondPerSecond) % this.secondPerHour) / this.secondPerMinute),
+                        seconds: Math.floor(((data[i].elapsedTime / this.milisecondPerSecond) % this.secondPerHour) % this.secondPerMinute),
+                        isStoped: false,
+                        currentSecond: 0,
+                        isCollapsed: true,
+                        isShowed: true,
+                        maxValueHour: 0,
+                        maxValueMinute: 0,
+                        maxValueSecond: 0,
+                        isTimerFinished: false,
+                        goals: 0,
+                        ticksi: 0
+                    };
+                    this.stopwatches.push(toPush);
+                }
+                this.setStopwatchesPage(1);
+            },
+            complete: () => { this.runAfterGet(); }
+        };
+        this.getStopwatches().subscribe(observer);
+    }
+
+    runAfterGet() {
+        this.stopwatchSubscriptions.forEach(s => s.unsubscribe());
+        this.stopwatchSubscriptions = [];
+        for (let i = 0; i < this.pagedStopwatches.length; ++i) {
+            if (this.pagedStopwatches[i] && this.pagedStopwatches[i].isRunning) {
+                this.start1(this.pagedStopwatches[i]);
             }
-        });
+        }
+    }
+
+    start1(task: TaskCreateJson) {
+        task.isRunning = true;
+        if (!task.isStoped) {
+            const timeStart = new Date(task.lastStartTime);
+            const timeNow = new Date(new Date(Date.now()).toISOString().slice(0, -1));
+            const elapsedTimeMoq = ((timeNow.getHours() - timeStart.getHours()) * 3600000 + (timeNow.getMinutes() - timeStart.getMinutes()) *
+                60000 + (timeNow.getSeconds() - timeStart.getSeconds()) * 1000 + (timeNow.getMilliseconds() - timeStart.getMilliseconds()));
+            this.ticks = elapsedTimeMoq;
+            task.currentSecond = (elapsedTimeMoq + task.elapsedTime) / 1000;
+            this.stopwatchSubscriptions.push(timer(0, this.milisecondPerSecond).subscribe((x) => {
+                if (task.isRunning) {
+                    this.updateTime(task);
+                }
+            }));
+        }
+        return this.ticks;
     }
 
     initTimers(): Observable<any> {
@@ -88,7 +331,7 @@ export class TasksService implements OnInit {
             request.subscribe((res: number) => {
                 this.timers = Array<TaskCreateJson>(res).fill(undefined);
                 observer.next();
-            });	
+            });
         });
     }
 
@@ -99,7 +342,7 @@ export class TasksService implements OnInit {
                 this.stopwatches = Array<TaskCreateJson>(res).fill(undefined);
                 observer.next();
             });
-        })
+        });
     }
 
     getTimersForPage(pager: any): Observable<TaskCreateJson[]> {
@@ -116,7 +359,7 @@ export class TasksService implements OnInit {
                 request = this.getTimers(revStart, length);
                 request.subscribe(data => {
                     let i = end;
-                    for(let task of data) {
+                    for (let task of data) {
                         this.timers[i] = this.timerToTaskCreateJson(task);
                         --i;
                     }
@@ -124,12 +367,14 @@ export class TasksService implements OnInit {
                     observer.next(paged);
                 });
             }
-            
-            return {unsubscribe() {
-                if (request !== undefined) {
-                    request.unsubscribe();
+
+            return {
+                unsubscribe() {
+                    if (request !== undefined) {
+                        request.unsubscribe();
+                    }
                 }
-            }};
+            };
         });
     }
 
@@ -147,7 +392,7 @@ export class TasksService implements OnInit {
                 request = this.getStopwatches(revStart, length);
                 request.subscribe(data => {
                     let i = end;
-                    for(let task of data) {
+                    for (let task of data) {
                         this.stopwatches[i] = this.stopwatchToTaskCreateJson(task);
                         --i;
                     }
@@ -155,12 +400,14 @@ export class TasksService implements OnInit {
                     observer.next(paged);
                 });
             }
-            
-            return {unsubscribe() {
-                if (request !== undefined) {
-                    request.unsubscribe();
+
+            return {
+                unsubscribe() {
+                    if (request !== undefined) {
+                        request.unsubscribe();
+                    }
                 }
-            }};
+            };
         });
     }
 
@@ -185,10 +432,11 @@ export class TasksService implements OnInit {
             maxValueSecond: 0,
             isTimerFinished: false,
             goals: 0,
-            ticksi: 0
-          };
+            ticksi: 0,
+            isShowed: true
+        };
 
-          return taskCreateJson;
+        return taskCreateJson;
     }
 
     timerToTaskCreateJson(task: TaskJson): TaskCreateJson {
@@ -212,17 +460,18 @@ export class TasksService implements OnInit {
             maxValueSecond: 0,
             isTimerFinished: false,
             goals: 0,
-            ticksi: 0
-          };
-  
-          if (taskCreateJson.goal != null) {
+            ticksi: 0,
+            isShowed: true
+        };
+
+        if (taskCreateJson.goal != null) {
             const time = taskCreateJson.goal.split(':');
             taskCreateJson.maxValueHour = Number(time[0]);
             taskCreateJson.maxValueMinute = Number(time[1]);
             taskCreateJson.maxValueSecond = Number(time[2]);
-          }
+        }
 
-          return taskCreateJson;
+        return taskCreateJson;
     }
 
     public getAllTasks(): Observable<TaskJson[]> {
@@ -261,25 +510,8 @@ export class TasksService implements OnInit {
     }
 
     DisplayTaskOnStopwatchPage(task: TaskCreateJson) {
-        this.stopwatchService.task = task.name;
-        if (task.isRunning === true) {
-            this.stopwatchService.taskJson = task;
-            this.stopwatchService.color = '#609b9b';
-            this.stopwatchService.isStopwatchPause = false;
-            this.stopwatchService.isStopwatchRun = true;
-            this.toasterService.showToaster('Displayed on stopwatch page');
-        }
-
-        if (task.isRunning === false) {
-            this.stopwatchService.taskJson = task;
-            this.stopwatchService.color = '#C23A33';
-            this.stopwatchService.isStopwatchPause = true;
-            this.stopwatchService.isStopwatchRun = false;
-            task.hour = Math.floor((task.elapsedTime / this.milisecondPerSecond) / this.secondPerHour);
-            task.minutes = Math.floor(((task.elapsedTime / this.milisecondPerSecond) % this.secondPerHour) / this.secondPerMinute);
-            task.seconds = Math.floor(((task.elapsedTime / this.milisecondPerSecond) % this.secondPerHour) % this.secondPerMinute);
-            this.toasterService.showToaster('Displayed on stopwatch page');
-        }
+        this.stopwatchService.taskJson = task;
+        this.toasterService.showToaster('Displayed on stopwatch page');
     }
 
     DisplayTaskOnTimerPage(task: TaskCreateJson) {
@@ -482,7 +714,7 @@ export class TasksService implements OnInit {
     }
 
     private getIndexOfTimersByTaskId(taskId: number) {
-        const index =  this.getIndexByTaskId(this.timers, taskId);
+        const index = this.getIndexByTaskId(this.timers, taskId);
 
         return index;
     }

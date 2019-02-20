@@ -1,231 +1,530 @@
 <div class="background">
   <div class="my-container">
     <ng-template [ngIf]="displayStopwatch">
-      <div class="fields">
-        <fieldset class="add_new">
-          <form (submit)="addStopwatch()">
-            <input class="input" placeholder="New Stopwatch Name" type="text" [(ngModel)]="taskName" name="Name">
-            <button class="but" type="submit">Add</button>
+      <div class="notMobile">
+        <div class="fields">
+          <fieldset class="add_new">
+            <form (submit)="taskService.addStopwatch()">
+              <input class="input" placeholder="New stopwatch" type="text" [(ngModel)]="taskService.taskName" name="Name">
+              <button class="but" type="submit">Add</button>
+              <mat-menu #shareStopwatch="matMenu">
+                <button type="button" mat-menu-item (click)="exportAllStopwatchesAsXml()">Export as .XML</button>
+                <button type="button" mat-menu-item (click)="exportAllStopwatchesAsCsv()">Export as .CSV</button>
+                <button type="button" mat-menu-item (click)="importFile.click()">Import file...</button>
+                <input type="file" (change)="browseFile($event)" name="uploadFile" accept=".csv,.xml" #importFile
+                  hidden>
+              </mat-menu>
+              <button type="button" matTooltip="Import or Export" mat-button [matMenuTriggerFor]="shareStopwatch">
+                <mat-icon>import_export</mat-icon><span>Export/Import</span>
+              </button>
+            </form>
+          </fieldset>
+          <fieldset class="other">
+            <input [(ngModel)]="searchText" class="search" placeholder="Find stopwatch by name">
+
+            <div class="displaybuttons">
+              <div class="button">
+                <button mat-raised-button id='firstTopButton' [ngClass]="{'active': displayStopwatch}"
+                  (click)="displayStopwatches()">Stopwatches</button>
+                <button mat-raised-button id='secondTopButton' [ngClass]="{'active': displayTimer}"
+                  (click)="displayTimers()">Timers</button>
+              </div>
+            </div>
+          </fieldset>
+        </div>
+        <div class="top-tittles">
+          <div class="name-title" (click)="filterByProperty('name')">
+            Name
+          </div>
+          <div class="goal-title">
+            Time
+          </div>
+          <div class="actions-titlestopwatch">
+            Actions
+          </div>
+        </div>
+        <mat-list class="timer-list">
+          <mat-list-item *ngFor='let task of taskService.pagedStopwatches | filter: searchText' class="grid-container">
+            <div class="name">
+              <p (click)="toggleCollapsed(task)">{{task.name}}</p>
+              <div *ngIf="task.isCollapsed===false">
+                <input [(ngModel)]="task.name" />
+                <button (click)="updateTask(task)">save</button>
+              </div>
+            </div>
+            <div class="time">
+              <app-line-progress class="textsize" [value]="task.hour" [text]="':'"></app-line-progress>
+              <app-line-progress class="textsize" [value]="task.minutes" [text]="':'"></app-line-progress>
+              <app-line-progress class="textsize" [value]="task.seconds" [text]="''"></app-line-progress>
+            </div>
+
+            <div class="actionsstopwatch">
+              <ng-template [ngIf]="task.isRunning === false">
+                <button class="but" (click)="taskService.startStopwatch(task)"><i class="fa fa-play"></i></button>
+              </ng-template>
+              <ng-template [ngIf]="task.isRunning === true">
+                <button class="but" (click)="taskService.pauseStopwatch(task)"><i class="fa fa-pause"></i></button>
+              </ng-template>
+              <button class="but" (click)="taskService.resetStopwatch(task)"><i class="fa fa-refresh"></i></button>
+              <button class="but"><i class="fa fa-bars"></i></button>
+              <button class="but" (click)="deleteTask(task)"><i class="fa fa-times"></i></button>
+              <button class="but" (click)="taskService.DisplayTaskOnStopwatchPage(task)" [matTooltipShowDelay]="2000"
+                matTooltip="Display on timer page"><i class="fa fa-stopwatch"></i></button>
+            </div>
+          </mat-list-item>
+        </mat-list>
+        <div class="flex-container">
+          <div *ngIf="taskService.stopwatchPager.pages && taskService.stopwatchPager.pages.length" class="pagination">
+            <button mat-raised-button [disabled]="taskService.stopwatchPager.currentPage === 1" (click)="taskService.setStopwatchesPage(1)">
+              <i class="fas fa-angle-double-left"></i>
+            </button>
+            <button mat-raised-button [disabled]="taskService.stopwatchPager.currentPage === 1"
+              (click)="taskService.setStopwatchesPage(taskService.stopwatchPager.currentPage - 1)">
+              <i class="fas fa-angle-left"></i>
+            </button>
+            <button mat-raised-button *ngFor="let page of taskService.stopwatchPager.pages"
+              [ngClass]="{active:taskService.stopwatchPager.currentPage === page}" (click)="taskService.setStopwatchesPage(page)">
+              {{page}}
+            </button>
+            <button mat-raised-button [disabled]="taskService.stopwatchPager.currentPage === taskService.stopwatchPager.totalPages"
+              (click)="taskService.setStopwatchesPage(taskService.stopwatchPager.currentPage + 1)">
+              <i class="fas fa-angle-right"></i>
+            </button>
+            <button mat-raised-button [disabled]="taskService.stopwatchPager.currentPage === taskService.stopwatchPager.totalPages"
+              (click)="taskService.setStopwatchesPage(taskService.stopwatchPager.totalPages)">
+              <i class="fas fa-angle-double-right"></i>
+            </button>
+          </div>
+          <div class="paginationSelect">
+          <mat-form-field *ngIf="taskService.stopwatchPager.pages && taskService.stopwatchPager.pages.length">
+            <mat-select placeholder="Items per page" [(ngModel)]="taskService.pageSizeList" name="size"
+              (selectionChange)="taskService.setStopwatchesPage(1)">
+              <mat-option *ngFor="let size of pageSizes" [value]="size.value">
+                {{size.id}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="mobile">
+        <div class="fields">
+          <div class="add_new">
+            <form (submit)="taskService.addStopwatch()">
+              <input class="input" placeholder="New stopwatch" type="text" [(ngModel)]="taskService.taskName" name="Name">
+              <button class="but" type="submit">Add</button>
+            </form>
+          </div>
+          <div class="export">
             <mat-menu #shareStopwatch="matMenu">
               <button type="button" mat-menu-item (click)="exportAllStopwatchesAsXml()">Export as .XML</button>
               <button type="button" mat-menu-item (click)="exportAllStopwatchesAsCsv()">Export as .CSV</button>
               <button type="button" mat-menu-item (click)="importFile.click()">Import file...</button>
-              <input type="file" (change)="browseFile($event)" name="uploadFile" accept=".csv,.xml" #importFile hidden> 
+              <input type="file" (change)="browseFile($event)" name="uploadFile" accept=".csv,.xml" #importFile hidden>
             </mat-menu>
             <button type="button" matTooltip="Import or Export" mat-button [matMenuTriggerFor]="shareStopwatch">
               <mat-icon>import_export</mat-icon><span>Export/Import</span>
             </button>
-          </form>
-        </fieldset>
-        <fieldset class="other">
-          <input [(ngModel)]="searchText" class="search" placeholder="Find Stopwatch By Name">
-              <div class="displaybuttons">
-                  <div class="button">
-                    <button mat-raised-button id='firstTopButton'  [ngClass]="{'active': displayStopwatch}" (click)="displayStopwatches()">Stopwatches</button>
-                    <button mat-raised-button id='secondTopButton' [ngClass]="{'active': displayTimer}" (click)="displayTimers()">Timers</button>
-                  </div>
-              </div>         
-        </fieldset>
-      </div>
-      <div class="top-tittles">
-        <div class="name-title" (click)="filterByProperty('name')">
-          Name
-        </div>
-        <div class="goal-title">
-          Time
-        </div>
-        <div class="actions-titlestopwatch">
-          Actions
-        </div>
-      </div>
-      <mat-list class="timer-list">
-        <mat-list-item *ngFor='let task of pagedStopwatches | filter: searchText' class="grid-container">
-          <div class="name">
-            <p (click)="toggleCollapsed(task)">{{task.name}}</p>
-            <div *ngIf="task.isCollapsed===false">
-              <input [(ngModel)]="task.name" />
-              <button (click)="updateTask(task)">save</button>
+          </div>
+          <div class="other">
+            <input [(ngModel)]="searchText" class="search" placeholder="Find stopwatch by name">
+            <div class="paginationSelect">
+            <mat-form-field>
+              <mat-select [(value)]="selected">
+                <mat-option value="Stopwatches" (click)="displayStopwatches()">Stopwatches</mat-option>
+                <mat-option value="Timers" (click)="displayTimers()">Timers</mat-option>
+              </mat-select>
+            </mat-form-field>
             </div>
           </div>
-          <div class="time">
-            <app-line-progress class="textsize" [value]="task.hour" [text]="':'"></app-line-progress>
-            <app-line-progress class="textsize" [value]="task.minutes" [text]="':'"></app-line-progress>
-            <app-line-progress class="textsize" [value]="task.seconds" [text]="''"></app-line-progress>
-          </div>
-          <div class="actionsstopwatch">
-            <ng-template [ngIf]="task.isRunning === false">
-            <button class="but" (click)="startTask(task)"><i class="fa fa-play"></i></button>
-            </ng-template>
-            <ng-template [ngIf]="task.isRunning === true">
-            <button class="but" [disabled]="task.isRunning === false" (click)="pauseTask(task)"><i class="fa fa-pause"></i></button>
-          </ng-template>
-            <button class="but" [disabled]="task.isRunning === false" (click)="reset(task)"><i class="fa fa-refresh"></i></button>
-            <button class="but"><i class="fa fa-bars"></i></button>
-            <button class="but" (click)="deleteTask(task)"><i class="fa fa-times"></i></button>
-            <button class="but" (click)="taskService.DisplayTaskOnStopwatchPage(task)"
-              [matTooltipShowDelay]="2000" matTooltip="Display on timer page"><i class="fa fa-stopwatch"></i></button>
-          </div>
-        </mat-list-item>
-      </mat-list>
-      <div class="flex-container">
-        <div *ngIf="stopwatchPager.pages && stopwatchPager.pages.length" class="pagination">
-          <button mat-raised-button [disabled]="stopwatchPager.currentPage === 1" (click)="setStopwatchesPage(1)">
-            <i class="fas fa-angle-double-left"></i>
-          </button>
-          <button mat-raised-button [disabled]="stopwatchPager.currentPage === 1"
-            (click)="setStopwatchesPage(stopwatchPager.currentPage - 1)">
-            <i class="fas fa-angle-left"></i>
-          </button>
-          <button mat-raised-button *ngFor="let page of stopwatchPager.pages"
-            [ngClass]="{active:stopwatchPager.currentPage === page}" (click)="setStopwatchesPage(page)">
-            {{page}}
-          </button>
-          <button mat-raised-button [disabled]="stopwatchPager.currentPage === stopwatchPager.totalPages"
-            (click)="setStopwatchesPage(stopwatchPager.currentPage + 1)">
-            <i class="fas fa-angle-right"></i>
-          </button>
-          <button mat-raised-button [disabled]="stopwatchPager.currentPage === stopwatchPager.totalPages"
-            (click)="setStopwatchesPage(stopwatchPager.totalPages)">
-            <i class="fas fa-angle-double-right"></i>
-          </button>
         </div>
-        <mat-form-field *ngIf="stopwatchPager.pages && stopwatchPager.pages.length">
-          <mat-select placeholder="Items per page" [(ngModel)]="pageSizeList" name="size"
-            (selectionChange)="setStopwatchesPage(1)">
-            <mat-option *ngFor="let size of pageSizes" [value]="size.value">
-              {{size.id}}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
+
+        <div class="top-tittles">
+          <div class="name-title" (click)="filterByProperty('name')">
+            Name
+          </div>
+          <div class="goal-title">
+            Time
+          </div>
+          <div class="otherActions">
+            Other
+          </div>
+        </div>
+        <mat-list class="timer-list">
+          <mat-list-item *ngFor='let task of pagedStopwatches | filter: searchText' class="grid-container">
+            <div class="name">
+              <p>{{task.name}}</p>
+            </div>
+            <div class="time">
+              <app-line-progress class="textsize" [value]="task.hour" [text]="':'"></app-line-progress>
+              <app-line-progress class="textsize" [value]="task.minutes" [text]="':'"></app-line-progress>
+              <app-line-progress class="textsize" [value]="task.seconds" [text]="''"></app-line-progress>
+            </div>
+            <mat-menu #otherActions="matMenu">
+              <ng-template [ngIf]="task.isRunning === false">
+                <button type="button" matTooltip="Start stopwatch" (click)="taskService.startStopwatch(task)" id="startMobileButton">
+                  <p>Start stopwatch</p>
+                </button>
+              </ng-template>
+              <ng-template [ngIf]="task.isRunning === true">
+                <button type="button" matTooltip="Pause stopwatch" (click)="taskService.pauseStopwatch(task)" id="pauseMobileButton">
+                  <p>Pause stopwatch</p>
+                </button>
+              </ng-template>
+              <button type="button" matTooltip="Reset stopwatch" (click)="taskService.resetStopwatch(task)" id="resetMobileButton">
+                <p>Reset stopwatch</p>
+              </button>
+              <button type="button" matTooltip="Delete stopwatch" (click)="deleteTask(task)" id="deleteMobileButton">
+                <p>Delete stopwatch</p>
+              </button>
+              <button type="button" matTooltip="Display stopwatch on Stopwatch page"
+                (click)="taskService.DisplayTaskOnStopwatchPage(task)" [matTooltipShowDelay]="2000"
+                id="showMobileButton">
+                <p>Display on Stopwatch page</p>
+              </button>
+            </mat-menu>
+            <div class="otherActionsButton">
+              <button type="button" mat-button [matMenuTriggerFor]="otherActions">
+                <span>Other</span>
+              </button>
+            </div>
+          </mat-list-item>
+        </mat-list>
+        <div class="flex-container">
+          <div *ngIf="taskService.stopwatchPager.pages && taskService.stopwatchPager.pages.length" class="pagination">
+            <button mat-raised-button [disabled]="taskService.stopwatchPager.currentPage === 1" (click)="taskService.setStopwatchesPage(1)">
+              <i class="fas fa-angle-double-left"></i>
+            </button>
+            <button mat-raised-button [disabled]="taskService.stopwatchPager.currentPage === 1"
+              (click)="taskService.setStopwatchesPage(taskService.stopwatchPager.currentPage - 1)">
+              <i class="fas fa-angle-left"></i>
+            </button>
+            <button mat-raised-button *ngFor="let page of taskService.stopwatchPager.pages"
+              [ngClass]="{active:taskService.stopwatchPager.currentPage === page}" (click)="taskService.setStopwatchesPage(page)">
+              {{page}}
+            </button>
+            <button mat-raised-button [disabled]="taskService.stopwatchPager.currentPage === taskService.stopwatchPager.totalPages"
+              (click)="taskService.setStopwatchesPage(taskService.stopwatchPager.currentPage + 1)">
+              <i class="fas fa-angle-right"></i>
+            </button>
+            <button mat-raised-button [disabled]="taskService.stopwatchPager.currentPage === taskService.stopwatchPager.totalPages"
+              (click)="taskService.setStopwatchesPage(taskService.stopwatchPager.totalPages)">
+              <i class="fas fa-angle-double-right"></i>
+            </button>
+          </div>
+          <div class="paginationSelect">
+          <mat-form-field *ngIf="taskService.stopwatchPager.pages && taskService.stopwatchPager.pages.length">
+            <mat-select placeholder="Items per page" [(ngModel)]="pageSizeList" name="size"
+              (selectionChange)="taskService.setStopwatchesPage(1)">
+              <mat-option *ngFor="let size of pageSizes" [value]="size.value">
+                {{size.id}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          </div>
+        </div>
       </div>
     </ng-template>
+
     <ng-template [ngIf]="displayTimer">
-      <div class="fields">
-        <fieldset class="add_new">
-          <form (submit)="addTimer()">
-              <input class="input" placeholder="New Timer Name" type="text" [(ngModel)]="taskName" name="Name">
+      <div class="notMobile">
+        <div class="fields">
+          <fieldset class="add_new">
+            <form (submit)="addTimer()">
+              <input class="input" placeholder="New timer" type="text" [(ngModel)]="taskService.taskName" name="Name">
               <button class="but" type="submit">Add</button>
-            <mat-menu #shareTimer="matMenu">
-              <button type="button" mat-menu-item (click)="exportAllTimersAsXml()">Download .XML</button>
-              <button type="button" mat-menu-item (click)="exportAllTimersAsCsv()">Download .CSV</button>
-              <button type="button" mat-menu-item (click)="importFile.click()">Import file...</button>
-              <input type="file" (change)="browseFile($event)" name="uploadFile" accept=".csv,.xml" #importFile hidden> 
-            </mat-menu>
-            <button type="button" matTooltip="Import or Export" mat-button [matMenuTriggerFor]="shareTimer">
-              <mat-icon>import_export</mat-icon><span>Export/Import</span>
-            </button>
-          </form>
-        </fieldset>
-        <fieldset class="other">
-          <input [(ngModel)]="searchText" class="search" placeholder="Find Timer By Name">
+              <mat-menu #shareTimer="matMenu">
+                <button type="button" mat-menu-item (click)="exportAllTimersAsXml()">Download .XML</button>
+                <button type="button" mat-menu-item (click)="exportAllTimersAsCsv()">Download .CSV</button>
+                <button type="button" mat-menu-item (click)="importFile.click()">Import file...</button>
+                <input type="file" (change)="browseFile($event)" name="uploadFile" accept=".csv,.xml" #importFile
+                  hidden>
+              </mat-menu>
+              <button type="button" matTooltip="Import or Export" mat-button [matMenuTriggerFor]="shareTimer">
+                <mat-icon>import_export</mat-icon><span>Export/Import</span>
+              </button>
+            </form>
+          </fieldset>
+          <fieldset class="other">
+            <input [(ngModel)]="searchText" class="search" placeholder="Find timer by name">
             <div class="displaybuttons">
-                
-            <div class="button">
-              <button mat-raised-button id='firstTopButton'  [ngClass]="{'active': displayStopwatch}" (click)="displayStopwatches()">Stopwatches</button>
-              <button mat-raised-button id='secondTopButton' [ngClass]="{'active': displayTimer}" (click)="displayTimers()">Timers</button>
-            </div>
-        </div>
-            
-        </fieldset>
-      </div>
-      <div class="top-tittles">
-        <div class="name-title" (click)="filterByProperty('name')">
-          Name
-        </div>
-        <div class="time-title">
-          Goal
-        </div>
-        <div class="goal-title">
-          Time
-        </div>
-        <div class="actions-title">
-          Actions
-        </div>
-      </div>
-      <mat-list class="timer-list">
-        <mat-list-item *ngFor='let task of pagedTimers | filter: searchText' class="grid-container">
-          <div class="name">
-            <p (click)="toggleCollapsed(task)">{{task.name}}</p>
-            <div *ngIf="task.isCollapsed===false">
-              <input [(ngModel)]="task.name" />
-              <button (click)="updateTask(task)">save</button>
-            </div>
-          </div>
-          <div class="time">
-              <ng-template [ngIf]="task.maxValueHour < 10">
-                  <span>0</span>
-                </ng-template>
-            <p (click)="toggleCollapsed(task)">{{task.maxValueHour}}</p>
-            <div *ngIf="task.isCollapsed===false">
-              <input [(ngModel)]=task.maxValueHour />
+
+              <div class="button">
+                <button mat-raised-button id='firstTopButton' [ngClass]="{'active': displayStopwatch}"
+                  (click)="displayStopwatches()">Stopwatches</button>
+                <button mat-raised-button id='secondTopButton' [ngClass]="{'active': displayTimer}"
+                  (click)="displayTimers()">Timers</button>
               </div>
-            <p>:</p>
-            <ng-template [ngIf]="task.maxValueMinute < 10">
-                <span>0</span>
-              </ng-template>
-              <p (click)="toggleCollapsed(task)">{{task.maxValueMinute}}</p>
-              <div *ngIf="task.isCollapsed===false">
-                <input [(ngModel)]=task.maxValueMinute />
-                </div>
-            <p>:</p>
-            <ng-template [ngIf]="task.maxValueSecond < 10">
-                <span>0</span>
-              </ng-template>
-              <p (click)="toggleCollapsed(task)">{{task.maxValueSecond}}</p>
-              <div *ngIf="task.isCollapsed===false">
-                <input [(ngModel)]=task.maxValueSecond />
-                </div>
-          </div>
-          <div class="time">
-            <app-line-progress class="textsize" [value]="task.hour" [text]="':'"></app-line-progress>
-            <app-line-progress class="textsize" [value]="task.minutes" [text]="':'"></app-line-progress>
-            <app-line-progress class="textsize" [value]="task.seconds" [text]="''"></app-line-progress>    
-          </div>                   
-          <div class="actions">
-            <ng-template [ngIf]="task.isRunning === false">
-            <button class="but" (click)="startTimer(task)"><i class="fa fa-play"></i></button>
-            </ng-template>
-            <ng-template [ngIf]="task.isRunning === true">
-            <button class="but" [disabled]="task.isRunning === false" (click)="pauseTimer(task)"><i class="fa fa-pause"></i></button>
-            </ng-template>
-            <button class="but" [disabled]="task.isRunning === false" (click)="resetTimer(task)"><i class="fa fa-refresh"></i></button>
-            <button class="but"><i class="fa fa-bars"></i></button>
-            <button class="but" (click)="deleteTimer(task)"><i class="fa fa-times"></i></button>
-            <button class="but" (click)="taskService.DisplayTaskOnTimerPage(task)"
-              [matTooltipShowDelay]="2000" matTooltip="Display on stopwatch page"><i class="fa fa-clock-o"></i></button>
-          </div>
-        </mat-list-item>
-      </mat-list>
-      <div class="flex-container">
-        <div *ngIf="timerPager.pages && timerPager.pages.length" class="pagination">
-          <button mat-raised-button [disabled]="timerPager.currentPage === 1" (click)="setTimersPage(1)">
-            <i class="fas fa-angle-double-left"></i>
-          </button>
-          <button mat-raised-button [disabled]="timerPager.currentPage === 1"
-            (click)="setTimersPage(timerPager.currentPage - 1)">
-            <i class="fas fa-angle-left"></i>
-          </button>
-          <button mat-raised-button *ngFor="let page of timerPager.pages" [ngClass]="{active:timerPager.currentPage === page}"
-            (click)="setTimersPage(page)">
-            {{page}}
-          </button>
-          <button mat-raised-button [disabled]="timerPager.currentPage === timerPager.totalPages"
-            (click)="setTimersPage(timerPager.currentPage + 1)">
-            <i class="fas fa-angle-right"></i>
-          </button>
-          <button mat-raised-button [disabled]="timerPager.currentPage === timerPager.totalPages"
-            (click)="setTimersPage(timerPager.totalPages)">
-            <i class="fas fa-angle-double-right"></i>
-          </button>
+            </div>
+
+          </fieldset>
         </div>
-        <mat-form-field *ngIf="timerPager.pages && timerPager.pages.length">
-          <mat-select placeholder="Items per page" [(ngModel)]="pageSizeList" name="size"
-            (selectionChange)="setTimersPage(1)">
-            <mat-option *ngFor="let size of pageSizes" [value]="size.value">
-              {{size.id}}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
+        <div class="top-tittles">
+          <div class="name-title" (click)="filterByProperty('name')">
+            Name
+          </div>
+          <div class="time-title">
+            Goal
+          </div>
+          <div class="goal-title">
+            Time
+          </div>
+          <div class="actions-title">
+            Actions
+          </div>
+        </div>
+        <mat-list class="timer-list">
+          <mat-list-item *ngFor='let task of pagedTimers | filter: searchText' class="grid-container">
+            <div class="name">
+              <div *ngIf="task.isCollapsed===true">
+              <p (click)="toggleCollapsed(task)">{{task.name}}</p>
+              </div>
+              <div class="styleUpdate" *ngIf="task.isCollapsed===false">
+                <mat-form-field>
+                <input class="timerName" matInput [(ngModel)]="task.name" />
+              </mat-form-field>
+              <button class="updateButton" (click)="updateTask(task)">save</button>
+              </div>
+            </div>
+            <div class="times">
+              <ng-template [ngIf]="task.maxValueHour < 10">
+                <div *ngIf="task.isShowed===true">
+                <span>0</span>
+                </div>
+              </ng-template>
+              <p (click)="inputShowed(task)">{{task.maxValueHour}}</p>
+              <div *ngIf="task.isShowed===false">
+                <mat-form-field>
+                <input matInput [(ngModel)]=task.maxValueHour />
+              </mat-form-field>
+              </div>
+              <p>:</p>
+              <ng-template [ngIf]="task.maxValueMinute < 10">
+                <div *ngIf="task.isShowed===true">
+                <span>0</span>
+                </div>
+              </ng-template>
+              <p (click)="inputShowed(task)">{{task.maxValueMinute}}</p>
+              <div *ngIf="task.isShowed===false">
+                <mat-form-field>
+                <input matInput [(ngModel)]=task.maxValueMinute />
+              </mat-form-field>
+              </div>
+              <p>:</p>
+              <ng-template [ngIf]="task.maxValueSecond < 10">
+                <div *ngIf="task.isShowed===true">
+                <span>0</span>
+                </div>
+              </ng-template>
+              <p (click)="inputShowed(task)">{{task.maxValueSecond}}</p>
+              <div *ngIf="task.isShowed===false">
+                <mat-form-field>
+                <input matInput [(ngModel)]=task.maxValueSecond />
+              </mat-form-field>
+              </div>
+            </div>
+            <div class="timet">
+              <app-line-progress class="textsize" [value]="task.hour" [text]="':'"></app-line-progress>
+              <app-line-progress class="textsize" [value]="task.minutes" [text]="':'"></app-line-progress>
+              <app-line-progress class="textsize" [value]="task.seconds" [text]="''"></app-line-progress>
+            </div>
+            <div class="actions">
+              <ng-template [ngIf]="task.isRunning === false">
+                <button class="but" (click)="startTimer(task)"><i class="fa fa-play"></i></button>
+              </ng-template>
+              <ng-template [ngIf]="task.isRunning === true">
+                <button class="but" [disabled]="task.isRunning === false" (click)="pauseTimer(task)"><i
+                    class="fa fa-pause"></i></button>
+              </ng-template>
+              <button class="but" [disabled]="task.isRunning === false" (click)="resetTimer(task)"><i
+                  class="fa fa-refresh"></i></button>
+              <button class="but"><i class="fa fa-bars"></i></button>
+              <button class="but" (click)="deleteTimer(task)"><i class="fa fa-times"></i></button>
+              <button class="but" (click)="taskService.DisplayTaskOnTimerPage(task)" [matTooltipShowDelay]="2000"
+                matTooltip="Display on stopwatch page"><i class="fa fa-clock-o"></i></button>
+            </div>
+          </mat-list-item>
+        </mat-list>
+        <div class="flex-container">
+          <div *ngIf="timerPager.pages && timerPager.pages.length" class="pagination">
+            <button mat-raised-button [disabled]="timerPager.currentPage === 1" (click)="setTimersPage(1)">
+              <i class="fas fa-angle-double-left"></i>
+            </button>
+            <button mat-raised-button [disabled]="timerPager.currentPage === 1"
+              (click)="setTimersPage(timerPager.currentPage - 1)">
+              <i class="fas fa-angle-left"></i>
+            </button>
+            <button mat-raised-button *ngFor="let page of timerPager.pages"
+              [ngClass]="{active:timerPager.currentPage === page}" (click)="setTimersPage(page)">
+              {{page}}
+            </button>
+            <button mat-raised-button [disabled]="timerPager.currentPage === timerPager.totalPages"
+              (click)="setTimersPage(timerPager.currentPage + 1)">
+              <i class="fas fa-angle-right"></i>
+            </button>
+            <button mat-raised-button [disabled]="timerPager.currentPage === timerPager.totalPages"
+              (click)="setTimersPage(timerPager.totalPages)">
+              <i class="fas fa-angle-double-right"></i>
+            </button>
+          </div>
+          <div class="paginationSelect">
+          <mat-form-field *ngIf="timerPager.pages && timerPager.pages.length">
+            <mat-select placeholder="Items per page" [(ngModel)]="pageSizeList" name="size"
+              (selectionChange)="setTimersPage(1)">
+              <mat-option *ngFor="let size of pageSizes" [value]="size.value">
+                {{size.id}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        </div>
+      </div>
+      <div class="mobile">
+        <div class="fields">
+          <fieldset class="add_new">
+            <form (submit)="addTimer()">
+              <input class="input" placeholder="New timer name" type="text" [(ngModel)]="taskService.taskName" name="Name">
+              <button class="but" type="submit">Add</button>
+              <mat-menu #shareTimer="matMenu">
+                <button type="button" mat-menu-item (click)="exportAllTimersAsXml()">Download .XML</button>
+                <button type="button" mat-menu-item (click)="exportAllTimersAsCsv()">Download .CSV</button>
+                <button type="button" mat-menu-item (click)="importFile.click()">Import file...</button>
+                <input type="file" (change)="browseFile($event)" name="uploadFile" accept=".csv,.xml" #importFile
+                  hidden>
+              </mat-menu>
+              <button type="button" matTooltip="Import or Export" mat-button [matMenuTriggerFor]="shareTimer">
+                <mat-icon>import_export</mat-icon><span>Export/Import</span>
+              </button>
+            </form>
+          </fieldset>
+          <fieldset class="other">
+            <input [(ngModel)]="searchText" class="search" placeholder="Find timer by name">
+            <mat-form-field>
+              <mat-select [(value)]="selected">
+                <mat-option value="Stopwatches" (click)="displayStopwatches()">Stopwatches</mat-option>
+                <mat-option value="Timers" (click)="displayTimers()">Timers</mat-option>
+              </mat-select>
+            </mat-form-field>
+
+          </fieldset>
+        </div>
+        <div class="top-tittles">
+          <div class="name-title" (click)="filterByProperty('name')">
+            Name
+          </div>
+          <div class="time-title">
+            Goal
+          </div>
+          <div class="goal-title">
+            Time
+          </div>
+          <div class="actions-titles">
+            Other
+          </div>
+        </div>
+        <mat-list class="timer-list">
+          <mat-list-item *ngFor='let task of pagedTimers | filter: searchText' class="grid-container">
+            <div class="name">
+              <p (click)="toggleCollapsed(task)">{{task.name}}</p>
+              <div *ngIf="task.isCollapsed===false">
+                <input [(ngModel)]="task.name" />
+                <button (click)="updateTask(task)">save</button>
+              </div>
+            </div>
+            <div class="timek">
+              <ng-template [ngIf]="task.maxValueHour < 10">
+                <span>0</span>
+              </ng-template>
+              <p (click)="inputShowed(task)">{{task.maxValueHour}}</p>
+              <div *ngIf="task.isShowed===false">
+                <input [(ngModel)]=task.maxValueHour />
+              </div>
+              <p>:</p>
+              <ng-template [ngIf]="task.maxValueMinute < 10">
+                <span>0</span>
+              </ng-template>
+              <p (click)="inputShowed(task)">{{task.maxValueMinute}}</p>
+              <div *ngIf="task.isShowed===false">
+                <input [(ngModel)]=task.maxValueMinute />
+              </div>
+              <p>:</p>
+              <ng-template [ngIf]="task.maxValueSecond < 10">
+                <span>0</span>
+              </ng-template>
+              <p (click)="inputShowed(task)">{{task.maxValueSecond}}</p>
+              <div *ngIf="task.isShowed===false">
+                <input [(ngModel)]=task.maxValueSecond />
+              </div>
+            </div>
+            <div class="time">
+              <app-line-progress class="textsize" [value]="task.hour" [text]="':'"></app-line-progress>
+              <app-line-progress class="textsize" [value]="task.minutes" [text]="':'"></app-line-progress>
+              <app-line-progress class="textsize" [value]="task.seconds" [text]="''"></app-line-progress>
+            </div>
+            <mat-menu #otherActions="matMenu">
+              <ng-template [ngIf]="task.isRunning === false">
+                <button type="button" matTooltip="Start timer" (click)="startTimer(task)" id="startMobileButton">
+                  <p>Start timer</p>
+                </button>
+              </ng-template>
+              <ng-template [ngIf]="task.isRunning === true">
+                <button type="button" matTooltip="Pause timer" (click)="pauseTimer(task)" id="pauseMobileButton">
+                  <p>Pause timer</p>
+                </button>
+              </ng-template>
+              <button type="button" matTooltip="Reset timer" (click)="resetTimer(task)" id="resetMobileButton">
+                <p>Reset timer</p>
+              </button>
+              <button type="button" matTooltip="Delete timer" (click)="deleteTimer(task)" id="deleteMobileButton">
+                <p>Delete timer</p>
+              </button>
+              <button type="button" matTooltip="Display stopwatch on Stopwatch page"
+                (click)="taskService.DisplayTaskOnTimerPage(task)" [matTooltipShowDelay]="2000" id="showMobileButton">
+                <p>Display on Timer page</p>
+              </button>
+            </mat-menu>
+            <div class="otherActionsButton">
+              <button type="button" mat-button [matMenuTriggerFor]="otherActions">
+                <span>Other</span>
+              </button>
+            </div>
+          </mat-list-item>
+        </mat-list>
+        <div class="flex-container">
+          <div *ngIf="timerPager.pages && timerPager.pages.length" class="pagination">
+            <button mat-raised-button [disabled]="timerPager.currentPage === 1" (click)="setTimersPage(1)">
+              <i class="fas fa-angle-double-left"></i>
+            </button>
+            <button mat-raised-button [disabled]="timerPager.currentPage === 1"
+              (click)="setTimersPage(timerPager.currentPage - 1)">
+              <i class="fas fa-angle-left"></i>
+            </button>
+            <button mat-raised-button *ngFor="let page of timerPager.pages"
+              [ngClass]="{active:timerPager.currentPage === page}" (click)="setTimersPage(page)">
+              {{page}}
+            </button>
+            <button mat-raised-button [disabled]="timerPager.currentPage === timerPager.totalPages"
+              (click)="setTimersPage(timerPager.currentPage + 1)">
+              <i class="fas fa-angle-right"></i>
+            </button>
+            <button mat-raised-button [disabled]="timerPager.currentPage === timerPager.totalPages"
+              (click)="setTimersPage(timerPager.totalPages)">
+              <i class="fas fa-angle-double-right"></i>
+            </button>
+          </div>
+           <div class=paginationSelect>
+          <mat-form-field *ngIf="timerPager.pages && timerPager.pages.length">
+            <mat-select placeholder="Items per page" [(ngModel)]="pageSizeList" name="size"
+              (selectionChange)="setTimersPage(1)">
+              <mat-option *ngFor="let size of pageSizes" [value]="size.value">
+                {{size.id}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        </div>
       </div>
     </ng-template>
   </div>
