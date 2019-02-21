@@ -26,7 +26,6 @@ export class StopwatchComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.taskService.startConnection();
     this.taskService.addCreateTaskListener();
     this.taskService.addUpdateTaskListener();
     this.taskService.updateFromStopwatchPageAction = (index, task) => {
@@ -47,6 +46,7 @@ export class StopwatchComponent implements OnInit {
       this.taskService.setStopwatchesPage(1);
       this.stopwatchService.taskJson = this.taskService.stopwatches[0];
       this.taskService.startStopwatch(this.taskService.stopwatches[0]);
+      this.startTask();
       return this.taskService.createFromStopwatchPage = false;
     };
   }
@@ -92,6 +92,7 @@ export class StopwatchComponent implements OnInit {
   }
 
   pauseTask() {
+    this.taskService.setStopwatchesPage(1);
     this.taskService.updateFromStopwatchPage = true;
     this.taskService.stopwatches.forEach(stopwatch=> stopwatch.description = '');
     this.stopwatchService.taskJson.description = this.stopwatchService.description;
@@ -121,6 +122,7 @@ export class StopwatchComponent implements OnInit {
   }
 
   startTask() {
+    this.taskService.setStopwatchesPage(1);
     this.taskService.updateFromStopwatchPage = true;
     this.taskService.stopwatches.forEach(stopwatch=> stopwatch.description = '');
     this.stopwatchService.taskJson.description = this.stopwatchService.description;
@@ -139,6 +141,7 @@ export class StopwatchComponent implements OnInit {
   }
 
   resetTask() {
+    this.taskService.setStopwatchesPage(1);
     this.taskService.broadcastResetTask(this.stopwatchService.taskJson);
   }
 

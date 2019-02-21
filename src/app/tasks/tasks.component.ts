@@ -107,7 +107,6 @@ export class TasksComponent implements OnInit {
 
   ngOnInit() {
     this.taskService.initTimers().subscribe(() => { this.setTimersPage(1) });
-    this.taskService.startConnection();
     this.taskService.addCreateTaskListener();
     this.taskService.addStartTaskListener();
     this.taskService.addPauseTaskListener();

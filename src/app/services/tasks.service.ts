@@ -56,9 +56,9 @@ export class TasksService implements OnInit {
         private pagerService: PagerService
     ) {
         this.initStopwatches().subscribe(() => { this.setStopwatchesPage(1); });
+        this.startConnection();
     }
     ngOnInit() {
-        this.startConnection();
     }
 
     updateStopwatchListener(index: number, task: any) {
