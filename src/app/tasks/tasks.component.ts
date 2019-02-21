@@ -129,6 +129,7 @@ export class TasksComponent implements OnInit {
     };
     this.taskService.createTimerAction = (task) => {
       this.addTimerListener(task);
+
     };
     this.taskService.deleteStopwatchAction = (index) => {
       this.deleteStopwatchListener(index);

@@ -30,12 +30,16 @@ export class TasksService implements OnInit {
     pagedStopwatches: TaskCreateJson[];
     stopwatchPager: any = {};
     pageSizeList = 10;
+    createFromStopwatchPage = false;
+    updateFromStopwatchPage = false;
 
     @Input() startStopwatchAction: Function;
     @Input() pauseStopwatchAction: Function;
     @Input() resetStopwatchAction: Function;
     @Input() resetTimerAction: Function;
     @Input() createStopwatchAction: Function;
+    @Input() createFromStopwatchPageAction: Function;
+    @Input() updateFromStopwatchPageAction: Function;
     @Input() createTimerAction: Function;
     @Input() deleteStopwatchAction: Function;
     @Input() deleteTimerAction: Function;
@@ -54,6 +58,7 @@ export class TasksService implements OnInit {
         this.initStopwatches().subscribe(() => { this.setStopwatchesPage(1); });
     }
     ngOnInit() {
+        this.startConnection();
     }
 
     updateStopwatchListener(index: number, task: any) {
@@ -83,6 +88,7 @@ export class TasksService implements OnInit {
         task.hour = task.minutes = task.seconds = 0;
         task.elapsedTime = 0;
         task.isStoped = task.isRunning = false;
+        this.runAfterGet();
     }
 
     updateStopwatch(task: TaskCreateJson) {
@@ -101,11 +107,11 @@ export class TasksService implements OnInit {
 
     startStopwatch(task: TaskCreateJson) {
 
-        if (this.stopwatchService.isCreate) {
-            this.stopwatchService.taskJson = this.stopwatches[0];
-            this.stopwatchService.isCreate = false;
+        if (task.description === this.stopwatchService.description) {
+            this.stopwatchService.taskJson = task;
+            this.stopwatches.forEach(stopwatch => stopwatch.description = '');
         }
-
+      
         this.start(task);
         task.lastStartTime = (new Date(Date.now())).toISOString().slice(0, -1);
         this.broadcastStartTask(task);
@@ -146,9 +152,9 @@ export class TasksService implements OnInit {
 
     pauseStopwatch(task: TaskCreateJson) {
 
-        if (this.stopwatchService.isCreate) {
-            this.stopwatchService.taskJson = this.stopwatches[0];
-            this.stopwatchService.isCreate = false;
+        if (task.description === this.stopwatchService.description) {
+            this.stopwatchService.taskJson = task;
+            this.stopwatches.forEach(stopwatch => stopwatch.description = '');
         }
 
         task.isRunning = false;
@@ -181,11 +187,11 @@ export class TasksService implements OnInit {
     }
 
     resetStopwatch(task: TaskCreateJson) {
-        this.pauseStopwatch(task);
         task.hour = task.minutes = task.seconds = 0;
         task.elapsedTime = 0;
         task.isStoped = task.isRunning = false;
         this.broadcastResetTask(task);
+        this.runAfterGet();
         const timeStart = new Date(task.lastStartTime);
         const timeNow = new Date(new Date(Date.now()).toISOString().slice(0, -1));
         const stop = new Date(Date.now()).toISOString().slice(0, -1);
@@ -510,6 +516,8 @@ export class TasksService implements OnInit {
     }
 
     DisplayTaskOnStopwatchPage(task: TaskCreateJson) {
+        this.stopwatches.forEach(stopwatch => stopwatch.description = '');
+        task.description = this.stopwatchService.description;
         this.stopwatchService.taskJson = task;
         this.toasterService.showToaster('Displayed on stopwatch page');
     }
@@ -588,13 +596,19 @@ export class TasksService implements OnInit {
     public addCreateTaskListener = () => {
         const self = this;
         this.hubConnection.on('CreateTask', (data) => {
-            if (data.watchType === 0) {
-                if (self.createStopwatchAction) {
-                    self.createStopwatchAction(data);
+            if (this.createFromStopwatchPage) {
+                if (self.createFromStopwatchPageAction) {
+                    self.createFromStopwatchPageAction(data);
                 }
             } else {
-                if (self.createTimerAction) {
-                    self.createTimerAction(data);
+                if (data.watchType === 0) {
+                    if (self.createStopwatchAction) {
+                        self.createStopwatchAction(data);
+                    }
+                } else {
+                    if (self.createTimerAction) {
+                        self.createTimerAction(data);
+                    }
                 }
             }
         });
@@ -646,18 +660,27 @@ export class TasksService implements OnInit {
     public addUpdateTaskListener = () => {
         const selt = this;
         this.hubConnection.on('UpdateTask', (data) => {
-            if (data.watchType === 0) {
+            if (this.updateFromStopwatchPage) {
                 const index = selt.getIndexOfStopwatches(data);
                 if (index !== -1) {
-                    if (selt.updateStopwatchAction) {
-                        selt.updateStopwatchAction(index, data);
+                    if (selt.updateFromStopwatchPageAction) {
+                        selt.updateFromStopwatchPageAction(index, data);
                     }
                 }
             } else {
-                const index = selt.getIndexOfTimers(data);
-                if (index !== -1) {
-                    if (selt.updateTimerAction) {
-                        selt.updateTimerAction(index, data);
+                if (data.watchType === 0) {
+                    const index = selt.getIndexOfStopwatches(data);
+                    if (index !== -1) {
+                        if (selt.updateStopwatchAction) {
+                            selt.updateStopwatchAction(index, data);
+                        }
+                    }
+                } else {
+                    const index = selt.getIndexOfTimers(data);
+                    if (index !== -1) {
+                        if (selt.updateTimerAction) {
+                            selt.updateTimerAction(index, data);
+                        }
                     }
                 }
             }
