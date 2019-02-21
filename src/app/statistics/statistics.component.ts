@@ -89,6 +89,9 @@ export class StatisticsComponent implements OnInit {
   }
 
   filterTasks(tasks: any[], type?: any) {
+    if (this.endDate) {
+      this.endDate = this.getEndOfDay(this.endDate);
+    }
     const items = [];
     for (let i = 0; i < tasks.length; i++) {
       if ((type == undefined || tasks[i].type === type)
@@ -100,6 +103,18 @@ export class StatisticsComponent implements OnInit {
     }
 
     return items;
+  }
+
+  getEndOfDay(date: Date) {
+    const hoursEndOfDay = 23;
+    const minutesEndOfHour = 59;
+    const secondsEndOfMinute = 59;
+    const endOfDayDate = new Date(date.getFullYear(),
+      date.getMonth(),
+      date.getDate(),
+      hoursEndOfDay, minutesEndOfHour, secondsEndOfMinute);
+
+    return endOfDayDate;
   }
 
   getTasksWithTotalTime(tasks: any) {
