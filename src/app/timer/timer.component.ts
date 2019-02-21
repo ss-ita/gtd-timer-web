@@ -85,7 +85,7 @@ export class TimerComponent implements OnInit {
   }
 
   getErrorMessageMinute() {
-    return 'Please, input a minute between 0 and 23';
+    return 'Please, input a minute between 0 and 59';
   }
 
   getErrorMessageSecond() {
