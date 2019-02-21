@@ -97,8 +97,12 @@ export class TasksService implements OnInit {
     }
 
     setStopwatchesPage(page: number) {
-        this.stopwatchPager = this.pagerService.getPager(this.stopwatches.length, page, this.pageSizeList);
-        this.getStopwatchesForPage(this.stopwatchPager).subscribe(data => { this.pagedStopwatches = data; this.runAfterGet(); });
+        const tempStopwatchesPager = this.pagerService.getPager(this.stopwatches.length, page, this.pageSizeList);
+        this.getStopwatchesForPage(tempStopwatchesPager).subscribe(data => { 
+            this.pagedStopwatches = data; 
+            this.stopwatchPager = tempStopwatchesPager;
+            this.runAfterGet();
+        });
     }
 
     startTask(task: TaskCreateJson) {

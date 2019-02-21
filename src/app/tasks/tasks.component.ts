@@ -51,7 +51,6 @@ export class TasksComponent implements OnInit {
   displayStopwatches() {
     this.displayStopwatch = true;
     this.displayTimer = false;
-    //    this.taskService.setStopwatchesPage(1);
   }
 
   displayTimers() {
@@ -61,8 +60,11 @@ export class TasksComponent implements OnInit {
   }
 
   setTimersPage(page: number) {
-    this.timerPager = this.pagerService.getPager(this.taskService.timers.length, page, this.taskService.pageSizeList);
-    this.taskService.getTimersForPage(this.timerPager).subscribe(data => { this.pagedTimers = data; });
+    const tempTimersPager = this.pagerService.getPager(this.taskService.timers.length, page, this.taskService.pageSizeList);
+    this.taskService.getTimersForPage(tempTimersPager).subscribe(data => { 
+      this.pagedTimers = data; 
+      this.timerPager = tempTimersPager;
+    });
   }
 
   refreshStopwatchesPage() {
