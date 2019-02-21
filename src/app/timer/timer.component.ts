@@ -81,15 +81,15 @@ export class TimerComponent implements OnInit {
   }
 
   getErrorMessageHour() {
-    return 'Please, input a hours between 0 and 23';
+    return 'Please, input an hour between 0 and 23';
   }
 
   getErrorMessageMinute() {
-    return 'Please, input a minutes between 0 and 23';
+    return 'Please, input a minute between 0 and 23';
   }
 
   getErrorMessageSecond() {
-    return 'Please, input a seconds between 0 and 59';
+    return 'Please, input a second between 0 and 59';
   }
   pauseTask() {
     this.taskComponent.pauseTimer(this.timerServise.taskJson);
