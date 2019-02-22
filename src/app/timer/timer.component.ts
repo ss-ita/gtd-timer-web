@@ -7,13 +7,14 @@ import { PresetComponent } from '../preset/preset.component';
 import { SignupDialogComponent } from '../signup-dialog/signup-dialog.component';
 import { TimerDialogComponent } from '../timer-dialog/timer-dialog.component';
 import { MatDialog } from '@angular/material';
-import { TasksComponent } from '../tasks/tasks.component';
+import { TasksService } from '../services/tasks.service';
+import { TaskCreateJson } from '../models/taskCreateJson.model';
 
 @Component({
   selector: 'app-timer',
   templateUrl: './timer.component.html',
   styleUrls: ['./timer.component.css'],
-  providers: [PresetDialogComponent, PresetComponent, SignupDialogComponent, TasksComponent]
+  providers: [PresetDialogComponent, PresetComponent, SignupDialogComponent]
 })
 
 export class TimerComponent implements OnInit {
@@ -23,15 +24,84 @@ export class TimerComponent implements OnInit {
   innerWidth: any;
   hourPattern = /^(2[0-3]|1[0-9]|[0-9]|0)$/;
   minuteSecondPattern = /^([1-5]?[0-9]|0)$/;
+  countOfCreatedTimers = 1;
 
   constructor(private formBuilder: FormBuilder,
     private presetComponent: PresetComponent,
     private service: PresetDialogComponent,
     private dialog: MatDialog,
     public styleService: StyleService,
-    private taskComponent: TasksComponent,
+    private taskService: TasksService,
     public timerServise: TimerService
   ) { }
+
+  ngOnInit() {
+    this.taskService.startConnection();
+    this.taskService.addCreateTaskListener();
+    this.presetComponent.isLoggedIn = this.presetComponent.getIsLoggedIn();
+    this.timerForm = this.formBuilder.group({
+      'hour': [this.timerServise.maxValueHour, [Validators.min(0), Validators.max(23), Validators.maxLength(2), Validators.pattern(this.hourPattern)]],
+      'minute': [this.timerServise.maxValueMinute, [Validators.min(0), Validators.maxLength(2), Validators.max(59), Validators.pattern(this.minuteSecondPattern)]],
+      'second': [this.timerServise.maxValueSecond, [Validators.min(0), Validators.maxLength(2), Validators.max(59), Validators.pattern(this.minuteSecondPattern)]]
+    });
+    this.presetComponent.getAllStandardAndCustomPresets();
+    this.timerServise.getIsTimerArrayEmpty();
+    this.isViewable = false;
+    this.innerWidth = window.innerWidth;
+  }
+
+  createTask() {
+    const taskToPass: TaskCreateJson = {
+      id: 0,
+      name: 'New timer' + ' ' + this.countOfCreatedTimers,
+      description: '',
+      elapsedTime: 0,
+      goal: '',
+      lastStartTime: '0001-01-01T00:00:00Z',
+      isRunning: false,
+      hour: 0,
+      minutes: 0,
+      seconds: 0,
+      currentSecond: 0,
+      isCollapsed: true,
+      isShowed: true,
+      isStoped: false,
+      watchType: 1,
+      maxValueHour: 0,
+      maxValueMinute: 0,
+      maxValueSecond: 0,
+      isTimerFinished: false,
+      goals: 0,
+      ticksi: 0
+    };
+    if (this.timerServise.maxValueHour == null) {
+      this.timerServise.maxValueHour = 0;
+    }
+
+    if (this.timerServise.maxValueMinute == null) {
+      this.timerServise.maxValueMinute = 0;
+    }
+
+    if (this.timerServise.maxValueSecond == null) {
+      this.timerServise.maxValueSecond = 0;
+    }
+    taskToPass.goal = this.timerServise.maxValueHour.toString() + ':' + this.timerServise.maxValueMinute.toString() + ':' + this.timerServise.maxValueSecond.toString();
+    this.taskService.broadcastCreateTask(taskToPass);
+    this.countOfCreatedTimers++;
+    return this.taskService.createFromStopwatchPage = true;
+  }
+
+  getColor() {
+    if (this.timerServise.taskJson) {
+      if (this.timerServise.taskJson.isRunning) {
+        return '#609b9b';
+      } else {
+        return '#c23a33';
+      }
+    } else {
+      return 'black';
+    }
+  }
 
   openPresetFormDialog() {
     this.service.openPresetForm();
@@ -62,19 +132,6 @@ export class TimerComponent implements OnInit {
     return null;
   }
 
-  ngOnInit() {
-    this.presetComponent.isLoggedIn = this.presetComponent.getIsLoggedIn();
-    this.timerForm = this.formBuilder.group({
-     'hour': [this.timerServise.maxValueHour, [Validators.min(0), Validators.max(23), Validators.maxLength(2), Validators.pattern(this.hourPattern)]],
-     'minute': [this.timerServise.maxValueMinute, [Validators.min(0), Validators.maxLength(2), Validators.max(59), Validators.pattern(this.minuteSecondPattern)]],
-     'second': [this.timerServise.maxValueSecond, [Validators.min(0), Validators.maxLength(2), Validators.max(59), Validators.pattern(this.minuteSecondPattern)]]
-    });
-    this.presetComponent.getAllStandardAndCustomPresets();
-    this.timerServise.getIsTimerArrayEmpty();
-    this.isViewable = false;
-    this.innerWidth = window.innerWidth;
-  }
-
   @HostListener('window:resize', ['$event'])
   onResize(event) {
     this.innerWidth = window.innerWidth;
@@ -92,24 +149,15 @@ export class TimerComponent implements OnInit {
     return 'Please, input a second between 0 and 59';
   }
   pauseTask() {
-    this.taskComponent.pauseTimer(this.timerServise.taskJson);
-    this.timerServise.isTimerPause = true;
-    this.timerServise.color = '#c23a33';
+    this.taskService.pauseTimer(this.timerServise.taskJson);
   }
 
   startTask() {
-    this.taskComponent.startTimer(this.timerServise.taskJson);
-    this.timerServise.color = '#609b9b';
-    this.timerServise.isTimerPause = false;
-    this.timerServise.isTimerRun = true;
+    this.taskService.startTimer(this.timerServise.taskJson);
   }
 
   resetTask() {
-    this.pauseTask();
-    this.taskComponent.resetTimer(this.timerServise.taskJson);
-    this.timerServise.isTimerRun = false;
-    this.timerServise.isTimerPause = true;
-    this.timerServise.color = 'black';
+    this.taskService.resetTimer(this.timerServise.taskJson);
   }
 
   addTaskFromTimer() {

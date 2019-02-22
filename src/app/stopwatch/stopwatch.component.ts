@@ -18,29 +18,52 @@ import { TaskCreateJson } from '../models/taskCreateJson.model';
 
 export class StopwatchComponent implements OnInit {
 
+  countOfCreatedStopwatch = 1;
+
   constructor(public stopwatchService: StopwatchService,
     public styleService: StyleService,
     private dialog: MatDialog,
     private taskService: TasksService,
     private historyService: HistoryService
-  ) { }
+  ) {
+  }
 
   ngOnInit() {
-    this.taskService.startConnection();
-    this.taskService.addCreateTaskListener();
-    this.taskService.createStopwatchAction = (task) => {
-      this.taskService.addStopwatchListener(task);
-      this.stopwatchService.taskJson = this.taskService.stopwatches[0];
-      this.taskService.startStopwatch(this.taskService.stopwatches[0]);
-      this.stopwatchService.isCreate = true;
-    };
+    if (this.getIsLoggedIn()) {
+      this.taskService.startConnection();
+      this.taskService.addCreateTaskListener();
+      this.taskService.addUpdateTaskListener();
+
+      this.taskService.updateFromStopwatchPageAction = (index, task) => {
+        this.taskService.stopwatches[index].description = task.description;
+        this.taskService.stopwatches[index].elapsedTime = task.elapsedTime;
+        this.taskService.stopwatches[index].isRunning = task.isRunning;
+        this.taskService.stopwatches[index].lastStartTime = task.lastStartTime;
+        this.taskService.stopwatches[index].name = task.name;
+        return this.taskService.updateFromStopwatchPage = false;
+      };
+
+      this.taskService.createFromStopwatchPageAction = (task) => {
+        this.taskService.setStopwatchesPage(1);
+        task.hour = 0;
+        task.minutes = 0;
+        task.seconds = 0;
+        this.taskService.stopwatches.forEach(stopwatch => stopwatch.description = '');
+        this.taskService.stopwatches.unshift(this.taskService.stopwatchToTaskCreateJson(task));
+        this.taskService.stopwatches[0].description = this.stopwatchService.description;
+        this.stopwatchService.taskJson = this.taskService.stopwatches[0];
+        this.taskService.startStopwatch(this.taskService.stopwatches[0]);
+        this.startTask();
+        return this.taskService.createFromStopwatchPage = false;
+      };
+    }
   }
 
   createTask() {
     const taskToPass: TaskCreateJson = {
       id: 0,
-      name: '',
-      description: '',
+      name: 'New stopwatch' + ' ' + this.countOfCreatedStopwatch,
+      description: this.stopwatchService.description,
       elapsedTime: 0,
       goal: '',
       lastStartTime: '0001-01-01T00:00:00Z',
@@ -61,7 +84,8 @@ export class StopwatchComponent implements OnInit {
       ticksi: 0
     };
     this.taskService.broadcastCreateTask(taskToPass);
-    this.stopwatchService.taskJson = taskToPass;
+    this.countOfCreatedStopwatch++;
+    return this.taskService.createFromStopwatchPage = true;
   }
 
   getColor() {
@@ -72,15 +96,19 @@ export class StopwatchComponent implements OnInit {
         return '#c23a33';
       }
     } else {
-      return 'grey';
+      return 'black';
     }
   }
 
   pauseTask() {
+    this.taskService.updateFromStopwatchPage = true;
+    this.taskService.stopwatches.forEach(stopwatch => stopwatch.description = '');
+    this.stopwatchService.taskJson.description = this.stopwatchService.description;
     this.stopwatchService.taskJson.isRunning = false;
     this.stopwatchService.taskJson.isStoped = true;
     this.stopwatchService.taskJson.elapsedTime = this.stopwatchService.taskJson.currentSecond * 1000;
     this.taskService.broadcastPauseTask(this.stopwatchService.taskJson);
+    this.taskService.broadcastUpdateTask(this.stopwatchService.taskJson);
     const timeStart = new Date(this.stopwatchService.taskJson.lastStartTime);
     const timeNow = new Date(new Date(Date.now()).toISOString().slice(0, -1));
     const stop = (new Date(Date.now())).toISOString().slice(0, -1);
@@ -99,11 +127,13 @@ export class StopwatchComponent implements OnInit {
       userId: 0
     };
     this.historyService.createRecord(recordToCreate).subscribe();
-    this.stopwatchService.isStopwatchPause = true;
-    this.stopwatchService.color = '#c23a33';
+    this.taskService.setStopwatchesPage(1);
   }
 
   startTask() {
+    this.taskService.updateFromStopwatchPage = true;
+    this.taskService.stopwatches.forEach(stopwatch => stopwatch.description = '');
+    this.stopwatchService.taskJson.description = this.stopwatchService.description;
     this.taskService.stopwatches;
     this.stopwatchService.taskJson.isRunning = true;
     this.stopwatchService.taskJson.isStoped = false;
@@ -115,16 +145,13 @@ export class StopwatchComponent implements OnInit {
 
     this.stopwatchService.taskJson.lastStartTime = (new Date(Date.now())).toISOString().slice(0, -1);
     this.taskService.broadcastStartTask(this.stopwatchService.taskJson);
-    this.stopwatchService.color = '#609b9b';
-    this.stopwatchService.isStopwatchPause = false;
-    this.stopwatchService.isStopwatchRun = true;
+    this.taskService.broadcastUpdateTask(this.stopwatchService.taskJson);
+    this.taskService.setStopwatchesPage(1);
   }
 
   resetTask() {
     this.taskService.resetStopwatch(this.stopwatchService.taskJson);
-    this.stopwatchService.isStopwatchRun = false;
-    this.stopwatchService.isStopwatchPause = true;
-    this.stopwatchService.color = 'black';
+    this.taskService.setStopwatchesPage(1);
   }
 
   clickOnStopWatch() {

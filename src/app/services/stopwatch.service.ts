@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-
 import { timer, Subscription } from 'rxjs';
 import { TaskCreateJson } from '../models/taskCreateJson.model';
 
@@ -23,12 +22,13 @@ export class StopwatchService {
   isCreate = false;
 
   color = 'black';
+  description = 'Displayed on stopwatch page';
   subscribe: Subscription;
   taskJson: TaskCreateJson;
 
   constructor() {
     this.taskJson = new TaskCreateJson();
-    this.taskJson.name = 'null@Stopwatch'
+    this.taskJson.name = 'null@Stopwatch';
   }
 
   reset() {
