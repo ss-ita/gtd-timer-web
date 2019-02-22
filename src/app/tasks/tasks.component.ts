@@ -121,6 +121,12 @@ export class TasksComponent implements OnInit {
     this.taskService.startStopwatchAction = (task) => {
       this.taskService.start(task);
     };
+    this.taskService.startTimerAction = (task, data) => {
+      this.taskService.startTimerListener(task, data);
+    }
+    this.taskService.pauseTimerAction = (task, data) => {
+      this.taskService.pauseTimerListener(task, data);
+    }
     this.taskService.pauseStopwatchAction = (task, data) => {
       this.taskService.pauseStopwatchListener(task, data);
     };
