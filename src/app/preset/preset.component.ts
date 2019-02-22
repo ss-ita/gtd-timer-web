@@ -7,6 +7,7 @@ import { TimerService } from '../services/timer.service';
 import { PresetModel } from '../models/preset.model';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { TaskCreateJson } from '../models/taskCreateJson.model';
 
 @Component({
   selector: 'app-preset',
@@ -101,6 +102,8 @@ export class PresetComponent implements OnInit {
 
   onSave() {
     this.timerService.currentPreset = this.selectedPreset;
+    this.timerService.taskJson = new TaskCreateJson();
+    this.timerService.taskJson.name = 'null@Timer';
     this.onClose();
     this.presetService.startPresetTimers();
   }
