@@ -148,6 +148,7 @@ export class TimerComponent implements OnInit {
   getErrorMessageSecond() {
     return 'Please, input a second between 0 and 59';
   }
+  
   pauseTask() {
     this.taskService.pauseTimer(this.timerServise.taskJson);
   }
