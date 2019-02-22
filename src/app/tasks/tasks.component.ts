@@ -6,6 +6,8 @@ import { ConfigService } from '../services/config.service';
 import { StopwatchService } from '../services/stopwatch.service';
 import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
 import { MatDialog } from '@angular/material';
+import { TimerService } from '../services/timer.service';
+import { TaskJson } from '../models/preset.model';
 
 @Component({
   selector: 'app-tasks',
@@ -20,6 +22,7 @@ export class TasksComponent implements OnInit {
   constructor(
     public taskService: TasksService,
     public stopwatchService: StopwatchService,
+    public timerService: TimerService,
     private configService: ConfigService,
     private matDialog: MatDialog
   ) { }
@@ -121,6 +124,12 @@ export class TasksComponent implements OnInit {
     this.taskService.startStopwatchAction = (task) => {
       this.taskService.start(task);
     };
+    this.taskService.startTimerAction = (task, data) => {
+      this.taskService.startTimerListener(task, data);
+    }
+    this.taskService.pauseTimerAction = (task, data) => {
+      this.taskService.pauseTimerListener(task, data);
+    }
     this.taskService.pauseStopwatchAction = (task, data) => {
       this.taskService.pauseStopwatchListener(task, data);
     };
@@ -211,11 +220,17 @@ export class TasksComponent implements OnInit {
     this.refreshStopwatchesPage();
   }
 
-  deleteTimer(task: TaskCreateJson) {
+  deleteTimer(task: TaskCreateJson) {  
+    this.description = task.description;
     this.taskService.broadcastDeleteTask(task.id);
     const indexTaskToDelete = this.taskService.timers.indexOf(task, 0);
     this.taskService.timers.splice(indexTaskToDelete, 1);
     this.refreshTimersPage();
+    if( this.description == 'Displayed on stopwatch page')
+    {
+      this.timerService.taskJson = new TaskCreateJson();
+      this.timerService.taskJson.name = 'null@Timer';
+    }
   }
 
   deleteTimerListener(index: number) {

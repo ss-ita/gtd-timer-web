@@ -16,6 +16,7 @@ export class StopwatchDialogComponent implements OnInit {
   stopwatchName = 'New stopwatch';
   stopwatchTag = 'None';
 
+  
   constructor(
     private stopwatchDialogRef: MatDialogRef<StopwatchDialogComponent>,
     private formBuilder: FormBuilder,
