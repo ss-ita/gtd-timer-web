@@ -44,6 +44,7 @@ export class TimerService {
     isForce = false;
     taskStartName = 'null@Timer';
     taskJson: TaskCreateJson;
+    description = 'Displayed on timer page';
 
     initializeTimersArray(timerArray: Task[]) {
         this.clearTimersArrayAndIndex();

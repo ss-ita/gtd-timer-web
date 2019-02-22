@@ -20,7 +20,7 @@
         </button>
       </ng-template>
       <ng-template [ngIf]="timerServise.taskJson.name !== timerServise.taskStartName">
-        <div class="current-preset">{{timerServise.task}}</div>
+        <div class="current-preset">{{timerServise.taskJson.name}}</div>
       </ng-template>
     </div>
     <div *ngIf="isViewable" class="preset-info">

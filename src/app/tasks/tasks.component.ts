@@ -92,6 +92,12 @@ export class TasksComponent implements OnInit {
     this.taskService.startStopwatchAction = (task) => {
       this.taskService.start(task);
     };
+    this.taskService.startTimerAction = (task, data) => {
+      this.taskService.startTimerListener(task, data);
+    }
+    this.taskService.pauseTimerAction = (task, data) => {
+      this.taskService.pauseTimerListener(task, data);
+    }
     this.taskService.pauseStopwatchAction = (task, data) => {
       this.taskService.pauseStopwatchListener(task, data);
     };
@@ -194,13 +200,4 @@ export class TasksComponent implements OnInit {
   exportAllTimersAsXml() {
     this.taskService.downloadFile('all_timers.xml', this.configService.urlExportAllTimersAsXml);
   }
-
-/*finishTimer(task:TaskCreateJson){
-  if(task.isRunning===true){
-    if(task.minutes==0 && task.seconds==0&&task.hour==0){
-      task.isRunning=false;
-      task.isTimerFinished=true;
-    }
-  }
-}*/
 }
