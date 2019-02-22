@@ -76,6 +76,15 @@
     width: 100px;
 }
 
+::ng-deep .mat-form-field-appearance-legacy.mat-form-field-disabled .mat-form-field-underline {
+    background-image: none;
+    background-color: rgba(0,0,0,.42) !important;
+}
+
+::ng-deep .mat-form-field-type-mat-native-select.mat-form-field-disabled .mat-form-field-infix::after, .mat-input-element:disabled {
+    color: black;
+}
+
 @media(max-width:930px) {
     .mat-form-field {
         width: 270px;
