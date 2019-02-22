@@ -46,14 +46,16 @@ export class TimerService {
     taskJson: TaskCreateJson;
 
     initializeTimersArray(timerArray: Task[]) {
-        this.clearTimersArrayAndIndex();
-        this.nextTimer();
-        this.timerIndex++;
-        this.timerArray = timerArray;
-        this.refreshTimer();
-        this.timerArrayLenght = timerArray.length;
-        this.startTimersFromPreset();
-        this.getIsTimerArrayEmpty();
+        if (this.getIsChosenPreset) {
+            this.clearTimersArrayAndIndex();
+            this.nextTimer();
+            this.timerIndex++;
+            this.timerArray = timerArray;
+            this.refreshTimer();
+            this.timerArrayLenght = timerArray.length;
+            this.startTimersFromPreset();
+            this.getIsTimerArrayEmpty();
+        }
     }
 
     getIsTimerArrayEmpty() {
@@ -66,6 +68,26 @@ export class TimerService {
 
     getIsChosenPreset() {
         return this.currentPreset === 'Choose preset' ? true : false;
+    }
+
+    exitFromPreset() {
+        this.hour = 0;
+        this.minute = 0;
+        this.second = 0;
+        this.maxValueHour = 0;
+        this.maxValueMinute = 0;
+        this.maxValueSecond = 0;
+        this.clearTimersArrayAndIndex();
+        this.isTimerRun = false;
+        this.isTimerPause = true;
+        this.isTimerFinished = false;
+        this.isFromPreset = false;
+        this.isArrayEmpty = true;
+        this.isForce = false;
+        this.color = 'black';
+        this.maxTicks = 0;
+        this.ticks = 0;
+        this.currentPreset = 'Choose preset';
     }
 
     startTimersFromPreset() {
@@ -130,7 +152,9 @@ export class TimerService {
     }
 
     refreshTimer() {
-        this.startTimersFromPreset();
+        if (!this.getIsChosenPreset()) {
+            this.startTimersFromPreset();
+        }
         this.pauseTimer();
         this.color = 'black';
         this.isTimerRun = false;
@@ -161,7 +185,6 @@ export class TimerService {
             this.subscribe.unsubscribe();
         }
     }
-
 
     updateTime() {
 
@@ -204,12 +227,14 @@ export class TimerService {
     }
 
     nextTimer() {
-        this.isForward = true;
-        this.isTimerFinished = false;
-        this.hour = 0;
-        this.minute = 0;
-        this.second = 0;
-        this.color = '#609b9b';
+        if (!this.getIsChosenPreset()) {
+            this.isForward = true;
+            this.isTimerFinished = false;
+            this.hour = 0;
+            this.minute = 0;
+            this.second = 0;
+            this.color = '#609b9b';
+        }
     }
     previousTimer() {
         this.isForce = true;

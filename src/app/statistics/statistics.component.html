@@ -26,15 +26,15 @@
         <div class="datechoose">
         <mat-form-field class="datepicker">
           <input matInput [matDatepicker]="pickerFrom" [matDatepickerFilter]="startDateFilter" placeholder="Start date"
-            (dateChange)="filterByDate($event)" [(ngModel)]="startDate">
+            (dateChange)="filterByDate($event)" [(ngModel)]="startDate" disabled>
           <mat-datepicker-toggle matSuffix [for]="pickerFrom"></mat-datepicker-toggle>
-          <mat-datepicker #pickerFrom></mat-datepicker>
+          <mat-datepicker #pickerFrom disabled="false"></mat-datepicker>
         </mat-form-field>
         <mat-form-field class="datepicker">
           <input matInput [matDatepicker]="pickerTo" [matDatepickerFilter]="endDateFilter" placeholder="End date"
-            [(ngModel)]="endDate" (dateChange)="filterByDate($event)">
+            [(ngModel)]="endDate" (dateChange)="filterByDate($event)" disabled>
           <mat-datepicker-toggle matSuffix [for]="pickerTo"></mat-datepicker-toggle>
-          <mat-datepicker #pickerTo></mat-datepicker>
+          <mat-datepicker #pickerTo disabled="false"></mat-datepicker>
         </mat-form-field>
       </div>
       </div>
