@@ -171,7 +171,6 @@ export class TasksService implements OnInit {
 
         if (task.description === this.stopwatchService.description) {
             this.stopwatchService.taskJson = task;
-            this.stopwatches.forEach(stopwatch => stopwatch.description = '');
         }
 
         task.isRunning = false;
