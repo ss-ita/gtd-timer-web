@@ -22,7 +22,7 @@
       <p>Start time</p>
     </div>
     <div *ngIf=(record.startTime) class="content">
-      <p>{{record.startTime | date:'medium'}}</p>
+      <p>{{record.startTime | utcPipe:'medium'}}</p>
     </div>
     <div *ngIf=(!record.startTime) class="content">
     </div>
@@ -32,7 +32,7 @@
       <p>Stop time</p>
     </div>
     <div *ngIf=(record.stopTime) class="content">
-      <p>{{record.stopTime | date:'medium'}}</p>
+      <p>{{record.stopTime | utcPipe:'medium'}}</p>
     </div>
     <div *ngIf=(!record.stopTime) class="content">
     </div>

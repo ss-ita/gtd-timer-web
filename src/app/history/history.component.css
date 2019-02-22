@@ -69,6 +69,7 @@ height: 90px;
     min-width: 40px;
     width: 100%;
     max-width: 200px;
+    padding-left: 5px;
 }
 
 .top-tittles{
@@ -349,7 +350,7 @@ text-align: center;
         box-shadow:  0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
         min-width: 50px;
         width: 100%;
-        padding-left: 10px;
+        padding-left: 5px;
     }
     .notMobile{
     display: none;
@@ -398,17 +399,23 @@ text-align: center;
     #deleteMobileButton{
         display: block;
         border: none;
-        background-color: white
+        background-color: white;
+        width: 100%;
+        text-align: left;
     }
     #resumeMobileButton{
         display: block;
         border: none;
         background-color: white;
+        width: 100%;
+        text-align: left;
     }
     #infoMobileButton{
         display: block;
         border: none;
         background-color: white;
+        width: 100%;
+        text-align: left;
     } 
     .topButtons .active{
         background-color: #dededa !important;

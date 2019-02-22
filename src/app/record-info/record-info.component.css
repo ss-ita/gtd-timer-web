@@ -6,11 +6,12 @@
 }
 
 .dialog-content{
-width: 500px;
+    width: 500px;
 }
 
 .dialog-content-div div{
     display: inline-block;
+    font-family: Roboto,"Helvetica Neue",sans-serif;
 }
 
 .title{
@@ -51,6 +52,7 @@ button:hover{
  }
 
 @media(max-width:600px){
+
     ::ng-deep .recordInfoOverlay {
         max-width: 480px !important;
         max-height:480px!important;
@@ -59,6 +61,7 @@ button:hover{
      .dialog-content{
         width: 100%;
      }
+    
 }
 @media(max-width:480px){
     ::ng-deep .recordInfoOverlay {
@@ -75,10 +78,11 @@ button:hover{
 
     ::ng-deep .mat-dialog-container{
         border-radius: 0px;
+        padding: 10px;
     }
 
     .title{
-        width: 80px;
+        width: 83px;
     }
 
     .content{
