@@ -39,7 +39,7 @@ export class AlarmService {
     { day: 'Friday', value: 'Fri' },
     { day: 'Saturday', value: 'Sat' },
     { day: 'Sunday', value: 'Sun' }];
-  chosenDaysList: boolean[] = [false, false, false, false, false, false, false];
+  chosenDaysList: boolean[] = new Array(7).fill(false);
   currentTime: Date = new Date();
   alarmsArray: AlarmModel[] = [];
   startedAlarmsArray: AlarmModel[] = [];
@@ -169,7 +169,7 @@ export class AlarmService {
   }
 
   setToogleStage() {
-    if ((this.alarmsArray.length == this.startedAlarmsArray.length) && this.alarmsArray.length != 0) {
+    if ((this.alarmsArray.length == this.startedAlarmsArray.length) && this.alarmsArray.length != 0 && this.isAuthorized) {
       this.alarmsToogle = true;
     } else {
       this.alarmsToogle = false;
@@ -252,7 +252,7 @@ export class AlarmService {
         editedAlarmModel.timestamp = date.timestamp;
         if (date.isUpdated) {
         } else {
-          const newAlarmModel = this.convertToAlarmModelFronCronModel(date);
+          const newAlarmModel = this.convertToAlarmModelFromCronModel(date);
           if (!this.compareAlarmModels(newAlarmModel, editedAlarmModel)) {
             this.openUpdateConfirmationWindow(newAlarmModel, editedAlarmModel);
           }
@@ -281,12 +281,13 @@ export class AlarmService {
     this.clearData();
     this.getAllAlarmsFromServer().subscribe(data => {
       data.forEach(value => {
-        const alarmModel = this.convertToAlarmModelFronCronModel(value);
+        const alarmModel = this.convertToAlarmModelFromCronModel(value);
         this.alarmsArray.push(alarmModel);
       });
       this.startLoadedAlarms();
       this.alarmsArray.forEach(value => {
       });
+      this.setToogleStage();
     });
   }
 
@@ -418,7 +419,7 @@ export class AlarmService {
               editedAlarmModel.timestamp = data.timestamp;
               if (data.isUpdated) {
               } else {
-                const newAlarmModel = this.convertToAlarmModelFronCronModel(data);
+                const newAlarmModel = this.convertToAlarmModelFromCronModel(data);
                 if (!this.compareAlarmModels(newAlarmModel, editedAlarmModel)) {
                   this.openUpdateConfirmationWindow(newAlarmModel, editedAlarmModel);
                 }
@@ -447,7 +448,7 @@ export class AlarmService {
           editedAlarmModel.timestamp = date.timestamp;
           if (date.isUpdated) {
           } else {
-            const newAlarmModel = this.convertToAlarmModelFronCronModel(date);
+            const newAlarmModel = this.convertToAlarmModelFromCronModel(date);
             if (!this.compareAlarmModels(newAlarmModel, editedAlarmModel)) {
               this.openUpdateConfirmationWindow(newAlarmModel, editedAlarmModel);
             }
@@ -517,7 +518,7 @@ export class AlarmService {
           editedAlarmModel.timestamp = date.timestamp;
           if (date.isUpdated) {
           } else {
-            const newAlarmModel = this.convertToAlarmModelFronCronModel(date);
+            const newAlarmModel = this.convertToAlarmModelFromCronModel(date);
             if (!this.compareAlarmModels(newAlarmModel, editedAlarmModel)) {
               this.openUpdateConfirmationWindow(newAlarmModel, editedAlarmModel);
             }
@@ -606,7 +607,7 @@ export class AlarmService {
     return alarm;
   }
 
-  convertToAlarmModelFronCronModel(cronModel: AlarmCronModel): AlarmModel {
+  convertToAlarmModelFromCronModel(cronModel: AlarmCronModel): AlarmModel {
     const alarm = new AlarmModel();
     const nextDate = this.getNextDate(cronModel.cronExpression);
     alarm.soundOn = cronModel.soundOn;
