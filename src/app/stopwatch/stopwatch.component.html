@@ -11,8 +11,8 @@
         <mat-icon>more_vert</mat-icon>
       </button>
       <ng-template [ngIf]="this.stopwatchService.taskJson.name !== 'null@Stopwatch'">
-        <ng-template [ngIf]="this.stopwatchService.taskJson.name !== ''">
-          <div class="current-stopwatch">Currently running: {{stopwatchService.taskJson.name}}</div>
+        <ng-template [ngIf]="getIsLoggedIn() && this.stopwatchService.taskJson.name !== ''">
+          <div class="current-stopwatch">{{stopwatchService.taskJson.name}}</div>
         </ng-template>
       </ng-template>
     </div>
@@ -95,11 +95,9 @@
       </ng-template>
       <ng-template [ngIf]="getIsLoggedIn()">
         <ng-template [ngIf]="stopwatchService.taskJson.name === 'null@Stopwatch'">
-          <ng-template [ngIf]="stopwatchService.isStopwatchRun === false || stopwatchService.isStopwatchPause">
-            <button mat-icon-button (click)="createTask()">
-              <mat-icon>arrow_right</mat-icon>
-            </button>
-          </ng-template>
+          <button mat-icon-button (click)="createTask()">
+            <mat-icon>arrow_right</mat-icon>
+          </button>
         </ng-template>
         <ng-template [ngIf]="stopwatchService.taskJson.name !== 'null@Stopwatch'">
           <ng-template
