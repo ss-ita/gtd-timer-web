@@ -4,6 +4,8 @@ import { TaskCreateJson } from '../models/taskCreateJson.model';
 import { TasksService } from '../services/tasks.service';
 import { ConfigService } from '../services/config.service';
 import { StopwatchService } from '../services/stopwatch.service';
+import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
+import { MatDialog } from '@angular/material';
 
 @Component({
   selector: 'app-tasks',
@@ -19,6 +21,7 @@ export class TasksComponent implements OnInit {
     public taskService: TasksService,
     public stopwatchService: StopwatchService,
     private configService: ConfigService,
+    private matDialog: MatDialog
   ) { }
 
   readonly progress: Observable<number>;
@@ -160,6 +163,36 @@ export class TasksComponent implements OnInit {
     return (a.toLowerCase() < b.toLowerCase() ? -1 : 1);
   }
 
+  onDeleteTask(task: TaskCreateJson){
+    const warningDialogRef = this.matDialog.open(ConfirmationDialogComponent, {
+      hasBackdrop: true,
+      closeOnNavigation: true,
+      disableClose: false
+    });
+    warningDialogRef.componentInstance.title = 'Confirmation';
+    warningDialogRef.componentInstance.message = 'Are you sure to delete this stopwatch?';
+    warningDialogRef.componentInstance.btnCancelText = 'Cancel';
+    warningDialogRef.componentInstance.btnOkText = 'Confirm';
+    warningDialogRef.componentInstance.acceptAction = () => {
+      this.deleteTask(task);
+    };
+  }
+
+  onDeleteTimer(task: TaskCreateJson){
+    const warningDialogRef = this.matDialog.open(ConfirmationDialogComponent, {
+      hasBackdrop: true,
+      closeOnNavigation: true,
+      disableClose: false
+    });
+    warningDialogRef.componentInstance.title = 'Confirmation';
+    warningDialogRef.componentInstance.message = 'Are you sure to delete this timer?';
+    warningDialogRef.componentInstance.btnCancelText = 'Cancel';
+    warningDialogRef.componentInstance.btnOkText = 'Confirm';
+    warningDialogRef.componentInstance.acceptAction = () => {
+      this.deleteTimer(task);
+    };
+  }
+
   deleteTask(task: TaskCreateJson) {
     this.description = task.description;
     this.taskService.broadcastDeleteTask(task.id);
@@ -226,13 +259,4 @@ export class TasksComponent implements OnInit {
   exportAllTimersAsXml() {
     this.taskService.downloadFile('all_timers.xml', this.configService.urlExportAllTimersAsXml);
   }
-
-/*finishTimer(task:TaskCreateJson){
-  if(task.isRunning===true){
-    if(task.minutes==0 && task.seconds==0&&task.hour==0){
-      task.isRunning=false;
-      task.isTimerFinished=true;
-    }
-  }
-}*/
 }

@@ -256,6 +256,7 @@ export class TasksService implements OnInit {
             ticksi: 0
         };
         this.broadcastCreateTask(taskToPass);
+        this.taskName = '';
     }
 
     updateTask(task: TaskCreateJson) {
@@ -819,6 +820,7 @@ export class TasksService implements OnInit {
             ticksi: 0
         };
         this.broadcastCreateTask(taskToPass);
+        this.taskName = '';
     }
 
     addTimerListener(task: any) {

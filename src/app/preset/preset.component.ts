@@ -135,6 +135,7 @@ export class PresetComponent implements OnInit {
     confirmationDialogRef.componentInstance.btnOkText = 'Confirm';
     confirmationDialogRef.componentInstance.acceptAction = () => {
       this.onDeletePreset(presetIndex);
+      this.timerService.exitFromPreset();
     };
     confirmationDialogRef.componentInstance.declineAction = () => {
       this.selectedPreset = this.getFirstStandardPreset();

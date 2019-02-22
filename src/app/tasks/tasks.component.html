@@ -67,7 +67,7 @@
               </ng-template>
               <button class="but" (click)="taskService.resetStopwatch(task)"><i class="fa fa-refresh"></i></button>
               <button class="but"><i class="fa fa-bars"></i></button>
-              <button class="but" (click)="deleteTask(task)"><i class="fa fa-times"></i></button>
+              <button class="but" (click)="onDeleteTask(task)"><i class="fa fa-times"></i></button>
               <button class="but" (click)="taskService.DisplayTaskOnStopwatchPage(task)" [matTooltipShowDelay]="2000"
                 matTooltip="Display on timer page"><i class="fa fa-stopwatch"></i></button>
             </div>
@@ -176,7 +176,7 @@
               <button type="button" matTooltip="Reset stopwatch" (click)="taskService.resetStopwatch(task)" id="resetMobileButton">
                 <p>Reset stopwatch</p>
               </button>
-              <button type="button" matTooltip="Delete stopwatch" (click)="deleteTask(task)" id="deleteMobileButton">
+              <button type="button" matTooltip="Delete stopwatch" (click)="onDeleteTask(task)" id="deleteMobileButton">
                 <p>Delete stopwatch</p>
               </button>
               <button type="button" matTooltip="Display stopwatch on Stopwatch page"
@@ -341,7 +341,7 @@
               <button class="but" [disabled]="task.isRunning === false" (click)="taskService.resetTimer(task)"><i
                   class="fa fa-refresh"></i></button>
               <button class="but"><i class="fa fa-bars"></i></button>
-              <button class="but" (click)="deleteTimer(task)"><i class="fa fa-times"></i></button>
+              <button class="but" (click)="onDeleteTimer(task)"><i class="fa fa-times"></i></button>
               <button class="but" (click)="taskService.DisplayTaskOnTimerPage(task)" [matTooltipShowDelay]="2000"
                 matTooltip="Display on stopwatch page"><i class="fa fa-clock-o"></i></button>
             </div>
@@ -477,7 +477,7 @@
               <button type="button" matTooltip="Reset timer" (click)="taskService.resetTimer(task)" id="resetMobileButton">
                 <p>Reset timer</p>
               </button>
-              <button type="button" matTooltip="Delete timer" (click)="deleteTimer(task)" id="deleteMobileButton">
+              <button type="button" matTooltip="Delete timer" (click)="onDeleteTimer(task)" id="deleteMobileButton">
                 <p>Delete timer</p>
               </button>
               <button type="button" matTooltip="Display stopwatch on Stopwatch page"
