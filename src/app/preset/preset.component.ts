@@ -61,8 +61,10 @@ export class PresetComponent implements OnInit {
 
   onUpdate() {
     for (let index = 0; index < this.timersToDelete.length; index++) {
+      console.log("I delete a timers");
       this.presetService.deleteTimerFromLocalArrayAndServer(this.timersToDelete[index], this.presetIndex, this.presetToUpdate);
     }
+    this.timersToDelete = [];
     this.presetService.updatePresetInLocalArrayAndServer(this.presetForm.value, this.presetToUpdate, this.presetIndex);
     this.selectedPreset = this.presetService.getPresetNameByIndex(this.presetIndex);
     this.cleanUpTheTimersFormGroupArray();
@@ -77,9 +79,12 @@ export class PresetComponent implements OnInit {
     this.loadDataToUpdateMenu(this.presetToUpdate);
     this.switchTheCreateAndUpdateState();
     this.toggle();
+    console.log(this.presetToUpdate);
   }
 
   onDeletePreset(presetIndex) {
+    console.log(this.presetService.presetsArray);
+    console.log(presetIndex);
     this.presetService.deletePresetFromLocalArrayAndServer(presetIndex);
     this.selectedPreset = this.getFirstStandardPreset();
   }
@@ -134,6 +139,7 @@ export class PresetComponent implements OnInit {
     confirmationDialogRef.componentInstance.btnCancelText = 'Cancel';
     confirmationDialogRef.componentInstance.btnOkText = 'Confirm';
     confirmationDialogRef.componentInstance.acceptAction = () => {
+      this.timerService.exitFromPreset();
       this.onDeletePreset(presetIndex);
     };
     confirmationDialogRef.componentInstance.declineAction = () => {

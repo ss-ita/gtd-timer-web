@@ -68,12 +68,13 @@ export class TimerService {
     }
 
     exitFromPreset() {
+        this.pauseTimer();
         this.hour = 0;
         this.minute = 0;
         this.second = 0;
-        this.maxValueHour = 0;
-        this.maxValueMinute = 0;
-        this.maxValueSecond = 0;
+        this.maxValueHour = null;
+        this.maxValueMinute = null;
+        this.maxValueSecond = null;
         this.clearTimersArrayAndIndex();
         this.isTimerRun = false;
         this.isTimerPause = true;
@@ -82,8 +83,6 @@ export class TimerService {
         this.isArrayEmpty = true;
         this.isForce = false;
         this.color = 'black';
-        this.maxTicks = 0;
-        this.ticks = 0;
         this.currentPreset = 'Choose preset';
     }
 

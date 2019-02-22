@@ -73,7 +73,7 @@ export class PresetService {
 
   updatePresetInLocalArrayAndServer(presetModel: PresetModel, presetToUpdate: PresetModel, presetIndex: number) {
     this.presetIndexToUpdate = presetIndex;
-    this.presetsArray[presetIndex] = presetModel;
+    this.presetsArray[presetIndex] = presetToUpdate;
     this.updatePreset(presetModel, presetToUpdate).subscribe(data => {
       this.presetsArray[presetIndex].presetName = data.presetName;
       for (let index = 0; index < data.tasks.length; index++) {
