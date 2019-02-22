@@ -947,7 +947,7 @@ export class TasksService implements OnInit {
         }
 
         if (task.minutes == 0 && task.seconds == 0 && task.hour == 0) {
-            this.pauseTimer(task);
+            this.resetTimer(task);
             this.timerService.timerSound.src = this.configService.urlSoundTimer;
             this.timerService.timerSound.play();
             task.isTimerFinished = true;
