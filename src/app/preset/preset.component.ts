@@ -63,6 +63,7 @@ export class PresetComponent implements OnInit {
     for (let index = 0; index < this.timersToDelete.length; index++) {
       this.presetService.deleteTimerFromLocalArrayAndServer(this.timersToDelete[index], this.presetIndex, this.presetToUpdate);
     }
+    this.timersToDelete = [];
     this.presetService.updatePresetInLocalArrayAndServer(this.presetForm.value, this.presetToUpdate, this.presetIndex);
     this.selectedPreset = this.presetService.getPresetNameByIndex(this.presetIndex);
     this.cleanUpTheTimersFormGroupArray();
