@@ -8,7 +8,10 @@ import { TaskCreateJson } from '../models/taskCreateJson.model';
 
 export class TimerService {
 
-    constructor(private configService: ConfigService) { }
+    constructor(private configService: ConfigService) { 
+        this.taskJson = new TaskCreateJson();
+        this.taskJson.name = this.taskStartName;
+    }
 
     isForward: boolean;
     timerArrayLenght: number;
@@ -39,7 +42,7 @@ export class TimerService {
     subscribe: Subscription;
     public currentPreset = 'Choose preset';
     isForce = false;
-    task: String = ' ';
+    taskStartName = 'null@Timer';
     taskJson: TaskCreateJson;
 
     initializeTimersArray(timerArray: Task[]) {
@@ -246,10 +249,5 @@ export class TimerService {
         } else {
             this.timerIndex = this.timerIndex - 1;
         }
-    }
-
-    timerClear() {
-        this.task = ' ';
-        this.refreshTimer();
     }
 }
