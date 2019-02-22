@@ -108,7 +108,7 @@ export class NavBarComponent implements OnInit {
         if (this.router.url.includes(this.passwordRecovery)) {
           this.userService.redirectUrl = '/stopwatch';
         } else {
-        this.userService.redirectUrl = this.router.url;
+          this.userService.redirectUrl = this.router.url;
         }
       }
     });
@@ -144,29 +144,31 @@ export class NavBarComponent implements OnInit {
   }
 
   tokenexpire() {
-    if ((this.jwthelper.getTokenExpirationDate(localStorage.getItem('access_token')).getTime()
-      - this.hours * this.milisecinhours) < (new Date()).getTime()) {
-      this.signout();
+    if (localStorage.getItem('access_token')) {
+      if ((this.jwthelper.getTokenExpirationDate(localStorage.getItem('access_token')).getTime()
+        - this.hours * this.milisecinhours) < (new Date()).getTime()) {
+        this.signout();
+      }
     }
   }
 
   signin(): void {
     this.navLinks.push(
       {
-          label: 'List',
-          link: './tasks',
-          icon: 'fa-tasks fa-lg',
-          index: 3
-        }, {
-          label: 'Statistics',
-          link: './statistics',
-          icon: 'fa-chart-pie fa-lg',
-          index: 4
-        }, {
-          label: 'History',
-          link: './history',
-          icon: 'fa-history fa-lg',
-          index: 5
-        });
+        label: 'List',
+        link: './tasks',
+        icon: 'fa-tasks fa-lg',
+        index: 3
+      }, {
+        label: 'Statistics',
+        link: './statistics',
+        icon: 'fa-chart-pie fa-lg',
+        index: 4
+      }, {
+        label: 'History',
+        link: './history',
+        icon: 'fa-history fa-lg',
+        index: 5
+      });
   }
 }

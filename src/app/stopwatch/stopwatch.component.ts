@@ -33,7 +33,6 @@ export class StopwatchComponent implements OnInit {
       this.taskService.startConnection();
       this.taskService.addCreateTaskListener();
       this.taskService.addUpdateTaskListener();
-
       this.taskService.updateFromStopwatchPageAction = (index, task) => {
         this.taskService.stopwatches[index].description = task.description;
         this.taskService.stopwatches[index].elapsedTime = task.elapsedTime;
@@ -102,7 +101,6 @@ export class StopwatchComponent implements OnInit {
 
   pauseTask() {
     this.taskService.updateFromStopwatchPage = true;
-    this.taskService.stopwatches.forEach(stopwatch => stopwatch.description = '');
     this.stopwatchService.taskJson.description = this.stopwatchService.description;
     this.stopwatchService.taskJson.isRunning = false;
     this.stopwatchService.taskJson.isStoped = true;
@@ -130,6 +128,14 @@ export class StopwatchComponent implements OnInit {
     this.taskService.setStopwatchesPage(1);
   }
 
+  clickOnWatch() {
+    if(this.getIsLoggedIn())
+    {
+      this.createTask();
+    } else {
+      this.stopwatchService.clickOnStopWatch();
+    }
+  }
   startTask() {
     this.taskService.updateFromStopwatchPage = true;
     this.taskService.stopwatches.forEach(stopwatch => stopwatch.description = '');

@@ -3,6 +3,7 @@ import { Observable } from 'rxjs';
 import { TaskCreateJson } from '../models/taskCreateJson.model';
 import { TasksService } from '../services/tasks.service';
 import { ConfigService } from '../services/config.service';
+import { StopwatchService } from '../services/stopwatch.service';
 
 @Component({
   selector: 'app-tasks',
@@ -16,6 +17,7 @@ import { ConfigService } from '../services/config.service';
 export class TasksComponent implements OnInit {
   constructor(
     public taskService: TasksService,
+    public stopwatchService: StopwatchService,
     private configService: ConfigService,
   ) { }
 
@@ -27,12 +29,36 @@ export class TasksComponent implements OnInit {
   secondPerHour = 3600;
   secondPerMinute = 60;
   secondPerSecond = 1;
+  description = '';
   public pageSizes: any = [
     { "id": 5, "value": 5 },
     { "id": 10, "value": 10 },
     { "id": 25, "value": 25 },
     { "id": "Display all", "value": Number.MAX_VALUE }
   ];
+    taskToPass: TaskCreateJson = {
+    id: 0,
+    name: 'New Stopwatch',
+    description: '',
+    elapsedTime: 0,
+    goal: '',
+    lastStartTime: '0001-01-01T00:00:00Z',
+    isRunning: false,
+    hour: 0,
+    minutes: 0,
+    seconds: 0,
+    currentSecond: 0,
+    isCollapsed: true,
+    isShowed: true,
+    isStoped: false,
+    watchType: 0,
+    maxValueHour: 0,
+    maxValueMinute: 0,
+    maxValueSecond: 0,
+    isTimerFinished: false,
+    goals: 0,
+    ticksi: 0
+};
 
   displayStopwatches() {
     this.displayStopwatch = true;
@@ -135,10 +161,16 @@ export class TasksComponent implements OnInit {
   }
 
   deleteTask(task: TaskCreateJson) {
+    this.description = task.description;
     this.taskService.broadcastDeleteTask(task.id);
     const indexTaskToDelete = this.taskService.stopwatches.indexOf(task, 0);
     this.taskService.stopwatches.splice(indexTaskToDelete, 1);
     this.refreshStopwatchesPage();
+    if( this.description == 'Displayed on stopwatch page')
+    {
+      this.stopwatchService.taskJson = new TaskCreateJson();
+      this.stopwatchService.taskJson.name = 'null@Stopwatch';
+    }
   }
 
   deleteStopwatchListener(index: number) {

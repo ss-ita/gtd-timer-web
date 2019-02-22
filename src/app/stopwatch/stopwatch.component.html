@@ -17,7 +17,7 @@
       </ng-template>
     </div>
     <ng-template [ngIf]="!getIsLoggedIn() || stopwatchService.taskJson.name === 'null@Stopwatch'">
-      <mat-card-content (click)="stopwatchService.clickOnStopWatch()">
+      <mat-card-content (click)="clickOnWatch()">
         <ng-template [ngIf]="!styleService.isLineStyle">
           <div class="progress-percentage-wrapper">
             <app-round-progress [max]="stopwatchService.maxValueOfHour" [value]="stopwatchService.hour"
