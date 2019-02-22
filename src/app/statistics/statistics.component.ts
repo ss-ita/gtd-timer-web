@@ -31,6 +31,7 @@ export class StatisticsComponent implements OnInit {
   dataTypes = DataTypes;
   chartTypes = ChartTypes;
   tasksTypes = TaskTypes;
+  selectedType = 'All';
   public hasData = true;
   public typeOfTasks;
   public typeOfChart = ChartTypes.Doughnut;
