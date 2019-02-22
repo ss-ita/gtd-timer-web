@@ -66,6 +66,7 @@ import { PasswordResetComponent } from './password-reset/password-reset.componen
 import { PasswordRecoveryDialogComponent } from './password-recovery-dialog/password-recovery-dialog.component';
 import { PasswordRecoveryComponent } from './password-recovery/password-recovery.component';
 import { LoaderService } from './services/loader.service';
+import { ColorsService } from './services/colors.service';
 
 export function jwtTokenGetter() {
   return localStorage.getItem('access_token');
@@ -164,7 +165,8 @@ export function jwtTokenGetter() {
     RoleService,
     TimeFilterPipe,
     PagerService,
-    LoaderService
+    LoaderService,
+    ColorsService
   ],
   bootstrap: [AppComponent],
   entryComponents: [

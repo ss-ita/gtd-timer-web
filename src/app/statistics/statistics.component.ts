@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Chart } from 'chart.js';
 import { ToasterService } from '../services/toaster.service';
 import { TasksService } from '../services/tasks.service';
+import { ColorsService } from '../services/colors.service';
 
 export enum ChartTypes {
   Doughnut,
@@ -27,7 +28,6 @@ export enum TaskTypes {
 export class StatisticsComponent implements OnInit {
   chart: Chart;
   tasks = [];
-  colors = ['#FF80AB', '#2196F3', '#D81B60', '#00C853', '#FFEB3B', '#7986CB', '#F8BBD0', '#FFD600', '#FF5722', '#81D4FA'];
   dataTypes = DataTypes;
   chartTypes = ChartTypes;
   tasksTypes = TaskTypes;
@@ -52,7 +52,8 @@ export class StatisticsComponent implements OnInit {
 
   constructor(
     private tasksService: TasksService,
-    private toasterService: ToasterService
+    private toasterService: ToasterService,
+    private colorsService: ColorsService
   ) { }
 
   ngOnInit() {
@@ -156,19 +157,50 @@ export class StatisticsComponent implements OnInit {
   initChart(namesOfTasks: any[], durationsOfTasks: any[]) {
     const type = this.getTypeOfChart();
     const self = this;
+    const startIndex = 0;
+    const endIndex = 7;
     this.chart = new Chart('canvasChart', {
       type: type,
       data: {
         labels: namesOfTasks,
         datasets: [{
           data: durationsOfTasks,
-          backgroundColor: this.colors,
-          borderColor: this.colors,
-          borderWidth: 1
+          backgroundColor: this.colorsService.randomColors(durationsOfTasks.length),
+          borderColor: this.colorsService.randomColors(durationsOfTasks.length),
+          borderWidth: 0
         }]
       },
       options: {
         legend: {
+          labels: {
+            generateLabels: function (chart) {
+              const data = chart.data;
+              if (data.labels.length && data.datasets.length) {
+                return data.labels.map(function (label, i) {
+                  const meta = chart.getDatasetMeta(0);
+                  const ds = data.datasets[0];
+                  const arc = meta.data[i];
+                  const custom = arc && arc.custom || {};
+                  const getValueAtIndexOrDefault = Chart.helpers.getValueAtIndexOrDefault;
+                  const arcOpts = chart.options.elements.arc;
+                  const fill = custom.backgroundColor ? custom.backgroundColor : getValueAtIndexOrDefault(ds.backgroundColor, i, arcOpts.backgroundColor);
+                  const stroke = custom.borderColor ? custom.borderColor : getValueAtIndexOrDefault(ds.borderColor, i, arcOpts.borderColor);
+                  const borderWidth = custom.borderWidth ? custom.borderWidth : getValueAtIndexOrDefault(ds.borderWidth, i, arcOpts.borderWidth);
+
+                  return {
+                    text: label.length > endIndex ? label.substr(startIndex, endIndex) + '...' : label,
+                    fillStyle: fill,
+                    strokeStyle: stroke,
+                    lineWidth: borderWidth,
+                    hidden: isNaN(ds.data[i]) || meta.data[i].hidden,
+                    index: i
+                  };
+                });
+              } else {
+                return [];
+              }
+            }
+          },
           onHover: function (e) {
             e.target.style.cursor = 'pointer';
           }
@@ -290,6 +322,8 @@ export class StatisticsComponent implements OnInit {
     const self = this;
     const type = this.getTypeOfChart();
     const config = this.chart.config;
+    const startIndex = 0;
+    const endIndex = 7;
     config.type = type;
     if (config.options.scales) {
       config.options.scales.xAxes[0].display = type === 'bar';
@@ -298,6 +332,18 @@ export class StatisticsComponent implements OnInit {
     config.options.legend.display = type !== 'bar';
     if (config.type === 'bar') {
       config.options.scales = {
+        xAxes: [{
+          ticks: {
+            autoSkip: false,
+            callback: function (value) {
+              if (value.length > endIndex) {
+                return value.substr(startIndex, endIndex) + '...';
+              } else {
+                return value;
+              }
+            },
+          }
+        }],
         yAxes: [{
           ticks: {
             callback: function (value) {
