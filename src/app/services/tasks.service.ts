@@ -893,47 +893,6 @@ export class TasksService implements OnInit {
         this.timers[index].name = task.name;
     }
 
-    getTimersMass() {
-        this.getTimers().subscribe(data => {
-            this.timers = [];
-            let time: any;
-            for (let i = data.length - 1; i >= 0; --i) {
-                const toPush: TaskCreateJson = {
-                    id: data[i].id,
-                    name: data[i].name,
-                    description: data[i].description,
-                    goal: data[i].goal,
-                    elapsedTime: data[i].elapsedTime,
-                    lastStartTime: data[i].lastStartTime,
-                    isRunning: data[i].isRunning,
-                    watchType: data[i].watchType,
-                    hour: Math.floor((data[i].elapsedTime / this.milisecondPerSecond) / this.secondPerHour),
-                    minutes: Math.floor(((data[i].elapsedTime / this.milisecondPerSecond) % this.secondPerHour) / this.secondPerMinute),
-                    seconds: Math.floor(((data[i].elapsedTime / this.milisecondPerSecond) % this.secondPerHour) % this.secondPerMinute),
-                    isStoped: false,
-                    currentSecond: 0,
-                    isCollapsed: true,
-                    isShowed: true,
-                    maxValueHour: 0,
-                    maxValueMinute: 0,
-                    maxValueSecond: 0,
-                    isTimerFinished: false,
-                    goals: 0,
-                    ticksi: 0
-                };
-
-                if (toPush.goal != null) {
-                    time = toPush.goal.split(':');
-                    toPush.maxValueHour = Number(time[0]);
-                    toPush.maxValueMinute = Number(time[1]);
-                    toPush.maxValueSecond = Number(time[2]);
-                }
-                this.timers.push(toPush);
-            }
-            this.setTimersPage(1);
-        });
-    }
-
     pauseTimer(task: TaskCreateJson) {
 
         if (task.description === this.timerService.description) {
@@ -1063,4 +1022,23 @@ export class TasksService implements OnInit {
         }));
         return task.ticksi;
     }
+
+    filterStopwatches(propertyName: string) {
+        this.pagedStopwatches = this.pagedStopwatches.sort((a, b) => {
+          switch (propertyName) {
+            case 'name': return this.compare(a.name, b.name);
+          }
+        });
+      }
+    
+    filterTimers(propertyName: string){
+        this.pagedTimers = this.pagedTimers.sort((a, b) => {
+            switch (propertyName) {
+              case 'name': return this.compare(a.name, b.name);
+            }
+          });
+    }
+    compare(a: String, b: String) {
+        return (a.toLowerCase() < b.toLowerCase() ? -1 : 1);
+      }
 }

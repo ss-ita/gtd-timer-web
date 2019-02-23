@@ -34,8 +34,7 @@ fieldset {
    background-color: darkgrey;
 }
 
-.add_new {
-    
+.add_new {    
     position: relative;
     display: inline-block;
     padding-left: 0px;
@@ -47,13 +46,13 @@ fieldset {
     height: 30px;
     border: 0,1px solid grey;
     margin-right: 10px;
+    padding-left: 5px;
 }
 
 .other {
     position: relative;
     display: contents;
-    margin-left: -4%;
-   
+    margin-left: -4%;   
     text-align: right;
     padding-left: 0px;
     padding-right: 0px;
@@ -76,6 +75,7 @@ fieldset {
     margin-right: 5%;
     position: relative;
     margin-right: 10px;
+    padding-left: 5px;
 }
 
 select {
@@ -99,7 +99,6 @@ select {
 
 .name {
     width: 20%;
-   
     overflow: hidden;
 }
 
@@ -137,7 +136,11 @@ mat-list-item {
     margin-top:50px;
     width: auto;
     padding-left: 16px;
-    
+    font-family: Roboto,"Helvetica Neue",sans-serif;
+    font-weight: bold;
+}
+.top-tittles p{
+    font-size:17px;
 }
 
 .sth {
@@ -154,31 +157,27 @@ mat-list-item {
 }
 
 .time-title {
-    width: 14%;   
+    width: 11%;   
     text-align: center;
 }
 
 .goal-title {
-    width: 21%;
+    width: 24%;
     text-align: center;
 }
-
+.time-title-stopwatch{
+    width: 10%;
+    text-align: center;
+}
 .actions-title {
-    width: 30%;
-    text-align: right;
-    margin-right: 159px;
+    width: 33%;
+    text-align: right;   
 }
 
 
 .actions-titlestopwatch {
-    width: 55%;
+    width: 58%;
     text-align: right;
-    margin-right: 159px;
-}
-
-app-progress {
-    text-align: left !important;
-    width: 10%;
 }
 
 .time {
@@ -226,11 +225,11 @@ app-progress {
     float: left;
 }
 .otherActionsButton{
-    width: 40%;
+    width: 50%;
     text-align: right;
 }
 .otherActions{
-    width: 40%;
+    width: 50%;
     text-align: right;
 }
 
@@ -240,10 +239,6 @@ app-progress {
 
 .fas {
     color: black;
-}
-
-.buttons {
-    position: relative;
 }
 
 .mat-icon {
@@ -267,8 +262,6 @@ app-progress {
 #secondTopButton {
     border-bottom-left-radius: 0px; 
     border-top-left-radius: 0px;
-    border-bottom-right-radius: 0px; 
-    border-top-right-radius: 0px;
     padding-left: 10px;
     padding-right: 10px;
 }
@@ -333,18 +326,26 @@ app-progress {
 .mobile{
     display: none;
 }
-mat-form-field{
+
+.paginationSelect{
     display:inline-block;
     align-items: baseline;
     box-sizing: border-box;
-    width: 30px; 
+    width: 100px; 
 }
-.timerName{
+.nameTimer{
     display:inline-block;
     align-items: baseline;
     box-sizing: border-box;
-    width: 60%;
+    width: 100px;
 }
+.goalNumber{
+    display:inline-block;
+    align-items: baseline;
+    box-sizing: border-box;
+    width: 25px; 
+}
+
 .otherActionsButton button{
     box-shadow:  0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
 }
@@ -377,7 +378,7 @@ mat-form-field{
         display: none;
     }
     .otherActions{
-        width: 40%;
+        width: 51%;
     }
     .name{
         font-size: 14px;
@@ -385,7 +386,7 @@ mat-form-field{
     .time{
         font-size: 14px;
     } 
-    .timek{
+    .times{
         font-size: 14px;
     }
     #startMobileButton{
@@ -414,8 +415,18 @@ mat-form-field{
         background-color: white
     }
     .actions-titles{
-        width: 33%;
+        width: 46%;
         text-align: right;
+    }
+    .stOrTi{
+        display:inline-block;
+        align-items: baseline;
+        box-sizing: border-box;
+        width: 50px; 
+    }
+    .goal-title{
+        text-align: center;
+        width: 13%;
     }
     
 }
@@ -429,7 +440,7 @@ mat-form-field{
     .time{
         font-size: 12px;
     }
-    .timek{
+    .times{
         display: none;
     }
     .name{
@@ -445,6 +456,10 @@ mat-form-field{
     }
     .top-tittles {
       margin-top: 10px;
+      font-family: Roboto,"Helvetica Neue",sans-serif;
+    }
+    .top-tittles p{
+        font-weight: bold;
     }
     .time-title{
         display: none;
@@ -468,5 +483,21 @@ mat-form-field{
     .paginationSelect{
         display: none;
      }
-    
+     .otherActions{
+         width: 46%;
+         text-align: right;
+         font-size: 14px;
+     }
+     .goal-title{
+         width: 19%;
+         text-align: center;
+         font-size: 14px;
+     }
+     .name-title{
+         font-size: 14px;
+     }
+     .actions-titles{
+         font-size: 14px;
+     }
 }
+

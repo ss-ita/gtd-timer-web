@@ -160,18 +160,6 @@ export class TasksComponent implements OnInit {
     };
   }
 
-  filterByProperty(propertyName: string) {
-    this.taskService.stopwatches = this.taskService.stopwatches.sort((a, b) => {
-      switch (propertyName) {
-        case 'name': return this.compare(a.name, b.name);
-      }
-    });
-  }
-
-  compare(a: String, b: String) {
-    return (a.toLowerCase() < b.toLowerCase() ? -1 : 1);
-  }
-
   onDeleteTask(task: TaskCreateJson){
     const warningDialogRef = this.matDialog.open(ConfirmationDialogComponent, {
       hasBackdrop: true,
