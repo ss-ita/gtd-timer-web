@@ -57,7 +57,8 @@ export class TimerComponent implements OnInit {
 
     this.taskService.createFromTimerPageAction = (task) => {
       this.taskService.setTimersPage(1);
-      task.goal = this.timerService.taskJson.maxValueHour.toString() + ':' + this.timerService.taskJson.maxValueMinute.toString() + ':' + this.timerService.taskJson.maxValueSecond.toString();
+      task.goal = this.timerService.taskJson.maxValueHour.toString() + ':' +
+       this.timerService.taskJson.maxValueMinute.toString() + ':' + this.timerService.taskJson.maxValueSecond.toString();
       this.taskService.timers.forEach(timer => timer.description = '');
       this.taskService.timers.unshift(this.taskService.timerToTaskCreateJson(task));
       this.taskService.timers[0].description = this.timerService.description;
@@ -69,9 +70,12 @@ export class TimerComponent implements OnInit {
 
     this.presetComponent.isLoggedIn = this.presetComponent.getIsLoggedIn();
     this.timerForm = this.formBuilder.group({
-      'hour': [this.timerService.maxValueHour, [Validators.min(0), Validators.max(23), Validators.maxLength(2), Validators.pattern(this.hourPattern)]],
-      'minute': [this.timerService.maxValueMinute, [Validators.min(0), Validators.maxLength(2), Validators.max(59), Validators.pattern(this.minuteSecondPattern)]],
-      'second': [this.timerService.maxValueSecond, [Validators.min(0), Validators.maxLength(2), Validators.max(59), Validators.pattern(this.minuteSecondPattern)]]
+      'hour': [this.timerService.maxValueHour, [Validators.min(0), Validators.max(23),
+         Validators.maxLength(2), Validators.pattern(this.hourPattern)]],
+      'minute': [this.timerService.maxValueMinute, [Validators.min(0), Validators.maxLength(2),
+         Validators.max(59), Validators.pattern(this.minuteSecondPattern)]],
+      'second': [this.timerService.maxValueSecond, [Validators.min(0), Validators.maxLength(2),
+         Validators.max(59), Validators.pattern(this.minuteSecondPattern)]]
     });
     this.presetComponent.getAllStandardAndCustomPresets();
     this.timerService.getIsTimerArrayEmpty();
@@ -116,7 +120,8 @@ export class TimerComponent implements OnInit {
       this.timerService.taskJson.maxValueSecond = 0;
     }
 
-    taskToPass.goal = this.timerService.taskJson.maxValueHour.toString() + ':' + this.timerService.taskJson.maxValueMinute.toString() + ':' + this.timerService.taskJson.maxValueSecond.toString();
+    taskToPass.goal = this.timerService.taskJson.maxValueHour.toString() + ':' +
+     this.timerService.taskJson.maxValueMinute.toString() + ':' + this.timerService.taskJson.maxValueSecond.toString();
     this.taskService.broadcastCreateTask(taskToPass);
     this.countOfCreatedTimers++;
     this.timerService.isTimerFinished = false;
@@ -217,10 +222,12 @@ export class TimerComponent implements OnInit {
     this.taskService.timers.forEach(timer => timer.description = '');
     this.timerService.taskJson.description = this.timerService.description;
 
-    if (this.timerService.taskJson.goals != ((this.timerService.taskJson.maxValueHour * this.taskService.secondPerHour) + (this.timerService.taskJson.maxValueMinute * this.taskService.secondPerMinute)
+    if (this.timerService.taskJson.goals != ((this.timerService.taskJson.maxValueHour * this.taskService.secondPerHour)
+     + (this.timerService.taskJson.maxValueMinute * this.taskService.secondPerMinute)
       + (this.timerService.taskJson.maxValueSecond * this.taskService.secondPerSecond))) {
       this.taskService.resetTimer(this.timerService.taskJson);
-      this.timerService.taskJson.goals = ((this.timerService.taskJson.maxValueHour * this.taskService.secondPerHour) + (this.timerService.taskJson.maxValueMinute * this.taskService.secondPerMinute)
+      this.timerService.taskJson.goals = ((this.timerService.taskJson.maxValueHour * this.taskService.secondPerHour)
+       + (this.timerService.taskJson.maxValueMinute * this.taskService.secondPerMinute)
         + (this.timerService.taskJson.maxValueSecond * this.taskService.secondPerSecond));
       this.timerService.taskJson.elapsedTime = this.timerService.taskJson.goals;
       this.startTask();
@@ -240,10 +247,12 @@ export class TimerComponent implements OnInit {
         this.timerService.taskJson.maxValueSecond = 0;
       }
 
-      this.timerService.taskJson.goal = this.timerService.taskJson.maxValueHour.toString() + ':' + this.timerService.taskJson.maxValueMinute.toString() + ':' + this.timerService.taskJson.maxValueSecond.toString();
+      this.timerService.taskJson.goal = this.timerService.taskJson.maxValueHour.toString() + ':' +
+       this.timerService.taskJson.maxValueMinute.toString() + ':' + this.timerService.taskJson.maxValueSecond.toString();
 
       if (this.timerService.taskJson.elapsedTime === 0) {
-        this.timerService.taskJson.ticksi = ((this.timerService.taskJson.maxValueHour * this.taskService.secondPerHour) + (this.timerService.taskJson.maxValueMinute * this.taskService.secondPerMinute)
+        this.timerService.taskJson.ticksi = ((this.timerService.taskJson.maxValueHour * this.taskService.secondPerHour)
+         + (this.timerService.taskJson.maxValueMinute * this.taskService.secondPerMinute)
           + (this.timerService.taskJson.maxValueSecond * this.taskService.secondPerSecond));
         this.timerService.taskJson.elapsedTime = this.timerService.taskJson.ticksi;
       } else {

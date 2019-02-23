@@ -18,18 +18,18 @@ import { PagerService } from '../services/pager.service';
 export class HistoryComponent implements OnInit {
 
   searchText: string;
-  selected = "All";
+  selected = 'All';
   records: Record[];
   recordsToDisplay: Record[];
   isStopwatch = 2;
   pagedRecords: Record[];
   recordsToDisplayPager: any = {};
-  pageSizeRecords: number = 10;
+  pageSizeRecords = 10;
   public pageSizes: any = [
-    { "id": 5, "value": 5 },
-    { "id": 10, "value": 10 },
-    { "id": 25, "value": 25 },
-    { "id": "Display all", "value": Number.MAX_VALUE }
+    { 'id': 5, 'value': 5 },
+    { 'id': 10, 'value': 10 },
+    { 'id': 25, 'value': 25 },
+    { 'id': 'Display all', 'value': Number.MAX_VALUE }
   ];
 
   constructor(private historyService: HistoryService,
@@ -77,20 +77,21 @@ export class HistoryComponent implements OnInit {
     this.isStopwatch = num;
     if (this.isStopwatch === 1) {
       this.recordsToDisplay = [... this.records.filter(it => it.watchType === 0)];
-      this.selected = "Stopwatches";
+      this.selected = 'Stopwatches';
     } else if (this.isStopwatch === 0) {
       this.recordsToDisplay = [... this.records.filter(it => it.watchType === 1)];
-      this.selected = "Timers";
+      this.selected = 'Timers';
     } else {
       this.recordsToDisplay = [...this.records];
-      this.selected = "All";
+      this.selected = 'All';
     }
 
     this.setRecordsPage(1);
   }
 
   getRecords() {
-    this.historyService.getAllRecords().subscribe(data => { this.records = data; this.recordsToDisplay = [...this.records]; this.setRecordsPage(1); });
+    this.historyService.getAllRecords().subscribe(
+      data => { this.records = data; this.recordsToDisplay = [...this.records]; this.setRecordsPage(1); });
   }
 
   onInfo(record: Record) {
@@ -116,8 +117,7 @@ export class HistoryComponent implements OnInit {
 
     if (this.pagedRecords.length > 1) {
       this.setRecordsPage(this.recordsToDisplayPager.currentPage);
-    }
-    else {
+    } else {
       this.setRecordsPage(this.recordsToDisplayPager.currentPage - 1);
     }
   }
@@ -143,27 +143,29 @@ export class HistoryComponent implements OnInit {
       next: data => {
         if (data) {
 
-          for(let i = 0;i<data.length;++i){
-          let r = data[i];
-          let toDelete = this.recordsToDisplay.filter((rec) => { return rec.id == r.id });
-          let indexToDelete = this.recordsToDisplay.indexOf(toDelete[0]);
-          if (indexToDelete > -1)
-            this.recordsToDisplay.splice(indexToDelete, 1);
+          for (let i = 0; i < data.length; ++i) {
+            const r = data[i];
+            const toDelete = this.recordsToDisplay.filter((rec) => rec.id == r.id );
+            const indexToDelete = this.recordsToDisplay.indexOf(toDelete[0]);
+            if (indexToDelete > -1) {
+              this.recordsToDisplay.splice(indexToDelete, 1);
+            }
           }
-          for(let i = 0;i<data.length;++i){
-          this.recordsToDisplay.push(data[i]);
-          }
-
-          for(let i = 0;i<data.length;++i){
-          let r = data[i];
-          let toDelete = this.records.filter((rec) => { return rec.id == r.id });
-          let indexToDelete = this.records.indexOf(toDelete[0]);
-          if (indexToDelete > -1)
-            this.records.splice(indexToDelete, 1);
+          for (let i = 0; i < data.length; ++i) {
+            this.recordsToDisplay.push(data[i]);
           }
 
-          for(let i = 0;i<data.length;++i){
-          this.records.push(data[i]);
+          for (let i = 0; i < data.length; ++i) {
+            const r = data[i];
+            const toDelete = this.records.filter((rec) => rec.id == r.id );
+            const indexToDelete = this.records.indexOf(toDelete[0]);
+            if (indexToDelete > -1) {
+              this.records.splice(indexToDelete, 1);
+            }
+          }
+
+          for (let i = 0; i < data.length; ++i) {
+            this.records.push(data[i]);
           }
 
           this.setRecordsPage(Math.ceil(this.recordsToDisplay.length / this.pageSizeRecords));

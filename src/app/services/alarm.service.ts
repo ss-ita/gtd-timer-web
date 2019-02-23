@@ -159,10 +159,10 @@ export class AlarmService {
     deadlineTime.setDate(deadlineTime.getDate() + 21);
     const differenceInMs = (new Date(ms)).getTime() - (currentTime.getTime());
     alarm.timeoutIndex = setTimeout(this.playAlarm.bind(this), differenceInMs);
- 
+
     if (this.showToaster) {
       this.toasterService.showToaster(this.calculateTimeStart(alarm));
-    } 
+    }
     this.setToogleStage();
     this.setTimeColor();
     this.findFirstTurnOnAlarm();
@@ -548,7 +548,7 @@ export class AlarmService {
 
   compareAlarmModels(newModel: AlarmModel, editedModel: AlarmModel): boolean {
     if (newModel.cronExpression == editedModel.cronExpression && newModel.soundOn == editedModel.soundOn
-                      && newModel.message == editedModel.message && newModel.isOn == editedModel.isOn) {
+      && newModel.message == editedModel.message && newModel.isOn == editedModel.isOn) {
       return true;
     } else {
       return false;

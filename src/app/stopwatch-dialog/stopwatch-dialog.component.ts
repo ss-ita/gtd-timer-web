@@ -16,7 +16,7 @@ export class StopwatchDialogComponent implements OnInit {
   stopwatchName = 'New stopwatch';
   stopwatchTag = 'None';
 
-  
+
   constructor(
     private stopwatchDialogRef: MatDialogRef<StopwatchDialogComponent>,
     private formBuilder: FormBuilder,
@@ -36,7 +36,7 @@ export class StopwatchDialogComponent implements OnInit {
 
     this.stopwatchService.taskJson.name = name;
 
-    this.taskService.updateStopwatch(this.stopwatchService.taskJson)
+    this.taskService.updateStopwatch(this.stopwatchService.taskJson);
 
     this.toasterService.showToaster('Title changed');
     this.onClose();

@@ -33,10 +33,10 @@ export class TimerDialogComponent implements OnInit {
     } else {
       name = this.timerName + ' ' + '#' + this.timerTag;
     }
-    
+
     this.timerService.taskJson.name = name;
 
-    this.taskService.updateTimeTimer(this.timerService.taskJson)
+    this.taskService.updateTimeTimer(this.timerService.taskJson);
     this.toasterService.showToaster('Title changed');
     this.onClose();
   }

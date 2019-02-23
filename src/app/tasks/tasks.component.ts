@@ -36,10 +36,10 @@ export class TasksComponent implements OnInit {
   secondPerSecond = 1;
   description = '';
   public pageSizes: any = [
-    { "id": 5, "value": 5 },
-    { "id": 10, "value": 10 },
-    { "id": 25, "value": 25 },
-    { "id": "Display all", "value": Number.MAX_VALUE }
+    { 'id': 5, 'value': 5 },
+    { 'id': 10, 'value': 10 },
+    { 'id': 25, 'value': 25 },
+    { 'id': 'Display all', 'value': Number.MAX_VALUE }
   ];
   taskToPass: TaskCreateJson = {
     id: 0,
@@ -125,10 +125,10 @@ export class TasksComponent implements OnInit {
     };
     this.taskService.startTimerAction = (task, data) => {
       this.taskService.startTimerListener(task, data);
-    }
+    };
     this.taskService.pauseTimerAction = (task, data) => {
       this.taskService.pauseTimerListener(task, data);
-    }
+    };
     this.taskService.pauseStopwatchAction = (task, data) => {
       this.taskService.pauseStopwatchListener(task, data);
     };

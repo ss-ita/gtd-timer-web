@@ -1,15 +1,15 @@
 import { Injectable } from '@angular/core';
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
 export class PagerService {
 
-  constructor() { }
+    constructor() { }
 
-   getPager(totalItems: number, currentPage: number = 1, pageSize: number = 10) {
+    getPager(totalItems: number, currentPage: number = 1, pageSize: number = 10) {
 
-        let totalPages = Math.ceil(totalItems / pageSize);
+        const totalPages = Math.ceil(totalItems / pageSize);
         let startPage: number, endPage: number;
 
         if (totalPages <= 10) {
@@ -27,7 +27,7 @@ export class PagerService {
                 endPage = currentPage + 4;
             }
         }
-        
+
         if (totalPages <= 5) {
             startPage = 1;
             endPage = totalPages;
@@ -40,14 +40,14 @@ export class PagerService {
                 endPage = totalPages;
             } else {
                 startPage = currentPage - 2;
-                endPage = currentPage+2;
+                endPage = currentPage + 2;
             }
         }
 
-        let startIndex = (currentPage - 1) * pageSize;
-        let endIndex = Math.min(startIndex + pageSize - 1, totalItems - 1);
+        const startIndex = (currentPage - 1) * pageSize;
+        const endIndex = Math.min(startIndex + pageSize - 1, totalItems - 1);
 
-        let pages = Array.from(Array(endPage + 1 - startPage), (_ , i) => startPage + i );
+        const pages = Array.from(Array(endPage + 1 - startPage), (_, i) => startPage + i);
 
         return {
             totalItems: totalItems,

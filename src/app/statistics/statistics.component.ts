@@ -184,9 +184,11 @@ export class StatisticsComponent implements OnInit {
                   const custom = arc && arc.custom || {};
                   const getValueAtIndexOrDefault = Chart.helpers.getValueAtIndexOrDefault;
                   const arcOpts = chart.options.elements.arc;
-                  const fill = custom.backgroundColor ? custom.backgroundColor : getValueAtIndexOrDefault(ds.backgroundColor, i, arcOpts.backgroundColor);
+                  const fill = custom.backgroundColor ? custom.backgroundColor :
+                   getValueAtIndexOrDefault(ds.backgroundColor, i, arcOpts.backgroundColor);
                   const stroke = custom.borderColor ? custom.borderColor : getValueAtIndexOrDefault(ds.borderColor, i, arcOpts.borderColor);
-                  const borderWidth = custom.borderWidth ? custom.borderWidth : getValueAtIndexOrDefault(ds.borderWidth, i, arcOpts.borderWidth);
+                  const borderWidth = custom.borderWidth ? custom.borderWidth :
+                   getValueAtIndexOrDefault(ds.borderWidth, i, arcOpts.borderWidth);
 
                   return {
                     text: label.length > endIndex ? label.substr(startIndex, endIndex) + '...' : label,

@@ -74,9 +74,9 @@ export class ColorsService {
   }
 
   public randomColors(total: number) {
-    let i = 360 / (total - 1);
+    const i = 360 / (total - 1);
 
-    for (var x = 0; x < total; x++) {
+    for (let x = 0; x < total; x++) {
       this.colors.push(this.hsvToRgb(i * x, 100, 100));
     }
 
