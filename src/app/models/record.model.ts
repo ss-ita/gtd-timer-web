@@ -8,5 +8,5 @@ export class Record {
     action: string;
     taskId: number;
     watchType: number;
-    userId:number;
+    userId: number;
 }

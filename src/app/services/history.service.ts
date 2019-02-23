@@ -17,7 +17,6 @@ export class HistoryService {
 
   getAllRecords(): Observable<Record[]> {
     return this.httpClient.get<Record[]>(this.configService.urlTask + 'GetAllRecordsByUserId');
-    //return this.httpClient.get<Record[]>("assets/records.json");
   }
 
   deleteRecord(recordId: number) {

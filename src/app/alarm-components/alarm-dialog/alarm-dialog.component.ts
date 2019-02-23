@@ -31,7 +31,6 @@ export class AlarmDialogComponent implements OnInit {
     private dialog: MatDialog,
     @Inject(MAT_DIALOG_DATA)
     public data: any) { }
-    
 
   ngOnInit() {
     if (this.data !== null) {
@@ -44,8 +43,10 @@ export class AlarmDialogComponent implements OnInit {
     }
 
     this.alarmForm = this.formBuilder.group({
-      'hour': [this.hour, [Validators.required, Validators.min(0), Validators.max(23), Validators.maxLength(2), Validators.pattern(this.hourPattern)]],
-      'minute': [this.minute, [Validators.required, Validators.min(0), Validators.maxLength(2), Validators.max(59), Validators.pattern(this.minutePattern)]],
+      'hour': [this.hour, [Validators.required, Validators.min(0), Validators.max(23),
+      Validators.maxLength(2), Validators.pattern(this.hourPattern)]],
+      'minute': [this.minute, [Validators.required, Validators.min(0), Validators.maxLength(2),
+      Validators.max(59), Validators.pattern(this.minutePattern)]],
       'repeatControl': [],
       'checked': [],
       'messageControl': []

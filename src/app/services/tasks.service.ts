@@ -259,8 +259,10 @@ export class TasksService implements OnInit {
             description: task.description,
             startTime: task.lastStartTime,
             stopTime: stop,
-            elapsedTime: ((timeNow.getHours() - timeStart.getHours()) * this.milisecondPerHour + (timeNow.getMinutes() - timeStart.getMinutes()) *
-                this.milisecondPerMinute + (timeNow.getSeconds() - timeStart.getSeconds()) * this.milisecondPerSecond + (timeNow.getMilliseconds() - timeStart.getMilliseconds())),
+            elapsedTime: ((timeNow.getHours() - timeStart.getHours()) * this.milisecondPerHour +
+                (timeNow.getMinutes() - timeStart.getMinutes()) *
+                this.milisecondPerMinute + (timeNow.getSeconds() - timeStart.getSeconds()) *
+                this.milisecondPerSecond + (timeNow.getMilliseconds() - timeStart.getMilliseconds())),
             watchType: task.watchType,
             action: 'Reset',
             taskId: task.id,
@@ -386,7 +388,8 @@ export class TasksService implements OnInit {
         if (!task.isStoped) {
             const timeStart = new Date(task.lastStartTime);
             const timeNow = new Date(new Date(Date.now()).toISOString().slice(0, -1));
-            const elapsedTimeMoq = ((timeNow.getHours() - timeStart.getHours()) * 3600000 + (timeNow.getMinutes() - timeStart.getMinutes()) *
+            const elapsedTimeMoq = ((timeNow.getHours() - timeStart.getHours()) *
+                3600000 + (timeNow.getMinutes() - timeStart.getMinutes()) *
                 60000 + (timeNow.getSeconds() - timeStart.getSeconds()) * 1000 + (timeNow.getMilliseconds() - timeStart.getMilliseconds()));
             this.ticks = elapsedTimeMoq;
             task.currentSecond = (elapsedTimeMoq + task.elapsedTime) / 1000;
@@ -421,7 +424,7 @@ export class TasksService implements OnInit {
 
     getTimersForPage(pager: any): Observable<TaskCreateJson[]> {
         return new Observable<TaskCreateJson[]>(observer => {
-            let request = undefined;
+            let request;
             const paged = this.timers.slice(pager.startIndex, pager.endIndex + 1);
             if (paged.indexOf(undefined) === -1) {
                 observer.next(paged);
@@ -433,15 +436,15 @@ export class TasksService implements OnInit {
                 request = this.getTimers(revStart, length);
                 request.subscribe(data => {
                     let i = end;
-                    for (let task of data) {
+                    for (const task of data) {
                         this.timers[i] = this.timerToTaskCreateJson(task);
                         this.timers[i].hour = Math.floor(task.elapsedTime / this.secondPerHour);
                         this.timers[i].minutes = Math.floor((task.elapsedTime % this.secondPerHour) / this.secondPerMinute);
                         this.timers[i].seconds = Math.floor((task.elapsedTime % this.secondPerHour) % this.secondPerMinute);
                         --i;
                     }
-                    const paged = this.timers.slice(pager.startIndex, pager.endIndex + 1);
-                    observer.next(paged);
+                    const pageds = this.timers.slice(pager.startIndex, pager.endIndex + 1);
+                    observer.next(pageds);
                 });
             }
 
@@ -457,7 +460,7 @@ export class TasksService implements OnInit {
 
     getStopwatchesForPage(pager: any): Observable<TaskCreateJson[]> {
         return new Observable<TaskCreateJson[]>(observer => {
-            let request = undefined;
+            let request;
             const paged = this.stopwatches.slice(pager.startIndex, pager.endIndex + 1);
             if (paged.indexOf(undefined) === -1) {
                 observer.next(paged);
@@ -469,12 +472,12 @@ export class TasksService implements OnInit {
                 request = this.getStopwatches(revStart, length);
                 request.subscribe(data => {
                     let i = end;
-                    for (let task of data) {
+                    for (const task of data) {
                         this.stopwatches[i] = this.stopwatchToTaskCreateJson(task);
                         --i;
                     }
-                    const paged = this.stopwatches.slice(pager.startIndex, pager.endIndex + 1);
-                    observer.next(paged);
+                    const pageds = this.stopwatches.slice(pager.startIndex, pager.endIndex + 1);
+                    observer.next(pageds);
                 });
             }
 
@@ -489,7 +492,7 @@ export class TasksService implements OnInit {
     }
 
     stopwatchToTaskCreateJson(task: TaskJson): TaskCreateJson {
-        let taskCreateJson: TaskCreateJson = {
+        const taskCreateJson: TaskCreateJson = {
             id: task.id,
             name: task.name,
             description: task.description,
@@ -517,7 +520,7 @@ export class TasksService implements OnInit {
     }
 
     timerToTaskCreateJson(task: TaskJson): TaskCreateJson {
-        let taskCreateJson: TaskCreateJson = {
+        const taskCreateJson: TaskCreateJson = {
             id: task.id,
             name: task.name,
             description: task.description,
@@ -598,10 +601,10 @@ export class TasksService implements OnInit {
 
     DisplayTaskOnTimerPage(task: TaskCreateJson) {
         this.timerService.isTimerFinished = false;
-        this.timers.forEach(timer => timer.description = '');
+        this.timers.forEach(timerinlist => timerinlist.description = '');
         task.description = this.timerService.description;
         this.timerService.taskJson = task;
-        this.timerService.exitFromPreset()
+        this.timerService.exitFromPreset();
         this.toasterService.showToaster('Displayed on timer page');
     }
 
@@ -703,21 +706,21 @@ export class TasksService implements OnInit {
         const self = this;
         this.hubConnection.on('PauseTask', (data) => {
             if (data.watchType === 0) {
-            const index = self.getIndexOfStopwatches(data);
-            if (index !== -1) {
-                if (self.pauseStopwatchAction) {
-                    self.pauseStopwatchAction(self.stopwatches[index], data);
+                const index = self.getIndexOfStopwatches(data);
+                if (index !== -1) {
+                    if (self.pauseStopwatchAction) {
+                        self.pauseStopwatchAction(self.stopwatches[index], data);
+                    }
+                }
+            } else {
+                const index = self.getIndexOfTimers(data);
+                if (index !== -1) {
+                    if (self.pauseTimerAction) {
+                        self.pauseTimerAction(self.timers[index], data);
+                    }
                 }
             }
-        }else {
-            const index = self.getIndexOfTimers(data);
-            if (index !== -1) {
-                if (self.pauseTimerAction) {
-                    self.pauseTimerAction(self.timers[index], data);
-                }
-            }
-        }
-        });;
+        });
     }
 
     public addDeleteTaskListener = () => {
@@ -901,7 +904,7 @@ export class TasksService implements OnInit {
         if (task.description === this.timerService.description) {
             this.timerService.isTimerFinished = false;
             this.timerService.taskJson = task;
-            this.timers.forEach(timer => timer.description = '');
+            this.timers.forEach(timerinlist => timerinlist.description = '');
         }
 
         task.isRunning = false;
@@ -917,8 +920,10 @@ export class TasksService implements OnInit {
             description: task.description,
             startTime: task.lastStartTime,
             stopTime: stop,
-            elapsedTime: ((timeNow.getHours() - timeStart.getHours()) * 3600000 + (timeNow.getMinutes() - timeStart.getMinutes()) *
-                this.milisecondPerMinute + (timeNow.getSeconds() - timeStart.getSeconds()) * this.milisecondPerSecond + (timeNow.getMilliseconds() - timeStart.getMilliseconds())),
+            elapsedTime: ((timeNow.getHours() - timeStart.getHours()) * 3600000 +
+                (timeNow.getMinutes() - timeStart.getMinutes()) *
+                this.milisecondPerMinute + (timeNow.getSeconds() - timeStart.getSeconds()) *
+                 this.milisecondPerSecond + (timeNow.getMilliseconds() - timeStart.getMilliseconds())),
             watchType: task.watchType,
             action: 'Pause',
             taskId: task.id,
@@ -943,7 +948,8 @@ export class TasksService implements OnInit {
             startTime: task.lastStartTime,
             stopTime: stop,
             elapsedTime: ((timeNow.getHours() - timeStart.getHours()) * 3600000 + (timeNow.getMinutes() - timeStart.getMinutes()) *
-                this.milisecondPerMinute + (timeNow.getSeconds() - timeStart.getSeconds()) * this.milisecondPerSecond + (timeNow.getMilliseconds() - timeStart.getMilliseconds())),
+                this.milisecondPerMinute + (timeNow.getSeconds() - timeStart.getSeconds()) *
+                this.milisecondPerSecond + (timeNow.getMilliseconds() - timeStart.getMilliseconds())),
             watchType: task.watchType,
             action: 'Reset',
             taskId: task.id,
@@ -981,7 +987,7 @@ export class TasksService implements OnInit {
         if (task.description === this.timerService.description) {
             this.timerService.isTimerFinished = false;
             this.timerService.taskJson = task;
-            this.timers.forEach(timer => timer.description = '');
+            this.timers.forEach(timerinlist => timerinlist.description = '');
         }
 
         if (task.goals != ((task.maxValueHour * this.secondPerHour) + (task.maxValueMinute * this.secondPerMinute)
@@ -1031,20 +1037,20 @@ export class TasksService implements OnInit {
 
     filterStopwatches(propertyName: string) {
         this.pagedStopwatches = this.pagedStopwatches.sort((a, b) => {
-          switch (propertyName) {
-            case 'name': return this.compare(a.name, b.name);
-          }
+            switch (propertyName) {
+                case 'name': return this.compare(a.name, b.name);
+            }
         });
-      }
-    
-    filterTimers(propertyName: string){
+    }
+
+    filterTimers(propertyName: string) {
         this.pagedTimers = this.pagedTimers.sort((a, b) => {
             switch (propertyName) {
-              case 'name': return this.compare(a.name, b.name);
+                case 'name': return this.compare(a.name, b.name);
             }
-          });
+        });
     }
     compare(a: String, b: String) {
         return (a.toLowerCase() < b.toLowerCase() ? -1 : 1);
-      }
+    }
 }

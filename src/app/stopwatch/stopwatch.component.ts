@@ -122,7 +122,8 @@ export class StopwatchComponent implements OnInit {
       stopTime: stop,
       elapsedTime: ((timeNow.getHours() - timeStart.getHours()) * this.taskService.milisecondPerHour +
         (timeNow.getMinutes() - timeStart.getMinutes()) * this.taskService.milisecondPerMinute +
-        (timeNow.getSeconds() - timeStart.getSeconds()) * this.taskService.milisecondPerSecond + (timeNow.getMilliseconds() - timeStart.getMilliseconds())),
+        (timeNow.getSeconds() - timeStart.getSeconds()) * this.taskService.milisecondPerSecond +
+        (timeNow.getMilliseconds() - timeStart.getMilliseconds())),
       watchType: this.stopwatchService.taskJson.watchType,
       action: 'Pause',
       taskId: this.stopwatchService.taskJson.id,
@@ -133,8 +134,7 @@ export class StopwatchComponent implements OnInit {
   }
 
   clickOnWatch() {
-    if(this.getIsLoggedIn())
-    {
+    if (this.getIsLoggedIn()) {
       this.createTask();
     } else {
       this.stopwatchService.clickOnStopWatch();
@@ -144,7 +144,6 @@ export class StopwatchComponent implements OnInit {
     this.taskService.updateFromStopwatchPage = true;
     this.taskService.stopwatches.forEach(stopwatch => stopwatch.description = '');
     this.stopwatchService.taskJson.description = this.stopwatchService.description;
-    this.taskService.stopwatches;
     this.stopwatchService.taskJson.isRunning = true;
     this.stopwatchService.taskJson.isStoped = false;
 
@@ -165,7 +164,8 @@ export class StopwatchComponent implements OnInit {
   }
 
   clickOnStopWatch() {
-    if (this.stopwatchService.taskJson.isStoped || (this.stopwatchService.taskJson.isStoped === false && this.stopwatchService.taskJson.isRunning === false)) {
+    if (this.stopwatchService.taskJson.isStoped ||
+       (this.stopwatchService.taskJson.isStoped === false && this.stopwatchService.taskJson.isRunning === false)) {
       this.startTask();
     } else {
       this.pauseTask();

@@ -9,8 +9,8 @@ import { LoaderService } from './services/loader.service';
 })
 export class AppComponent implements OnInit, AfterViewChecked {
   title = 'gtd-timer-web';
-  showLoader: boolean = false;
-  
+  showLoader = false;
+
   ngAfterViewChecked(): void {
     this.cdRef.detectChanges();
   }
@@ -19,7 +19,7 @@ export class AppComponent implements OnInit, AfterViewChecked {
     public alarmService: AlarmService,
     private loaderService: LoaderService,
     private cdRef: ChangeDetectorRef
-    ) {   
+    ) {
       this.alarmService.getAlarmsFromDatabase();
     }
 

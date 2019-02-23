@@ -8,7 +8,7 @@ import { TaskCreateJson } from '../models/taskCreateJson.model';
 
 export class TimerService {
 
-    constructor(private configService: ConfigService) { 
+    constructor(private configService: ConfigService) {
         this.taskJson = new TaskCreateJson();
         this.taskJson.name = this.taskStartName;
     }

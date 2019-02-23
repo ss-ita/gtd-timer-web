@@ -11,7 +11,7 @@ import 'rxjs/add/operator/finally';
 })
 export class HttpTokenInterceptor implements HttpInterceptor {
 
-  constructor(private loaderService: LoaderService) {   
+  constructor(private loaderService: LoaderService) {
   }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {

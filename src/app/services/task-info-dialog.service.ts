@@ -14,7 +14,7 @@ export class TaskInfoDialogService {
     const dialogRef = this.dialog.open(RecordInfoComponent, {
       hasBackdrop: true,
       closeOnNavigation: true,
-      panelClass:['recordInfoOverlay']
+      panelClass: ['recordInfoOverlay']
     });
     dialogRef.componentInstance.record = record;
 
