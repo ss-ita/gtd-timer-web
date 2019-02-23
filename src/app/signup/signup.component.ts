@@ -74,6 +74,10 @@ export class SignupComponent implements OnInit {
         '';
   }
 
+  onSubmit({ value, valid }: { value: SignupModel, valid: boolean }) {
+    this.closeSignUpForm();
+  }
+
   ngOnInit() {
     this.signUpForm = this.formBuilder.group({
       'firstName': [this.user.firstName, [
