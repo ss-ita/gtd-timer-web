@@ -3,20 +3,22 @@
     <div class="negative-margin">
       <mat-menu #appMenu="matMenu">
         <button mat-menu-item (click)="styleService.changeStyle()">{{styleService.changeStyleString}}</button>
-        <ng-template [ngIf]="getIsLoggedIn() && stopwatchService.taskJson.name !== 'null@Stopwatch'">
+        <ng-template
+          [ngIf]="getIsLoggedIn() && stopwatchService.taskJson.name !== this.stopwatchService.startStopwatchName">
           <button mat-menu-item (click)="changeTitle()">Change title</button>
         </ng-template>
       </mat-menu>
       <button mat-icon-button [matMenuTriggerFor]="appMenu" class="style-menu">
         <mat-icon>more_vert</mat-icon>
       </button>
-      <ng-template [ngIf]="this.stopwatchService.taskJson.name !== 'null@Stopwatch'">
+      <ng-template [ngIf]="this.stopwatchService.taskJson.name !== this.stopwatchService.startStopwatchName">
         <ng-template [ngIf]="getIsLoggedIn() && this.stopwatchService.taskJson.name !== ''">
           <div class="current-stopwatch">{{stopwatchService.taskJson.name}}</div>
         </ng-template>
       </ng-template>
     </div>
-    <ng-template [ngIf]="!getIsLoggedIn() || stopwatchService.taskJson.name === 'null@Stopwatch'">
+    <ng-template
+      [ngIf]="!getIsLoggedIn() || stopwatchService.taskJson.name === this.stopwatchService.startStopwatchName">
       <mat-card-content (click)="clickOnWatch()">
         <ng-template [ngIf]="!styleService.isLineStyle">
           <div class="progress-percentage-wrapper">
@@ -46,7 +48,8 @@
         </ng-template>
       </mat-card-content>
     </ng-template>
-    <ng-template [ngIf]="getIsLoggedIn() && stopwatchService.taskJson.name !== 'null@Stopwatch'">
+    <ng-template
+      [ngIf]="getIsLoggedIn() && stopwatchService.taskJson.name !== this.stopwatchService.startStopwatchName">
       <mat-card-content (click)="clickOnStopWatch()">
         <ng-template [ngIf]="!styleService.isLineStyle">
           <div class="progress-percentage-wrapper">
@@ -94,12 +97,12 @@
         </button>
       </ng-template>
       <ng-template [ngIf]="getIsLoggedIn()">
-        <ng-template [ngIf]="stopwatchService.taskJson.name === 'null@Stopwatch'">
+        <ng-template [ngIf]="stopwatchService.taskJson.name === this.stopwatchService.startStopwatchName">
           <button mat-icon-button (click)="createTask()">
             <mat-icon>arrow_right</mat-icon>
           </button>
         </ng-template>
-        <ng-template [ngIf]="stopwatchService.taskJson.name !== 'null@Stopwatch'">
+        <ng-template [ngIf]="stopwatchService.taskJson.name !== this.stopwatchService.startStopwatchName">
           <ng-template
             [ngIf]="stopwatchService.taskJson.isStoped || ( stopwatchService.taskJson.isStoped === false && stopwatchService.taskJson.isRunning === false)">
             <button mat-icon-button (click)="startTask()">
@@ -113,11 +116,11 @@
           </ng-template>
         </ng-template>
         <button mat-icon-button
-          [disabled]="( stopwatchService.taskJson.isStoped === false && stopwatchService.taskJson.isRunning === false) || stopwatchService.taskJson.name === 'null@Stopwatch'"
+          [disabled]="( stopwatchService.taskJson.isStoped === false && stopwatchService.taskJson.isRunning === false) || stopwatchService.taskJson.name === this.stopwatchService.startStopwatchName"
           (click)="resetTask()">
           <mat-icon>refresh</mat-icon>
         </button>
-        <ng-template [ngIf]="stopwatchService.taskJson.name !== 'null@Stopwatch'">
+        <ng-template [ngIf]="stopwatchService.taskJson.name !== this.stopwatchService.startStopwatchName">
           <button mat-button class="addStopwatch" (click)="createTask()">
             <mat-icon>add</mat-icon>
           </button>

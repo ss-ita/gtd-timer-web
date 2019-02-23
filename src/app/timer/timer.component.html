@@ -19,8 +19,10 @@
             </button>
           </ng-template>
         </span>
-        <span class="current-preset"><button class="presets-settings-button" (click)="openPresetFormDialog()">{{timerService.currentPreset}}</button></span>
-        <button mat-icon-button class="view-preset-menu" (click)="toggle()" [ngClass]="{rotateIconLeft: isViewable && innerWidth < 1250, rotateIconRight: ((!isViewable && innerWidth < 1250) || innerWidth > 1250)}">
+        <span class="current-preset"><button class="presets-settings-button"
+            (click)="openPresetFormDialog()">{{timerService.currentPreset}}</button></span>
+        <button mat-icon-button class="view-preset-menu" (click)="toggle()"
+          [ngClass]="{rotateIconLeft: isViewable && innerWidth < 1250, rotateIconRight: ((!isViewable && innerWidth < 1250) || innerWidth > 1250)}">
           <mat-icon class="toggle" [inline]="true">arrow_forward_ios</mat-icon>
         </button>
       </ng-template>
@@ -90,14 +92,14 @@
             <app-line-progress class="text" [value]="timerService.taskJson.minutes" [color]="getColor()">
             </app-line-progress>
             <div class="semicolomn" [style.color]="getColor()">:</div>
-            <app-line-progress class="text" [value]="timerService.taskJson.seconds" [color]="getColor()"
-              [text]="''"></app-line-progress>
+            <app-line-progress class="text" [value]="timerService.taskJson.seconds" [color]="getColor()" [text]="''">
+            </app-line-progress>
           </div>
         </ng-template>
       </ng-template>
     </mat-card-content>
     <mat-card-actions [formGroup]="timerForm" class="mat-action">
-      <ng-template [ngIf]="!getIsLoggedIn()">
+      <ng-template [ngIf]="!getIsLoggedIn() || !timerService.getIsChosenPreset()">
         <mat-form-field class="timer-input">
           <input matInput (keypress)="numberOnly($event)" min="0" max="23" [(ngModel)]="timerService.maxValueHour"
             placeholder="Hours" formControlName="hour">
@@ -144,7 +146,7 @@
           </ng-template>
         </div>
       </ng-template>
-      <ng-template [ngIf]="getIsLoggedIn()">
+      <ng-template [ngIf]="getIsLoggedIn() && timerService.getIsChosenPreset()">
         <mat-form-field class="timer-input">
           <input matInput type="number" min="0" max="23" [(ngModel)]="timerService.taskJson.maxValueHour"
             placeholder="Set hour" formControlName="hour">
@@ -163,7 +165,8 @@
         <div class="button-area">
           <ng-template [ngIf]="timerService.taskJson.name === timerService.taskStartName">
             <button mat-icon-button [disabled]="(timerService.taskJson.maxValueHour == null 
-            && timerService.taskJson.maxValueMinute == null && timerService.taskJson.maxValueSecond == null)" (click)="createTask()">
+            && timerService.taskJson.maxValueMinute == null && timerService.taskJson.maxValueSecond == null)"
+              (click)="createTask()">
               <mat-icon>arrow_right</mat-icon>
             </button>
           </ng-template>
@@ -185,13 +188,14 @@
             (click)="resetTask()">
             <mat-icon>refresh</mat-icon>
           </button>
-          <ng-template [ngIf]="timerService.taskJson.name !== 'null@Timer' || timerService.taskJson.name === timerService.taskStartName">
+          <ng-template
+            [ngIf]="timerService.taskJson.name !== 'null@Timer' || timerService.taskJson.name === timerService.taskStartName">
             <mat-menu #appMenuForChangeView="matMenu">
               <button mat-menu-item (click)="createTask()">Add Timer</button>
               <button mat-menu-item (click)="openPresetFormDialog()">Choose Preset</button>
             </mat-menu>
             <button mat-button [matMenuTriggerFor]="appMenuForChangeView" class="addTimer">
-                <mat-icon>add</mat-icon>
+              <mat-icon>add</mat-icon>
             </button>
           </ng-template>
         </div>

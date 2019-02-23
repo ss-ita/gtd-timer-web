@@ -23,12 +23,13 @@ export class StopwatchService {
 
   color = 'black';
   description = 'Displayed on stopwatch page';
-  subscribe: Subscription;
+  subscription: Subscription;
   taskJson: TaskCreateJson;
+  startStopwatchName = 'null@Stopwatch';
 
   constructor() {
     this.taskJson = new TaskCreateJson();
-    this.taskJson.name = 'null@Stopwatch';
+    this.taskJson.name = this.startStopwatchName;
   }
 
   reset() {
@@ -46,13 +47,13 @@ export class StopwatchService {
     if (this.isStopwatchRun === false) {
       this.isStopwatchPause = false;
       this.isStopwatchRun = true;
-      this.subscribe = timer(0, this.milisecondPerSecond).subscribe(x => { this.ticks = x; this.updateTime(); });
+      this.subscription = timer(0, this.milisecondPerSecond).subscribe(x => { this.ticks = x; this.updateTime(); });
     }
 
     if (this.isStopwatchPause) {
       this.isStopwatchPause = false;
       this.isStopwatchRun = true;
-      this.subscribe = timer(0, this.milisecondPerSecond).subscribe(x => { this.ticks++; this.updateTime(); });
+      this.subscription = timer(0, this.milisecondPerSecond).subscribe(x => { this.ticks++; this.updateTime(); });
     }
   }
 
@@ -60,7 +61,7 @@ export class StopwatchService {
     if (this.isStopwatchRun) {
       this.isStopwatchPause = true;
       this.color = '#c23a33';
-      this.subscribe.unsubscribe();
+      this.subscription.unsubscribe();
     }
   }
 

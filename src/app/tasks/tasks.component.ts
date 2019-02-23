@@ -7,7 +7,6 @@ import { StopwatchService } from '../services/stopwatch.service';
 import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
 import { MatDialog } from '@angular/material';
 import { TimerService } from '../services/timer.service';
-import { TaskJson } from '../models/preset.model';
 
 @Component({
   selector: 'app-tasks',
@@ -42,7 +41,7 @@ export class TasksComponent implements OnInit {
     { "id": 25, "value": 25 },
     { "id": "Display all", "value": Number.MAX_VALUE }
   ];
-    taskToPass: TaskCreateJson = {
+  taskToPass: TaskCreateJson = {
     id: 0,
     name: 'New Stopwatch',
     description: '',
@@ -64,7 +63,7 @@ export class TasksComponent implements OnInit {
     isTimerFinished: false,
     goals: 0,
     ticksi: 0
-};
+  };
 
   displayStopwatches() {
     this.displayStopwatch = true;
@@ -160,7 +159,19 @@ export class TasksComponent implements OnInit {
     };
   }
 
-  onDeleteTask(task: TaskCreateJson){
+  filterByProperty(propertyName: string) {
+    this.taskService.stopwatches = this.taskService.stopwatches.sort((a, b) => {
+      switch (propertyName) {
+        case 'name': return this.compare(a.name, b.name);
+      }
+    });
+  }
+
+  compare(a: String, b: String) {
+    return (a.toLowerCase() < b.toLowerCase() ? -1 : 1);
+  }
+
+  onDeleteTask(task: TaskCreateJson) {
     const warningDialogRef = this.matDialog.open(ConfirmationDialogComponent, {
       hasBackdrop: true,
       closeOnNavigation: true,
@@ -175,7 +186,7 @@ export class TasksComponent implements OnInit {
     };
   }
 
-  onDeleteTimer(task: TaskCreateJson){
+  onDeleteTimer(task: TaskCreateJson) {
     const warningDialogRef = this.matDialog.open(ConfirmationDialogComponent, {
       hasBackdrop: true,
       closeOnNavigation: true,
@@ -196,8 +207,7 @@ export class TasksComponent implements OnInit {
     const indexTaskToDelete = this.taskService.stopwatches.indexOf(task, 0);
     this.taskService.stopwatches.splice(indexTaskToDelete, 1);
     this.refreshStopwatchesPage();
-    if( this.description == 'Displayed on stopwatch page')
-    {
+    if (this.description == 'Displayed on stopwatch page') {
       this.stopwatchService.taskJson = new TaskCreateJson();
       this.stopwatchService.taskJson.name = 'null@Stopwatch';
     }
@@ -208,14 +218,13 @@ export class TasksComponent implements OnInit {
     this.refreshStopwatchesPage();
   }
 
-  deleteTimer(task: TaskCreateJson) {  
+  deleteTimer(task: TaskCreateJson) {
     this.description = task.description;
     this.taskService.broadcastDeleteTask(task.id);
     const indexTaskToDelete = this.taskService.timers.indexOf(task, 0);
     this.taskService.timers.splice(indexTaskToDelete, 1);
     this.refreshTimersPage();
-    if( this.description == 'Displayed on stopwatch page')
-    {
+    if (this.description == 'Displayed on stopwatch page') {
       this.timerService.taskJson = new TaskCreateJson();
       this.timerService.taskJson.name = 'null@Timer';
     }

@@ -20,7 +20,8 @@ export class StopwatchComponent implements OnInit {
 
   countOfCreatedStopwatch = 1;
 
-  constructor(public stopwatchService: StopwatchService,
+  constructor(
+    public stopwatchService: StopwatchService,
     public styleService: StyleService,
     private dialog: MatDialog,
     private taskService: TasksService,
@@ -33,6 +34,7 @@ export class StopwatchComponent implements OnInit {
       this.taskService.startConnection();
       this.taskService.addCreateTaskListener();
       this.taskService.addUpdateTaskListener();
+
       this.taskService.updateFromStopwatchPageAction = (index, task) => {
         this.taskService.stopwatches[index].description = task.description;
         this.taskService.stopwatches[index].elapsedTime = task.elapsedTime;
@@ -101,12 +103,14 @@ export class StopwatchComponent implements OnInit {
 
   pauseTask() {
     this.taskService.updateFromStopwatchPage = true;
+    this.taskService.stopwatches.forEach(stopwatch => stopwatch.description = '');
     this.stopwatchService.taskJson.description = this.stopwatchService.description;
     this.stopwatchService.taskJson.isRunning = false;
     this.stopwatchService.taskJson.isStoped = true;
     this.stopwatchService.taskJson.elapsedTime = this.stopwatchService.taskJson.currentSecond * 1000;
     this.taskService.broadcastPauseTask(this.stopwatchService.taskJson);
     this.taskService.broadcastUpdateTask(this.stopwatchService.taskJson);
+
     const timeStart = new Date(this.stopwatchService.taskJson.lastStartTime);
     const timeNow = new Date(new Date(Date.now()).toISOString().slice(0, -1));
     const stop = (new Date(Date.now())).toISOString().slice(0, -1);

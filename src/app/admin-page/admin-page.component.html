@@ -24,7 +24,8 @@
             <button mat-raised-button matTooltip="message" [disabled]="true" [matTooltipShowDelay]="2000">
               <i class="fas fa-comment-dots"></i>
             </button>
-            <button mat-raised-button matTooltip="Delete user" [matTooltipShowDelay]="2000" (click)="roleService.openConfirmationDialogUser(email)">
+            <button mat-raised-button matTooltip="Delete user" [matTooltipShowDelay]="2000"
+              (click)="roleService.openConfirmationDialogUser(email)">
               <i class="fas fa-times"></i>
             </button>
           </div>
@@ -36,7 +37,8 @@
             <p>{{email}}</p>
           </div>
           <div class="actions">
-            <button mat-raised-button (click)="roleService.openConfirmationDialogRole(email, 'Admin')" class="button-with-text-admins">
+            <button mat-raised-button (click)="roleService.openConfirmationDialogRole(email, 'Admin')"
+              class="button-with-text-admins">
               Remove from admins
             </button>
           </div>
@@ -81,7 +83,8 @@
           </div>
           <div class="actions">
             <mat-menu #appMenuForChangeView="matMenu">
-              <button mat-menu-item (click)="roleService.openConfirmationDialogRole(email, 'Admin')">Remove from admins</button>
+              <button mat-menu-item (click)="roleService.openConfirmationDialogRole(email, 'Admin')">Remove from
+                admins</button>
             </mat-menu>
             <button mat-raised-button [matMenuTriggerFor]="appMenuForChangeView" class="view-change-menu">
               <mat-icon>more_vert</mat-icon>

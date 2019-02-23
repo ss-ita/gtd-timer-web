@@ -178,6 +178,7 @@ export class TasksService implements OnInit {
         task.isRunning = true;
         task.isStoped = false;
 
+        this.stopwatches.forEach(stopwatch => stopwatch.description = '');
         if (!task.isStoped) {
             this.ticks = task.elapsedTime;
             task.currentSecond = task.elapsedTime / 1000;
@@ -211,6 +212,7 @@ export class TasksService implements OnInit {
 
         if (task.description === this.stopwatchService.description) {
             this.stopwatchService.taskJson = task;
+            this.stopwatches.forEach(stopwatch => stopwatch.description = '');
         }
 
         task.isRunning = false;
@@ -372,7 +374,6 @@ export class TasksService implements OnInit {
 
     runAfterGetTimers() {
         this.timersSubscriptions.forEach(s => s.unsubscribe());
-        this.timersSubscriptions = [];
         for (let i = 0; i < this.pagedTimers.length; ++i) {
             if (this.pagedTimers[i] && this.pagedTimers[i].isRunning) {
                 this.startTimeTimer(this.pagedTimers[i]);
@@ -596,10 +597,12 @@ export class TasksService implements OnInit {
     }
 
     DisplayTaskOnTimerPage(task: TaskCreateJson) {
+        this.timerService.isTimerFinished = false;
         this.timers.forEach(timer => timer.description = '');
         task.description = this.timerService.description;
         this.timerService.taskJson = task;
-        this.toasterService.showToaster('Displayed on stopwatch page');
+        this.timerService.exitFromPreset()
+        this.toasterService.showToaster('Displayed on timer page');
     }
 
     public getAllRecordsCurrentUser() {
@@ -872,7 +875,6 @@ export class TasksService implements OnInit {
             ticksi: 0
         };
         this.broadcastCreateTask(taskToPass);
-        this.taskName = '';
     }
 
     addTimerListener(task: any) {
@@ -894,8 +896,10 @@ export class TasksService implements OnInit {
     }
 
     pauseTimer(task: TaskCreateJson) {
+        task.isTimerFinished = false;
 
         if (task.description === this.timerService.description) {
+            this.timerService.isTimerFinished = false;
             this.timerService.taskJson = task;
             this.timers.forEach(timer => timer.description = '');
         }
@@ -925,6 +929,7 @@ export class TasksService implements OnInit {
     }
 
     resetTimer(task: TaskCreateJson) {
+        task.isTimerFinished = false;
         task.hour = task.minutes = task.seconds = task.elapsedTime = 0;
         task.isStoped = task.isRunning = false;
         this.broadcastResetTask(task);
@@ -966,15 +971,15 @@ export class TasksService implements OnInit {
 
         if (task.minutes == 0 && task.seconds == 0 && task.hour == 0) {
             this.resetTimer(task);
-            this.timerService.timerSound.src = this.configService.urlSoundTimer;
-            this.timerService.timerSound.play();
             task.isTimerFinished = true;
         }
     }
 
     startTimer(task: TaskCreateJson) {
+        task.isTimerFinished = false;
 
         if (task.description === this.timerService.description) {
+            this.timerService.isTimerFinished = false;
             this.timerService.taskJson = task;
             this.timers.forEach(timer => timer.description = '');
         }
@@ -994,6 +999,7 @@ export class TasksService implements OnInit {
     }
 
     startTimeTimer(task: TaskCreateJson) {
+        task.isTimerFinished = false;
         task.isRunning = true;
         task.isStoped = false;
         if (task.maxValueHour == null) {
@@ -1018,9 +1024,9 @@ export class TasksService implements OnInit {
         }
 
         this.timersSubscriptions.push(timer(0, this.milisecondPerSecond).subscribe((x) => {
-            task.ticksi--; this.updateTimeTimer(task);
+            task.ticksi--; task.elapsedTime--; this.updateTimeTimer(task);
         }));
-        return task.ticksi;
+        return task.elapsedTime;
     }
 
     filterStopwatches(propertyName: string) {
