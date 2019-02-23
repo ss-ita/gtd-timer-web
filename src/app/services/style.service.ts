@@ -6,15 +6,15 @@ import { Injectable } from '@angular/core';
 
 export class StyleService {
     isLineStyle = false;
-    changeStyleString = 'Switch to standart';
+    changeStyleString = 'Mechanical view';
 
     changeStyle() {
         if (this.isLineStyle === false) {
             this.isLineStyle = true;
-            this.changeStyleString = 'Switch to round progress';
+            this.changeStyleString = 'Rounded view';
         } else {
             this.isLineStyle = false;
-            this.changeStyleString = 'Switch to standart';
+            this.changeStyleString = 'Mechanical view';
         }
     }
 

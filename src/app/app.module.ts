@@ -58,6 +58,15 @@ import { TimeFilterPipe } from './pipes/time-filter.pipe';
 import { StopwatchDialogComponent } from './stopwatch-dialog/stopwatch-dialog.component';
 import { TimerDialogComponent } from './timer-dialog/timer-dialog.component';
 import { ConfirmEmailComponent } from './confirm-email/confirm-email.component';
+import { PagerService } from './services/pager.service';
+import { UtcPipePipe } from './pipes/utc-pipe.pipe';
+import { AlarmDialogUpdatingComponent } from './alarm-components/alarm-dialog-updating/alarm-dialog-updating.component';
+import { PasswordResetDialogComponent } from './password-reset-dialog/password-reset-dialog.component';
+import { PasswordResetComponent } from './password-reset/password-reset.component';
+import { PasswordRecoveryDialogComponent } from './password-recovery-dialog/password-recovery-dialog.component';
+import { PasswordRecoveryComponent } from './password-recovery/password-recovery.component';
+import { LoaderService } from './services/loader.service';
+import { ColorsService } from './services/colors.service';
 
 export function jwtTokenGetter() {
   return localStorage.getItem('access_token');
@@ -97,7 +106,13 @@ export function jwtTokenGetter() {
     TimerDialogComponent,
     TimeFilterPipe,
     StopwatchDialogComponent,
-    ConfirmEmailComponent
+    ConfirmEmailComponent,
+    UtcPipePipe,
+    AlarmDialogUpdatingComponent,
+    PasswordResetDialogComponent,
+    PasswordResetComponent,
+    PasswordRecoveryDialogComponent,
+    PasswordRecoveryComponent
   ],
   imports: [
     BrowserModule,
@@ -148,7 +163,10 @@ export function jwtTokenGetter() {
     ToasterService,
     SocialAuthService,
     RoleService,
-    TimeFilterPipe
+    TimeFilterPipe,
+    PagerService,
+    LoaderService,
+    ColorsService
   ],
   bootstrap: [AppComponent],
   entryComponents: [
@@ -160,7 +178,10 @@ export function jwtTokenGetter() {
     AlarmDialogNotificationComponent,
     RepeatAlarmDialogComponent,
     StopwatchDialogComponent,
-    TimerDialogComponent
+    TimerDialogComponent,
+    AlarmDialogUpdatingComponent,
+    PasswordResetComponent,
+    PasswordRecoveryComponent
   ]
 })
 export class AppModule { }

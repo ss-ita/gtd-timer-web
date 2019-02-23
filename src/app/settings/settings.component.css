@@ -1,10 +1,19 @@
 .settings{
     margin: 0 10%;
+    background-color: white;
+}
+
+.main-area {
+	position: absolute;
+	top: auto;
+	min-height: calc(100vh - 49px);
+	width: 100%;
+	background-color: white;
 }
 
 .settings .settings-header {
     display: block;
-    width: 100%;
+    width: 50%;
     padding: 0;
     margin-bottom: 20px;
     font-size: 21px;
@@ -12,6 +21,11 @@
     color: #333;
     border: 0;
     border-bottom: 1px solid #e5e5e5;
+    min-width: 250px;
+}
+
+.tip-padding {
+    padding-top: 2%;
 }
 
 ::ng-deep .settings .settings-header .mat-card-header-text{
@@ -20,14 +34,14 @@
 
 .settings mat-form-field{
     display: block;
-    width: 50%;
+    width: 20%;
+    min-width: 250px;
 }
 
 .settings mat-card {
     box-shadow: none;
-    padding-top: 40px;
+    padding-top: 25px;
     padding-left: 0px;
-    width: 50%;
 }
 
 .settings mat-card .mat-card-actions {

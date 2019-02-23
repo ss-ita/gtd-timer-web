@@ -1,3 +1,4 @@
+<div class="main-area">
 <div class="settings">
   <mat-card>
     <mat-card-header class="settings-header">
@@ -15,7 +16,7 @@
           [type]="hide ? 'text' : 'password'">
         <mat-error>{{getErrorMessagePasswordNew()}}</mat-error>
       </mat-form-field>
-      <mat-form-field>
+      <mat-form-field class="tip-padding">
         <input type="password" matInput placeholder="Confirm new password" formControlName="passwordConfirm" [type]="hide ? 'text' : 'password'">
         <mat-error>{{getErrorMessageConfirmPassword()}}</mat-error>
       </mat-form-field>
@@ -23,8 +24,6 @@
     <mat-card-actions>
       <button mat-flat-button [disabled]="!updatePasswordForm.valid" color="primary" (click)="save()">Save</button>
     </mat-card-actions>
-  </mat-card>
-  <mat-card>
     <mat-card-header class="settings-header">
       <mat-card-title>Delete Account</mat-card-title>
     </mat-card-header>
@@ -37,4 +36,5 @@
       <button mat-flat-button color="warn" (click)="openConfirmationDialog()">Delete</button>
     </mat-card-actions>
   </mat-card>
+</div>
 </div>

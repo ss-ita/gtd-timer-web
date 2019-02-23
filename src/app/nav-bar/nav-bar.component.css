@@ -8,8 +8,6 @@
     font-weight: bold;
 }
 .mat-tab-nav-bar{
-    white-space: nowrap;
-    overflow: auto;
     height:48px;
 }
 
@@ -46,10 +44,14 @@
     height: 48px !important;
 }
 
+.desktopMenu{
+    background-color: white;
+}
+
 @media(max-width: 480px) {
 
 	.desktopMenu {
-		display: none;
+        display: none;
     }
     .margin-spacer {
         margin-bottom: 48px;

@@ -3,12 +3,12 @@
   <form [formGroup]="alarmForm">
     <div class="input-time-area">
       <mat-form-field class="example-full-width">
-        <input matInput type="number" placeholder="Set hours" [(ngModel)]="hour" name="Hour" formControlName="hour">
-        <mat-error>Please, input hours between 0 and 23</mat-error>
+        <input matInput (keypress)="numberOnly($event)" placeholder="Set hours" [(ngModel)]="hour" name="Hour" formControlName="hour">
+        <mat-error>Please, input an hour between 0 and 23</mat-error>
       </mat-form-field>
       <mat-form-field class="example-full-width">
-        <input matInput type="number" placeholder="Set minutes" [(ngModel)]="minute" name="Minute" formControlName="minute">
-        <mat-error>Please, input minutes between 0 and 59</mat-error>
+        <input matInput (keypress)="numberOnly($event)" placeholder="Set minutes" [(ngModel)]="minute" name="Minute" formControlName="minute">
+        <mat-error>Please, input a minute between 0 and 59</mat-error>
       </mat-form-field>
     </div>
     <div class="dateArea">
@@ -33,7 +33,7 @@
     </div>
     <div class="messageArea">
       <mat-form-field class="example-full-width">
-        <textarea matInput placeholder="Input message" [(ngModel)]="message" formControlName="messageControl"></textarea>
+        <textarea matInput placeholder="Input message" [(ngModel)]="message" [maxLength]="textareaLength" formControlName="messageControl"></textarea>
       </mat-form-field>
     </div>
     <div class="buttonArea">

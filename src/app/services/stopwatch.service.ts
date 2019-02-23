@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-
 import { timer, Subscription } from 'rxjs';
 import { TaskCreateJson } from '../models/taskCreateJson.model';
 
@@ -20,13 +19,18 @@ export class StopwatchService {
 
   isStopwatchRun = false;
   isStopwatchPause = true;
+  isCreate = false;
 
   color = 'black';
-  task: String = ' ';
-  subscribe: Subscription;
+  description = 'Displayed on stopwatch page';
+  subscription: Subscription;
   taskJson: TaskCreateJson;
+  startStopwatchName = 'null@Stopwatch';
 
-  constructor() { }
+  constructor() {
+    this.taskJson = new TaskCreateJson();
+    this.taskJson.name = this.startStopwatchName;
+  }
 
   reset() {
     this.pause();
@@ -43,13 +47,13 @@ export class StopwatchService {
     if (this.isStopwatchRun === false) {
       this.isStopwatchPause = false;
       this.isStopwatchRun = true;
-      this.subscribe = timer(0, this.milisecondPerSecond).subscribe(x => { this.ticks = x; this.updateTime(); });
+      this.subscription = timer(0, this.milisecondPerSecond).subscribe(x => { this.ticks = x; this.updateTime(); });
     }
 
     if (this.isStopwatchPause) {
       this.isStopwatchPause = false;
       this.isStopwatchRun = true;
-      this.subscribe = timer(0, this.milisecondPerSecond).subscribe(x => { this.ticks++; this.updateTime(); });
+      this.subscription = timer(0, this.milisecondPerSecond).subscribe(x => { this.ticks++; this.updateTime(); });
     }
   }
 
@@ -57,7 +61,7 @@ export class StopwatchService {
     if (this.isStopwatchRun) {
       this.isStopwatchPause = true;
       this.color = '#c23a33';
-      this.subscribe.unsubscribe();
+      this.subscription.unsubscribe();
     }
   }
 
@@ -79,10 +83,5 @@ export class StopwatchService {
     } else {
       this.pause();
     }
-  }
-
-  stopwatchClear() {
-    this.task = ' ';
-    this.reset();
   }
 }

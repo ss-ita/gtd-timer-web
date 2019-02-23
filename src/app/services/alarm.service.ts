@@ -8,6 +8,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { AlarmDialogNotificationComponent } from '../alarm-components/alarm-dialog-notification/alarm-dialog-notification.component';
 import { RepeatAlarmModel } from '../models/repeat-alarm.model';
+import { AlarmDialogUpdatingComponent } from '../alarm-components/alarm-dialog-updating/alarm-dialog-updating.component';
 
 declare let require: any;
 
@@ -38,7 +39,7 @@ export class AlarmService {
     { day: 'Friday', value: 'Fri' },
     { day: 'Saturday', value: 'Sat' },
     { day: 'Sunday', value: 'Sun' }];
-  chosenDaysList: boolean[] = [false, false, false, false, false, false, false];
+  chosenDaysList: boolean[] = new Array(7).fill(false);
   currentTime: Date = new Date();
   alarmsArray: AlarmModel[] = [];
   startedAlarmsArray: AlarmModel[] = [];
@@ -60,11 +61,11 @@ export class AlarmService {
   }
 
   createAlarm(alarmModel: AlarmCronModel) {
-    return this.httpClient.post<number>(this.configService.urlAlarm + 'CreateAlarm', alarmModel);
+    return this.httpClient.post<AlarmCronModel>(this.configService.urlAlarm + 'CreateAlarm', alarmModel);
   }
 
   updateAlarm(alarmModel: AlarmCronModel) {
-    return this.httpClient.put(this.configService.urlAlarm + 'UpdateAlarm', alarmModel);
+    return this.httpClient.put<AlarmCronModel>(this.configService.urlAlarm + 'UpdateAlarm', alarmModel);
   }
 
   removeAlarm(id: number) {
@@ -73,6 +74,71 @@ export class AlarmService {
 
   getAllAlarmsFromServer(): Observable<AlarmCronModel[]> {
     return this.httpClient.get<AlarmCronModel[]>(this.configService.urlAlarm + 'GetAllAlarmsByUserId');
+  }
+
+  getNextDate(expression: string): Date {
+    const parser = require('cron-parser');
+    const cronElementsArray = expression.split(' ');
+    const options = {
+      iterator: true
+    };
+
+    if (!cronElementsArray.includes('*')) {
+      let startDate;
+      let finishDate;
+      if (cronElementsArray[1] == '0' && cronElementsArray[2] == '0') {
+        startDate = new Date(Number(cronElementsArray[6]), (Number(cronElementsArray[4]) - 1), Number(cronElementsArray[3]), 15);
+        startDate.setDate(startDate.getDate() - 1);
+        finishDate = new Date(startDate.getTime());
+        finishDate.setDate(startDate.getDate() + 1);
+      } else {
+        startDate = new Date(Number(cronElementsArray[6]), (Number(cronElementsArray[4]) - 1), Number(cronElementsArray[3]));
+        finishDate = new Date(startDate.getTime());
+        finishDate.setDate(startDate.getDate() + 1);
+      }
+      options['currentDate'] = startDate;
+      options['endDate'] = finishDate;
+    }
+
+    const interval = parser.parseExpression(expression, options);
+    const date = interval.next();
+    const nextDate = new Date(date.value.toString());
+    return nextDate;
+  }
+
+  convertToCronExpression(date: Date, repeat: string): string {
+    const seconds = 0;
+    const minutes = date.getMinutes();
+    const hours = date.getHours();
+    let dayOfMonth = '*';
+    let month = '*';
+    let dayOfWeek = '?';
+    let year = '*';
+    const daysArray = repeat.split(' ');
+
+    if (repeat === this.repeatOptions[0]) {
+      dayOfMonth = (date.getDate()).toString();
+      month = (date.getMonth() + 1).toString();
+      year = date.getFullYear().toString();
+    } else if ((repeat === this.repeatOptions[1]) || (daysArray.length == 7)) {
+
+    } else if (repeat == this.repeatOptions[2]) {
+      let chosenDays = '';
+      this.repeatOptionsDay.forEach((value, index) => {
+        if (index < 5) {
+          chosenDays += this.repeatOptionsDay[index].value;
+          chosenDays += ',';
+        }
+      });
+      chosenDays = chosenDays.replace(/,\s*$/, '');
+      dayOfWeek = chosenDays;
+    } else {
+      dayOfWeek = daysArray.join(',');
+    }
+
+    const cronExpression: string = seconds + ' ' + minutes + ' ' + hours + ' ' + dayOfMonth + ' ' + month + ' ' + dayOfWeek + ' ' + year;
+
+    return cronExpression;
   }
 
   getAlarmsFromDatabase() {
@@ -92,10 +158,8 @@ export class AlarmService {
     const deadlineTime = new Date();
     deadlineTime.setDate(deadlineTime.getDate() + 21);
     const differenceInMs = (new Date(ms)).getTime() - (currentTime.getTime());
+    alarm.timeoutIndex = setTimeout(this.playAlarm.bind(this), differenceInMs);
 
-    if (differenceInMs < (deadlineTime.getTime() - currentTime.getTime())) {
-      alarm.timeoutIndex = setTimeout(this.playAlarm.bind(this), differenceInMs);
-    }
     if (this.showToaster) {
       this.toasterService.showToaster(this.calculateTimeStart(alarm));
     }
@@ -105,7 +169,7 @@ export class AlarmService {
   }
 
   setToogleStage() {
-    if ((this.alarmsArray.length == this.startedAlarmsArray.length) && this.alarmsArray.length != 0) {
+    if ((this.alarmsArray.length == this.startedAlarmsArray.length) && this.alarmsArray.length != 0 && this.isAuthorized) {
       this.alarmsToogle = true;
     } else {
       this.alarmsToogle = false;
@@ -184,6 +248,16 @@ export class AlarmService {
     if (alarm.isOn == false && this.isAuthorized) {
       const cronModel = this.convertToCronModelFromAlarmModel(alarm);
       this.updateAlarm(cronModel).subscribe(date => {
+        const editedAlarmModel = this.findAlarmById(date.id);
+        editedAlarmModel.timestamp = date.timestamp;
+        if (date.isUpdated) {
+        } else {
+          const newAlarmModel = this.convertToAlarmModelFromCronModel(date);
+          if (!this.compareAlarmModels(newAlarmModel, editedAlarmModel)) {
+            this.openUpdateConfirmationWindow(newAlarmModel, editedAlarmModel);
+          }
+        }
+        this.findFirstTurnOnAlarm();
       });
     }
 
@@ -207,10 +281,13 @@ export class AlarmService {
     this.clearData();
     this.getAllAlarmsFromServer().subscribe(data => {
       data.forEach(value => {
-        const alarmModel = this.convertToAlarmModelFronCronModel(value);
+        const alarmModel = this.convertToAlarmModelFromCronModel(value);
         this.alarmsArray.push(alarmModel);
       });
       this.startLoadedAlarms();
+      this.alarmsArray.forEach(value => {
+      });
+      this.setToogleStage();
     });
   }
 
@@ -337,7 +414,18 @@ export class AlarmService {
           } else {
             this.alarmsArray[index].isOn = false;
             const cronModel = this.convertToCronModelFromAlarmModel(this.alarmsArray[index]);
-            this.updateAlarm(cronModel).subscribe();
+            this.updateAlarm(cronModel).subscribe(data => {
+              const editedAlarmModel = this.findAlarmById(data.id);
+              editedAlarmModel.timestamp = data.timestamp;
+              if (data.isUpdated) {
+              } else {
+                const newAlarmModel = this.convertToAlarmModelFromCronModel(data);
+                if (!this.compareAlarmModels(newAlarmModel, editedAlarmModel)) {
+                  this.openUpdateConfirmationWindow(newAlarmModel, editedAlarmModel);
+                }
+              }
+              this.findFirstTurnOnAlarm();
+            });
             this.findFirstTurnOnAlarm();
           }
         }
@@ -355,7 +443,18 @@ export class AlarmService {
       cronModel.cronExpression = this.refreshCronExpression(cronModel.cronExpression);
       model.cronExpression = cronModel.cronExpression;
       if (this.isAuthorized) {
-        this.updateAlarm(cronModel).subscribe();
+        this.updateAlarm(cronModel).subscribe(date => {
+          const editedAlarmModel = this.findAlarmById(date.id);
+          editedAlarmModel.timestamp = date.timestamp;
+          if (date.isUpdated) {
+          } else {
+            const newAlarmModel = this.convertToAlarmModelFromCronModel(date);
+            if (!this.compareAlarmModels(newAlarmModel, editedAlarmModel)) {
+              this.openUpdateConfirmationWindow(newAlarmModel, editedAlarmModel);
+            }
+          }
+          this.findFirstTurnOnAlarm();
+        });
       }
       this.startAlarm(id);
     } else {
@@ -409,11 +508,23 @@ export class AlarmService {
         this.alarmsArray.push(alarm);
         this.createAlarm(cronModel).subscribe(date => {
           const alarmModel = this.findAlarmById(-10);
-          alarmModel.id = date;
+          alarmModel.id = date.id;
+          alarmModel.timestamp = date.timestamp;
           this.findFirstTurnOnAlarm();
         });
       } else {
-        this.updateAlarm(cronModel).subscribe();
+        this.updateAlarm(cronModel).subscribe(date => {
+          const editedAlarmModel = this.findAlarmById(date.id);
+          editedAlarmModel.timestamp = date.timestamp;
+          if (date.isUpdated) {
+          } else {
+            const newAlarmModel = this.convertToAlarmModelFromCronModel(date);
+            if (!this.compareAlarmModels(newAlarmModel, editedAlarmModel)) {
+              this.openUpdateConfirmationWindow(newAlarmModel, editedAlarmModel);
+            }
+          }
+          this.findFirstTurnOnAlarm();
+        });
         const index = this.alarmsArray.findIndex(value => {
           return value.id == alarm.id;
         });
@@ -435,6 +546,50 @@ export class AlarmService {
     this.startAlarm(alarm.id);
   }
 
+  compareAlarmModels(newModel: AlarmModel, editedModel: AlarmModel): boolean {
+    if (newModel.cronExpression == editedModel.cronExpression && newModel.soundOn == editedModel.soundOn
+      && newModel.message == editedModel.message && newModel.isOn == editedModel.isOn) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  openUpdateConfirmationWindow(newAlarmModel: AlarmModel, editedAlarmModel: AlarmModel) {
+    const updatingDialogRef = this.dialog.open(AlarmDialogUpdatingComponent, {
+      panelClass: 'custom-dialog-container',
+      hasBackdrop: true,
+      closeOnNavigation: true,
+      disableClose: true
+    });
+    updatingDialogRef.componentInstance.newAlarmModel = newAlarmModel;
+    updatingDialogRef.componentInstance.editedAlarmModel = editedAlarmModel;
+
+    updatingDialogRef.afterClosed()
+      .subscribe(response => {
+        if (response.data == 'newModel') {
+          if (editedAlarmModel.isOn) {
+            clearTimeout(editedAlarmModel.timeoutIndex);
+          }
+          if (!newAlarmModel.isOn) {
+            this.showToaster = false;
+            this.chooseAlarmAction(newAlarmModel);
+            this.showToaster = true;
+          } else {
+            this.chooseAlarmAction(newAlarmModel);
+          }
+        } else {
+          if (!editedAlarmModel.isOn) {
+            this.showToaster = false;
+            this.chooseAlarmAction(editedAlarmModel);
+            this.showToaster = true;
+          } else {
+            this.chooseAlarmAction(editedAlarmModel);
+          }
+        }
+      });
+  }
+
   copyAlarmModel(alarmModel: AlarmModel): AlarmModel {
     const alarm = new AlarmModel();
     const nextDate = this.getNextDate(alarmModel.cronExpression);
@@ -446,11 +601,13 @@ export class AlarmService {
     alarm.timeoutIndex = alarmModel.timeoutIndex;
     alarm.id = alarmModel.id;
     alarm.date = nextDate;
+    alarm.timestamp = alarmModel.timestamp;
+    alarm.isUpdated = alarmModel.isUpdated;
     alarm.cronExpression = alarmModel.cronExpression;
     return alarm;
   }
 
-  convertToAlarmModelFronCronModel(cronModel: AlarmCronModel): AlarmModel {
+  convertToAlarmModelFromCronModel(cronModel: AlarmCronModel): AlarmModel {
     const alarm = new AlarmModel();
     const nextDate = this.getNextDate(cronModel.cronExpression);
     alarm.soundOn = cronModel.soundOn;
@@ -462,6 +619,8 @@ export class AlarmService {
     alarm.id = cronModel.id;
     alarm.date = new Date(nextDate.getTime());
     alarm.cronExpression = cronModel.cronExpression;
+    alarm.timestamp = cronModel.timestamp;
+    alarm.isUpdated = cronModel.isUpdated;
     return alarm;
   }
 
@@ -476,12 +635,13 @@ export class AlarmService {
     alarm.soundOn = alarmModel.soundOn;
     alarm.isOn = alarmModel.isOn;
     alarm.message = alarmModel.message;
+    alarm.timestamp = alarmModel.timestamp;
+    alarm.isUpdated = alarm.isUpdated;
     return alarm;
   }
 
   calculateTimeStart(alarmModel: AlarmModel) {
     let message;
-
     const currentDate = new Date();
     const startAlarmSecond = 60;
     const differentSecond = startAlarmSecond - currentDate.getSeconds();
@@ -519,71 +679,6 @@ export class AlarmService {
 
 
     return message;
-  }
-
-  convertToCronExpression(date: Date, repeat: string): string {
-    const seconds = 0;
-    const minutes = date.getMinutes();
-    const hours = date.getHours();
-    let dayOfMonth = '*';
-    let month = '*';
-    let dayOfWeek = '?';
-    let year = '*';
-    const daysArray = repeat.split(' ');
-
-    if (repeat === this.repeatOptions[0]) {
-      dayOfMonth = (date.getDate()).toString();
-      month = (date.getMonth() + 1).toString();
-      year = date.getFullYear().toString();
-    } else if ((repeat === this.repeatOptions[1]) || (daysArray.length == 7)) {
-
-    } else if (repeat == this.repeatOptions[2]) {
-      let chosenDays = '';
-      this.repeatOptionsDay.forEach((value, index) => {
-        if (index < 5) {
-          chosenDays += this.repeatOptionsDay[index].value;
-          chosenDays += ',';
-        }
-      });
-      chosenDays = chosenDays.replace(/,\s*$/, '');
-      dayOfWeek = chosenDays;
-    } else {
-      dayOfWeek = daysArray.join(',');
-    }
-
-    const cronExpression: string = seconds + ' ' + minutes + ' ' + hours + ' ' + dayOfMonth + ' ' + month + ' ' + dayOfWeek + ' ' + year;
-
-    return cronExpression;
-  }
-
-  getNextDate(expression: string): Date {
-    const parser = require('cron-parser');
-    const cronElementsArray = expression.split(' ');
-    const options = {
-      iterator: true
-    };
-
-    if (!cronElementsArray.includes('*')) {
-      let startDate;
-      let finishDate;
-      if (cronElementsArray[1] == '0' && cronElementsArray[2] == '0') {
-        startDate = new Date(Number(cronElementsArray[6]), (Number(cronElementsArray[4]) - 1), Number(cronElementsArray[3]), 15);
-        startDate.setDate(startDate.getDate() - 1);
-        finishDate = new Date(startDate.getTime());
-        finishDate.setDate(startDate.getDate() + 1);
-      } else {
-        startDate = new Date(Number(cronElementsArray[6]), (Number(cronElementsArray[4]) - 1), Number(cronElementsArray[3]));
-        finishDate = new Date(startDate.getTime());
-        finishDate.setDate(startDate.getDate() + 1);
-      }
-      options['currentDate'] = startDate;
-      options['endDate'] = finishDate;
-    }
-
-    const interval = parser.parseExpression(expression, options);
-    const date = interval.next();
-    const nextDate = new Date(date.value.toString());
-    return nextDate;
   }
 
   getRepeatOption(cronExpression: string): string {

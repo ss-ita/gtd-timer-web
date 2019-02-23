@@ -24,6 +24,7 @@ export class NavBarComponent implements OnInit {
   email = localStorage.getItem('email');
   hours = 24;
   milisecinhours = 3600000;
+  passwordRecovery = 'password-recovery';
   signinLink = '/signin';
 
   constructor(private router: Router,
@@ -104,7 +105,11 @@ export class NavBarComponent implements OnInit {
     this.router.events.subscribe((res) => {
       this.activeLinkIndex = this.navLinks.indexOf(this.navLinks.find(tab => tab.link === '.' + this.router.url));
       if (this.router.url != this.signinLink) {
-        this.userService.redirectUrl = this.router.url;
+        if (this.router.url.includes(this.passwordRecovery)) {
+          this.userService.redirectUrl = '/stopwatch';
+        } else {
+          this.userService.redirectUrl = this.router.url;
+        }
       }
     });
     this.alarmService.getAlarmsFromDatabase();
@@ -139,29 +144,31 @@ export class NavBarComponent implements OnInit {
   }
 
   tokenexpire() {
-    if ((this.jwthelper.getTokenExpirationDate(localStorage.getItem('access_token')).getTime()
-      - this.hours * this.milisecinhours) < (new Date()).getTime()) {
-      this.signout();
+    if (localStorage.getItem('access_token')) {
+      if ((this.jwthelper.getTokenExpirationDate(localStorage.getItem('access_token')).getTime()
+        - this.hours * this.milisecinhours) < (new Date()).getTime()) {
+        this.signout();
+      }
     }
   }
 
   signin(): void {
     this.navLinks.push(
       {
-          label: 'List',
-          link: './tasks',
-          icon: 'fa-tasks fa-lg',
-          index: 3
-        }, {
-          label: 'Statistics',
-          link: './statistics',
-          icon: 'fa-chart-pie fa-lg',
-          index: 4
-        }, {
-          label: 'History',
-          link: './history',
-          icon: 'fa-history fa-lg',
-          index: 5
-        });
+        label: 'List',
+        link: './tasks',
+        icon: 'fa-tasks fa-lg',
+        index: 3
+      }, {
+        label: 'Statistics',
+        link: './statistics',
+        icon: 'fa-chart-pie fa-lg',
+        index: 4
+      }, {
+        label: 'History',
+        link: './history',
+        icon: 'fa-history fa-lg',
+        index: 5
+      });
   }
 }

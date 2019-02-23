@@ -11,8 +11,15 @@
       "schematics": {},
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:browser",
+          "builder": "@angular-builders/custom-webpack:browser",
           "options": {
+            "customWebpackConfig": {
+              "path": "./extra-webpack.config.js",
+              "replaceDuplicatePlugins": true,
+              "mergeStrategies": {
+               "externals": "prepend"
+            }
+          },
             "outputPath": "dist/gtd-timer-web",
             "index": "src/index.html",
             "main": "src/main.ts",

@@ -1,12 +1,3 @@
-.background {
-    position: absolute;
-    top: auto;
-    min-height: calc(100vh - 49px);
-    width: 100%;
-    background-image: linear-gradient(to top, #d9afd9 0%, #97d9e1 100%);
-    min-width: 1000px;
-}
-
 .time-container {
     display: block;
     flex-direction: row;
@@ -17,13 +8,13 @@
 }
 
 .fields {
-    width: 100%;
+    width: auto;
     height: 50px;
     padding-top: 3px;
-    display: inline-flex;
+    display: flex;
     flex-direction: row;
     justify-content: space-between;
-    min-width: 870px;
+    margin-top: 10px;
 }
 
 fieldset {
@@ -43,8 +34,7 @@ fieldset {
    background-color: darkgrey;
 }
 
-.add_new {
-    min-width: 50%;
+.add_new {    
     position: relative;
     display: inline-block;
     padding-left: 0px;
@@ -52,17 +42,17 @@ fieldset {
 }
 
 .input {
-    width: 40%;
+    width: auto;
     height: 30px;
     border: 0,1px solid grey;
     margin-right: 10px;
+    padding-left: 5px;
 }
 
 .other {
     position: relative;
-    display: inline-block;
-    margin-left: -4%;
-    min-width: 48%;
+    display: contents;
+    margin-left: -4%;   
     text-align: right;
     padding-left: 0px;
     padding-right: 0px;
@@ -75,14 +65,17 @@ fieldset {
 }
 
 .button {
-    display: flex;
     position: relative;
+    margin-top: 4px;
 }
 
 .search {
-    margin-left: 4%;
+    margin-top: 5px;
     height: 30px;
     margin-right: 5%;
+    position: relative;
+    margin-right: 10px;
+    padding-left: 5px;
 }
 
 select {
@@ -106,7 +99,6 @@ select {
 
 .name {
     width: 20%;
-    min-width: 100px;
     overflow: hidden;
 }
 
@@ -115,7 +107,7 @@ select {
 }
 
 .actions {
-    width: 60%;
+    width: 45%;
     text-align: right;
 }
 
@@ -128,7 +120,7 @@ mat-list-item {
     box-shadow:  0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
     margin-top: 6px;
     margin-bottom: 6px;
-    background-color:  #f9f9f9;
+    background-color: #f9f9f9;
     border-radius: 5px;
 }
 
@@ -142,9 +134,13 @@ mat-list-item {
     display: flex;
     flex-direction: row;
     margin-top:50px;
-    width: 100%;
+    width: auto;
     padding-left: 16px;
-    min-width: 870px;
+    font-family: Roboto,"Helvetica Neue",sans-serif;
+    font-weight: bold;
+}
+.top-tittles p{
+    font-size:17px;
 }
 
 .sth {
@@ -161,35 +157,27 @@ mat-list-item {
 }
 
 .time-title {
-    width: 10%;   
+    width: 11%;   
     text-align: center;
 }
 
 .goal-title {
+    width: 24%;
+    text-align: center;
+}
+.time-title-stopwatch{
     width: 10%;
     text-align: center;
 }
-
-.progres-title {
-    width: 10%;
-    text-align: center !important;
-}
-
 .actions-title {
-    width: 45%;
-    text-align: right;
-    margin-right: 159px;
+    width: 33%;
+    text-align: right;   
 }
+
 
 .actions-titlestopwatch {
-    width: 55%;
+    width: 58%;
     text-align: right;
-    margin-right: 159px;
-}
-
-app-progress {
-    text-align: left !important;
-    width: 10%;
 }
 
 .time {
@@ -201,6 +189,33 @@ app-progress {
     min-width: 70px;
     align-items: baseline;
 }
+.timek{
+    font-size: 16px;
+    display: inline-flex;
+    text-align: center;
+    justify-content: center;
+    width: 10%;
+    min-width: 70px;
+    align-items: baseline;
+}
+.times{
+    font-size: 16px;
+    display: inline-flex;
+    text-align: center;
+    justify-content: center;
+    width: 10%;
+    min-width: 70px;
+    align-items: baseline;
+}
+.timet{
+    font-size: 16px;
+    display: inline-flex;
+    text-align: center;
+    justify-content: center;
+    width: 25%;
+    
+    align-items: baseline;
+}
 
 .btn-group button {
     height: auto;
@@ -209,6 +224,14 @@ app-progress {
     cursor: pointer;
     float: left;
 }
+.otherActionsButton{
+    width: 50%;
+    text-align: right;
+}
+.otherActions{
+    width: 50%;
+    text-align: right;
+}
 
 .fa {
     color: black;
@@ -216,10 +239,6 @@ app-progress {
 
 .fas {
     color: black;
-}
-
-.buttons {
-    position: relative;
 }
 
 .mat-icon {
@@ -243,16 +262,242 @@ app-progress {
 #secondTopButton {
     border-bottom-left-radius: 0px; 
     border-top-left-radius: 0px;
-    border-bottom-right-radius: 0px; 
-    border-top-right-radius: 0px;
     padding-left: 10px;
     padding-right: 10px;
 }
 
 .timer-list {
-    min-width: 870px;
+    width: auto;
 }
 
 .displaybuttons {
-    display: inline-block;
+    display: contents;
 }
+
+.flex-container {
+    display: flex;
+    margin-top: 25px;
+    align-items: center;
+}
+
+.pagination button {
+    border-radius: 0;
+}
+
+.pagination button:first-child {
+    border-radius: 5px 0 0 5px;
+}
+
+.pagination button:last-child {
+    border-radius: 0 5px 5px 0;
+}
+
+.pagination button.active {
+    background: #97d9e1;
+    cursor: pointer;
+}
+
+.pagination button[disabled] i {
+    color: #dededa;
+}
+
+.pagination button[disabled] {
+    background: #f9f9f9;
+}
+
+.pagination button[disabled]:hover {
+    cursor: not-allowed;
+}
+
+.pagination {
+    flex-grow: 1;
+    text-align: center;
+}
+
+.mat-select {
+    text-align: center;
+    text-align-last: center;
+}
+
+.pagination .mat-raised-button {
+    min-width: 1px;
+    padding: 0 16px;
+}
+.mobile{
+    display: none;
+}
+
+.paginationSelect{
+    display:inline-block;
+    align-items: baseline;
+    box-sizing: border-box;
+    width: 100px; 
+}
+.nameTimer{
+    display:inline-block;
+    align-items: baseline;
+    box-sizing: border-box;
+    width: 100px;
+}
+.goalNumber{
+    display:inline-block;
+    align-items: baseline;
+    box-sizing: border-box;
+    width: 25px; 
+}
+
+.otherActionsButton button{
+    box-shadow:  0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
+}
+.updateButton{
+    width: auto;
+}
+.styleUpdate{
+    width:auto;
+}
+@media(max-width:810px){
+    .notMobile{
+        display: none;
+    }
+    .rest{
+        width: 80px;
+    }
+    .add_new {
+        position: relative;
+    }
+    .mobile{
+        display: block;
+    }
+    #notMobile{
+        display: none;
+    }
+    .button{
+        display: none;
+    }
+    .displaybuttons {
+        display: none;
+    }
+    .otherActions{
+        width: 51%;
+    }
+    .name{
+        font-size: 14px;
+    }
+    .time{
+        font-size: 14px;
+    } 
+    .times{
+        font-size: 14px;
+    }
+    #startMobileButton{
+        display: block;
+        border: none;
+        background-color: white
+    } 
+    #pauseMobileButton{
+        display: block;
+        border: none;
+        background-color: white
+    }  
+    #resetMobileButton{
+        display: block;
+        border: none;
+        background-color: white
+    }
+    #deleteMobileButton{
+        display: block;
+        border: none;
+        background-color: white
+    }
+    #showMobileButton{
+        display: block;
+        border: none;
+        background-color: white
+    }
+    .actions-titles{
+        width: 46%;
+        text-align: right;
+    }
+    .stOrTi{
+        display:inline-block;
+        align-items: baseline;
+        box-sizing: border-box;
+        width: 50px; 
+    }
+    .goal-title{
+        text-align: center;
+        width: 13%;
+    }
+    
+}
+@media(max-width: 480px){
+    .notMobile{
+        display: none;
+    }
+    .mobile{
+        display: contents;
+    }
+    .time{
+        font-size: 12px;
+    }
+    .times{
+        display: none;
+    }
+    .name{
+        font-size: 12px;
+    }
+    
+    .fields{
+        display: contents;
+    }
+    .add_new{
+        display: block;
+        margin-top: 10px;
+    }
+    .top-tittles {
+      margin-top: 10px;
+      font-family: Roboto,"Helvetica Neue",sans-serif;
+    }
+    .top-tittles p{
+        font-weight: bold;
+    }
+    .time-title{
+        display: none;
+    }
+    .search{
+        border: none;
+        border-radius: 3px;
+        background-color: #f9f9f9;
+        box-shadow:  0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
+    }
+    .input{
+        margin-top: 10px;
+        border: none;
+        border-radius: 3px;
+        background-color: #f9f9f9;
+        box-shadow:  0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
+    }
+    .export{
+        margin-top: 4px;
+    }
+    .paginationSelect{
+        display: none;
+     }
+     .otherActions{
+         width: 46%;
+         text-align: right;
+         font-size: 14px;
+     }
+     .goal-title{
+         width: 19%;
+         text-align: center;
+         font-size: 14px;
+     }
+     .name-title{
+         font-size: 14px;
+     }
+     .actions-titles{
+         font-size: 14px;
+     }
+}
+

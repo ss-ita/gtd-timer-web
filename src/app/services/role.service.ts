@@ -19,7 +19,6 @@ export class RoleService {
     emailOfUsers: string[] = [];
     emailOfAdmins: string[] = [];
 
-
     constructor(private http: HttpClient,
         private service: ConfigService,
         private toasterService: ToasterService,

@@ -6,11 +6,11 @@
           <span>
             {{preset.presetName}} 
           </span>
-          <span *ngIf="isPresetStandard(preset)" class="delete-preset">
+          <div *ngIf="isPresetStandard(preset)" class="delete-preset">
             <button mat-icon-button type="button" (click)="openConfirmationDialog(presetIndex)">
               <mat-icon class="delete-timer-icon" svgIcon="delete"></mat-icon>
             </button>
-          </span>
+          </div>
           <span *ngIf="isPresetStandard(preset)" class="delete-preset">
             <button mat-icon-button type="button" (click)="onUpdateIcon(presetIndex)">
               <mat-icon class="delete-timer-icon" svgIcon="edit"></mat-icon>
@@ -19,7 +19,7 @@
         </mat-option>
       </mat-select>
     </mat-form-field>
-    <div *ngIf="isLoggedIn; else loggedOut">
+    <div class="font" *ngIf="isLoggedIn; else loggedOut">
       <p *ngIf="!isViewable" class="additional-message">Choose preset from default list or <button
           class="add-new-preset-button" type="button" (click)="toggle()">create</button> your own.</p>
     </div>
@@ -36,23 +36,23 @@
       </mat-form-field>
       <div formArrayName="tasks">
         <div *ngFor="let item of returnTimersFormGroupArray.controls; let timerIndex = index" [formGroupName]="timerIndex">
-          <mat-form-field>
+          <mat-form-field class="small-screen">
             <input matInput formControlName="taskName" placeholder="Timer name">
             <mat-error>{{getErrorMessageTimerName(item)}}</mat-error>
           </mat-form-field>
           <mat-form-field class="timer-element-width">
-            <input matInput type="number" min="0" max="23" formControlName="hours" placeholder="Hours">
+            <input matInput (keypress)="numberOnly($event)" min="0" max="23" formControlName="hours" placeholder="Hours">
             <mat-error>{{getErrorMessageHours()}}</mat-error>
           </mat-form-field>
           <mat-form-field class="timer-element-width">
-            <input matInput type="number" min="0" max="59" formControlName="minutes" placeholder="Minutes">
+            <input matInput (keypress)="numberOnly($event)" min="0" max="59" formControlName="minutes" placeholder="Minutes">
             <mat-error>{{getErrorMessageMinutesAndSeconds()}}</mat-error>
           </mat-form-field>
           <mat-form-field class="timer-element-width">
-            <input matInput type="number" min="0" max="59" formControlName="seconds" placeholder="Seconds">
+            <input matInput (keypress)="numberOnly($event)" min="0" max="59" formControlName="seconds" placeholder="Seconds">
             <mat-error>{{getErrorMessageMinutesAndSeconds()}}</mat-error>
           </mat-form-field>          
-          <button mat-icon-button [disabled]="!isValid" type="button" (click)="onDeleteTimer(timerIndex)">
+          <button mat-icon-button class="small-screen-icon" [disabled]="!isValid" type="button" (click)="onDeleteTimer(timerIndex)">
             <mat-icon class="delete-timer-icon">delete</mat-icon>
           </button>
         </div>

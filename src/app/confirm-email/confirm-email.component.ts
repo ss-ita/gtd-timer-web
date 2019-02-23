@@ -10,14 +10,21 @@ import { Component, OnInit } from '@angular/core';
 export class ConfirmEmailComponent implements OnInit {
 
   constructor(
+    private userService: UserService,
     private route: ActivatedRoute,
-    private router: Router,
-    private userService: UserService) { }
+    private router: Router) { }
 
   verifyEmail() {
-    const id = this.route.snapshot.paramMap.get('id');
+    const email = this.route.snapshot.paramMap.get('email');
     const token = this.route.snapshot.paramMap.get('token');
-    this.userService.verifyEmail(id, token);
+    if (!this.isLoggedIn()) {
+      this.userService.signInWithEmail(email);
+    }
+    this.userService.verifyEmail(email, token);
+  }
+
+  isLoggedIn() {
+    return localStorage.getItem('access_token') === null ? false : true;
   }
 
   ngOnInit() {

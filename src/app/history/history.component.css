@@ -1,11 +1,3 @@
-.back{
-    position: absolute;
-    top: auto;
-    min-height: calc(100vh - 49px);
-    width: 100%;
-    background-image: linear-gradient(to top, #d9afd9 0%, #97d9e1 100%);
-    min-width: 820px;
-}
 
 mat-list-item{
 box-shadow:  0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
@@ -21,6 +13,7 @@ height: 90px;
 
 .topButtons{
     margin-top: 22px;
+    width: 70%;
 }
 
 .topButtons .mat-raised-button{
@@ -64,15 +57,19 @@ height: 90px;
 }
 
 .search {
-  position: absolute;
-  left:75%;
-  margin-top: 22px;
+  position: relative;
+  width: 30%;
+  text-align: right;
 }
 
 .search input{
     border: none;
     border-radius: 3px;
-    height: 30px;
+    height: 36px;
+    min-width: 40px;
+    width: 100%;
+    max-width: 200px;
+    padding-left: 5px;
 }
 
 .top-tittles{
@@ -101,28 +98,40 @@ display: inline-block;
 }
 
 .name{
-    width: 25%;
+    width: 40%;
 }
 
-.name p{
-    padding-left: 10px;
-    display: inline;
+.top-tittles .name p{
+    width: 100%;
+    padding-left: 30px;
+    display: inline-block;
 }
 
-.name i{
+.nameContent{
+    position: relative;
+}
+
+.nameContent i{
+ display: inline;
+}
+
+.nameContent p{
 display: inline;
+padding-left: 3px;
 }
 
 .start{
-    width: 25%;
+    width: 20%;
 }
 
 .elapsed{
-    width: 15%;
+    width: 10%;
+text-align: center;
 }
 
 .action{
-width: 15%;
+width: 10%;
+text-align: center;
 }
 
 #elseBlock{
@@ -136,7 +145,9 @@ width: 15%;
 .other p{
     padding-left: 20%;
 }
-
+.otherButtons{
+    text-align: center;
+}
 .other button{
     margin-left: 4px;
     background-color: #dededa;
@@ -147,10 +158,284 @@ width: 15%;
  }
 
  .mat-raised-button{
-     min-width: 1px;
-     padding: 0%;
+    min-width: 1px;
+    padding: 0%;
 }
  
 .mat-icon {
     transform: scale(1.1);
+}
+
+.mobile{
+    display: none;  
+}
+
+.flex-container {
+    display: flex;
+    margin-top: 25px;
+    align-items: center;
+}
+
+.pagination button {
+    border-radius: 0;
+}
+
+.pagination button:first-child {
+    border-radius: 5px 0 0 5px;
+}
+
+.pagination button:last-child {
+    border-radius: 0 5px 5px 0;
+}
+
+.pagination button.active {
+    background: #97d9e1;
+    cursor: pointer;
+}
+
+.pagination button[disabled] i {
+    color: #dededa;
+}
+
+.pagination button[disabled] {
+    background: #f9f9f9;
+}
+
+.pagination button[disabled]:hover {
+    cursor: not-allowed;
+}
+
+.pagination {
+    flex-grow: 1;
+    text-align: center;
+}
+
+.mat-select {
+    text-align: center;
+    text-align-last: center;
+}
+
+.pagination .mat-raised-button {
+    padding: 0 16px;
+}
+
+
+@media(max-width:910px){
+
+    .action{
+        display: none;
+    }
+    .name{
+        width: 40%;
+    }
+    .start{
+        width: 23%;
+    }
+    .elapsed{
+        width:12%;
+    }
+    .other{
+        width: 25%;
+        text-align: center;
+    }
+}
+
+@media(max-width:810px){
+
+    .action{
+        display: none;
+    }
+    .start{
+        display: none;
+    }
+    .name{
+        width: 50%;
+    }
+    .elapsed{
+        width:15%;
+    }
+    .other{
+        width: 35%;
+       text-align: center;
+    }
+    .other p{
+        text-align: center;
+        padding:0px;
+    }
+}
+
+@media(max-width:700px){
+    .pagination .mat-raised-button{
+        padding:0 10px;
+    } 
+    .pagination{
+        text-align: left;
+    }
+}
+
+@media(max-width:600px){
+
+    .topItems{
+        text-align: center;
+        display: block;
+        text-align: inherit;
+        height: 130px;
+    }
+    .search {
+        margin-top: 10px;
+        width: 212px;
+      }
+      .search input{
+          max-width: 212px;
+          width: 212px;
+      }
+     .paginationSelect{
+         width: 120px;
+     }
+     .mat-form-field{
+         width: 100px;
+     }
+     .paginationSelect{
+         text-align: right;
+     }
+}
+
+@media(max-width:550px){
+
+    .topButtons{
+        width: 100%;
+    }
+    .elapsed{
+        display: none;
+    }
+    .name{
+        width: 60%;
+    }
+    .other{
+        width: 40%;
+    }
+    .mobileMatMenu{
+        display: none;
+    }
+}
+
+@media(max-width:480px){
+    .topItems{
+        height: 160px;
+    }
+    .topButtons{
+        display: inline;
+    }
+    .exportButton{
+        position: right;
+        width: 40%;
+    }
+    .switchButtons{
+        position: relative;
+        width: 100%;
+        text-align: left;
+    }
+    .switchButtons .mat-raised-button{
+        background-color: #f9f9f9;
+    }
+    .searchAndExport{
+        width: 100%;;
+    }
+    .search{
+        width: 60%;
+        text-align: left;
+    }
+    .search input{
+        background-color: #f9f9f9;
+        box-shadow:  0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
+        min-width: 50px;
+        width: 100%;
+        padding-left: 5px;
+    }
+    .notMobile{
+    display: none;
+    }
+    .mobile{
+    display: block;
+    }
+    .nameContent{
+        position: relative;
+    }
+    .mat-expansion-panel-header-description, .mat-expansion-panel-header-title {
+        height: 23px;
+    }
+    .menuButton{
+        width: 212px;
+    }
+    .top-tittles{
+        display: block;
+    }
+    .top-tittles .name{
+        display: inline-block;
+        width: 65%;
+    }
+    .otherActions{
+        display: inline-block;
+        width: 35%;
+        text-align: center;
+    }
+   
+    .top-tittles .name p{
+        padding-left: 15%;
+    }
+
+    .titleName{
+        display: inline-block;
+        width: 70%;
+    }
+
+    .otherActionsButton{
+        text-align: center;
+        width: 30%;
+    }
+    .otherActionsButton button{
+        box-shadow:  0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
+    }
+    #deleteMobileButton{
+        display: block;
+        border: none;
+        background-color: white;
+        width: 100%;
+        text-align: left;
+    }
+    #resumeMobileButton{
+        display: block;
+        border: none;
+        background-color: white;
+        width: 100%;
+        text-align: left;
+    }
+    #infoMobileButton{
+        display: block;
+        border: none;
+        background-color: white;
+        width: 100%;
+        text-align: left;
+    } 
+    .topButtons .active{
+        background-color: #dededa !important;
+    }
+    .flex-container {
+        display: block;
+    }
+   .paginationSelect{
+       width: 100%;
+       text-align: center;
+       margin-top: 20px;
+    }
+    .mat-form-field{
+        width: 50%;
+    }
+    .pagination{
+        text-align: center;
+    }
+    .mat-button{
+        min-width: 40px;
+        padding: 0%;
+    }
 }

@@ -8,4 +8,6 @@ export class AlarmModel {
     message: string;
     timeoutIndex: any;
     cronExpression: string;
+    timestamp: string;
+    isUpdated: boolean;
 }

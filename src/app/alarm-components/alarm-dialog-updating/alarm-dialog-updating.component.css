@@ -1,0 +1,74 @@
+.mat-dialog-content {
+    width: 420px;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+    font-size: 15px;
+}
+
+.comfirmation {
+    margin: 15px 0;
+}
+
+.list {
+    width: auto;
+    border-bottom: 1px solid darkgrey;
+    padding: 10px 0px 2px 10px;
+}
+
+.element {
+    display: inline-block;
+    width: 30%;
+    padding-right: 3%;
+}
+
+.difference {
+    color: #fb4444;
+}
+
+.clickElement {
+    color: blue;
+    padding-top: 5px;
+}
+
+.clickElement:hover {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.mat-dialog-title {
+    margin: 0 0 15px;
+    display: block;
+    text-align: center;
+    font-size: 27px;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+.buttonArea {
+    margin: 10px auto;
+    text-align: center;
+}
+
+.buttonArea button {
+    margin: 0px 10px;
+    padding: 1px 20px;
+    font-size: 16px;
+}
+
+::ng-deep .mat-button:hover .mat-button-focus-overlay {
+    opacity: 0;
+}
+
+.cancelButton:hover {
+    text-decoration: underline;
+}
+
+@media(max-width: 480px) {
+    .mat-dialog-content {
+        width: auto;
+    }
+}
+
+@media(max-width: 380px) {
+.comfirmation, .mat-dialog-content{
+    font-size: 14px;
+}
+}

@@ -8,12 +8,14 @@ import { UserService } from '../services/user.service';
 import { SocialAuthService } from '../services/social-auth.service';
 import { ConfigService } from '../services/config.service';
 import { NavbarService } from '../services/navbar.service';
+import { RoleService } from '../services/role.service';
+import { PasswordResetDialogComponent } from '../password-reset-dialog/password-reset-dialog.component';
 
 @Component({
     selector: 'app-signin',
     templateUrl: './signin.component.html',
     styleUrls: ['./signin.component.css'],
-    providers: [SignupDialogComponent]
+    providers: [SignupDialogComponent, PasswordResetDialogComponent]
 })
 
 export class SigninComponent implements OnInit {
@@ -35,11 +37,17 @@ export class SigninComponent implements OnInit {
         private service: SignupDialogComponent,
         private userService: UserService,
         private socialAuth: SocialAuthService,
-        private config: ConfigService
+        private config: ConfigService,
+        private roleService: RoleService,
+        private passwordResetService: PasswordResetDialogComponent
     ) { }
 
     openSignUpDialog() {
         this.service.openSignUpForm();
+    }
+
+    openResetPasswordDialog() {
+        this.passwordResetService.openPasswordResetForm();
     }
 
     ngOnInit() {
@@ -70,12 +78,12 @@ export class SigninComponent implements OnInit {
         this.userService.signinuser(this.controlElements.email.value, this.controlElements.password.value);
     }
 
-    LoginWithGoogle() {
+    loginWithGoogle() {
         this.socialAuth.loginWithGoogle();
         this.isActive = true;
     }
 
-    doFacebookLogin() {
+    loginWithFacebook() {
         this.socialAuth.loginWithFacebook();
         this.isActive = true;
     }

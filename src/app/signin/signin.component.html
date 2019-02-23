@@ -1,4 +1,3 @@
-<div class="back">
   <mat-card class="signin-card">
     <mat-card-header class="signin-header">
       <mat-card-title>Sign In</mat-card-title>
@@ -20,13 +19,13 @@
         <button mat-flat-button [disabled]="!signinform.valid" color="primary" class="emailAuth">Sign In</button>
       </mat-card-actions>
     </form>
+    <div class="passwordRecovery"> <small class="title"><button class="tempButton" (click)="openResetPasswordDialog()">Forgot password?</button></small></div>
     <div class="socialAuth">
-      <button mat-flat-button type="submit" (click)="LoginWithGoogle()" class="btn googleAuth">
+      <button mat-flat-button type="submit" (click)="loginWithGoogle()" class="btn googleAuth">
         <img alt="Google" src={{urlGooglePath}} />Sign in with Google</button>
-      <button mat-flat-button type="submit" (click)="doFacebookLogin()" class="btn facebookAuth">
+      <button mat-flat-button type="submit" (click)="loginWithFacebook()" class="btn facebookAuth">
         <img alt="Facebook" src={{urlFacebookPath}} />Sign in with Facebook</button>
     </div>
     <div class="signup"> <small class="title"> Don't have an account yet?<button class="tempButton" (click)="openSignUpDialog()">Sign
           Up</button></small></div>
   </mat-card>
-</div>

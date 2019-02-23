@@ -8,7 +8,10 @@ import { TaskCreateJson } from '../models/taskCreateJson.model';
 
 export class TimerService {
 
-    constructor(private configService: ConfigService) { }
+    constructor(private configService: ConfigService) {
+        this.taskJson = new TaskCreateJson();
+        this.taskJson.name = this.taskStartName;
+    }
 
     isForward: boolean;
     timerArrayLenght: number;
@@ -39,18 +42,21 @@ export class TimerService {
     subscribe: Subscription;
     public currentPreset = 'Choose preset';
     isForce = false;
-    task: String = ' ';
+    taskStartName = 'null@Timer';
     taskJson: TaskCreateJson;
+    description = 'Displayed on timer page';
 
     initializeTimersArray(timerArray: Task[]) {
-        this.clearTimersArrayAndIndex();
-        this.nextTimer();
-        this.timerIndex++;
-        this.timerArray = timerArray;
-        this.refreshTimer();
-        this.timerArrayLenght = timerArray.length;
-        this.startTimersFromPreset();
-        this.getIsTimerArrayEmpty();
+        if (this.getIsChosenPreset) {
+            this.clearTimersArrayAndIndex();
+            this.nextTimer();
+            this.timerIndex++;
+            this.timerArray = timerArray;
+            this.refreshTimer();
+            this.timerArrayLenght = timerArray.length;
+            this.startTimersFromPreset();
+            this.getIsTimerArrayEmpty();
+        }
     }
 
     getIsTimerArrayEmpty() {
@@ -63,6 +69,25 @@ export class TimerService {
 
     getIsChosenPreset() {
         return this.currentPreset === 'Choose preset' ? true : false;
+    }
+
+    exitFromPreset() {
+        this.pauseTimer();
+        this.hour = 0;
+        this.minute = 0;
+        this.second = 0;
+        this.maxValueHour = null;
+        this.maxValueMinute = null;
+        this.maxValueSecond = null;
+        this.clearTimersArrayAndIndex();
+        this.isTimerRun = false;
+        this.isTimerPause = true;
+        this.isTimerFinished = false;
+        this.isFromPreset = false;
+        this.isArrayEmpty = true;
+        this.isForce = false;
+        this.color = 'black';
+        this.currentPreset = 'Choose preset';
     }
 
     startTimersFromPreset() {
@@ -127,7 +152,9 @@ export class TimerService {
     }
 
     refreshTimer() {
-        this.startTimersFromPreset();
+        if (!this.getIsChosenPreset()) {
+            this.startTimersFromPreset();
+        }
         this.pauseTimer();
         this.color = 'black';
         this.isTimerRun = false;
@@ -158,7 +185,6 @@ export class TimerService {
             this.subscribe.unsubscribe();
         }
     }
-
 
     updateTime() {
 
@@ -201,12 +227,14 @@ export class TimerService {
     }
 
     nextTimer() {
-        this.isForward = true;
-        this.isTimerFinished = false;
-        this.hour = 0;
-        this.minute = 0;
-        this.second = 0;
-        this.color = '#609b9b';
+        if (!this.getIsChosenPreset()) {
+            this.isForward = true;
+            this.isTimerFinished = false;
+            this.hour = 0;
+            this.minute = 0;
+            this.second = 0;
+            this.color = '#609b9b';
+        }
     }
     previousTimer() {
         this.isForce = true;
@@ -221,10 +249,5 @@ export class TimerService {
         } else {
             this.timerIndex = this.timerIndex - 1;
         }
-    }
-
-    timerClear() {
-        this.task = ' ';
-        this.refreshTimer();
     }
 }

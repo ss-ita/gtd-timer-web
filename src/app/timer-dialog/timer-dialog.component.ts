@@ -27,48 +27,17 @@ export class TimerDialogComponent implements OnInit {
 
   onSave() {
     let name: string;
-    const milisecondPerSecond = 1000;
 
     if (this.timerTag === 'None') {
       name = this.timerName;
     } else {
       name = this.timerName + ' ' + '#' + this.timerTag;
     }
-    const taskToPass: TaskCreateJson = {
-      id: 0,
-      name: name,
-      description: '',
-      elapsedTime: this.timerService.ticks * milisecondPerSecond,
-      goal: this.timerService.maxValueHour.toString() + ':'
-        + this.timerService.maxValueMinute.toString() + ':' + this.timerService.maxValueSecond.toString(),
-      lastStartTime: '0001-01-01T00:00:00Z',
-      isRunning: false,
-      hour: this.timerService.hour,
-      minutes: this.timerService.minute,
-      seconds: this.timerService.second,
-      currentSecond: this.timerService.ticks,
-      isCollapsed: true,
-      isStoped: true,
-      watchType: 1,
-      maxValueHour: this.timerService.maxValueHour,
-      maxValueMinute: this.timerService.maxValueMinute,
-      maxValueSecond: this.timerService.maxValueSecond,
-      isTimerFinished: false,
-      goals: 0,
-      ticksi: 0
-    };
 
-    const myObserver = {
-      next: task => {
-        this.taskService.timers.unshift(task);
-      },
-      error: err => { },
-      complete: () => { }
-    };
+    this.timerService.taskJson.name = name;
 
-    this.timerService.refreshTimer();
-    this.taskService.createTask(taskToPass).subscribe(myObserver);
-    this.toasterService.showToaster('Added to List');
+    this.taskService.updateTimeTimer(this.timerService.taskJson);
+    this.toasterService.showToaster('Title changed');
     this.onClose();
   }
 

@@ -22,6 +22,7 @@ export class AlarmDialogComponent implements OnInit {
   message = '';
   cronExpression = '';
   repeat = this.alarmService.repeatOptions[0];
+  textareaLength = 75;
 
   constructor(
     private alarmFormDialogRef: MatDialogRef<AlarmDialogComponent>,
@@ -42,8 +43,10 @@ export class AlarmDialogComponent implements OnInit {
     }
 
     this.alarmForm = this.formBuilder.group({
-      'hour': [this.hour, [Validators.required, Validators.min(0), Validators.max(23)]],
-      'minute': [this.minute, [Validators.required, Validators.min(0), Validators.max(59)]],
+      'hour': [this.hour, [Validators.required, Validators.min(0), Validators.max(23),
+      Validators.maxLength(2), Validators.pattern(this.hourPattern)]],
+      'minute': [this.minute, [Validators.required, Validators.min(0), Validators.maxLength(2),
+      Validators.max(59), Validators.pattern(this.minutePattern)]],
       'repeatControl': [],
       'checked': [],
       'messageControl': []
@@ -62,6 +65,14 @@ export class AlarmDialogComponent implements OnInit {
     this.alarmService.chooseAlarmAction(alarm);
     this.alarmService.resetData();
     this.alarmFormDialogRef.close();
+  }
+
+  numberOnly(event): boolean {
+    const charCode = (event.which) ? event.which : event.keyCode;
+    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+      return false;
+    }
+    return true;
   }
 
   checkRepeatOption() {
@@ -97,7 +108,9 @@ export class AlarmDialogComponent implements OnInit {
     alarm.repeat = this.repeat;
     alarm.message = this.message;
     alarm.timeoutIndex = -1;
+    alarm.isUpdated = false;
     this.data !== null ? alarm.id = this.data.model.id : alarm.id = -10;
+    this.data !== null ? alarm.timestamp = this.data.model.timestamp : alarm.timestamp = '';
     return alarm;
   }
 
@@ -111,6 +124,7 @@ export class AlarmDialogComponent implements OnInit {
 
   customOptionRepeat() {
     const alarmRepeatFormDialog = this.dialog.open(RepeatAlarmDialogComponent, {
+      panelClass: 'custom-dialog-container',
       hasBackdrop: true,
       closeOnNavigation: true,
       disableClose: true

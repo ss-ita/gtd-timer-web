@@ -1,96 +1,280 @@
-<div class="back">
   <div class="my-container">
-    <div class="topItems">
-      <div class="topButtons">
-        <button mat-raised-button id='firstTopButton' [ngClass]="{'active': isStopwatch === 0}" (click)="changeType(0)">
-          <p>Timers</p>
-        </button>
-        <button mat-raised-button id='secondTopButton' [ngClass]="{'active': isStopwatch === 1}" (click)="changeType(1)">
-          <p>Stopwatches</p>
-        </button>
-        <button mat-raised-button id='thirdTopButton' [ngClass]="{'active': isStopwatch === 2}" (click)="changeType(2)">
-          <p>All</p>
-        </button>
-        <ng-template [ngIf]="isStopwatch === 0">
-          <mat-menu #shareHistory="matMenu">
-            <button type="button" mat-menu-item (click)="exportAllTimerRecordsAsXml()">Export as .XML</button>
-            <button type="button" mat-menu-item (click)="exportAllTimerRecordsAsCsv()">Export as .CSV</button>
-          </mat-menu>
-          <button type="button" matTooltip="Export" mat-button [matMenuTriggerFor]="shareHistory">
-            <mat-icon>get_app</mat-icon><span>Export</span>
-          </button>
-        </ng-template>
-        <ng-template [ngIf]="isStopwatch === 1">
-          <mat-menu #shareHistory="matMenu">
-            <button type="button" mat-menu-item (click)="exportAllStopwatchRecordsAsXml()">Export as .XML</button>
-            <button type="button" mat-menu-item (click)="exportAllStopwatchRecordsAsCsv()">Export as .CSV</button>
-          </mat-menu>
-          <button type="button" matTooltip="Export" mat-button [matMenuTriggerFor]="shareHistory">
-            <mat-icon>get_app</mat-icon><span>Export</span>
-          </button>
-        </ng-template>
-        <ng-template [ngIf]="isStopwatch === 2">
-        <mat-menu #shareHistory="matMenu">
-          <button type="button" mat-menu-item (click)="exportAllRecordsAsXml()">Export as .XML</button>
-          <button type="button" mat-menu-item (click)="exportAllRecordsAsCsv()">Export as .CSV</button>
-        </mat-menu>
-        <button type="button" matTooltip="Export" mat-button [matMenuTriggerFor]="shareHistory">
-          <mat-icon>get_app</mat-icon><span>Export</span>
-        </button>
-        </ng-template>
-      </div>
-      <div class="search">
+    <div class="notMobile">
+      <div class="topItems">
+        <div class="topButtons">
+          <div class="switchButtons">
+            <button mat-raised-button id='firstTopButton' [ngClass]="{'active': isStopwatch === 0}"
+              (click)="changeType(0)">
+              <p>Timers</p>
+            </button>
+            <button mat-raised-button id='secondTopButton' [ngClass]="{'active': isStopwatch === 1}"
+              (click)="changeType(1)">
+              <p>Stopwatches</p>
+            </button>
+            <button mat-raised-button id='thirdTopButton' [ngClass]="{'active': isStopwatch === 2}"
+              (click)="changeType(2)">
+              <p>All</p>
+            </button>
+          </div>
+          <ng-template [ngIf]="isStopwatch === 0">
+            <mat-menu #shareHistory="matMenu">
+              <button type="button" mat-menu-item (click)="exportAllTimerRecordsAsXml()" class="menuButton">Export as
+                .XML</button>
+              <button type="button" mat-menu-item (click)="exportAllTimerRecordsAsCsv()">Export as .CSV</button>
+            </mat-menu>
+            <button type="button" matTooltip="Export" mat-button [matMenuTriggerFor]="shareHistory"
+              class="exportButton">
+              <mat-icon>get_app</mat-icon><span>Export</span>
+            </button>
+          </ng-template>
+          <ng-template [ngIf]="isStopwatch === 1">
+            <mat-menu #shareHistory="matMenu">
+              <button type="button" mat-menu-item (click)="exportAllStopwatchRecordsAsXml()" class="menuButton">Export
+                as
+                .XML</button>
+              <button type="button" mat-menu-item (click)="exportAllStopwatchRecordsAsCsv()">Export as .CSV</button>
+            </mat-menu>
+            <button type="button" matTooltip="Export" mat-button [matMenuTriggerFor]="shareHistory"
+              class="exportButton">
+              <mat-icon>get_app</mat-icon><span>Export</span>
+            </button>
+          </ng-template>
+          <ng-template [ngIf]="isStopwatch === 2">
+            <mat-menu #shareHistory="matMenu">
+              <button type="button" mat-menu-item (click)="exportAllRecordsAsXml()" class="menuButton">Export as
+                .XML</button>
+              <button type="button" mat-menu-item (click)="exportAllRecordsAsCsv()">Export as .CSV</button>
+            </mat-menu>
+            <button type="button" matTooltip="Export" mat-button [matMenuTriggerFor]="shareHistory"
+              class="exportButton">
+              <mat-icon>get_app</mat-icon><span>Export</span>
+            </button>
+          </ng-template>
+        </div>
+        <div class="search">
           <input [(ngModel)]="searchText" placeholder="Filter" class="input">
+        </div>
+      </div>
+      <div class="top-tittles">
+        <span class="name">
+          <p>Name</p>
+        </span>
+        <span class="start">
+          <p>StartTime</p>
+        </span>
+        <span class="elapsed">
+          <p>Elapsed</p>
+        </span>
+        <span class="action">
+          <p>Status</p>
+        </span>
+        <span class="other">
+          <p>Action</p>
+        </span>
+      </div>
+      <mat-divider></mat-divider>
+      <mat-list>
+        <mat-list-item *ngFor='let record of pagedRecords | filter: searchText'>
+          <div class="name">
+            <div class="nameContent">
+              <i *ngIf='record.watchType == 0' class="fas fa-stopwatch fa-lg"></i>
+              <i *ngIf='record.watchType == 1' class="fas fa-clock fa-lg"></i>
+              <p>{{record.name}}</p>
+            </div>
+          </div>
+          <div class="start">
+            <p>{{record.startTime | utcPipe:'short'}}</p>
+          </div>
+          <div class="elapsed">
+            <p>{{ record.elapsedTime | timeFilter }}</p>
+          </div>
+          <div class="action">
+            <p>{{record.action}}</p>
+          </div>
+          <div class="other">
+            <div class="otherButtons">
+              <button mat-raised-button matTooltip="Resume record" [matTooltipShowDelay]="1000"
+                (click)="openWarningDialog(record)" id="resumeButton">
+                <i class="fa fa-play"></i>
+              </button>
+              <button mat-raised-button [matTooltipShowDelay]="1000" (click)="onInfo(record)" matTooltip="Info"
+                id="infoButton">
+                <i class="fas fa-bars"></i>
+              </button>
+              <button mat-raised-button [matTooltipShowDelay]="1000" (click)="onDeleteRecord(record)"
+                matTooltip="Permanently delete record" id="deleteButton">
+                <i class="fas fa-trash-alt"></i>
+              </button>
+            </div>
+          </div>
+        </mat-list-item>
+      </mat-list>
+      <div class="flex-container">
+        <div *ngIf="recordsToDisplayPager.pages && recordsToDisplayPager.pages.length" class="pagination">
+          <button mat-raised-button [disabled]="recordsToDisplayPager.currentPage === 1" (click)="setRecordsPage(1)">
+            <i class="fas fa-angle-double-left"></i>
+          </button>
+          <button mat-raised-button [disabled]="recordsToDisplayPager.currentPage === 1"
+            (click)="setRecordsPage(recordsToDisplayPager.currentPage - 1)">
+            <i class="fas fa-angle-left"></i>
+          </button>
+          <button mat-raised-button *ngFor="let page of recordsToDisplayPager.pages"
+            [ngClass]="{active:recordsToDisplayPager.currentPage === page}" (click)="setRecordsPage(page)">
+            {{page}}
+          </button>
+          <button mat-raised-button [disabled]="recordsToDisplayPager.currentPage === recordsToDisplayPager.totalPages"
+            (click)="setRecordsPage(recordsToDisplayPager.currentPage + 1)">
+            <i class="fas fa-angle-right"></i>
+          </button>
+          <button mat-raised-button [disabled]="recordsToDisplayPager.currentPage === recordsToDisplayPager.totalPages"
+            (click)="setRecordsPage(recordsToDisplayPager.totalPages)">
+            <i class="fas fa-angle-double-right"></i>
+          </button>
+        </div>
+        <div class="paginationSelect">
+          <mat-form-field *ngIf="recordsToDisplayPager.pages && recordsToDisplayPager.pages.length">
+            <mat-select placeholder="Items per page" [(ngModel)]="pageSizeRecords" name="size"
+              (selectionChange)="setRecordsPage(1)">
+              <mat-option *ngFor="let size of pageSizes" [value]="size.value">
+                {{size.id}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
       </div>
     </div>
-    <div class="top-tittles">
-      <span class="name">
-        <p>Name</p>
-      </span>
-      <span class="start">
-        <p>StartTime</p>
-      </span>
-      <span class="elapsed">
-        <p>Elapsed</p>
-      </span>
-      <span class="action">
-        <p>Action</p>
-      </span>
-      <span class="other">
-        <p>Other</p>
-      </span>
+
+
+
+    <div class="mobile">
+        <div class="topItems">
+            <div class="searchAndExport">
+              <div class="search">
+              <input [(ngModel)]="searchText" placeholder="Filter" class="input">
+              </div>
+              <ng-template [ngIf]="isStopwatch === 0">
+                <mat-menu #shareHistory="matMenu">
+                  <button type="button" mat-menu-item (click)="exportAllTimerRecordsAsXml()" class="menuButton">Export as
+                    .XML</button>
+                  <button type="button" mat-menu-item (click)="exportAllTimerRecordsAsCsv()">Export as .CSV</button>
+                </mat-menu>
+                <button type="button" matTooltip="Export" mat-button [matMenuTriggerFor]="shareHistory"
+                  class="exportButton">
+                  <mat-icon>get_app</mat-icon><span>Export</span>
+                </button>
+              </ng-template>
+              <ng-template [ngIf]="isStopwatch === 1">
+                <mat-menu #shareHistory="matMenu">
+                  <button type="button" mat-menu-item (click)="exportAllStopwatchRecordsAsXml()" class="menuButton">Export
+                    as
+                    .XML</button>
+                  <button type="button" mat-menu-item (click)="exportAllStopwatchRecordsAsCsv()">Export as .CSV</button>
+                </mat-menu>
+                <button type="button" matTooltip="Export" mat-button [matMenuTriggerFor]="shareHistory"
+                  class="exportButton">
+                  <mat-icon>get_app</mat-icon><span>Export</span>
+                </button>
+              </ng-template>
+              <ng-template [ngIf]="isStopwatch === 2">
+                <mat-menu #shareHistory="matMenu">
+                  <button type="button" mat-menu-item (click)="exportAllRecordsAsXml()" class="menuButton">Export as
+                    .XML</button>
+                  <button type="button" mat-menu-item (click)="exportAllRecordsAsCsv()">Export as .CSV</button>
+                </mat-menu>
+                <button type="button" matTooltip="Export" mat-button [matMenuTriggerFor]="shareHistory"
+                  class="exportButton">
+                  <mat-icon>get_app</mat-icon><span>Export</span>
+                </button>
+              </ng-template>
+            </div>
+            <div class="topButtons">
+              <div class="switchButtons">
+                  <button mat-raised-button id='firstTopButton' [ngClass]="{'active': isStopwatch === 0}"
+                  (click)="changeType(0)">
+                  <p>Timers</p>
+                </button>
+                <button mat-raised-button id='secondTopButton' [ngClass]="{'active': isStopwatch === 1}"
+                  (click)="changeType(1)">
+                  <p>Stopwatches</p>
+                </button>
+                <button mat-raised-button id='thirdTopButton' [ngClass]="{'active': isStopwatch === 2}"
+                  (click)="changeType(2)">
+                  <p>All</p>
+                </button>
+              </div>
+            </div>
+          </div>
+      <div class="top-tittles">
+        <span class="name">
+          <p>Name</p>
+        </span>
+        <span class="otherActions">
+          <p>Action</p>
+        </span>
+      </div>
+      <mat-list>
+        <mat-list-item *ngFor='let record of pagedRecords | filter: searchText'>
+          <div class="titleName">
+            <div class="nameContent">
+              <i *ngIf='record.watchType == 0' class="fas fa-stopwatch fa-lg"></i>
+              <i *ngIf='record.watchType == 1' class="fas fa-clock fa-lg"></i>
+              <p>{{record.name}}</p>
+            </div>
+          </div>
+          <mat-menu #otherActions="matMenu" yPosition="below" >
+            <button type="button" matTooltip="Resume record" [matTooltipShowDelay]="1000"
+              (click)="openWarningDialog(record)" id="resumeMobileButton">
+              <p *ngIf='record.watchType == 0'>Reset stopwatch</p>
+              <p *ngIf='record.watchType == 1'>Reset timer</p>
+            </button>
+            <button type="button" [matTooltipShowDelay]="1000" (click)="onInfo(record)" matTooltip="Info"
+              id="infoMobileButton">
+              <p>Info</p>
+            </button>
+            <button type="button" [matTooltipShowDelay]="1000" (click)="onDeleteRecord(record)"
+              matTooltip="Permanently delete record" id="deleteMobileButton">
+              <p>Delete</p>
+            </button>
+          </mat-menu>
+          <div class="otherActionsButton">
+            <button type="button" mat-button [matMenuTriggerFor]="otherActions">
+              <span><i class="fas fa-ellipsis-v"></i></span>
+            </button>
+          </div>
+        </mat-list-item>
+      </mat-list>
+      <div class="flex-container">
+        <div *ngIf="recordsToDisplayPager.pages && recordsToDisplayPager.pages.length" class="pagination">
+          <button mat-raised-button [disabled]="recordsToDisplayPager.currentPage === 1" (click)="setRecordsPage(1)">
+            <i class="fas fa-angle-double-left"></i>
+          </button>
+          <button mat-raised-button [disabled]="recordsToDisplayPager.currentPage === 1"
+            (click)="setRecordsPage(recordsToDisplayPager.currentPage - 1)">
+            <i class="fas fa-angle-left"></i>
+          </button>
+          <button mat-raised-button *ngFor="let page of recordsToDisplayPager.pages"
+            [ngClass]="{active:recordsToDisplayPager.currentPage === page}" (click)="setRecordsPage(page)">
+            {{page}}
+          </button>
+          <button mat-raised-button [disabled]="recordsToDisplayPager.currentPage === recordsToDisplayPager.totalPages"
+            (click)="setRecordsPage(recordsToDisplayPager.currentPage + 1)">
+            <i class="fas fa-angle-right"></i>
+          </button>
+          <button mat-raised-button [disabled]="recordsToDisplayPager.currentPage === recordsToDisplayPager.totalPages"
+            (click)="setRecordsPage(recordsToDisplayPager.totalPages)">
+            <i class="fas fa-angle-double-right"></i>
+          </button>
+        </div>
+        <div class="paginationSelect">
+          <mat-form-field *ngIf="recordsToDisplayPager.pages && recordsToDisplayPager.pages.length">
+            <mat-select placeholder="Items per page" [(ngModel)]="pageSizeRecords" name="size"
+              (selectionChange)="setRecordsPage(1)">
+              <mat-option *ngFor="let size of pageSizes" [value]="size.value">
+                {{size.id}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
     </div>
-    <mat-divider></mat-divider>
-    <mat-list>
-      <mat-list-item *ngFor='let record of recordsToDisplay | filter: searchText'>
-        <div class="name" >
-          <i *ngIf='record.watchType == 0' class = "fas fa-stopwatch fa-lg"></i>
-          <i *ngIf ='record.watchType == 1' class = "fas fa-clock fa-lg"></i>
-          <p>{{record.name}}</p>
-        </div>
-        <div class="start">
-          <p>{{record.startTime | date:'short'}}</p>
-        </div>
-        <div class="elapsed">
-          <p>{{ record.elapsedTime | timeFilter }}</p>
-        </div>
-        <div class="action">
-          <p>{{record.action}}</p>
-        </div>
-        <div class="other">
-          <button mat-raised-button matTooltip="Resume record" [matTooltipShowDelay]="1000" (click)="openWarningDialog(record)"
-            id="resumeButton">
-            <i class="fa fa-play"></i>
-          </button>
-          <button mat-raised-button [matTooltipShowDelay]="1000" (click)="onInfo(record)" matTooltip="Info" id="infoButton">
-            <i class="fas fa-bars"></i>
-          </button>
-          <button mat-raised-button [matTooltipShowDelay]="1000" (click)="onDeleteRecord(record)" matTooltip="Permanently delete record"
-            id="deleteButton">
-            <i class="fas fa-trash-alt"></i>
-          </button>
-        </div>
-      </mat-list-item>
-    </mat-list>
   </div>
-</div>

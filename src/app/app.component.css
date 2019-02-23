@@ -1,0 +1,85 @@
+.background{
+    position: absolute;
+    height: auto;
+    width: 100%;
+    background-image: linear-gradient(to top, #d9afd9 0%, #97d9e1 100%);
+    min-height: 100%;
+}
+
+@media(max-width:480px) {
+    .background{
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    background-image: none;
+    }
+}
+
+.loadingBack {
+    z-index:9999;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: rgba(0, 0, 0, 0.7);
+}
+
+.clockLoader{
+    position: fixed;
+    z-index: 10000;
+    height: 80px;
+    width: 80px;
+    overflow: show;
+    margin: auto;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0; 
+    border-radius:100%; 
+    background: #333;
+    border:5px solid  transparent;
+    box-shadow:20px 35px 0 -35px #222,25px 45px 0 -40px #222,-20px 35px 0 -35px #222,-25px 45px 0 -40px #222,inset 0 0 0 3px #fff,
+      inset 0 6px 0 0 rgba(0, 0, 0, .3),
+      inset 0 0 0 35px #09c,
+      inset 0 0 0 40px #222;
+    transform: scale(0.75);
+}
+
+.clockLoader:after{
+    content:"";
+    width: 5px; 
+    height: 60px;
+    display:block; 
+    position:absolute; 
+    top:0; 
+    bottom: 0; 
+    left: 0; 
+    right: 0; 
+    margin: auto; 
+    box-shadow: inset 0px 2px 0 0 #fff, inset 0px 30px 0 0 #222;
+    animation:clockHandLong .4s linear infinite;
+}
+     
+.clockLoader:before{
+    content:"";
+    width: 5px; 
+    height: 50px; 
+    display:block; 
+    position:absolute; 
+    top:0; 
+    bottom: 0; 
+    left: 0; 
+    right: 0; 
+    margin: auto; 
+    box-shadow: inset 0px 2px 0 0 #fff, inset 0px 25px 0 0 #222;
+    animation:clockHandShort 6s linear infinite;
+}
+          
+@keyframes clockHandLong {
+    100%{transform: rotate(360deg);}
+}
+       
+@keyframes clockHandShort {
+    100%{transform: rotate(360deg);}
+}

@@ -5,60 +5,71 @@
     text-decoration: underline;
 }
 
-.mat-icon-button:hover
-{
+.mat-button.addStopwatch {
+	border-radius: 50%;
+	width: 4rem;
+	height: 4rem;
+	border: none;
+	text-decoration: underline;
+	display: inline-block;
+	position: absolute;
+	right: 22px;
+	background-color: #b797ff24;
+}
+
+.mat-button.addStopwatch:hover {
+	background-color: #b757ff24;
+}
+
+.mat-icon-button:hover {
     background-color: rgb(172, 205, 255);
 }
 
-.container-stopwatch{
+.container-stopwatch {
     width: 700px;
     height: 300px;
 }
 
-.mat-icon{
-    font-size:32px !important;
+.mat-icon {
+    font-size: 32px !important;
     height: 32px !important;
     width: 32px !important;
 }
 
 .show-time-area {
-	margin: 30px 0px 13px;
-	display: inline-block;
-	font-size: 120px;
-	padding: 5px 5px;
-	border-radius: 50%;
-	min-width: 133.5px;
-}
-
-.background{
-    position: absolute;
-    top: auto;
-    min-height: calc(100vh - 49px);
-    width: 100%;
-    background-image: linear-gradient(to top, #d9afd9 0%, #97d9e1 100%);
-    min-width: 820px;
+    margin: 30px 0px 13px;
+    display: inline-block;
+    font-size: 120px;
+    padding: 5px 5px;
+    border-radius: 50%;
+    min-width: 133.5px;
 }
 
 .content-area {
-	width: 700px;
-	height: 380px;
-	margin: 5% auto;
+    width: 700px;
+    height: 380px;
+    margin: 5% auto;
 }
 
-.unselectable{
+.unselectable {
     margin-top: -14px !important;
     margin-left: 8px;
-    -webkit-touch-callout: none; /* iOS Safari */
--webkit-user-select: none; /* Safari */
- -khtml-user-select: none; /* Konqueror HTML */
-   -moz-user-select: none; /* Firefox */
-    -ms-user-select: none; /* Internet Explorer/Edge */
-        user-select: none;
-        padding-top: 40px;
+    -webkit-touch-callout: none;
+    /* iOS Safari */
+    -webkit-user-select: none;
+    /* Safari */
+    -khtml-user-select: none;
+    /* Konqueror HTML */
+    -moz-user-select: none;
+    /* Firefox */
+    -ms-user-select: none;
+    /* Internet Explorer/Edge */
+    user-select: none;
+    padding-top: 40px;
 }
 
 .mat-card-content {
-	margin-bottom: 30px;
+    margin-bottom: 30px;
     margin-top: 8.5px;
     margin-left: -8px;
     text-align: center;
@@ -74,47 +85,47 @@
     margin-top: 10px;
     margin-left: 25%;
     outline: none;
-    font-family: Roboto,"Helvetica Neue",sans-serif;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
     transition-duration: 0.4s;
     -webkit-transition-duration: 0.4s;
     cursor: pointer;
-    }
-    
-    .toggle {
+}
+
+.toggle {
     font-size: 22px !important;
     color: black;
     padding-bottom: 13px;
-    }
-    
-    .view-stopwatch-menu {
+}
+
+.view-stopwatch-menu {
     width: 40px;
     height: 40px;
-    }
+}
 
-.mat-card-actions{
+.mat-card-actions {
     text-align: center;
 }
 
-.style-menu{
+.style-menu {
     width: 40px;
-    height: 40px; 
+    height: 40px;
 }
 
-.mat-card>:first-child.negative-margin{
-    margin-top:-7px;
+.mat-card>:first-child.negative-margin {
+    margin-top: -7px;
     display: flex;
 }
 
 .progress-percentage-wrapper {
-	position: relative;
-	font-size: 50px;
-	width: 200px;
-	height: 200px;
+    position: relative;
+    font-size: 50px;
+    width: 200px;
+    height: 200px;
     display: inline-block;
     margin: 0 0.5%;
 }
 
-.textsize{
+.textsize {
     color: black;
     font-size: 120px;
     display: inline-flex;
@@ -144,7 +155,7 @@
     margin-top: 10px;
     margin-left: 25%;
     outline: none;
-    font-family: Roboto,"Helvetica Neue",sans-serif;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
     transition-duration: 0.4s;
     -webkit-transition-duration: 0.4s;
     cursor: pointer;
@@ -159,4 +170,148 @@
 .view-stopwatch-menu {
     width: 40px;
     height: 40px;
+}
+
+@media(max-width: 735px) {
+    .content-area {
+        width: auto;
+        height: 350px;
+        border-radius: 0%;
+    }
+    .progress-percentage-wrapper {
+        font-size: 40px;
+        margin-left: 0.5%;
+        margin-right: 0.5%;
+        width: 175px;
+        height: 175px;
+    }
+}
+
+@media(max-width: 640px) {
+    .textsize {
+        font-size: 100px;
+    }
+    .semicolomn {
+        font-size: 100px;
+    }
+    .content-area {
+        width: auto;
+        height: 330px;
+    }
+    .progress-percentage-wrapper {
+        font-size: 40px;
+        margin-left: 0.5%;
+        margin-right: 0.5%;
+        width: 160px;
+        height: 160px;
+    }
+}
+
+@media(max-width: 550px) {
+    .textsize {
+        font-size: 90px;
+    }
+    .semicolomn {
+        font-size: 90px;
+    }
+    .content-area {
+        width: auto;
+        height: 310px;
+    }
+    .progress-percentage-wrapper {
+        font-size: 40px;
+        margin-left: 0.5%;
+        margin-right: 0.5%;
+        width: 140px;
+        height: 140px;
+    }
+}
+
+@media(max-width: 480px) {
+
+    .mat-button.addStopwatch {
+		border-radius: 50%;
+		width: 45px;
+		height: 45px;
+		border: none;
+		text-decoration: underline;
+		display: inline-block;
+		position: absolute;
+        right: 12px;
+        bottom: 18px;
+		background-color: #b797ff24;
+		min-width: auto;
+		text-align: left;
+    }
+    
+    .mat-button.addStopwatch .mat-icon {
+		font-size: 30px !important;
+		height: 32px !important;
+		width: 32px !important;
+		position: absolute;
+		top: 9px;
+		left: 8px;
+	}
+
+    ::ng-deep mat-card {
+        border: none !important;
+        box-shadow: none !important;
+    }
+    .textsize {
+        font-size: 80px;
+    }
+    .semicolomn {
+        font-size: 80px;
+    }
+    .content-area {
+        width: auto;
+        height: 290px;
+    }
+    .progress-percentage-wrapper {
+        font-size: 30px;
+        margin-left: 0.5%;
+        margin-right: 0.5%;
+        width: 125px;
+        height: 125px;
+    }
+}
+
+@media(max-width: 420px) {
+    .textsize {
+        font-size: 70px;
+    }
+    .semicolomn {
+        font-size: 70px;
+    }
+    .content-area {
+        width: auto;
+        height: 270px;
+    }
+    .progress-percentage-wrapper {
+        font-size: 30px;
+        margin-left: 0.5%;
+        margin-right: 0.5%;
+        width: 100px;
+        height: 100px;
+    }
+}
+
+@media(max-width: 360px) {
+    .textsize {
+        font-size: 60px;
+    }
+    .semicolomn {
+        font-size: 60px;
+    }
+    .content-area {
+        width: auto;
+        height: 250px;
+    }
+    .progress-percentage-wrapper {
+        font-size: 30px;
+        margin-left: 0.5%;
+        margin-right: 0.5%;
+        width: 90px;
+        height: 90px;
+    }
 }

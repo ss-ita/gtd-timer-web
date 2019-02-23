@@ -1,2 +1,7 @@
-<app-nav-bar></app-nav-bar>
-<router-outlet></router-outlet>
+<div class="background">
+    <app-nav-bar></app-nav-bar>
+<router-outlet>
+    <div *ngIf="showLoader" class="loadingBack"></div>
+    <div *ngIf="showLoader" class="clockLoader"></div>
+</router-outlet>
+</div>

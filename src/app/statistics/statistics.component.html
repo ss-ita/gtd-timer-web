@@ -1,45 +1,47 @@
-<div class="background">
   <div class="container">
-    <div>
       <div class="buttons">
+        <div class="button">
         <button mat-raised-button [ngClass]="{'active': typeOfData === dataTypes.Tasks}" (click)="changeTypeOfData(dataTypes.Tasks)">
           All
         </button>
         <button mat-raised-button [ngClass]="{'active': typeOfData === dataTypes.Hashtags}" (click)="changeTypeOfData(dataTypes.Hashtags)">
           Tags
         </button>
+      </div>
+      <div class="button-margin">
         <button mat-raised-button [ngClass]="{'active': typeOfChart === chartTypes.Doughnut}" (click)="changeTypeOfChart(chartTypes.Doughnut)">
           <img src="donut-chart.png">
         </button>
         <button mat-raised-button [ngClass]="{'active': typeOfChart === chartTypes.Bar}" (click)="changeTypeOfChart(chartTypes.Bar)">
           <i class="fa fa-bar-chart" aria-hidden="true"></i>
         </button>
+      </div>
         <mat-form-field>
-          <mat-select placeholder="Type">
+          <mat-select placeholder="Type" [(value)]="selectedType">
             <mat-option value="All" (click)="redraw()">All</mat-option>
             <mat-option value="Stopwatch" (click)="redraw(tasksTypes.Stopwatch)">Stopwatch</mat-option>
             <mat-option value="Timer" (click)="redraw(tasksTypes.Timer)">Timer</mat-option>
           </mat-select>
         </mat-form-field>
+        <div class="datechoose">
         <mat-form-field class="datepicker">
           <input matInput [matDatepicker]="pickerFrom" [matDatepickerFilter]="startDateFilter" placeholder="Start date"
-            (dateChange)="filterByDate($event)" [(ngModel)]="startDate">
+            (dateChange)="filterByDate($event)" [(ngModel)]="startDate" disabled>
           <mat-datepicker-toggle matSuffix [for]="pickerFrom"></mat-datepicker-toggle>
-          <mat-datepicker #pickerFrom></mat-datepicker>
+          <mat-datepicker #pickerFrom disabled="false"></mat-datepicker>
         </mat-form-field>
         <mat-form-field class="datepicker">
           <input matInput [matDatepicker]="pickerTo" [matDatepickerFilter]="endDateFilter" placeholder="End date"
-            [(ngModel)]="endDate" (dateChange)="filterByDate($event)">
+            [(ngModel)]="endDate" (dateChange)="filterByDate($event)" disabled>
           <mat-datepicker-toggle matSuffix [for]="pickerTo"></mat-datepicker-toggle>
-          <mat-datepicker #pickerTo></mat-datepicker>
+          <mat-datepicker #pickerTo disabled="false"></mat-datepicker>
         </mat-form-field>
       </div>
-    </div>
+      </div>
+      <div id="noData" [ngClass]="{'hidden': hasData}">
+        <p> No data available</p>
+      </div>
     <div id="chart" [ngClass]="{'hidden': !hasData}">
       <canvas id="canvasChart"></canvas>
     </div>
-    <div id="noData" [ngClass]="{'hidden': hasData}">
-      <p> No data available</p>
-    </div>
   </div>
-</div>

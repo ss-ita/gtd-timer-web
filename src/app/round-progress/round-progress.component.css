@@ -15,14 +15,92 @@
     top: 35%;
 }
 
-.isTurnOn{
+.isTurnOn {
     color: #609b9b;
 }
 
-.isTurnOff{
+.isTurnOff {
     color: #bfbfbf;
 }
 
-.isStoped{
+.isStoped {
     color: #ad2265;
+}
+
+@media(max-width: 735px) {
+    .progress-percentage-wrapper {
+        font-size: 40px;
+        margin-left: 3%;
+        width: 175px;
+        height: 175px;
+    }
+    ::ng-deep round-progress {
+        width: 175px !important;
+        height: 175px !important;
+    }
+}
+
+@media(max-width: 640px) {
+    .progress-percentage-wrapper {
+        font-size: 40px;
+        margin-left: 3%;
+        width: 160px;
+        height: 160px;
+    }
+    ::ng-deep round-progress {
+        width: 160px !important;
+        height: 160px !important;
+    }
+}
+
+@media(max-width: 550px) {
+    .progress-percentage-wrapper {
+        font-size: 40px;
+        margin-left: 3%;
+        width: 140px;
+        height: 140px;
+    }
+    ::ng-deep round-progress {
+        width: 140px !important;
+        height: 140px !important;
+    }
+}
+
+@media(max-width: 480px) {
+    .progress-percentage-wrapper {
+        font-size: 30px;
+        margin-left: 3%;
+        width: 125px;
+        height: 125px;
+    }
+    ::ng-deep round-progress {
+        width: 125px !important;
+        height: 125px !important;
+    }
+}
+
+@media(max-width: 420px) {
+    .progress-percentage-wrapper {
+        font-size: 30px;
+        margin-left: 3%;
+        width: 100px;
+        height: 100px;
+    }
+    ::ng-deep round-progress {
+        width: 100px !important;
+        height: 100px !important;
+    }
+}
+
+@media(max-width: 360px) {
+    .progress-percentage-wrapper {
+        font-size: 25px;
+        margin-left: 3%;
+        width: 90px;
+        height: 90px;
+    }
+    ::ng-deep round-progress {
+        width: 90px !important;
+        height: 90px !important;
+    }
 }

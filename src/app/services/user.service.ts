@@ -11,6 +11,7 @@ import { NavbarService } from './navbar.service';
 import { RoleService } from './role.service';
 import { AlarmService } from './alarm.service';
 import { ConfirmEmailService } from './confirm-email.service';
+import { PasswordRecoveryService } from './password-recovery.service';
 
 @Injectable({
   providedIn: 'root'
@@ -18,6 +19,7 @@ import { ConfirmEmailService } from './confirm-email.service';
 export class UserService {
 
   redirectUrl = '/';
+  confirmEmailErrorMessage = 'Token has expired , resend verification email?';
 
   constructor(private http: HttpClient,
     private config: ConfigService,
@@ -28,7 +30,8 @@ export class UserService {
     private zone: NgZone,
     private roleService: RoleService,
     private alarmService: AlarmService,
-    private confirmEmailService: ConfirmEmailService) { }
+    private confirmEmailService: ConfirmEmailService,
+    private passwordRecoveryService: PasswordRecoveryService) { }
 
   registerUser(user: SignupModel) {
     const body: SignupModel = {
@@ -105,7 +108,6 @@ export class UserService {
   }
 
   deleteAccount() {
-
     return this.http.delete(this.config.urlUser);
   }
 
@@ -145,14 +147,45 @@ export class UserService {
         });
   }
 
-  verifyEmail(id, token) {
-    this.confirmEmailService.verifyEmailToken(id, token).subscribe(_ => {
+  verifyEmail(email, token) {
+    this.confirmEmailService.verifyEmailToken(email, token).subscribe(_ => {
         this.router.navigateByUrl(this.redirectUrl);
         this.toasterService.showToaster('Your email address has been confirmed');
       },
       response => {
-        this.toasterService.showToaster(response.error.Message);
-      });
+        if (response.error.Message === this.confirmEmailErrorMessage) {
+          const result = confirm('Token has expired! Resend verification email?');
+          if (result) {
+            this.resendVerificationEmail(email);
+          }
+        } else {
+          this.toasterService.showToaster(response.error.Message);
+        }
+    });
   }
 
+  resendVerificationEmail(email) {
+    this.confirmEmailService.resendVerificationEmail(email).subscribe(_ => {
+      this.router.navigateByUrl(this.redirectUrl);
+      this.toasterService.showToaster('We have sent you a verification email');
+    },
+    response => {
+      this.toasterService.showToaster(response.error.Message);
+    });
+  }
+
+  signInWithEmail(email) {
+    this.jwtservice.signInWithEmail(email)
+      .pipe(first())
+      .subscribe(
+        _ => {
+          this.navbarsubscribe();
+          this.router.navigateByUrl(this.redirectUrl);
+          this.roleService.getRoles();
+          this.alarmService.loadAlarmsFromDatabase();
+        },
+        response => {
+          this.toasterService.showToaster(response.error.Message);
+        });
+  }
 }

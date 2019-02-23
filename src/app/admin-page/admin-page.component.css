@@ -1,14 +1,7 @@
-.back{
-    position: absolute;
-    top: auto;
-    min-height: calc(100vh - 49px);
-    width: 100%;
-    background-image: linear-gradient(to top, #d9afd9 0%, #97d9e1 100%);
-    min-width: 820px;
-}
 
 .search{
     height: 30px !important;
+    width: 177px;
 }
 
 .mat-list-item{
@@ -57,4 +50,87 @@ border-radius: 5px;
 
 [hidden] {
     display: none !important; 
+}
+
+.mobile{
+    display: none;
+    position: relative;
+    margin-left: 10%;
+    margin-right: 10%;
+}
+
+@media(max-width: 750px) {
+
+	.my-container {
+		display: none;
+    }
+    
+	.mobile {
+		display: block;
+    }
+    
+    .name{
+        width: 85%;
+    }
+
+    .actions{
+        width: 15%;
+    }
+}
+
+@media(max-width: 500px) {
+    .mat-menu-item{
+        font-size: 10px !important;
+        line-height: 14px !important;
+        height: 14px;
+    }
+
+    ::ng-deep .mat-form-field{
+        font-size: 10px !important;
+        width: 99%;
+    }
+
+    .search{
+        height: 12px !important;
+        font-size: 10px !important;
+        width: 99%;
+    }
+
+    .mat-raised-button{
+        min-width: 1px;
+        height: 28px;
+        width: 28px;
+    }
+   
+
+    .mat-icon {
+        background-repeat: no-repeat;
+        display: inline-block;
+        fill: currentColor;
+        height: 32px;
+        margin-left: -12px;
+    }
+
+	.my-container {
+        display: none;
+    } 
+    
+	.mobile {
+        display: block;
+    }
+    
+    .name{
+        width: 85%;
+        font-size: 10px !important;
+    }
+
+    .actions{
+        width: 15%;
+    }
+}
+
+@media(max-width: 480px) {
+    .search{
+        border: none !important;
+    }
 }

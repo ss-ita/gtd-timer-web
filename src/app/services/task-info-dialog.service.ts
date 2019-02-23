@@ -13,7 +13,8 @@ export class TaskInfoDialogService {
   openSheet(record: Record) {
     const dialogRef = this.dialog.open(RecordInfoComponent, {
       hasBackdrop: true,
-      closeOnNavigation: true
+      closeOnNavigation: true,
+      panelClass: ['recordInfoOverlay']
     });
     dialogRef.componentInstance.record = record;
 

@@ -3,76 +3,84 @@
     <div class="negative-margin">
       <mat-menu #appMenu="matMenu">
         <button mat-menu-item (click)="styleService.changeStyle()">{{styleService.changeStyleString}}</button>
-        <ng-template [ngIf]="stopwatchService.task === ' ' && getIsLoggedIn()">
-          <button mat-menu-item (click)="addTaskFromStopwatch()">Add to List</button>
+        <ng-template
+          [ngIf]="getIsLoggedIn() && stopwatchService.taskJson.name !== this.stopwatchService.startStopwatchName">
+          <button mat-menu-item (click)="changeTitle()">Change title</button>
         </ng-template>
       </mat-menu>
       <button mat-icon-button [matMenuTriggerFor]="appMenu" class="style-menu">
         <mat-icon>more_vert</mat-icon>
       </button>
-      <ng-template [ngIf]="stopwatchService.task !== ' '">
-        <div class="current-stopwatch">Currently running: {{stopwatchService.task}}</div>
-        <button mat-icon-button class="view-stopwatch-menu" (click)="stopwatchService.stopwatchClear()">
-          <mat-icon class="toggle" [inline]="true">clear</mat-icon>
-        </button>
+      <ng-template [ngIf]="this.stopwatchService.taskJson.name !== this.stopwatchService.startStopwatchName">
+        <ng-template [ngIf]="getIsLoggedIn() && this.stopwatchService.taskJson.name !== ''">
+          <div class="current-stopwatch">{{stopwatchService.taskJson.name}}</div>
+        </ng-template>
       </ng-template>
     </div>
-    <mat-card-content (click)="stopwatchService.clickOnStopWatch()">
-      <ng-template [ngIf]="stopwatchService.task === ' '">
+    <ng-template
+      [ngIf]="!getIsLoggedIn() || stopwatchService.taskJson.name === this.stopwatchService.startStopwatchName">
+      <mat-card-content (click)="clickOnWatch()">
         <ng-template [ngIf]="!styleService.isLineStyle">
           <div class="progress-percentage-wrapper">
-            <app-round-progress [max]="stopwatchService.maxValueOfHour" [value]="stopwatchService.hour" [color]="stopwatchService.color"
-              [text]="'h'"></app-round-progress>
-          </div>
-          <div class="progress-percentage-wrapper">
-            <app-round-progress [max]="stopwatchService.secondPerMinute" [value]="stopwatchService.minute" [color]="stopwatchService.color"
-              [text]="'m'"></app-round-progress>
-          </div>
-          <div class="progress-percentage-wrapper">
-            <app-round-progress [max]="stopwatchService.secondPerMinute" [value]="stopwatchService.second" [color]="stopwatchService.color"
-              [text]="'s'"></app-round-progress>
-          </div>
-        </ng-template>
-        <ng-template [ngIf]="styleService.isLineStyle">
-          <div class="container-stopwatch" class="unselectable">
-            <app-line-progress class="textsize" [color]="stopwatchService.color" [value]="stopwatchService.hour"></app-line-progress>
-            <div class="semicolomn" [style.color]="stopwatchService.color">:</div>
-            <app-line-progress class="textsize" [color]="stopwatchService.color" [value]="stopwatchService.minute"></app-line-progress>
-            <div class="semicolomn" [style.color]="stopwatchService.color">:</div>
-            <app-line-progress class="textsize" [color]="stopwatchService.color" [value]="stopwatchService.second"
-              [text]="''"></app-line-progress>
-          </div>
-        </ng-template>
-      </ng-template>
-      <ng-template [ngIf]="stopwatchService.task !== ' '">
-        <ng-template [ngIf]="!styleService.isLineStyle">
-          <div class="progress-percentage-wrapper">
-            <app-round-progress [max]="stopwatchService.maxValueOfHour" [value]="stopwatchService.taskJson.hour"
+            <app-round-progress [max]="stopwatchService.maxValueOfHour" [value]="stopwatchService.hour"
               [color]="stopwatchService.color" [text]="'h'"></app-round-progress>
           </div>
           <div class="progress-percentage-wrapper">
-            <app-round-progress [max]="stopwatchService.secondPerMinute" [value]="stopwatchService.taskJson.minutes"
+            <app-round-progress [max]="stopwatchService.secondPerMinute" [value]="stopwatchService.minute"
               [color]="stopwatchService.color" [text]="'m'"></app-round-progress>
           </div>
           <div class="progress-percentage-wrapper">
-            <app-round-progress [max]="stopwatchService.secondPerMinute" [value]="stopwatchService.taskJson.seconds"
+            <app-round-progress [max]="stopwatchService.secondPerMinute" [value]="stopwatchService.second"
               [color]="stopwatchService.color" [text]="'s'"></app-round-progress>
           </div>
         </ng-template>
         <ng-template [ngIf]="styleService.isLineStyle">
           <div class="container-stopwatch" class="unselectable">
-            <app-line-progress class="textsize" [color]="stopwatchService.color" [value]="stopwatchService.taskJson.hour"></app-line-progress>
+            <app-line-progress class="textsize" [color]="stopwatchService.color" [value]="stopwatchService.hour">
+            </app-line-progress>
             <div class="semicolomn" [style.color]="stopwatchService.color">:</div>
-            <app-line-progress class="textsize" [color]="stopwatchService.color" [value]="stopwatchService.taskJson.minutes"></app-line-progress>
+            <app-line-progress class="textsize" [color]="stopwatchService.color" [value]="stopwatchService.minute">
+            </app-line-progress>
             <div class="semicolomn" [style.color]="stopwatchService.color">:</div>
-            <app-line-progress class="textsize" [color]="stopwatchService.color" [value]="stopwatchService.taskJson.seconds"
+            <app-line-progress class="textsize" [color]="stopwatchService.color" [value]="stopwatchService.second"
               [text]="''"></app-line-progress>
           </div>
         </ng-template>
-      </ng-template>
-    </mat-card-content>
+      </mat-card-content>
+    </ng-template>
+    <ng-template
+      [ngIf]="getIsLoggedIn() && stopwatchService.taskJson.name !== this.stopwatchService.startStopwatchName">
+      <mat-card-content (click)="clickOnStopWatch()">
+        <ng-template [ngIf]="!styleService.isLineStyle">
+          <div class="progress-percentage-wrapper">
+            <app-round-progress [max]="stopwatchService.maxValueOfHour" [value]="stopwatchService.taskJson.hour"
+              [color]="getColor()" [text]="'h'"></app-round-progress>
+          </div>
+          <div class="progress-percentage-wrapper">
+            <app-round-progress [max]="stopwatchService.secondPerMinute" [value]="stopwatchService.taskJson.minutes"
+              [color]="getColor()" [text]="'m'"></app-round-progress>
+          </div>
+          <div class="progress-percentage-wrapper">
+            <app-round-progress [max]="stopwatchService.secondPerMinute" [value]="stopwatchService.taskJson.seconds"
+              [color]="getColor()" [text]="'s'"></app-round-progress>
+          </div>
+        </ng-template>
+        <ng-template [ngIf]="styleService.isLineStyle">
+          <div class="container-stopwatch" class="unselectable">
+            <app-line-progress class="textsize" [color]="getColor()" [value]="stopwatchService.taskJson.hour">
+            </app-line-progress>
+            <div class="semicolomn" [style.color]="getColor()">:</div>
+            <app-line-progress class="textsize" [color]="getColor()" [value]="stopwatchService.taskJson.minutes">
+            </app-line-progress>
+            <div class="semicolomn" [style.color]="getColor()">:</div>
+            <app-line-progress class="textsize" [color]="getColor()" [value]="stopwatchService.taskJson.seconds"
+              [text]="''"></app-line-progress>
+          </div>
+        </ng-template>
+      </mat-card-content>
+    </ng-template>
     <mat-card-actions class="positioning">
-      <ng-template [ngIf]="stopwatchService.task === ' '">
+      <ng-template [ngIf]="!getIsLoggedIn()">
         <ng-template [ngIf]="stopwatchService.isStopwatchRun === false || stopwatchService.isStopwatchPause">
           <button mat-icon-button (click)="stopwatchService.start()">
             <mat-icon>arrow_right</mat-icon>
@@ -83,24 +91,40 @@
             <mat-icon>pause</mat-icon>
           </button>
         </ng-template>
-        <button mat-icon-button [disabled]="stopwatchService.isStopwatchRun === false" (click)="stopwatchService.reset()">
+        <button mat-icon-button [disabled]="stopwatchService.isStopwatchRun === false"
+          (click)="stopwatchService.reset()">
           <mat-icon>refresh</mat-icon>
         </button>
       </ng-template>
-      <ng-template [ngIf]="stopwatchService.task !== ' '">
-        <ng-template [ngIf]="stopwatchService.isStopwatchRun === false || stopwatchService.isStopwatchPause">
-          <button mat-icon-button (click)="startTask()">
+      <ng-template [ngIf]="getIsLoggedIn()">
+        <ng-template [ngIf]="stopwatchService.taskJson.name === this.stopwatchService.startStopwatchName">
+          <button mat-icon-button (click)="createTask()">
             <mat-icon>arrow_right</mat-icon>
           </button>
         </ng-template>
-        <ng-template [ngIf]="stopwatchService.isStopwatchPause === false">
-          <button mat-icon-button (click)="pauseTask()">
-            <mat-icon>pause</mat-icon>
-          </button>
+        <ng-template [ngIf]="stopwatchService.taskJson.name !== this.stopwatchService.startStopwatchName">
+          <ng-template
+            [ngIf]="stopwatchService.taskJson.isStoped || ( stopwatchService.taskJson.isStoped === false && stopwatchService.taskJson.isRunning === false)">
+            <button mat-icon-button (click)="startTask()">
+              <mat-icon>arrow_right</mat-icon>
+            </button>
+          </ng-template>
+          <ng-template [ngIf]="stopwatchService.taskJson.isRunning">
+            <button mat-icon-button (click)="pauseTask()">
+              <mat-icon>pause</mat-icon>
+            </button>
+          </ng-template>
         </ng-template>
-        <button mat-icon-button [disabled]="stopwatchService.isStopwatchRun === false" (click)="resetTask()">
+        <button mat-icon-button
+          [disabled]="( stopwatchService.taskJson.isStoped === false && stopwatchService.taskJson.isRunning === false) || stopwatchService.taskJson.name === this.stopwatchService.startStopwatchName"
+          (click)="resetTask()">
           <mat-icon>refresh</mat-icon>
         </button>
+        <ng-template [ngIf]="stopwatchService.taskJson.name !== this.stopwatchService.startStopwatchName">
+          <button mat-button class="addStopwatch" (click)="createTask()">
+            <mat-icon>add</mat-icon>
+          </button>
+        </ng-template>
       </ng-template>
     </mat-card-actions>
   </mat-card>

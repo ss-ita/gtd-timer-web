@@ -5,9 +5,9 @@ import { ToasterService } from '../services/toaster.service';
 import { Record } from '../models/record.model';
 import { MatDialog } from '@angular/material';
 import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
-import { TimeFilterPipe } from '../pipes/time-filter.pipe';
 import { TasksService } from '../services/tasks.service';
 import { ConfigService } from '../services/config.service';
+import { PagerService } from '../services/pager.service';
 
 @Component({
   selector: 'app-history',
@@ -18,20 +18,35 @@ import { ConfigService } from '../services/config.service';
 export class HistoryComponent implements OnInit {
 
   searchText: string;
+  selected = 'All';
   records: Record[];
   recordsToDisplay: Record[];
   isStopwatch = 2;
+  pagedRecords: Record[];
+  recordsToDisplayPager: any = {};
+  pageSizeRecords = 10;
+  public pageSizes: any = [
+    { 'id': 5, 'value': 5 },
+    { 'id': 10, 'value': 10 },
+    { 'id': 25, 'value': 25 },
+    { 'id': 'Display all', 'value': Number.MAX_VALUE }
+  ];
 
   constructor(private historyService: HistoryService,
     private service: TaskInfoDialogService,
     private tosterService: ToasterService,
     private matDialog: MatDialog,
-    private timePipe: TimeFilterPipe,
     private taskService: TasksService,
-    private configService: ConfigService) { }
+    private configService: ConfigService,
+    private pagerService: PagerService) { }
 
   ngOnInit() {
     this.getRecords();
+  }
+
+  setRecordsPage(page: number) {
+    this.recordsToDisplayPager = this.pagerService.getPager(this.recordsToDisplay.length, page, this.pageSizeRecords);
+    this.pagedRecords = this.recordsToDisplay.slice(this.recordsToDisplayPager.startIndex, this.recordsToDisplayPager.endIndex + 1);
   }
 
   exportAllStopwatchRecordsAsXml() {
@@ -62,15 +77,21 @@ export class HistoryComponent implements OnInit {
     this.isStopwatch = num;
     if (this.isStopwatch === 1) {
       this.recordsToDisplay = [... this.records.filter(it => it.watchType === 0)];
+      this.selected = 'Stopwatches';
     } else if (this.isStopwatch === 0) {
       this.recordsToDisplay = [... this.records.filter(it => it.watchType === 1)];
+      this.selected = 'Timers';
     } else {
-      this.recordsToDisplay = this.records;
+      this.recordsToDisplay = [...this.records];
+      this.selected = 'All';
     }
+
+    this.setRecordsPage(1);
   }
 
   getRecords() {
-    this.historyService.getAllRecords().subscribe(data => { this.records = data; this.recordsToDisplay = [...this.records]; });
+    this.historyService.getAllRecords().subscribe(
+      data => { this.records = data; this.recordsToDisplay = [...this.records]; this.setRecordsPage(1); });
   }
 
   onInfo(record: Record) {
@@ -93,6 +114,12 @@ export class HistoryComponent implements OnInit {
     this.records.splice(indexTaskToDelete, 1);
     const indexTaskToDeleteD = this.recordsToDisplay.indexOf(record, 0);
     this.recordsToDisplay.splice(indexTaskToDeleteD, 1);
+
+    if (this.pagedRecords.length > 1) {
+      this.setRecordsPage(this.recordsToDisplayPager.currentPage);
+    } else {
+      this.setRecordsPage(this.recordsToDisplayPager.currentPage - 1);
+    }
   }
 
   onDeleteRecord(record: Record) {
@@ -115,8 +142,33 @@ export class HistoryComponent implements OnInit {
     const observer = {
       next: data => {
         if (data) {
-          this.records.push(data);
-          this.recordsToDisplay.push(data);
+
+          for (let i = 0; i < data.length; ++i) {
+            const r = data[i];
+            const toDelete = this.recordsToDisplay.filter((rec) => rec.id == r.id );
+            const indexToDelete = this.recordsToDisplay.indexOf(toDelete[0]);
+            if (indexToDelete > -1) {
+              this.recordsToDisplay.splice(indexToDelete, 1);
+            }
+          }
+          for (let i = 0; i < data.length; ++i) {
+            this.recordsToDisplay.push(data[i]);
+          }
+
+          for (let i = 0; i < data.length; ++i) {
+            const r = data[i];
+            const toDelete = this.records.filter((rec) => rec.id == r.id );
+            const indexToDelete = this.records.indexOf(toDelete[0]);
+            if (indexToDelete > -1) {
+              this.records.splice(indexToDelete, 1);
+            }
+          }
+
+          for (let i = 0; i < data.length; ++i) {
+            this.records.push(data[i]);
+          }
+
+          this.setRecordsPage(Math.ceil(this.recordsToDisplay.length / this.pageSizeRecords));
         }
       },
 
@@ -128,7 +180,8 @@ export class HistoryComponent implements OnInit {
         }
       }
     };
-    this.historyService.resetAndStartTask(record.taskId).subscribe(observer);
+
+    this.historyService.resetAndStartTask(record.id).subscribe(observer);
   }
 
   openWarningDialog(record: Record) {
@@ -139,9 +192,9 @@ export class HistoryComponent implements OnInit {
     });
     warningDialogRef.componentInstance.title = 'Confirmation';
     if (record.watchType == 1) {
-      warningDialogRef.componentInstance.message = 'This timer will be reset!';
+      warningDialogRef.componentInstance.message = 'This timer will be reset or create new one if it doesn\'t exist!';
     } else {
-      warningDialogRef.componentInstance.message = 'This stopwatch will be reset!';
+      warningDialogRef.componentInstance.message = 'This stopwatch will be reset or create new one if it doesn\'t exist!';
     }
     warningDialogRef.componentInstance.btnCancelText = 'Cancel';
     warningDialogRef.componentInstance.btnOkText = 'Confirm';

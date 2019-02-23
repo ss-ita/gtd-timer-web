@@ -1,33 +1,41 @@
-.background {
-    position: absolute;
-    top: auto;
-    min-height: calc(100vh - 49px);
-    width: 100%;
-    background-image: linear-gradient(to top, #d9afd9 0%, #97d9e1 100%);
-    min-width: 1200px;
+.button-margin {
+    display: inline-flex;
+    justify-content: center;
+    margin-left: 5%;
 }
-    
+  
+.button {
+    display: inline-flex;
+    justify-content: center;
+}
+
+.datechoose {
+    display: inline-flex;
+}
+
 .container {
     position: relative;
 }
     
 .container>div:first-child {
     width: 100%;
-    height: 50px;
     padding-top: 10px;
 }
 
 #chart {
-    margin: 0 25%;
-    padding-top: 40px;
+    margin: 0 auto;
+    min-width: 250px;
+    min-height: 150px;
+    max-width: 700px;
+    display: flex;
 }
     
 .buttons {
     margin-top: 5px;
-    margin: 0 10%;
-    display: inline-flex;
+    display: block;
     justify-content: center;
     align-items: baseline;
+    text-align: center;
 }
 
 .buttons .mat-raised-button{
@@ -68,16 +76,69 @@
     width: 100px;
 }
 
+::ng-deep .mat-form-field-appearance-legacy.mat-form-field-disabled .mat-form-field-underline {
+    background-image: none;
+    background-color: rgba(0,0,0,.42) !important;
+}
+
+::ng-deep .mat-form-field-type-mat-native-select.mat-form-field-disabled .mat-form-field-infix::after, .mat-input-element:disabled {
+    color: black;
+}
+
+@media(max-width:930px) {
+    .mat-form-field {
+        width: 270px;
+        margin-left: 20px;
+    }
+
+    #chart {
+        margin: 0 0;
+    }
+
+    .datepicker {
+        width: 125px;
+        margin-left: 20px;
+    }
+
+    .button:first-of-type {
+        display: inline-flex;
+        justify-content: center;
+        margin-left: 20px;
+    }
+}
+
+@media(max-width:320px) {
+    .datepicker {
+        width: 125px;
+        margin-left: 0;
+    }
+
+    .datepicker:last-of-type {
+        margin-left: 20px;
+    }
+
+    .mat-form-field {
+        margin-left: 0;
+    }
+
+    .button:first-of-type {
+        display: inline-flex;
+        justify-content: center;
+        margin-left: -10px;
+    }
+}
+
 #noData {
     padding-top: 50px;
 }
-    
+
 .hidden {
-    display: none;
+    display: none !important;
 }
     
 #noData p {
     font-size: x-large;
     width: 300px;
     margin: 0 auto;
+    text-align: center;
 }

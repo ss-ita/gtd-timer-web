@@ -18,6 +18,7 @@ export class SignupDialogComponent implements OnInit {
 
   openSignUpForm() {
     this.dialog.open(SignupComponent, {
+      panelClass: 'custom-dialog-container',
       hasBackdrop: true,
       closeOnNavigation: true,
       disableClose: true

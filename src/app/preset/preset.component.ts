@@ -7,6 +7,7 @@ import { TimerService } from '../services/timer.service';
 import { PresetModel } from '../models/preset.model';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { TaskCreateJson } from '../models/taskCreateJson.model';
 
 @Component({
   selector: 'app-preset',
@@ -63,6 +64,7 @@ export class PresetComponent implements OnInit {
     for (let index = 0; index < this.timersToDelete.length; index++) {
       this.presetService.deleteTimerFromLocalArrayAndServer(this.timersToDelete[index], this.presetIndex, this.presetToUpdate);
     }
+    this.timersToDelete = [];
     this.presetService.updatePresetInLocalArrayAndServer(this.presetForm.value, this.presetToUpdate, this.presetIndex);
     this.selectedPreset = this.presetService.getPresetNameByIndex(this.presetIndex);
     this.cleanUpTheTimersFormGroupArray();
@@ -100,6 +102,8 @@ export class PresetComponent implements OnInit {
 
   onSave() {
     this.timerService.currentPreset = this.selectedPreset;
+    this.timerService.taskJson = new TaskCreateJson();
+    this.timerService.taskJson.name = 'null@Timer';
     this.onClose();
     this.presetService.startPresetTimers();
   }
@@ -109,6 +113,14 @@ export class PresetComponent implements OnInit {
     this.isUpdateState = !this.isUpdateState;
   }
 
+  numberOnly(event): boolean {
+    const charCode = (event.which) ? event.which : event.keyCode;
+    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+      return false;
+    }
+    return true;
+  }
+
   onSignIn() {
     this.router.navigateByUrl('/signin');
     this.onClose();
@@ -116,6 +128,7 @@ export class PresetComponent implements OnInit {
 
   openConfirmationDialog(presetIndex) {
     const confirmationDialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      panelClass: 'custom-dialog-container',
       hasBackdrop: true,
       closeOnNavigation: true,
       disableClose: false
@@ -126,6 +139,7 @@ export class PresetComponent implements OnInit {
     confirmationDialogRef.componentInstance.btnOkText = 'Confirm';
     confirmationDialogRef.componentInstance.acceptAction = () => {
       this.onDeletePreset(presetIndex);
+      this.timerService.exitFromPreset();
     };
     confirmationDialogRef.componentInstance.declineAction = () => {
       this.selectedPreset = this.getFirstStandardPreset();
